@@ -7,6 +7,7 @@ public class HUD extends Module {
         super("HUD", Category.RENDER, -1);
         this.addBool("Rainbow", true);
         this.addBool("Watermark", true);
+        this.addNumberOption("Watermark Size",0.75,0.5,1.5);
         this.addBool("\"SortedSet\"", true);
         this.addBool("Right line", true);
         this.addBool("Left line", true);

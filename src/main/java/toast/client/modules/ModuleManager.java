@@ -64,13 +64,9 @@ public class ModuleManager {
         modules.add(new Fly());
         modules.add(new Velocity());
         modules.add(new ClickGui());
-        modules.add(new test());
-        modules.add(new test2());
-        modules.add(new test3());
-        modules.add(new test4());
         modules.add(new KillAura());
         modules.add(new Panic());
         modules.add(new HUD());
-
+        modules.add(new Fullbright());
     }
 }
