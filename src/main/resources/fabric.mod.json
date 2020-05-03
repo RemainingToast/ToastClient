@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "toastclient",
+  "version": "${version}",
+
+  "name": "ToastClient",
+  "description": "Like bread, but warmer.",
+  "authors": [
+    "RemainingToast",
+    "fleebs",
+    "MorganAnkan",
+    "dewy",
+    "Qther"
+  ],
+  "contact": {},
+
+  "license": "CC BY-NC-ND 4.0",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "toast.client.ToastClient"
+    ]
+  },
+
+  "mixins": [
+    "toastclient.mixins.json"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "toast.client.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinClientConnection",
+    "MixinInGameHud2",
+    "MixinKeyboard",
+    "MixinMinecraftClient",
+    "MixinSharedConstants"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
