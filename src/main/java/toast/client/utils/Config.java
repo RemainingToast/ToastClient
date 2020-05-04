@@ -13,8 +13,8 @@ import java.util.Objects;
 
 public class Config {
     public static boolean write() throws IOException {
-        FileManager.createFile(new File("modules.txt"));
-        File file = FileManager.getFile("modules", false);
+        /*FileManager.createFile(new File("modules.txt"));
+        File file = FileManager.getFile("modules.txt", false);
         if (file == null) return false;
         List<String> lines = Files.readAllLines(file.toPath());
         FileWriter writer = new FileWriter(file);
@@ -22,6 +22,7 @@ public class Config {
         for (Module module : ModuleManager.modules) {
             writer.append("Name : " + module.getName() + "\n");
             writer.append("Enabled : " + module.isEnabled() + "\n");
+            if (ModuleManager.setmgr.getSettingsByMod(module).isEmpty()) return false;
             for (Setting setting : ModuleManager.setmgr.getSettingsByMod(module)) {
                 try {
                     writer.append(setting.getName() + " : " + setting.getValString() + "\n");
@@ -35,7 +36,7 @@ public class Config {
                     }
                 }
             }
-        }
+        }*/
         return false;
     }
 }

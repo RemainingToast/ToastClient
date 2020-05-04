@@ -113,15 +113,13 @@ public class FileManager {
 
     public static File getFile(String name, boolean cases) {
         try {
-            for (File file : getFiles()) {
-                if (file.getName().equalsIgnoreCase(name) && !cases) {
-                    return file;
-                } else if (file.getName().equals(name) && cases) {
-                    return file;
-                }
-            }
-        } catch(Exception ignored) {
-        }
+            List<File> matches = new ArrayList<>(Arrays.asList());
+            Objects.requireNonNull(getFiles()).stream()
+                    .filter(file -> cases ? file.getName().equals(name) : file.getName().equalsIgnoreCase(name))
+                    .forEach(matches::add);
+            return matches.get(0);
+        } catch(Exception ignored) { }
+
         return null;
     }
 
