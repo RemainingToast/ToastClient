@@ -8,10 +8,13 @@ import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 
+import java.util.Objects;
+
 public class Fullbright extends Module {
 
     private static boolean increasedGamma = false;
     private static double previousGamma = 0;
+    private static String lastMode;
 
     public Fullbright() {
         super("Fullbright", Module.Category.RENDER, -1);
@@ -20,12 +23,17 @@ public class Fullbright extends Module {
 
     @EventImpl
     public void onTick(EventUpdate event) {
-        if(this.isMode("Gamma") && !increasedGamma && mc.options.gamma < 16) {
-            increaseGamma();
-        }
-        else if(this.isMode("Potion")) {
+        if (this.isMode("Gamma") && !increasedGamma) {
+            if (lastMode.equals("Potion")) {
+                assert mc.player != null;
+                if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 69) mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+            }
+            if (mc.options.gamma < 16) increaseGamma();
+            lastMode = "Gamma";
+        } else if (this.isMode("Potion")) {
             assert mc.player != null;
-            mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 1, 4));
+            mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 82820, 69));
+            lastMode = "Potion";
         }
     }
 
@@ -35,7 +43,7 @@ public class Fullbright extends Module {
         mc.options.gamma = previousGamma;
         increasedGamma = false;
         assert mc.player != null;
-        mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+        if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 42069) mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
     }
 
     @Override
