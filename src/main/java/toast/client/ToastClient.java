@@ -21,8 +21,11 @@ public class ToastClient implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        System.out.println(cleanPrefix+" Initialized");
-        System.out.println("Special thanks to all contributors of this project "+devs);
+        System.out.println(cleanPrefix + " Initialized");
+        System.out.println("Special thanks to all contributors of this project:");
+        for (String dev : devs) {
+            System.out.println(dev);
+        }
         ModuleManager.initModules();
         CommandHandler.initCommands();
         FileManager.initFileManager();
