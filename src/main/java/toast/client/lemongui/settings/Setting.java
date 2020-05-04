@@ -1,8 +1,10 @@
 package toast.client.lemongui.settings;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import toast.client.modules.Module;
+import toast.client.utils.Config;
 
 /**
  *  Made by HeroCode
@@ -67,6 +69,9 @@ public class Setting {
 	
 	public void setValString(String in){
 		this.sval = in;
+		try {
+			Config.write();
+		} catch (IOException ignored) { }
 	}
 	
 	public ArrayList<String> getOptions(){
@@ -79,6 +84,9 @@ public class Setting {
 	
 	public void setValBoolean(boolean in){
 		this.bval = in;
+		try {
+			Config.write();
+		} catch (IOException ignored) { }
 	}
 	
 	public double getValDouble(){
@@ -90,6 +98,9 @@ public class Setting {
 
 	public void setValDouble(double in){
 		this.dval = in;
+		try {
+			Config.write();
+		} catch (IOException ignored) { }
 	}
 	
 	public double getMin(){
