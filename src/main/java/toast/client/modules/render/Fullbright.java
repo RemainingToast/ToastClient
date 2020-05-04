@@ -10,6 +10,9 @@ import toast.client.modules.ModuleManager;
 
 public class Fullbright extends Module {
 
+    private static boolean increasedGamma = false;
+    private static double previousGamma = 0;
+
     public Fullbright() {
         super("Fullbright", Module.Category.RENDER, -1);
         this.addModes("Potion", "Gamma");
@@ -17,10 +20,10 @@ public class Fullbright extends Module {
 
     @EventImpl
     public void onTick(EventUpdate event) {
-        if(this.isMode("Gamma")) {
-            if(mc.options.gamma < 16) mc.options.gamma += 1.2;
-
-        } else if(this.isMode("Potion")) {
+        if(this.isMode("Gamma") && !increasedGamma && mc.options.gamma < 16) {
+            increaseGamma();
+        }
+        else if(this.isMode("Potion")) {
             assert mc.player != null;
             mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 1, 4));
         }
@@ -29,8 +32,20 @@ public class Fullbright extends Module {
     @Override
     public void onDisable() {
         super.onDisable();
-        mc.options.gamma = 1;
+        mc.options.gamma = previousGamma;
+        increasedGamma = false;
         assert mc.player != null;
         mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+    }
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+        previousGamma = mc.options.gamma;
+    }
+
+    private void increaseGamma() {
+        mc.options.gamma = 1000;
+        increasedGamma = true;
     }
 }
