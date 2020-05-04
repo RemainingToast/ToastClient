@@ -17,7 +17,7 @@ public class ToastClient implements ModInitializer {
     public static String cleanPrefix = "ToastClient";
     public static String chatPrefix = Formatting.DARK_GRAY+"["+Formatting.LIGHT_PURPLE+"ToastClient"+Formatting.DARK_GRAY+"]";
     public static String cmdPrefix = ".";
-    public static List<String> devs = Arrays.asList("MorganAnkan", "RemainingToast", "RemainingToasted", "Yearr", "iBuyMountainDew");
+    public static List<String> devs = Arrays.asList("MorganAnkan", "RemainingToast", "RemainingToasted", "Yearr", "iBuyMountainDew", "Fleebs");
 
     @Override
     public void onInitialize() {
