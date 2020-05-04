@@ -8,6 +8,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class ToastClient implements ModInitializer {
     public static String cleanPrefix = "ToastClient";
     public static String chatPrefix = Formatting.DARK_GRAY+"["+Formatting.LIGHT_PURPLE+"ToastClient"+Formatting.DARK_GRAY+"]";
     public static String cmdPrefix = ".";
-    public static List<String> devs = Collections.singletonList("MorganAnkan");
+    public static List<String> devs = Arrays.asList("MorganAnkan", "RemainingToast", "RemainingToasted", "Yearr", "iBuyMountainDew");
 
     @Override
     public void onInitialize() {
@@ -34,7 +35,7 @@ public class ToastClient implements ModInitializer {
         } else {
             System.out.println("Failed to connect to proxy");
         }*/
-        boolean login = LoginUtil.loginCracked("MorganAnkan"); //if u dont want to fill ur singleplayer world with 13519519375 .dat files
+        boolean login = LoginUtil.loginCracked("Toast Client On Top!"); //if u dont want to fill ur singleplayer world with 13519519375 .dat
         if(login) {
             System.out.println("Logged in as MorganAnkan");
         } else {
