@@ -17,7 +17,7 @@ public class LoginUtil {
     public static boolean setSession(Session newSession) {
         Field newField = null;
         for (Field field : mc.getClass().getDeclaredFields()) {
-            if(field.getName().equalsIgnoreCase("session")) {
+            if(field.getName().equalsIgnoreCase("session") || field.getName().equalsIgnoreCase("field_1726")) {
                 newField = field;
             }
         }
