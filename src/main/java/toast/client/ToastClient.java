@@ -37,7 +37,7 @@ public class ToastClient implements ModInitializer {
             System.out.println("Failed to connect to proxy");
         }*/
         if(devMode) {
-            boolean login = LoginUtil.loginCracked("Developer"); //if u dont want to fill ur singleplayer world with 13519519375 .dat files
+            boolean login = LoginUtil.loginCracked("ToastDeveloper"); //if u dont want to fill ur singleplayer world with 13519519375 .dat files
             if (login) {
                 System.out.println("Logged in as Developer");
             } else {
