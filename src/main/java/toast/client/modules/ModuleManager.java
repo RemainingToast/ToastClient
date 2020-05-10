@@ -1,14 +1,15 @@
 package toast.client.modules;
 
-import toast.client.lemongui.settings.SettingsManager;
-import toast.client.modules.combat.*;
-import toast.client.modules.dev.*;
-import toast.client.modules.misc.*;
-import toast.client.modules.movement.*;
-import toast.client.modules.player.*;
-import toast.client.modules.render.*;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
+import toast.client.lemongui.settings.SettingsManager;
+import toast.client.modules.combat.KillAura;
+import toast.client.modules.dev.Panic;
+import toast.client.modules.movement.Fly;
+import toast.client.modules.movement.Velocity;
+import toast.client.modules.render.ClickGui;
+import toast.client.modules.render.Fullbright;
+import toast.client.modules.render.HUD;
 
 import java.util.ArrayList;
 import java.util.List;

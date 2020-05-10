@@ -8,7 +8,6 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,15 +16,14 @@ public class ToastClient implements ModInitializer {
     public static String cleanPrefix = "ToastClient";
     public static String chatPrefix = Formatting.DARK_GRAY+"["+Formatting.LIGHT_PURPLE+"ToastClient"+Formatting.DARK_GRAY+"]";
     public static String cmdPrefix = ".";
-    public static List<String> devs = Arrays.asList("MorganAnkan", "RemainingToast", "RemainingToasted", "Yearr", "iBuyMountainDew", "Fleebs");
+    public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs");
+
+    public static Boolean devMode = false;
 
     @Override
     public void onInitialize() {
-        System.out.println(cleanPrefix + " Initialized");
-        System.out.println("Special thanks to all contributors of this project:");
-        for (String dev : devs) {
-            System.out.println(dev);
-        }
+        System.out.println(cleanPrefix+" Initialized");
+        System.out.println("Special thanks to all contributors of this project "+devs);
         ModuleManager.initModules();
         CommandHandler.initCommands();
         FileManager.initFileManager();
@@ -38,11 +36,13 @@ public class ToastClient implements ModInitializer {
         } else {
             System.out.println("Failed to connect to proxy");
         }*/
-        boolean login = LoginUtil.loginCracked("Toast Client On Top!"); //if u dont want to fill ur singleplayer world with 13519519375 .dat
-        if(login) {
-            System.out.println("Logged in as MorganAnkan");
-        } else {
-            System.out.println("Failed login ;C");
+        if(devMode) {
+            boolean login = LoginUtil.loginCracked("Developer"); //if u dont want to fill ur singleplayer world with 13519519375 .dat files
+            if (login) {
+                System.out.println("Logged in as Developer");
+            } else {
+                System.out.println("Failed login ;C");
+            }
         }
     }
 
