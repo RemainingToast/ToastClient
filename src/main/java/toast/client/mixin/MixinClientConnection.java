@@ -7,6 +7,7 @@ import toast.client.ToastClient;
 import toast.client.commands.CommandHandler;
 import toast.client.event.EventManager;
 import toast.client.event.events.network.EventPacketReceived;
+import toast.client.event.events.network.EventPacketSent;
 import toast.client.modules.dev.Panic;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
@@ -24,7 +25,7 @@ import java.util.concurrent.Future;
 public class MixinClientConnection {
     @Inject(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
     public void send(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
-            EventPacketReceived ep = new EventPacketReceived(packet);
+            EventPacketSent ep = new EventPacketSent(packet);
             EventManager.call(ep);
             if (ep.isCancelled()) ci.cancel();
             if (packet instanceof ChatMessageC2SPacket) {

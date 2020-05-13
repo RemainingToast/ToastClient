@@ -14,7 +14,7 @@ public class AutoTool extends Module {
     public AutoTool() {
         super("AutoTool", Category.PLAYER, -1);
     }
-
+//TODO: make this also look at enchantments
     public void setSlot(BlockPos blockPos) {
         if(mc.player == null || mc.world == null) return;
         float bestSpeed = 0.0F;
