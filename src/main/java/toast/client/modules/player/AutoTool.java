@@ -33,9 +33,7 @@ public class AutoTool extends Module {
         }
         //System.out.println("best slot: "+bestSlot+", selected: "+mc.player.inventory.selectedSlot);
         if (bestSlot != -1 && bestSlot != mc.player.inventory.selectedSlot) {
-            if (mc.player != null) {
-                mc.player.inventory.selectedSlot = bestSlot;
-            }
+            mc.player.inventory.selectedSlot = bestSlot;
         }
     }
 
@@ -56,9 +54,7 @@ public class AutoTool extends Module {
         }
         //System.out.println("best slot: "+bestSlot+", selected: "+mc.player.inventory.selectedSlot);
         if (bestSlot != -1 && bestSlot != mc.player.inventory.selectedSlot) {
-            if (mc.player != null) {
-                mc.player.inventory.selectedSlot = bestSlot;
-            }
+            mc.player.inventory.selectedSlot = bestSlot;
         }
     }
 
