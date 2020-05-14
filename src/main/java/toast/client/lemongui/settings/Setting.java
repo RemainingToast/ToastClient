@@ -54,7 +54,7 @@ public class Setting {
 		this.onlyint = onlyint;
 		this.mode = "Slider";
 	}
-	
+
 	public String getName(){
 		return name;
 	}
@@ -69,9 +69,6 @@ public class Setting {
 	
 	public void setValString(String in){
 		this.sval = in;
-		try {
-			Config.write();
-		} catch (IOException ignored) { }
 	}
 	
 	public ArrayList<String> getOptions(){
@@ -84,9 +81,6 @@ public class Setting {
 	
 	public void setValBoolean(boolean in){
 		this.bval = in;
-		try {
-			Config.write();
-		} catch (IOException ignored) { }
 	}
 	
 	public double getValDouble(){
@@ -98,9 +92,6 @@ public class Setting {
 
 	public void setValDouble(double in){
 		this.dval = in;
-		try {
-			Config.write();
-		} catch (IOException ignored) { }
 	}
 	
 	public double getMin(){

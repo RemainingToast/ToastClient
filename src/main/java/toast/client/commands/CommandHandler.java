@@ -18,7 +18,7 @@ public class CommandHandler {
             for (String alias : command.aliases) {
                 if(alias.equalsIgnoreCase(name)) {
                     try {
-                        if (isDevCancel(command)) return;
+                        if (isDevCancel(command)) notfound = true;
                         command.run(args);
                         notfound = false;
                     } catch(Exception err) {

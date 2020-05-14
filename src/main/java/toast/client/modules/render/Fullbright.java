@@ -23,6 +23,7 @@ public class Fullbright extends Module {
 
     @EventImpl
     public void onTick(EventUpdate event) {
+        if(mc.player == null) return;// so the console doesnt get 1351450 extra lines
         if (this.isMode("Gamma") && !increasedGamma) {
             if (lastMode.equals("Potion")) {
                 assert mc.player != null;
@@ -42,8 +43,10 @@ public class Fullbright extends Module {
         super.onDisable();
         mc.options.gamma = previousGamma;
         increasedGamma = false;
-        assert mc.player != null;
-        if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 42069) mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+        if(mc.player != null) {
+            if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 42069)
+                mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+        }
     }
 
     @Override

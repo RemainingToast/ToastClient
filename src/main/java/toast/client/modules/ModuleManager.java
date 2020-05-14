@@ -6,9 +6,11 @@ import toast.client.lemongui.settings.SettingsManager;
 import toast.client.modules.combat.KillAura;
 import toast.client.modules.dev.Panic;
 import toast.client.modules.misc.FancyChat;
+import toast.client.modules.misc.Spammer;
 import toast.client.modules.movement.Fly;
 import toast.client.modules.movement.Velocity;
 import toast.client.modules.player.AutoTool;
+import toast.client.modules.player.Surround;
 import toast.client.modules.render.ClickGui;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
@@ -73,5 +75,7 @@ public class ModuleManager {
         modules.add(new Fullbright());
         modules.add(new AutoTool());
         modules.add(new FancyChat());
+        modules.add(new Surround());
+        modules.add(new Spammer());
     }
 }

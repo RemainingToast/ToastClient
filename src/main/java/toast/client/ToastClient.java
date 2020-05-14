@@ -2,6 +2,7 @@ package toast.client;
 
 import toast.client.commands.CommandHandler;
 import toast.client.modules.ModuleManager;
+import toast.client.utils.Config;
 import toast.client.utils.FileManager;
 import toast.client.utils.LoginUtil;
 import net.fabricmc.api.ModInitializer;
@@ -27,7 +28,7 @@ public class ToastClient implements ModInitializer {
         ModuleManager.initModules();
         CommandHandler.initCommands();
         FileManager.initFileManager();
-        this.customFileInit();
+        Config.initConfigManager();
         // \/ doesnt work maybe remove if u want
         /*System.out.println("before connected to: "+MinecraftClient.getInstance().getNetworkProxy().address());
         boolean connectedToProxy = ProxyUtil.connectProxy("138.68.60.8",3128, Proxy.Type.HTTP);
@@ -44,11 +45,6 @@ public class ToastClient implements ModInitializer {
                 System.out.println("Failed login ;C");
             }
         }
-    }
-
-    private void customFileInit() {//TODO: actually parse the settings to the files
-        FileManager.createFile(new File("modules.txt"));
-        FileManager.createFile(new File("config.txt"));
     }
 
 }

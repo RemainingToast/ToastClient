@@ -18,6 +18,7 @@ public class Panic extends Module {
     private List<Module> wasEnabled = new ArrayList<>();
 
     public void onEnable() {
+        if(mc.currentScreen != null) return;
         isPanicing = true;
         for (Module module : ModuleManager.modules) {
             if(module.isEnabled() && !module.getClass().equals(this.getClass())) {
