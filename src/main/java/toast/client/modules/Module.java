@@ -3,6 +3,7 @@ package toast.client.modules;
 import toast.client.event.EventManager;
 import toast.client.lemongui.settings.Setting;
 import net.minecraft.client.MinecraftClient;
+import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ public class Module {
             EventManager.unregister(this);
             onDisable();
         }
+        Config.writeModules();
     }
 
     public void toggle() {
@@ -61,6 +63,7 @@ public class Module {
             EventManager.unregister(this);
             onDisable();
         }
+        Config.writeModules();
     }
 
     public void onEnable() {
@@ -77,11 +80,10 @@ public class Module {
     }
 
     public String getMode() {
-        String nullstring = "";
         if (ModuleManager.setmgr.getSettingByName("Mode", this) != null) {
             return ModuleManager.setmgr.getSettingByName("Mode", this).getValString();
         } else {
-            return "" + nullstring;
+            return "";
         }
     }
 
@@ -121,8 +123,8 @@ public class Module {
         return ModuleManager.setmgr.getSettingByName(string, this).getValString();
     }
 
-    protected boolean isMode(String xd) {
-        return this.getString("Mode").equalsIgnoreCase(xd);
+    protected boolean isMode(String m) {
+        return this.getString("Mode").equalsIgnoreCase(m);
     }
 
     public enum Category {

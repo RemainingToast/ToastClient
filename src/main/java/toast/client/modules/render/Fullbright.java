@@ -38,20 +38,16 @@ public class Fullbright extends Module {
         }
     }
 
-    @Override
-    public void onDisable() {
-        super.onDisable();
+//aaaaa why does this crash the client
+    /*public void onDisable() {
         mc.options.gamma = previousGamma;
         increasedGamma = false;
-        if(mc.player != null) {
-            if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 42069)
-                mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
-        }
-    }
+        if(mc.player == null) return;
+        if (mc.player.getStatusEffect(StatusEffects.NIGHT_VISION).getAmplifier() == 42069)
+           mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+    }*/
 
-    @Override
     public void onEnable() {
-        super.onEnable();
         previousGamma = mc.options.gamma;
     }
 

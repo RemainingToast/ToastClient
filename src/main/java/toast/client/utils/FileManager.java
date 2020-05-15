@@ -24,7 +24,7 @@ public class FileManager {
     }
 
     private static void fileManagerLogger(String m) {
-        System.out.println("["+ToastClient.cleanPrefix+"FileManager] "+m);
+        //System.out.println("["+ToastClient.cleanPrefix+"FileManager] "+m);
     }
 
     public static File createFile(File file) {
@@ -46,9 +46,23 @@ public class FileManager {
         return createFile(new File(name));
     }
 
+    public static File writeFile(String name, List<String> lines) {
+        return writeFile(createFile(name), String.join("\n", lines));
+    }
+
+    public static File writeFile(String name, String lines) {
+        return writeFile(createFile(name), lines);
+    }
+
+    public static File writeFile(File file, List<String> lines) {
+        return writeFile(file, String.join("\n", lines));
+    }
+
     public static File writeFile(File file, String lines) {
         try {
-            new FileWriter(file).write(lines);
+            FileWriter writer = new FileWriter(file);
+            writer.write(lines);
+            writer.close();
             return file;
         } catch (IOException e) {
             fileManagerLogger("Failed to write to file "+file.getName());
@@ -119,9 +133,24 @@ public class FileManager {
         try {
             return Files.readAllLines(file.toPath());
         } catch (IOException e) {
+            fileManagerLogger("Failed to read file "+file.getName());
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static File setLine(File file, String newLine, int index) {
+        List<String> lines = readFile(file);
+        if(lines == null || lines.size() < 1) return null;
+        if(index > lines.size()) {
+            for (int i = lines.size(); i <= index; i++) {
+                if(i == index) lines.add(newLine);
+                 else lines.add("");
+            }
+        } else {
+            lines.set(index, newLine);
+        }
+        return writeFile(file, lines);
     }
 
     public static File getFile(String name) {

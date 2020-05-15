@@ -1,11 +1,11 @@
 package toast.client.mixin;
 
-import toast.client.modules.ModuleManager;
 import net.minecraft.client.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import toast.client.modules.ModuleManager;
 
 @Mixin(Keyboard.class)
 public class MixinKeyboard {

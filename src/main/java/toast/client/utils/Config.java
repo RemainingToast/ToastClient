@@ -5,74 +5,90 @@ import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
-
-    public static File modulesFile = null;
-    public static File optionsFile = null;
-    public static File configFile = null;
-
     public static List<String> modulesLines;
     public static List<String> optionsLines;
     public static List<String> configLines;
 
     public static void initConfigManager() {
-        modulesFile = FileManager.createFile(new File("modules.txt"));
-        optionsFile = FileManager.createFile(new File("options.txt"));
-        configFile = FileManager.createFile(new File("config.txt"));
+        FileManager.createFile(new File("modules.txt"));
+        FileManager.createFile(new File("options.txt"));
+        FileManager.createFile(new File("config.txt"));
     }
 
     public static void updateRead() {
+        // update lines
         modulesLines = FileManager.readFile("modules.txt");
         optionsLines = FileManager.readFile("options.txt");
         configLines = FileManager.readFile("config.txt");
     }
 
+    public static List<String> getModulesLines() {
+        return modulesLines;
+    }
+
+    public static List<String> getOptionsLines() {
+        return optionsLines;
+    }
+
     public static void writeModules() {
-        updateRead();
-        String moduleLines = "";
+        String modules = "";
         for (Module module : ModuleManager.modules) {
-            moduleLines += module.getName()+":"+module.isEnabled()+"\n";
+            modules += module.getName()+":"+module.isEnabled()+"\n";
+           // System.out.println(module.getName()+":"+module.isEnabled());
         }
-        FileManager.writeFile(modulesFile, moduleLines);
+        FileManager.writeFile("modules.txt", modules);
         updateRead();
     }
 
     public static void writeOptions() {
-        updateRead();
-        String optionLines = "";
+        String options = "";
         for (Module module : ModuleManager.modules) {
-            optionLines+=parseSettings(module)+"\n";
+            options+=parseSettings(module)+"\n";
+            //System.out.println(module.getName()+" -> "+parseSettings(module));
         }
-        FileManager.writeFile(optionsFile, optionLines);
+        FileManager.writeFile("options.txt", options);
         updateRead();
     }
 
     public static void writeConfig() {
-        updateRead();
-        FileManager.writeFile(configFile, "prefix:.");// hardcoded for now
+        FileManager.writeFile("config.txt", "prefix:.");// hardcoded for now
         updateRead();
     }
 
-    public static String parseSettings(Module m) {// TODO: parse it better
+    public static String parseSettings(Module m) {
         String settingString = m.getName()+"|";
-        for (Module module : ModuleManager.modules) {
-            ArrayList<Setting> settings = ModuleManager.setmgr.getSettingsByMod(module);
-            if(settings == null) continue;
+            ArrayList<Setting> settings = ModuleManager.setmgr.getSettingsByMod(m);
+            if(settings == null) return settingString;
             for (Setting setting : settings) {
                 if (setting.isCheck()) {
                     settingString += "[CHECK]" + setting.getName() + ":" + setting.getValBoolean() + "|";
                 } else if (setting.isCombo()) {
                     settingString += "[COMBO]" + setting.getName() + ":" + setting.getValString() + "|";
                 } else if (setting.isSlider()) {
-                    settingString += "[SLIDER]" + setting.getName() + ":" + setting.getValDouble() + "|";
+                    settingString += "[SLIDER]" + setting.getName() + ":" + setting.getValDouble() + ":" + setting.getMin() + ":" + setting.getMax() + "|";
+                }
+            }
+            settingString+="[KEYBIND]key:"+m.getKey()+"|";
+        return settingString;
+    }
+
+    public static int getKeyBind(String settingString) {
+        String[] split = settingString.split("\\|");
+        int key = -1;
+        for (String s : split) {
+            if(s.startsWith("[KEYBIND]")) {
+                try {
+                    key = Integer.parseInt(s.split(":")[1]);
+                } catch(Exception e) {
+                    System.out.println("failed to parse keybind: "+s);
                 }
             }
         }
-        return settingString;
+        return key;
     }
 
     public static List<Setting> extractSettings(String settingString) {
@@ -81,49 +97,25 @@ public class Config {
         if(split.length < 1) return null;
         String mName = split[0];
         for (String s : split) {
-            if (s.equals(mName)) continue;
-            if (s.startsWith("[CHECK]")) {
-                Setting theSetting = new Setting(s.split("\\[CHECK]")[1].split(":")[0],
-                        ModuleManager.getModule(mName), Boolean.parseBoolean(s.split(":")[1]));
-                result.add(theSetting);
-            } else if (s.startsWith("[COMBO]")) {
-                Setting theSetting = new Setting(s.split("\\[COMBO]")[1].split(":")[0],
-                        ModuleManager.getModule(mName), s.split(":")[1], new ArrayList<>());
-                result.add(theSetting);
-            } else if(s.startsWith("[SLIDER]")) {
-                Setting theSetting = new Setting(s.split("\\[SLIDER]")[1].split(":")[0],
-                        ModuleManager.getModule(mName), Double.parseDouble(s.split(":")[1]), 0, 0, false);
-                result.add(theSetting);
+            if (s.equals(mName) || s.equals("")) continue;
+            try {
+                if (s.startsWith("[CHECK]")) {
+                    Setting theSetting = new Setting(s.split("\\[CHECK]")[1].split(":")[0],
+                            ModuleManager.getModule(mName), Boolean.parseBoolean(s.split(":")[1]));
+                    result.add(theSetting);
+                } else if (s.startsWith("[COMBO]")) {
+                    Setting theSetting = new Setting(s.split("\\[COMBO]")[1].split(":")[0],
+                            ModuleManager.getModule(mName), s.split(":")[1], new ArrayList<>());
+                    result.add(theSetting);
+                } else if (s.startsWith("[SLIDER]")) {
+                    Setting theSetting = new Setting(s.split("\\[SLIDER]")[1].split(":")[0],
+                            ModuleManager.getModule(mName), Double.parseDouble(s.split(":")[1]), Double.parseDouble(s.split(":")[2]), Double.parseDouble(s.split(":")[3]), false);
+                    result.add(theSetting);
+                }
+            } catch(Exception e) {
+                System.out.println("failed to parse setting: "+s);
             }
         }
-    return result;
-    }
-
-    public static boolean write() throws IOException {
-        /*FileManager.createFile(new File("modules.txt"));
-        File file = FileManager.getFile("modules.txt", false);
-        if (file == null) return false;
-        List<String> lines = Files.readAllLines(file.toPath());
-        FileWriter writer = new FileWriter(file);
-        writer.write("");
-        for (Module module : ModuleManager.modules) {
-            writer.append("Name : " + module.getName() + "\n");
-            writer.append("Enabled : " + module.isEnabled() + "\n");
-            if (ModuleManager.setmgr.getSettingsByMod(module).isEmpty()) return false;
-            for (Setting setting : ModuleManager.setmgr.getSettingsByMod(module)) {
-                try {
-                    writer.append(setting.getName() + " : " + setting.getValString() + "\n");
-                } catch (IOException exceptionA) {
-                    try {
-                        writer.append(setting.getName() + " : " + setting.getValBoolean() + "\n");
-                    } catch (IOException exceptionB) {
-                        try {
-                            writer.append(setting.getName() + " : " + setting.getValDouble() + "\n");
-                        } catch (IOException ignored) { }
-                    }
-                }
-            }
-        }*/
-        return false;
+        return result;
     }
 }

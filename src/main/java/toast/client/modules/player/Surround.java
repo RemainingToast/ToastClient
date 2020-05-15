@@ -1,13 +1,12 @@
 package toast.client.modules.player;
 
-import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -37,7 +36,7 @@ public class Surround extends Module {
 
         if (this.getBool("All blocks")) {
             if(!has4OrMoreBuildBlockInHotbar()) return;
-                slot = getSlotFor4OrMoreBuildBlockInHotbar();
+                slot = getSlotForBuildBlocksInHotbar();
         } else if(!this.getBool("All blocks")) {
             if(!hasInHotbar(Items.OBSIDIAN)) return;
             slot = getItemSlotInHotbar(Items.OBSIDIAN);
@@ -113,24 +112,26 @@ public class Surround extends Module {
     private boolean has4OrMoreBuildBlockInHotbar() {
         if(mc.player == null) return false;
         boolean found = false;
+        int slotamount = 0;
         for (int i = 0; i < PlayerInventory.getHotbarSize(); i++) {
-            Item curritem = mc.player.inventory.getInvStack(i).getItem();
-            if (!mc.player.inventory.getInvStack(i).isEmpty()) {
-                if (curritem instanceof BlockItem && mc.player.inventory.getInvStack(i).getCount() > 4) {
-                    found = true;
+            ItemStack curritem = mc.player.inventory.getInvStack(i);
+            if (!curritem.isEmpty()) {
+                if (curritem.getItem() instanceof BlockItem) {
+                    slotamount += curritem.getCount();
+                    found = slotamount > 4 || mc.player.isCreative();
                 }
             }
         }
         return found;
     }
 
-    private int getSlotFor4OrMoreBuildBlockInHotbar() {
+    private int getSlotForBuildBlocksInHotbar() {
         if(mc.player == null) return -1;
         int found = -1;
         for (int i = 0; i < PlayerInventory.getHotbarSize(); i++) {
-            Item curritem = mc.player.inventory.getInvStack(i).getItem();
+            ItemStack curritem = mc.player.inventory.getInvStack(i);
             if (!mc.player.inventory.getInvStack(i).isEmpty()) {
-                if (curritem instanceof BlockItem && mc.player.inventory.getInvStack(i).getCount() > 4) {
+                if (curritem.getItem() instanceof BlockItem) {
                     found = i;
                 }
             }

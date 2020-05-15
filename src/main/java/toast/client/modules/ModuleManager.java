@@ -2,18 +2,15 @@ package toast.client.modules;
 
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
+import toast.client.lemongui.settings.Setting;
 import toast.client.lemongui.settings.SettingsManager;
-import toast.client.modules.combat.KillAura;
-import toast.client.modules.dev.Panic;
-import toast.client.modules.misc.FancyChat;
-import toast.client.modules.misc.Spammer;
-import toast.client.modules.movement.Fly;
-import toast.client.modules.movement.Velocity;
-import toast.client.modules.player.AutoTool;
-import toast.client.modules.player.Surround;
-import toast.client.modules.render.ClickGui;
-import toast.client.modules.render.Fullbright;
-import toast.client.modules.render.HUD;
+import toast.client.modules.combat.*;
+import toast.client.modules.dev.*;
+import toast.client.modules.misc.*;
+import toast.client.modules.movement.*;
+import toast.client.modules.player.*;
+import toast.client.modules.render.*;
+import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +63,8 @@ public class ModuleManager {
     }
 
     private static void loadModules() {
+        Config.updateRead();
+        List<String> optionLines = Config.getOptionsLines();
         modules.add(new Fly());
         modules.add(new Velocity());
         modules.add(new ClickGui());
@@ -77,5 +76,24 @@ public class ModuleManager {
         modules.add(new FancyChat());
         modules.add(new Surround());
         modules.add(new Spammer());
+        modules.add(new AutoRespawn());
+        ArrayList<Setting> totalSettings = new ArrayList<>();
+        for (String line : optionLines) {
+            if(line.equals("")) continue;
+            List<Setting> settings = Config.extractSettings(line);
+            if (settings != null) {
+                totalSettings.addAll(settings);
+            }
+        }
+        setmgr.setSettings(totalSettings);
+        Config.writeOptions();
+        for (String line : Config.getModulesLines()) {
+            if(line.equals("") || !line.contains(":")) continue;
+            Module m = getModule(line.split(":")[0]);
+            if(m != null) {
+                m.setToggled(Boolean.parseBoolean(line.split(":")[1]));
+            }
+        }
+        Config.writeModules();
     }
 }

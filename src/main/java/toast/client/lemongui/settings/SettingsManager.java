@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import toast.client.ToastClient;
 import toast.client.modules.Module;
+import toast.client.utils.Config;
 
 /**
  *  Made by HeroCode
@@ -19,9 +20,14 @@ public class SettingsManager {
 	public SettingsManager() {
 		this.settings = new ArrayList<>();
 	}
-	
+
+	public void setSettings(ArrayList<Setting> settings) {
+		this.settings = settings;
+	}
+
 	public void rSetting(Setting in) {
 		this.settings.add(in);
+		Config.writeOptions();
 	}
 	
 	public ArrayList<Setting> getSettings() {

@@ -36,6 +36,7 @@ public class Panic extends Module {
         for (Integer msgid : toDelete) {
             mc.inGameHud.getChatHud().removeMessage(msgid);
         }
+        mc.updateWindowTitle();
     }
 
     public void onDisable() {
