@@ -77,16 +77,18 @@ public class ModuleManager {
         modules.add(new Surround());
         modules.add(new Spammer());
         modules.add(new AutoRespawn());
-        ArrayList<Setting> totalSettings = new ArrayList<>();
-        for (String line : optionLines) {
-            if(line.equals("")) continue;
-            List<Setting> settings = Config.extractSettings(line);
-            if (settings != null) {
-                totalSettings.addAll(settings);
+        if(!(optionLines.size() < 1)) {
+            ArrayList<Setting> totalSettings = new ArrayList<>();
+            for (String line : optionLines) {
+                if (line.equals("")) continue;
+                List<Setting> settings = Config.extractSettings(line);
+                if (settings != null) {
+                    totalSettings.addAll(settings);
+                }
             }
+            setmgr.setSettings(totalSettings);
+            Config.writeOptions();
         }
-        setmgr.setSettings(totalSettings);
-        Config.writeOptions();
         for (String line : Config.getModulesLines()) {
             if(line.equals("") || !line.contains(":")) continue;
             Module m = getModule(line.split(":")[0]);

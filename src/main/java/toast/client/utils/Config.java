@@ -6,6 +6,7 @@ import toast.client.modules.ModuleManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Config {
@@ -67,7 +68,7 @@ public class Config {
                 if (setting.isCheck()) {
                     settingString += "[CHECK]" + setting.getName() + ":" + setting.getValBoolean() + "|";
                 } else if (setting.isCombo()) {
-                    settingString += "[COMBO]" + setting.getName() + ":" + setting.getValString() + "|";
+                    settingString += "[COMBO]" + setting.getName() + ":" + setting.getValString() + ":" + String.join(":",setting.getOptions()) + "|";
                 } else if (setting.isSlider()) {
                     settingString += "[SLIDER]" + setting.getName() + ":" + setting.getValDouble() + ":" + setting.getMin() + ":" + setting.getMax() + "|";
                 }
@@ -105,7 +106,7 @@ public class Config {
                     result.add(theSetting);
                 } else if (s.startsWith("[COMBO]")) {
                     Setting theSetting = new Setting(s.split("\\[COMBO]")[1].split(":")[0],
-                            ModuleManager.getModule(mName), s.split(":")[1], new ArrayList<>());
+                            ModuleManager.getModule(mName), s.split(":")[1], new ArrayList<>(Arrays.asList(Arrays.copyOfRange(s.split(":"), 1, s.split(":").length))));
                     result.add(theSetting);
                 } else if (s.startsWith("[SLIDER]")) {
                     Setting theSetting = new Setting(s.split("\\[SLIDER]")[1].split(":")[0],
