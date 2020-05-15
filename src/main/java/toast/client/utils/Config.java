@@ -39,7 +39,7 @@ public class Config {
         String modules = "";
         for (Module module : ModuleManager.modules) {
             modules += module.getName()+":"+module.isEnabled()+"\n";
-           // System.out.println(module.getName()+":"+module.isEnabled());
+            // System.out.println(module.getName()+":"+module.isEnabled());
         }
         FileManager.writeFile("modules.txt", modules);
         updateRead();
@@ -62,18 +62,18 @@ public class Config {
 
     public static String parseSettings(Module m) {
         String settingString = m.getName()+"|";
-            ArrayList<Setting> settings = ModuleManager.setmgr.getSettingsByMod(m);
-            if(settings == null) return settingString;
-            for (Setting setting : settings) {
-                if (setting.isCheck()) {
-                    settingString += "[CHECK]" + setting.getName() + ":" + setting.getValBoolean() + "|";
-                } else if (setting.isCombo()) {
-                    settingString += "[COMBO]" + setting.getName() + ":" + setting.getValString() + ":" + String.join(":",setting.getOptions()) + "|";
-                } else if (setting.isSlider()) {
-                    settingString += "[SLIDER]" + setting.getName() + ":" + setting.getValDouble() + ":" + setting.getMin() + ":" + setting.getMax() + "|";
-                }
+        ArrayList<Setting> settings = ModuleManager.setmgr.getSettingsByMod(m);
+        if(settings == null) return settingString;
+        for (Setting setting : settings) {
+            if (setting.isCheck()) {
+                settingString += "[CHECK]" + setting.getName() + ":" + setting.getValBoolean() + "|";
+            } else if (setting.isCombo()) {
+                settingString += "[COMBO]" + setting.getName() + ":" + setting.getValString() + ":" + String.join(":",setting.getOptions()) + "|";
+            } else if (setting.isSlider()) {
+                settingString += "[SLIDER]" + setting.getName() + ":" + setting.getValDouble() + ":" + setting.getMin() + ":" + setting.getMax() + "|";
             }
-            settingString+="[KEYBIND]key:"+m.getKey()+"|";
+        }
+        settingString+="[KEYBIND]key:"+m.getKey()+"|";
         return settingString;
     }
 
