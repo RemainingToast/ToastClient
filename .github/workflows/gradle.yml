@@ -24,3 +24,9 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Upload to Discord
+      uses: sinshutu/upload-to-discord@v2.0.0
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        args: build/libs/toastclient-1.0.0.jar
