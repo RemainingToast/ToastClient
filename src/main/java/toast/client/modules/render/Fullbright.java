@@ -46,6 +46,7 @@ public class Fullbright extends Module {
     }*/
 
     public void onEnable() {
+        if (mc.player == null) return;
         previousGamma = mc.options.gamma;
     }
 
