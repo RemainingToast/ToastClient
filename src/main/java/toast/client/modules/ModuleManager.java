@@ -12,14 +12,22 @@ import toast.client.modules.player.*;
 import toast.client.modules.render.*;
 import toast.client.utils.Config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.reflections.Reflections;
+
 public class ModuleManager {
-    public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<Module>();
+    public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
     public static void initModules() {
-        loadModules();
+        try {
+            loadModules();
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
     }
     public static SettingsManager setmgr = new SettingsManager();
 
@@ -62,21 +70,16 @@ public class ModuleManager {
         return moduleList;
     }
 
-    private static void loadModules() {
+    private static void loadModules() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Config.updateRead();
         List<String> optionLines = Config.getOptionsLines();
-        modules.add(new Fly());
-        modules.add(new Velocity());
-        modules.add(new ClickGui());
-        modules.add(new KillAura());
-        modules.add(new Panic());
-        modules.add(new HUD());
-        modules.add(new Fullbright());
-        modules.add(new AutoTool());
-        modules.add(new FancyChat());
-        modules.add(new Surround());
-        modules.add(new Spammer());
-        modules.add(new AutoRespawn());
+        modules.clear();
+        Reflections reflections = new Reflections("toast.client.modules");
+        Set<Class<? extends Module>> moduleClasses = reflections.getSubTypesOf(Module.class);
+        for (Class<? extends Module> moduleClass : moduleClasses) {
+            Module module = moduleClass.getConstructor().newInstance();
+            modules.add(module);
+        }
         if(!(optionLines.size() < 1)) {
             ArrayList<Setting> totalSettings = new ArrayList<>();
             for (String line : optionLines) {

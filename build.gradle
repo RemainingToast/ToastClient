@@ -1,7 +1,11 @@
 plugins {
     id 'fabric-loom' version '0.2.5-SNAPSHOT'
     id 'maven-publish'
+    id "io.github.manosbatsis.gradle.plugin.reflections" version "1.1"
 }
+
+apply plugin: 'java'
+
 compileJava.options.encoding = 'UTF-8'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -35,6 +39,7 @@ dependencies {
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile group: 'net.jodah', name: 'typetools', version: '0.6.2'
 
+    compile 'org.reflections:reflections:0.9.10'
 }
 
 processResources {
@@ -65,8 +70,13 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
+reflections{
+    dependsOn classes
+}
+
 jar {
     from "LICENSE"
+    dependsOn reflections
 }
 
 // configure the maven publication
