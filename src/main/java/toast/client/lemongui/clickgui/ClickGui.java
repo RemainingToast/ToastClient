@@ -1,11 +1,13 @@
 package toast.client.lemongui.clickgui;
 
 import toast.client.lemongui.clickgui.component.Component;
+import toast.client.lemongui.clickgui.component.components.Button;
 import toast.client.lemongui.clickgui.screen.AbstractScreen;
 import toast.client.lemongui.clickgui.component.Frame;
 import toast.client.modules.Module;
 import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
+import toast.client.utils.Config;
 
 import java.util.ArrayList;
 
@@ -26,8 +28,29 @@ public class ClickGui extends AbstractScreen {
 		}
 	}
 
+	public static ArrayList<Frame> getFrames() {
+		return frames;
+	}
+
+	public static void reset() {
+		int frameX = 5;
+		for (Frame frame : frames) {
+			frame.setX(frameX);
+			frame.setY(5);
+			frameX += frame.getWidth() + 1;
+			for (Component component : frame.getComponents()) {
+				if (component instanceof Button) {
+					((Button) component).setOpen(false);
+				}
+			}
+		}
+		Config.writeClickgui();
+	}
+
 	@Override
 	public void init() {
+		Config.updateRead();
+		Config.parseClickguiSettingsAndSet();
 	}
 
 	@Override
@@ -52,6 +75,7 @@ public class ClickGui extends AbstractScreen {
 			}
 			if (frame.isWithinHeader((int) mouseX, (int) mouseY) && button == 1) {
 				frame.setOpen(!frame.isOpen());
+				Config.writeClickgui();
 			}
 			if (frame.isOpen()) {
 				if (!frame.getComponents().isEmpty()) {
@@ -95,11 +119,17 @@ public class ClickGui extends AbstractScreen {
 				}
 			}
 		}
+		Config.writeClickgui();
 		return false;
 	}
 
 	@Override
 	public boolean isPauseScreen() {
+		return true;
+	}
+
+	@Override
+	public boolean shouldCloseOnEsc() {
 		return true;
 	}
 }

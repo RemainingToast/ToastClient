@@ -17,6 +17,7 @@ public class Config {
     public static Map<String, Boolean> modules;
     public static Map<String, Map<String, Setting>> options;
     public static Map<String, String> config;
+    public static Map<String, String> clickgui; //help pls aaaaaaaa
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -24,13 +25,15 @@ public class Config {
         FileManager.createFile(new File("modules.json"));
         FileManager.createFile(new File("options.json"));
         FileManager.createFile(new File("config.json"));
+        FileManager.createFile(new File("clickgui.json"));
     }
 
     public static void updateRead() {
         try {
-            modules = gson.fromJson(new FileReader("toastclient/modules.json"), new TypeToken<Map<String, Boolean>>(){}.getType());
-            options = gson.fromJson(new FileReader("toastclient/options.json"), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
-            config = gson.fromJson(new FileReader("toastclient/config.json"), new TypeToken<Map<String, String>>(){}.getType());
+            modules = gson.fromJson(new FileReader(FileManager.createFile("modules.json")), new TypeToken<Map<String, Boolean>>(){}.getType());
+            options = gson.fromJson(new FileReader(FileManager.createFile("options.json")), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
+            config = gson.fromJson(new FileReader(FileManager.createFile("config.json")), new TypeToken<Map<String, String>>(){}.getType());
+            clickgui = null;//hlep
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -52,6 +55,50 @@ public class Config {
             //System.out.println(module.getName()+" -> "+parseSettings(module));
         }
         FileManager.writeFile("options.json", gson.toJson(options));
+    }
+
+    public static void parseClickguiSettingsAndSet() {
+        /*for (String line : getClickguiLines()) {
+            if(line.equals("")) return;
+            String[] split = line.split("\\|");
+            for (String frameString : split) {
+                if(frameString.contains("[FRAME]")) {
+                    String[] frameSplit = frameString.split(":");
+                    String name = frameSplit[0].split("\\[FRAME]")[1];
+                    int x = Integer.parseInt(frameSplit[1].split("\\[X]")[1]);
+                    int y = Integer.parseInt(frameSplit[2].split("\\[Y]")[1]);
+                    boolean open = Boolean.parseBoolean(frameSplit[3].split("\\[OPEN]")[1]);
+                    for (Frame frame : ClickGui.getFrames()) {
+                        if (frame.category.name().equalsIgnoreCase(name)) {
+                            frame.setX(x);
+                            frame.setY(y);
+                            frame.setOpen(open);
+                        }
+                    }
+                } else if(frameString.contains("[COMPONENT]")) {
+                    String[] componentSplit = frameString.split(":");
+                    String compName = componentSplit[0].split("\\[COMPONENT]")[1];
+                    String parentFrameName = componentSplit[1].split("\\[FRAMEPARENT]")[1];
+                    boolean open = Boolean.parseBoolean(componentSplit[2].split("\\[OPEN]")[1]);
+                    for (Frame frame : ClickGui.getFrames()) {
+                        for (Component component : frame.components) {
+                            if (component instanceof Button) {
+                                Button b = ((Button) component);
+                                if (b.getParent().category.name().equalsIgnoreCase(parentFrameName)) {
+                                    if (b.mod.getName().equalsIgnoreCase(compName)) {
+                                        b.setOpen(open);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }*/
+    }
+
+    public static void writeClickgui() {
+        FileManager.writeFile("clickgui.json", gson.toJson(clickgui));
     }
 
     public static void writeConfig() {

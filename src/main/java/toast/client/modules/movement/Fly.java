@@ -9,6 +9,7 @@ public class Fly extends Module {
     public Fly() {
         super("Fly", Category.MOVEMENT, GLFW.GLFW_KEY_G);
         this.addModes("Vanilla");
+        this.addNumberOption("Speed", 2, 0, 10);
     }
 
     @EventImpl
@@ -17,7 +18,7 @@ public class Fly extends Module {
         if((mc.player.onGround || mc.player.fallDistance <= 0) && this.isEnabled()) {
             mc.player.abilities.allowFlying = true;
             mc.player.abilities.flying = true;
-            mc.player.abilities.setFlySpeed(0.1F);
+            mc.player.abilities.setFlySpeed((float) (0.05F * this.getDouble("Speed")));
         }
     }
 
@@ -25,7 +26,7 @@ public class Fly extends Module {
         if(mc.player == null) return;
         mc.player.abilities.allowFlying = true;
         mc.player.abilities.flying = true;
-        mc.player.abilities.setFlySpeed(0.1F);
+        mc.player.abilities.setFlySpeed((float) (0.05F * this.getDouble("Speed")));
     }
 
     public void onDisable() {

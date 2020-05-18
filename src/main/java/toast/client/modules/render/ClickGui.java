@@ -1,7 +1,7 @@
 package toast.client.modules.render;
 
-import toast.client.modules.Module;
 import org.lwjgl.glfw.GLFW;
+import toast.client.modules.Module;
 
 /**
  * Made by HeroCode & xTrM_ it's free to use but you have to credit us
@@ -17,7 +17,6 @@ public class ClickGui extends Module {
 		this.addBool("Rainbow", true);
 	}
 
-	@Override
 	public void onEnable() {
 		if (this.clickgui == null)
 			this.clickgui = new toast.client.lemongui.clickgui.ClickGui();
@@ -26,8 +25,4 @@ public class ClickGui extends Module {
 		toggle();
 	}
 
-	@Override
-	public void onDisable() {
-
-	}
 }

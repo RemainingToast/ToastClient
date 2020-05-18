@@ -1,6 +1,7 @@
 package toast.client.commands;
 
 import toast.client.ToastClient;
+import toast.client.commands.cmds.CommandGuireset;
 import toast.client.commands.cmds.CommandHelp;
 import toast.client.commands.cmds.CommandTest;
 import toast.client.utils.Logger;
@@ -18,7 +19,10 @@ public class CommandHandler {
             for (String alias : command.aliases) {
                 if(alias.equalsIgnoreCase(name)) {
                     try {
-                        if (isDevCancel(command)) notfound = true;
+                        if (isDevCancel(command)) {
+                            notfound = true;
+                            continue;
+                        }
                         command.run(args);
                         notfound = false;
                     } catch(Exception err) {
@@ -45,15 +49,16 @@ public class CommandHandler {
         for (Command command : commands) {
             for (String alias : command.aliases) {
                 if (alias.equalsIgnoreCase(cmd)) {
-                return command;
-                }
+                    return command;
                 }
             }
+        }
         return null;
     }
 
     public static void initCommands() {
         commands.add(new CommandTest());
         commands.add(new CommandHelp());
+        commands.add(new CommandGuireset());
     }
 }

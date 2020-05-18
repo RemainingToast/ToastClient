@@ -144,4 +144,16 @@ public class Button extends toast.client.lemongui.clickgui.component.Component {
     public boolean isMouseOnButton(int x, int y) {
         return x > parent.getX() && x < parent.getX() + parent.getWidth() && y > this.parent.getY() + this.offset && y < this.parent.getY() + 12 + this.offset;
     }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+    public Frame getParent() {
+        return parent;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
 }

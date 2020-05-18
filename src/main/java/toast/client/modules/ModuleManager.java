@@ -19,6 +19,7 @@ import toast.client.modules.render.ClickGui;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
 import toast.client.utils.Config;
+import toast.client.utils.FileManager;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -83,8 +84,8 @@ public class ModuleManager {
         Map<String, Boolean> moduleToggles = new HashMap<>();
         Gson gson = new GsonBuilder().create();
         try {
-            moduleToggles = gson.fromJson(new FileReader("toastclient/modules.json"), new TypeToken<Map<String, Boolean>>(){}.getType());
-            options = gson.fromJson(new FileReader("toastclient/options.json"), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
+            moduleToggles = gson.fromJson(new FileReader(FileManager.createFile("modules.json")), new TypeToken<Map<String, Boolean>>(){}.getType());
+            options = gson.fromJson(new FileReader(FileManager.createFile("options.json")), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

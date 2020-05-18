@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ToastClient implements ModInitializer {
-    public static String version = "b1.0";//TODO: actually use this
+    public static String version = "b1.0";
     public static String cleanPrefix = "ToastClient";
     public static String chatPrefix = Formatting.DARK_GRAY+"["+Formatting.LIGHT_PURPLE+"ToastClient"+Formatting.DARK_GRAY+"]";
     public static String cmdPrefix = ".";
@@ -36,6 +36,7 @@ public class ToastClient implements ModInitializer {
         } else {
             System.out.println("Failed to connect to proxy");
         }*/
+        LoginUtil.loginCracked("§9MorganAnkan");//remeber to remove this before u commit
         if(devMode) {
             boolean login = LoginUtil.loginCracked("ToastDeveloper"); //if u dont want to fill ur singleplayer world with 13519519375 .dat files
             if (login) {

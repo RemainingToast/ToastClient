@@ -42,7 +42,7 @@ public class HUD {
 
         // arraylist/sortedset/modulelist/whatever
         if(hud.getBool("\"SortedSet\"")) {
-            SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed());
+            SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed());//TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
             for (Module module : ModuleManager.modules) {
                 if (module.isEnabled()) {
                     enabledModules.add(module.getName());

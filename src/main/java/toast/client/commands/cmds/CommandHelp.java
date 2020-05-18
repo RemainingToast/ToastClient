@@ -14,7 +14,7 @@ public class CommandHelp extends Command {
     public void run(String[] args) {
         if(args.length < 1) {
             for (Command command : CommandHandler.getCommands()) {
-                if (CommandHandler.isDevCancel(command)) return;
+                if (CommandHandler.isDevCancel(command)) continue;
                 Logger.message(Formatting.GRAY + ToastClient.cmdPrefix + command.getAliases()[0] + " - "+Formatting.YELLOW + command.getDesc(), Logger.EMPTY);
             }
         } else {

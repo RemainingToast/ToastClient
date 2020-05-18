@@ -26,17 +26,19 @@ public class Panic extends Module {
                 wasEnabled.add(module);
             }
         }
-        List<String> msgs = mc.inGameHud.getChatHud().getMessageHistory();//doesnt work no idea why doesnt delete shit
-        List<Integer> toDelete = new ArrayList<>();
-        for(int i = msgs.size() - 1; i >= 0; i--) {
-        if(msgs.get(i).contains(ToastClient.cleanPrefix)) {
-                toDelete.add(i);
+        if(mc.inGameHud != null) {
+            List<String> msgs = mc.inGameHud.getChatHud().getMessageHistory();//doesnt work no idea why doesnt delete shit
+            List<Integer> toDelete = new ArrayList<>();
+            for (int i = msgs.size() - 1; i >= 0; i--) {
+                if (msgs.get(i).contains(ToastClient.cleanPrefix)) {
+                    toDelete.add(i);
+                }
             }
+            for (Integer msgid : toDelete) {
+                mc.inGameHud.getChatHud().removeMessage(msgid);
+            }
+            mc.updateWindowTitle();
         }
-        for (Integer msgid : toDelete) {
-            mc.inGameHud.getChatHud().removeMessage(msgid);
-        }
-        mc.updateWindowTitle();
     }
 
     public void onDisable() {
@@ -46,6 +48,9 @@ public class Panic extends Module {
                 module.setToggled(true);
                 wasEnabled.remove(module);
             }
+        }
+        if (mc.currentScreen != null) {
+            mc.updateWindowTitle();
         }
     }
 
