@@ -87,7 +87,9 @@ public class ModuleManager {
             modules.add(module);
         }
         Config.loadOptions(options);
+        Config.writeOptions();
         Config.loadModules(moduleToggles);
+        Config.writeModules();
     }
 }
 
