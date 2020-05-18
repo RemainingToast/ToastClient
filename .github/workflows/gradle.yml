@@ -29,5 +29,5 @@ jobs:
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       with:
-        args: ./build/libs/toastclient-1.0.0.jar ./README.md
+        args: ./build/libs/toastclient-1.0.0.jar ./"Yeet Test"
     
