@@ -1,28 +1,29 @@
 package toast.client.lemongui.clickgui.component.components.sub;
 
-import java.awt.Color;
-
-import toast.client.gui.hud.HUD;
-import toast.client.lemongui.clickgui.component.Component;
-import toast.client.lemongui.settings.Setting;
-import toast.client.modules.ModuleManager;
-import toast.client.modules.render.ClickGui;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import org.lwjgl.opengl.GL11;
-
+import toast.client.gui.hud.HUD;
+import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.components.Button;
+import toast.client.modules.ModuleManager;
+import toast.client.modules.render.ClickGui;
+import toast.client.lemongui.clickgui.settings.CheckSetting;
+
+import java.awt.*;
 
 public class Checkbox extends Component {
 
 	private boolean hovered;
-	private Setting op;
+	private String name;
+	private CheckSetting op;
 	private Button parent;
 	private int offset;
 	private int x;
 	private int y;
 	
-	public Checkbox(Setting option, Button button, int offset) {
+	public Checkbox(String name, CheckSetting option, Button button, int offset) {
+		this.name = name;
 		this.op = option;
 		this.parent = button;
 		this.x = button.parent.getX() + button.parent.getWidth();
@@ -48,7 +49,7 @@ public class Checkbox extends Component {
 		InGameHud.fill(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + 2, parent.parent.getY() + offset + 12, 0xFF111111);
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f,0.5f, 0.5f);
-		MinecraftClient.getInstance().textRenderer.drawWithShadow(this.op.getName(), (parent.parent.getX() + 10 + 4) * 2 + 5, (parent.parent.getY() + offset + 2) * 2 + 4, color);
+		MinecraftClient.getInstance().textRenderer.drawWithShadow(this.name, (parent.parent.getX() + 10 + 4) * 2 + 5, (parent.parent.getY() + offset + 2) * 2 + 4, color);
 		GL11.glPopMatrix();
 		InGameHud.fill(parent.parent.getX() + 3 + 4, parent.parent.getY() + offset + 3, parent.parent.getX() + 9 + 4, parent.parent.getY() + offset + 9, color);
 		if(this.op.getValBoolean())

@@ -1,25 +1,24 @@
 package toast.client.lemongui.clickgui.component.components.sub;
 
-import java.awt.Color;
-
-import toast.client.gui.hud.HUD;
-import toast.client.lemongui.clickgui.component.Component;
-import toast.client.lemongui.settings.Setting;
-import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
-import toast.client.modules.render.ClickGui;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import org.lwjgl.opengl.GL11;
-
+import toast.client.gui.hud.HUD;
+import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.components.Button;
+import toast.client.modules.Module;
+import toast.client.modules.ModuleManager;
+import toast.client.modules.render.ClickGui;
+import toast.client.lemongui.clickgui.settings.ComboSetting;
+
+import java.awt.*;
 
 
 public class ModeButton extends Component {
 
 	private boolean hovered;
 	private Button parent;
-	private Setting set;
+	private ComboSetting set;
 	private int offset;
 	private int x;
 	private int y;
@@ -27,7 +26,7 @@ public class ModeButton extends Component {
 
 	private int modeIndex;
 
-	public ModeButton(Setting set, Button button, Module mod, int offset) {
+	public ModeButton(ComboSetting set, Button button, Module mod, int offset) {
 		this.set = set;
 		this.parent = button;
 		this.mod = mod;

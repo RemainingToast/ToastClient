@@ -48,7 +48,7 @@ public class Keybind extends Component {
 		} else {
 			color = new Color(255,255,255,150).getRGB();
 		}
-		MinecraftClient.getInstance().textRenderer.drawWithShadow(//TODO: GLFW.glfwGetKeyName seems to return null sometimes dont know why problaly key is not in the "list"
+		MinecraftClient.getInstance().textRenderer.drawWithShadow( //TODO: GLFW.glfwGetKeyName seems to return null sometimes dont know why problaly key is not in the "list"
 				binding ? "Press a key..." : ("Key: " + GLFW.glfwGetKeyName(this.parent.mod.getKey(), -1)),
 				(parent.parent.getX() + 7) * 2, (parent.parent.getY() + offset + 2) * 2 + 5,
 				color);

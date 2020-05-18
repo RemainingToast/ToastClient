@@ -2,14 +2,8 @@ package toast.client.modules;
 
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
-import toast.client.lemongui.settings.Setting;
-import toast.client.lemongui.settings.SettingsManager;
-import toast.client.modules.combat.*;
-import toast.client.modules.dev.*;
-import toast.client.modules.misc.*;
-import toast.client.modules.movement.*;
-import toast.client.modules.player.*;
-import toast.client.modules.render.*;
+import org.reflections.Reflections;
+import toast.client.modules.dev.Panic;
 import toast.client.utils.Config;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.reflections.Reflections;
 
 public class ModuleManager {
     public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
@@ -29,7 +21,6 @@ public class ModuleManager {
             e.printStackTrace();
         }
     }
-    public static SettingsManager setmgr = new SettingsManager();
 
     public static void onKey(long window, int key, int scancode, int action, int mods) {
         if (modules == null) return;
@@ -60,6 +51,10 @@ public class ModuleManager {
         return null;
     }
 
+    public static CopyOnWriteArrayList<Module> getModules() {
+        return modules;
+    }
+
     public static List<Module> getModulesInCategory(Module.Category category) {
         List<Module> moduleList = new ArrayList<>();
         for (Module module : modules) {
@@ -71,35 +66,20 @@ public class ModuleManager {
     }
 
     private static void loadModules() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Config.updateRead();
-        List<String> optionLines = Config.getOptionsLines();
         modules.clear();
         Reflections reflections = new Reflections("toast.client.modules");
         Set<Class<? extends Module>> moduleClasses = reflections.getSubTypesOf(Module.class);
         for (Class<? extends Module> moduleClass : moduleClasses) {
             Module module = moduleClass.getConstructor().newInstance();
+            if (module.getName().equals("ClickGUI")) {
+                System.out.println(module.getBool("Rainbow"));
+            }
             modules.add(module);
         }
-        if(!(optionLines.size() < 1)) {
-            ArrayList<Setting> totalSettings = new ArrayList<>();
-            for (String line : optionLines) {
-                if (line.equals("")) continue;
-                List<Setting> settings = Config.extractSettings(line);
-                if (settings != null) {
-                    totalSettings.addAll(settings);
-                }
-            }
-            setmgr.setSettings(totalSettings);
-            Config.writeOptions();
-        }
-        for (String line : Config.getModulesLines()) {
-            if(line.equals("") || !line.contains(":")) continue;
-            Module m = getModule(line.split(":")[0]);
-            if(m != null) {
-                m.setToggled(Boolean.parseBoolean(line.split(":")[1]));
-            }
-        }
+        Config.loadModules();
+       // Config.loadOptions();
         Config.writeModules();
+        Config.writeOptions();
     }
 }
 

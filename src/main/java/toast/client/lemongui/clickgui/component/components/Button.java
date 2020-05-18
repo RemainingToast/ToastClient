@@ -1,20 +1,24 @@
 package toast.client.lemongui.clickgui.component.components;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.InGameHud;
+import org.lwjgl.opengl.GL11;
+import toast.client.lemongui.clickgui.component.Frame;
 import toast.client.lemongui.clickgui.component.components.sub.Checkbox;
 import toast.client.lemongui.clickgui.component.components.sub.Keybind;
 import toast.client.lemongui.clickgui.component.components.sub.ModeButton;
 import toast.client.lemongui.clickgui.component.components.sub.Slider;
-import toast.client.lemongui.settings.Setting;
-import toast.client.lemongui.clickgui.component.Frame;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.render.ClickGui;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
-import org.lwjgl.opengl.GL11;
+import toast.client.lemongui.clickgui.settings.CheckSetting;
+import toast.client.lemongui.clickgui.settings.ComboSetting;
+import toast.client.lemongui.clickgui.settings.Settings;
+import toast.client.lemongui.clickgui.settings.SliderSetting;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Button extends toast.client.lemongui.clickgui.component.Component {
 
@@ -34,18 +38,18 @@ public class Button extends toast.client.lemongui.clickgui.component.Component {
 		this.open = false;
 		height = 12;
 		int opY = offset + 12;
-		if(ModuleManager.setmgr.getSettingsByMod(mod) != null) {
-			for(Setting s : ModuleManager.setmgr.getSettingsByMod(mod)){
-				if(s.isCombo()){
-					this.subcomponents.add(new ModeButton(s, this, mod, opY));
+		if(!mod.settings.getSettings().isEmpty()) {
+			for(Map.Entry<String, Object> s : mod.settings.getSettings().entrySet()){
+				if(Settings.isCombo(s.getValue())){
+					this.subcomponents.add(new ModeButton((ComboSetting) s.getValue(), this, mod, opY));
 					opY += 12;
 				}
-				if(s.isSlider()){
-					this.subcomponents.add(new Slider(s, this, opY));
+				if(Settings.isSlider(s.getValue())){
+					this.subcomponents.add(new Slider(s.getKey(), (SliderSetting) s.getValue(), this, opY));
 					opY += 12;
 				}
-				if(s.isCheck()){
-					this.subcomponents.add(new Checkbox(s, this, opY));
+				if(Settings.isCheck(s.getValue())){
+					this.subcomponents.add(new Checkbox(s.getKey(), (CheckSetting) s.getValue(), this, opY));
 					opY += 12;
 				}
 			}

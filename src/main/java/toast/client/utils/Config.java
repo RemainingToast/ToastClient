@@ -1,122 +1,83 @@
 package toast.client.utils;
 
-import toast.client.lemongui.settings.Setting;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
+import toast.client.lemongui.clickgui.settings.Settings;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
-    public static List<String> modulesLines;
-    public static List<String> optionsLines;
-    public static List<String> configLines;
+    public static Map<String, Boolean> modules;
+    public static Map<String, Settings> options;
+    public static Map<String, String> config;
+
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void initConfigManager() {
-        FileManager.createFile(new File("modules.txt"));
-        FileManager.createFile(new File("options.txt"));
-        FileManager.createFile(new File("config.txt"));
+        FileManager.createFile(new File("modules.json"));
+        FileManager.createFile(new File("options.json"));
+        FileManager.createFile(new File("config.json"));
     }
 
     public static void updateRead() {
-        // update lines
-        modulesLines = FileManager.readFile("modules.txt");
-        optionsLines = FileManager.readFile("options.txt");
-        configLines = FileManager.readFile("config.txt");
-    }
-
-    public static List<String> getModulesLines() {
-        return modulesLines;
-    }
-
-    public static List<String> getOptionsLines() {
-        return optionsLines;
+        // update
+        try {
+            modules = gson.fromJson(new FileReader("toastclient/modules.json"), new TypeToken<Map<String, Boolean>>(){}.getType());
+            options = gson.fromJson(new FileReader("toastclient/options.json"), new TypeToken<Map<String, Map<String, Object>>>(){}.getType());
+            config = gson.fromJson(new FileReader("toastclient/config.json"), new TypeToken<Map<String, String>>(){}.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void writeModules() {
-        String modules = "";
+        Map<String, Boolean> modules = new HashMap<>();
         for (Module module : ModuleManager.modules) {
-            modules += module.getName()+":"+module.isEnabled()+"\n";
+            modules.put(module.getName(), module.isEnabled());
             // System.out.println(module.getName()+":"+module.isEnabled());
         }
-        FileManager.writeFile("modules.txt", modules);
+        FileManager.writeFile("modules.json", gson.toJson(modules));
         updateRead();
     }
 
     public static void writeOptions() {
-        String options = "";
-        for (Module module : ModuleManager.modules) {
-            options+=parseSettings(module)+"\n";
+        Map<String, Map<String, Object>> options = new HashMap<>();
+        for (Module module : ModuleManager.getModules()) {
+            options.put(module.getName(), module.getSettings());
             //System.out.println(module.getName()+" -> "+parseSettings(module));
         }
-        FileManager.writeFile("options.txt", options);
+        FileManager.writeFile("options.json", gson.toJson(options));
         updateRead();
     }
 
     public static void writeConfig() {
-        FileManager.writeFile("config.txt", "prefix:.");// hardcoded for now
+        config.put("prefix", ".");
+        FileManager.writeFile("config.json", gson.toJson(config));// hardcoded for now
         updateRead();
     }
 
-    public static String parseSettings(Module m) {
-        String settingString = m.getName()+"|";
-        ArrayList<Setting> settings = ModuleManager.setmgr.getSettingsByMod(m);
-        if(settings == null) return settingString;
-        for (Setting setting : settings) {
-            if (setting.isCheck()) {
-                settingString += "[CHECK]" + setting.getName() + ":" + setting.getValBoolean() + "|";
-            } else if (setting.isCombo()) {
-                settingString += "[COMBO]" + setting.getName() + ":" + setting.getValString() + ":" + String.join(":",setting.getOptions()) + "|";
-            } else if (setting.isSlider()) {
-                settingString += "[SLIDER]" + setting.getName() + ":" + setting.getValDouble() + ":" + setting.getMin() + ":" + setting.getMax() + "|";
+    public static void loadOptions() {
+        updateRead();
+        for (Module module : ModuleManager.getModules()) {
+            if (options.containsKey(module.getName())) {
+                module.setSettings((Map<String, Object>) options.get(module.getName()));
             }
         }
-        settingString+="[KEYBIND]key:"+m.getKey()+"|";
-        return settingString;
     }
 
-    public static int getKeyBind(String settingString) {
-        String[] split = settingString.split("\\|");
-        int key = -1;
-        for (String s : split) {
-            if(s.startsWith("[KEYBIND]")) {
-                try {
-                    key = Integer.parseInt(s.split(":")[1]);
-                } catch(Exception e) {
-                    System.out.println("failed to parse keybind: "+s);
-                }
+    public static void loadModules() {
+        updateRead();
+        for (Module module : ModuleManager.getModules()) {
+            if (modules.containsKey(module.getName())) {
+                module.setToggled(modules.get(module.getName()));
             }
         }
-        return key;
-    }
-
-    public static List<Setting> extractSettings(String settingString) {
-        List<Setting> result = new ArrayList<>();
-        String[] split = settingString.split("\\|");
-        if(split.length < 1) return null;
-        String mName = split[0];
-        for (String s : split) {
-            if (s.equals(mName) || s.equals("")) continue;
-            try {
-                if (s.startsWith("[CHECK]")) {
-                    Setting theSetting = new Setting(s.split("\\[CHECK]")[1].split(":")[0],
-                            ModuleManager.getModule(mName), Boolean.parseBoolean(s.split(":")[1]));
-                    result.add(theSetting);
-                } else if (s.startsWith("[COMBO]")) {
-                    Setting theSetting = new Setting(s.split("\\[COMBO]")[1].split(":")[0],
-                            ModuleManager.getModule(mName), s.split(":")[1], new ArrayList<>(Arrays.asList(Arrays.copyOfRange(s.split(":"), 1, s.split(":").length))));
-                    result.add(theSetting);
-                } else if (s.startsWith("[SLIDER]")) {
-                    Setting theSetting = new Setting(s.split("\\[SLIDER]")[1].split(":")[0],
-                            ModuleManager.getModule(mName), Double.parseDouble(s.split(":")[1]), Double.parseDouble(s.split(":")[2]), Double.parseDouble(s.split(":")[3]), false);
-                    result.add(theSetting);
-                }
-            } catch(Exception e) {
-                System.out.println("failed to parse setting: "+s);
-            }
-        }
-        return result;
     }
 }

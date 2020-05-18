@@ -1,24 +1,24 @@
 package toast.client.lemongui.clickgui.component.components.sub;
 
-import java.awt.Color;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-import toast.client.modules.ModuleManager;
-import toast.client.modules.render.ClickGui;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import org.lwjgl.opengl.GL11;
-
 import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.components.Button;
-import toast.client.lemongui.settings.Setting;
+import toast.client.modules.ModuleManager;
+import toast.client.modules.render.ClickGui;
+import toast.client.lemongui.clickgui.settings.SliderSetting;
+
+import java.awt.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Slider extends Component {
 
 	private boolean hovered;
 
-	private Setting set;
+	private String name;
+	private SliderSetting set;
 	private Button parent;
 	private int offset;
 	private int x;
@@ -27,7 +27,8 @@ public class Slider extends Component {
 
 	private double renderWidth;
 	
-	public Slider(Setting value, Button button, int offset) {
+	public Slider(String name, SliderSetting value, Button button, int offset) {
+		this.name = name;
 		this.set = value;
 		this.parent = button;
 		this.x = button.parent.getX() + button.parent.getWidth();
@@ -55,7 +56,7 @@ public class Slider extends Component {
 		} else {
 			color = new Color(255,255,255,150).getRGB();
 		}
-		MinecraftClient.getInstance().textRenderer.drawWithShadow(this.set.getName() + ": " + this.set.getValDouble() , (parent.parent.getX()* 2 + 15), (parent.parent.getY() + offset + 2) * 2 + 5, color);
+		MinecraftClient.getInstance().textRenderer.drawWithShadow(this.name + ": " + this.set.getValDouble() , (parent.parent.getX()* 2 + 15), (parent.parent.getY() + offset + 2) * 2 + 5, color);
 		
 		GL11.glPopMatrix();
 	}

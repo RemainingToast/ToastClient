@@ -1,12 +1,10 @@
 package toast.client.modules.render;
 
-import com.google.common.eventbus.Subscribe;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import toast.client.event.EventImpl;
 import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 
 import java.util.Objects;
 

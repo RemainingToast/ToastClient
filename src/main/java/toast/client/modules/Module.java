@@ -1,12 +1,16 @@
 package toast.client.modules;
 
-import toast.client.event.EventManager;
-import toast.client.lemongui.settings.Setting;
 import net.minecraft.client.MinecraftClient;
+import toast.client.event.EventManager;
+import toast.client.lemongui.clickgui.settings.CheckSetting;
+import toast.client.lemongui.clickgui.settings.ComboSetting;
+import toast.client.lemongui.clickgui.settings.Settings;
+import toast.client.lemongui.clickgui.settings.SliderSetting;
 import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class Module {
     public String name;
@@ -15,6 +19,7 @@ public class Module {
     public Category category;
     public MinecraftClient mc = MinecraftClient.getInstance();
     public boolean hasModes;
+    public Settings settings = new Settings();
 
     public Module(String name, Category category, int key) {
         this.name = name;
@@ -72,55 +77,68 @@ public class Module {
     public void onDisable() {
     }
 
+    public Map<String, Object> getSettings() {
+        return this.settings.getSettings();
+    }
+
+    public void setSettings(Map<String, Object> settings) {
+        this.settings.setSettings(settings);
+    }
+
     public int getModeInt() {
-        if (ModuleManager.setmgr.getSettingByName("Mode", this) != null) {
-            return ModuleManager.setmgr.getSettingByName("Mode", this).getValString().length();
+        if (this.settings.getSetting("Mode") != null) {
+            ComboSetting mode = (ComboSetting) this.settings.getSetting("Mode");
+            return mode.getValString().length();
         }
         return 0;
     }
 
     public String getMode() {
-        if (ModuleManager.setmgr.getSettingByName("Mode", this) != null) {
-            return ModuleManager.setmgr.getSettingByName("Mode", this).getValString();
+        if (this.settings.getSetting("Mode") != null) {
+            ComboSetting mode = (ComboSetting) this.settings.getSetting("Mode");
+            return mode.getValString();
         } else {
             return "";
         }
     }
 
     public void addBool(String string, boolean b) {
-        ModuleManager.setmgr.rSetting(new Setting(string, this, b));
+        this.settings.addSetting(string, new CheckSetting(b));
     }
 
     public void addModes(String... modes) {
         this.hasModes = true;
         ArrayList<String> modes2 = new ArrayList(Arrays.asList(modes));
-        ModuleManager.setmgr.rSetting(new Setting("Mode", this, modes[0], modes2));
+        this.settings.addSetting("Mode", new ComboSetting(modes[0], modes2));
     }
 
     public void addModesCustomName(String modename, String... modes) {
         this.hasModes = true;
         ArrayList<String> modes2 = new ArrayList(Arrays.asList(modes));
-        ModuleManager.setmgr.rSetting(new Setting(modename, this, modes[0], modes2));
+        this.settings.addSetting(modename, new ComboSetting(modes[0], modes2));
     }
 
     public void addNumberOption(String string, double dval, double min, double max) {
-        ModuleManager.setmgr.rSetting(new Setting(string, this, dval, min, max, false));
+        this.settings.addSetting(string, new SliderSetting(dval, min, max, false));
     }
 
     public void addNumberOption(String string, double dval, double min, double max, boolean onlyint) {
-        ModuleManager.setmgr.rSetting(new Setting(string, this, dval, min, max, onlyint));
+        this.settings.addSetting(string, new SliderSetting(dval, min, max, onlyint));
     }
 
     public boolean getBool(String string) {
-        return ModuleManager.setmgr.getSettingByName(string, this).getValBoolean();
+        CheckSetting setting = (CheckSetting) this.settings.getSetting(string);
+        return setting.getValBoolean();
     }
 
     public double getDouble(String string) {
-        return ModuleManager.setmgr.getSettingByName(string, this).getValDouble();
+        SliderSetting setting = (SliderSetting) this.settings.getSetting(string);
+        return setting.getValDouble();
     }
 
     protected String getString(String string) {
-        return ModuleManager.setmgr.getSettingByName(string, this).getValString();
+        ComboSetting setting = (ComboSetting) this.settings.getSetting(string);
+        return setting.getValString();
     }
 
     protected boolean isMode(String m) {
