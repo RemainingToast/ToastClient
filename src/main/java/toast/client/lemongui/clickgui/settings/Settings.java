@@ -6,10 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Settings {
-	private Map<String, Object> settings = new HashMap<>();
+	private Map<String, Setting> settings = new HashMap<>();
 
 	public void addSetting(String name, Object setting) {
-		settings.put(name, setting);
+		if (setting instanceof CheckSetting) {
+			settings.put(name, new Setting((CheckSetting) setting));
+		} else if (setting instanceof ComboSetting) {
+			settings.put(name, new Setting((ComboSetting) setting));
+	    } else if (setting instanceof SliderSetting) {
+			settings.put(name, new Setting((SliderSetting) setting));
+		}
 		Config.writeOptions();
 	}
 
@@ -17,23 +23,11 @@ public class Settings {
 		return this.settings.get(name);
 	}
 
-	public Map<String, Object> getSettings() {
+	public Map<String, Setting> getSettings() {
 		return this.settings;
 	}
 
-	public void setSettings(Map<String, Object> settings) {
+	public void setSettings(Map<String, Setting> settings) {
 		this.settings = settings;
-	}
-
-	public static boolean isCombo(Object setting){
-		return setting instanceof ComboSetting;
-	}
-	
-	public static boolean isCheck(Object setting){
-		return setting instanceof CheckSetting;
-	}
-	
-	public static boolean isSlider(Object setting){
-		return setting instanceof SliderSetting;
 	}
 }

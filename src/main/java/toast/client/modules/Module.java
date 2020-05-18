@@ -2,10 +2,7 @@ package toast.client.modules;
 
 import net.minecraft.client.MinecraftClient;
 import toast.client.event.EventManager;
-import toast.client.lemongui.clickgui.settings.CheckSetting;
-import toast.client.lemongui.clickgui.settings.ComboSetting;
-import toast.client.lemongui.clickgui.settings.Settings;
-import toast.client.lemongui.clickgui.settings.SliderSetting;
+import toast.client.lemongui.clickgui.settings.*;
 import toast.client.utils.Config;
 
 import java.util.ArrayList;
@@ -77,11 +74,11 @@ public class Module {
     public void onDisable() {
     }
 
-    public Map<String, Object> getSettings() {
+    public Map<String, Setting> getSettings() {
         return this.settings.getSettings();
     }
 
-    public void setSettings(Map<String, Object> settings) {
+    public void setSettings(Map<String, Setting> settings) {
         this.settings.setSettings(settings);
     }
 
@@ -127,18 +124,18 @@ public class Module {
     }
 
     public boolean getBool(String string) {
-        CheckSetting setting = (CheckSetting) this.settings.getSetting(string);
-        return setting.getValBoolean();
+        Setting setting = (Setting) this.settings.getSetting(string);
+        return setting.getCheck().getValBoolean();
     }
 
     public double getDouble(String string) {
-        SliderSetting setting = (SliderSetting) this.settings.getSetting(string);
-        return setting.getValDouble();
+        Setting setting = (Setting) this.settings.getSetting(string);
+        return setting.getSlider().getValDouble();
     }
 
     protected String getString(String string) {
-        ComboSetting setting = (ComboSetting) this.settings.getSetting(string);
-        return setting.getValString();
+        Setting setting = (Setting) this.settings.getSetting(string);
+        return setting.getCombo().getValString();
     }
 
     protected boolean isMode(String m) {

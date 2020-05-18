@@ -1,15 +1,19 @@
 package toast.client.modules;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
 import org.reflections.Reflections;
+import toast.client.lemongui.clickgui.settings.Setting;
 import toast.client.modules.dev.Panic;
 import toast.client.utils.Config;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ModuleManager {
@@ -67,19 +71,23 @@ public class ModuleManager {
 
     private static void loadModules() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         modules.clear();
+        Map<String, Map<String, Setting>> options = new HashMap<>();
+        Map<String, Boolean> moduleToggles = new HashMap<>();
+        Gson gson = new GsonBuilder().create();
+        try {
+            moduleToggles = gson.fromJson(new FileReader("toastclient/modules.json"), new TypeToken<Map<String, Boolean>>(){}.getType());
+            options = gson.fromJson(new FileReader("toastclient/options.json"), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         Reflections reflections = new Reflections("toast.client.modules");
         Set<Class<? extends Module>> moduleClasses = reflections.getSubTypesOf(Module.class);
         for (Class<? extends Module> moduleClass : moduleClasses) {
             Module module = moduleClass.getConstructor().newInstance();
-            if (module.getName().equals("ClickGUI")) {
-                System.out.println(module.getBool("Rainbow"));
-            }
             modules.add(module);
         }
-        Config.loadModules();
-       // Config.loadOptions();
-        Config.writeModules();
-        Config.writeOptions();
+        Config.loadOptions(options);
+        Config.loadModules(moduleToggles);
     }
 }
 
