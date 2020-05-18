@@ -61,16 +61,20 @@ public class Config {
 
     public static void loadOptions(Map<String, Map<String, Setting>> options) {
         for (Module module : ModuleManager.getModules()) {
-            if (options.containsKey(module.getName())) {
-                module.setSettings(options.get(module.getName()));
+            if (module != null && options != null) {
+                if (options.containsKey(module.getName())) {
+                    module.setSettings(options.get(module.getName()));
+                }
             }
         }
     }
 
     public static void loadModules(Map<String, Boolean> modules) {
         for (Module module : ModuleManager.getModules()) {
-            if (modules.containsKey(module.getName())) {
-                module.setToggled(modules.get(module.getName()));
+            if (module != null && modules != null) {
+                if (modules.containsKey(module.getName())) {
+                    module.setToggled(modules.get(module.getName()));
+                }
             }
         }
     }
