@@ -103,6 +103,10 @@ public class Button extends toast.client.lemongui.clickgui.component.Component {
         return 12;
     }
 
+    public String getModName() {
+        return this.mod.getName();
+    }
+
     @Override
     public void updateComponent(int mouseX, int mouseY) {
         this.isHovered = isMouseOnButton(mouseX, mouseY);

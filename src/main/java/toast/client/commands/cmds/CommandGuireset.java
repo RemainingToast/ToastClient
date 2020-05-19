@@ -11,6 +11,6 @@ public class CommandGuireset extends Command {
 
     public void run(String[] args) {
         ClickGui.reset();
-        Logger.message("Clickgui has been resetted!", Logger.INFO);
+        Logger.message("Clickgui has been reset!", Logger.INFO);
     }
 }

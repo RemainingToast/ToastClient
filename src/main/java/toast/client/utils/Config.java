@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import toast.client.lemongui.clickgui.ClickGui;
+import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.Frame;
+import toast.client.lemongui.clickgui.component.components.Button;
 import toast.client.lemongui.clickgui.settings.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
@@ -67,11 +69,14 @@ public class Config {
         private int x;
         @SerializedName("Pos Y")
         private int y;
+        @SerializedName("Modules")
+        private Map<String, ClickGuiFrameButton>  components;
 
-        public ClickGuiFrame(boolean isopen, int x, int y) {
+        public ClickGuiFrame(boolean isopen, int x, int y, Map<String, ClickGuiFrameButton>  components) {
             this.isopen = isopen;
             this.x = x;
             this.y = y;
+            this.components = components;
         }
 
         public boolean isOpen() {
@@ -84,6 +89,23 @@ public class Config {
 
         public int getY() {
             return y;
+        }
+
+        public Map<String, ClickGuiFrameButton> getComponents() {
+            return components;
+        }
+
+        static class ClickGuiFrameButton {
+            @SerializedName("Open")
+            private boolean open;
+
+            public ClickGuiFrameButton(boolean open) {
+                this.open = open;
+            }
+
+            public boolean isOpen() {
+                return open;
+            }
         }
     }
 
@@ -100,6 +122,16 @@ public class Config {
                     frame.setOpen(frameNew.getValue().isOpen());
                     frame.setX(frameNew.getValue().getX());
                     frame.setY(frameNew.getValue().getY());
+                    if (frameNew.getValue().getComponents() != null) {
+                        for (Component component : frame.getComponents()) {
+                            if (component instanceof Button) {
+                                Button b = ((Button) component);
+                                if (frameNew.getValue().getComponents().containsKey(b.getModName())) {
+                                    b.setOpen(frameNew.getValue().getComponents().get(b.getModName()).isOpen());
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -108,46 +140,16 @@ public class Config {
     public static void writeClickGui() {
         clickgui.clear();
         for (Frame frame : ClickGui.getFrames()) {
-            clickgui.put(frame.getCategory().toString(), new toast.client.utils.Config.ClickGuiFrame(frame.isOpen(), frame.getX(), frame.getY()));
-        }
-        FileManager.writeFile("clickgui.json", gson.toJson(clickgui));
-        /*for (String line : getClickguiLines()) {
-            if(line.equals("")) return;
-            String[] split = line.split("\\|");
-            for (String frameString : split) {
-                if(frameString.contains("[FRAME]")) {
-                    String[] frameSplit = frameString.split(":");
-                    String name = frameSplit[0].split("\\[FRAME]")[1];
-                    int x = Integer.parseInt(frameSplit[1].split("\\[X]")[1]);
-                    int y = Integer.parseInt(frameSplit[2].split("\\[Y]")[1]);
-                    boolean open = Boolean.parseBoolean(frameSplit[3].split("\\[OPEN]")[1]);
-                    for (Frame frame : ClickGui.getFrames()) {
-                        if (frame.category.name().equalsIgnoreCase(name)) {
-                            frame.setX(x);
-                            frame.setY(y);
-                            frame.setOpen(open);
-                        }
-                    }
-                } else if(frameString.contains("[COMPONENT]")) {
-                    String[] componentSplit = frameString.split(":");
-                    String compName = componentSplit[0].split("\\[COMPONENT]")[1];
-                    String parentFrameName = componentSplit[1].split("\\[FRAMEPARENT]")[1];
-                    boolean open = Boolean.parseBoolean(componentSplit[2].split("\\[OPEN]")[1]);
-                    for (Frame frame : ClickGui.getFrames()) {
-                        for (Component component : frame.components) {
-                            if (component instanceof Button) {
-                                Button b = ((Button) component);
-                                if (b.getParent().category.name().equalsIgnoreCase(parentFrameName)) {
-                                    if (b.mod.getName().equalsIgnoreCase(compName)) {
-                                        b.setOpen(open);
-                                    }
-                                }
-                            }
-                        }
-                    }
+            Map<String, ClickGuiFrame.ClickGuiFrameButton>  components = new HashMap<>();
+            for (Component component : frame.getComponents()) {
+                if (component instanceof Button) {
+                    Button b = ((Button) component);
+                    components.put(b.getModName(), new ClickGuiFrame.ClickGuiFrameButton(b.isOpen()));
                 }
             }
-        }*/
+            clickgui.put(frame.getCategory().toString(), new ClickGuiFrame(frame.isOpen(), frame.getX(), frame.getY(), components));
+        }
+        FileManager.writeFile("clickgui.json", gson.toJson(clickgui));
     }
 
     public static void writeConfig() {
