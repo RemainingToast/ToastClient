@@ -35,5 +35,5 @@ jobs:
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       with:
-        args: ./toastclient.jar
+        args: ./toastclient-`git rev-parse --short HEAD`.jar
     
