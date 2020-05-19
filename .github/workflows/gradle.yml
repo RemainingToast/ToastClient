@@ -24,8 +24,6 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Install wget
-      run: sudo apt-get install wget
     - name: Download obfuscator
       run: wget https://github.com/superblaubeere27/obfuscator/releases/download/v1.9.3/obfuscator-1.9.3.jar -O obfuscator.jar
     - name: Obfuscate
