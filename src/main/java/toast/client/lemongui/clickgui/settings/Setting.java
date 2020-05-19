@@ -1,9 +1,15 @@
 package toast.client.lemongui.clickgui.settings;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Setting {
+    @SerializedName("Boolean")
     private CheckSetting check;
+    @SerializedName("Selection")
     private ComboSetting combo;
+    @SerializedName("Number")
     private SliderSetting slider;
+    @SerializedName("Type")
     private int type;
 
     public Setting(CheckSetting check) {
