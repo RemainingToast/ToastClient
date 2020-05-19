@@ -1,7 +1,7 @@
-package toast.client.lemongui.clickgui.settings;
+package toast.client.dontobfuscate.settings;
 
 import com.google.gson.annotations.SerializedName;
-import toast.client.utils.Config;
+import toast.client.dontobfuscate.Config;
 
 public class CheckSetting {
 	@SerializedName("enabled")

@@ -4,7 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
 import toast.client.modules.ModuleManager;
-import toast.client.utils.Config;
+import toast.client.dontobfuscate.Config;
 import toast.client.utils.FileManager;
 import toast.client.utils.LoginUtil;
 
@@ -25,7 +25,6 @@ public class ToastClient implements ModInitializer {
         System.out.println(cleanPrefix+" Initialized");
         System.out.println("Special thanks to all contributors of this project "+devs);
         FileManager.initFileManager();
-        Config.initConfigManager();
         ModuleManager.initModules();
         CommandHandler.initCommands();
         // \/ doesnt work maybe remove if u want
@@ -37,7 +36,7 @@ public class ToastClient implements ModInitializer {
             System.out.println("Failed to connect to proxy");
         }*/
         if(devMode) {
-            boolean login = LoginUtil.loginCracked("ToastDeveloper"); //if u dont want to fill ur singleplayer world with 13519519375 .dat files
+            boolean login = LoginUtil.loginCracked("ToastDeveloper"); // avoid generating lots of .dat files in singleplayer worlds
             if (login) {
                 System.out.println("Logged in as Developer");
             } else {

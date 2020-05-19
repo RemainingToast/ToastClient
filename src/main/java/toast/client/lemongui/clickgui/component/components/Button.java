@@ -8,7 +8,7 @@ import toast.client.lemongui.clickgui.component.components.sub.Checkbox;
 import toast.client.lemongui.clickgui.component.components.sub.Keybind;
 import toast.client.lemongui.clickgui.component.components.sub.ModeButton;
 import toast.client.lemongui.clickgui.component.components.sub.Slider;
-import toast.client.lemongui.clickgui.settings.Setting;
+import toast.client.dontobfuscate.settings.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.render.ClickGui;

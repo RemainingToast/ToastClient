@@ -2,8 +2,8 @@ package toast.client.modules;
 
 import net.minecraft.client.MinecraftClient;
 import toast.client.event.EventManager;
-import toast.client.lemongui.clickgui.settings.*;
-import toast.client.utils.Config;
+import toast.client.dontobfuscate.settings.*;
+import toast.client.dontobfuscate.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;

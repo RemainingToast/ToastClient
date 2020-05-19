@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
-import toast.client.lemongui.clickgui.settings.Setting;
+import toast.client.dontobfuscate.settings.Setting;
 import toast.client.modules.combat.AutoRespawn;
 import toast.client.modules.combat.KillAura;
 import toast.client.modules.dev.Panic;
@@ -18,7 +18,7 @@ import toast.client.modules.player.Surround;
 import toast.client.modules.render.ClickGui;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
-import toast.client.utils.Config;
+import toast.client.dontobfuscate.Config;
 import toast.client.utils.FileManager;
 
 import java.io.FileNotFoundException;

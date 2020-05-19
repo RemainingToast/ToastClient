@@ -7,7 +7,7 @@ import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.components.Button;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.render.ClickGui;
-import toast.client.lemongui.clickgui.settings.SliderSetting;
+import toast.client.dontobfuscate.settings.SliderSetting;
 
 import java.awt.*;
 import java.math.BigDecimal;

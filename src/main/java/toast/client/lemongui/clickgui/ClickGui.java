@@ -7,7 +7,7 @@ import toast.client.lemongui.clickgui.component.Frame;
 import toast.client.modules.Module;
 import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
-import toast.client.utils.Config;
+import toast.client.dontobfuscate.Config;
 
 import java.util.ArrayList;
 

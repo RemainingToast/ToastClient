@@ -36,7 +36,7 @@ public class Fullbright extends Module {
         }
     }
 
-//aaaaa why does this crash the client
+// causes client to crash
     /*public void onDisable() {
         mc.options.gamma = previousGamma;
         increasedGamma = false;

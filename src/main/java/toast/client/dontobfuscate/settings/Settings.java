@@ -1,6 +1,6 @@
-package toast.client.lemongui.clickgui.settings;
+package toast.client.dontobfuscate.settings;
 
-import toast.client.utils.Config;
+import toast.client.dontobfuscate.Config;
 
 import java.util.HashMap;
 import java.util.Map;

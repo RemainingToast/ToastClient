@@ -8,7 +8,7 @@ import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.components.Button;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.render.ClickGui;
-import toast.client.lemongui.clickgui.settings.CheckSetting;
+import toast.client.dontobfuscate.settings.CheckSetting;
 
 import java.awt.*;
 

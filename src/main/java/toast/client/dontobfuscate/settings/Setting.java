@@ -1,4 +1,4 @@
-package toast.client.lemongui.clickgui.settings;
+package toast.client.dontobfuscate.settings;
 
 import com.google.gson.annotations.SerializedName;
 
