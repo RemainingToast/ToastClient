@@ -31,14 +31,11 @@ jobs:
     - name: Obfuscate
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        COMMITMESSAGE: `git log --format=%B -n 1`
         UPDATESROLE: <@&711977862302924810>
-        UPDATEMSG: $UPDATESROLE\ New\ build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\`
-        FILENAME: toastclient-$GITHUB_RUN_ID.jar
         BOT_NAME: "Toast Client™ Releases"
-      run: java -jar obfuscator.jar --jarIn ./build/libs/toastclient-1.0.0.jar --jarOut $FILENAME --config config
+      run: FILENAME=toastclient-$GITHUB_RUN_ID.jar && java -jar obfuscator.jar --jarIn ./build/libs/toastclient-1.0.0.jar --jarOut $FILENAME --config config
     - name: Send message to discord
-      run: curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"$BOTNAME\", \"content\":\"$UPDATEMSG\"}" $DISCORD_WEBHOOK
+      run: COMMITMESSAGE=`git log --format=%B -n 1` && UPDATEMSG=$UPDATESROLE\ New\ build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"$BOTNAME\", \"content\":\"$UPDATEMSG\"}" $DISCORD_WEBHOOK
     - name: Upload to discord
       run: curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@$FILENAME" $DISCORD_WEBHOOK
     
