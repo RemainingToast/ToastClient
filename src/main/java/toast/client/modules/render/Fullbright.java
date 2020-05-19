@@ -21,7 +21,7 @@ public class Fullbright extends Module {
 
     @EventImpl
     public void onTick(EventUpdate event) {
-        if(mc.player == null) return;// so the console doesnt get 1351450 extra lines
+        if(mc.player == null) return; // avoid excessive logs and client crashing
         if (this.isMode("Gamma") && !increasedGamma) {
             if (lastMode.equals("Potion")) {
                 assert mc.player != null;

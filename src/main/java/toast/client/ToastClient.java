@@ -16,7 +16,7 @@ public class ToastClient implements ModInitializer {
     public static String cleanPrefix = "ToastClient";
     public static String chatPrefix = Formatting.DARK_GRAY+"["+Formatting.LIGHT_PURPLE+"ToastClient"+Formatting.DARK_GRAY+"]";
     public static String cmdPrefix = ".";
-    public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs");
+    public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
 
     public static Boolean devMode = false;
 
