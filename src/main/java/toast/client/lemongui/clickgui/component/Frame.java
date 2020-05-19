@@ -140,4 +140,7 @@ public class Frame {
 		return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.barHeight;
 	}
 
+    public Category getCategory() {
+		return category;
+    }
 }

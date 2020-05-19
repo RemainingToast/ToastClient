@@ -2,7 +2,10 @@ package toast.client.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
+import toast.client.lemongui.clickgui.ClickGui;
+import toast.client.lemongui.clickgui.component.Frame;
 import toast.client.lemongui.clickgui.settings.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
@@ -14,10 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
-    public static Map<String, Boolean> modules;
-    public static Map<String, Map<String, Setting>> options;
-    public static Map<String, String> config;
-    public static Map<String, String> clickgui; //help pls aaaaaaaa
+    public static Map<String, Boolean> modules = new HashMap<>();
+    public static Map<String, Map<String, Setting>> options = new HashMap<>();
+    public static Map<String, String> config = new HashMap<>();
+    public static Map<String, toast.client.utils.Config.ClickGuiFrame> clickgui = new HashMap<>();
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -33,7 +36,7 @@ public class Config {
             modules = gson.fromJson(new FileReader(FileManager.createFile("modules.json")), new TypeToken<Map<String, Boolean>>(){}.getType());
             options = gson.fromJson(new FileReader(FileManager.createFile("options.json")), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
             config = gson.fromJson(new FileReader(FileManager.createFile("config.json")), new TypeToken<Map<String, String>>(){}.getType());
-            clickgui = null;//hlep
+            clickgui = gson.fromJson(new FileReader(FileManager.createFile("clickgui.json")), new TypeToken<Map<String, toast.client.utils.Config.ClickGuiFrame>>(){}.getType());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -57,7 +60,57 @@ public class Config {
         FileManager.writeFile("options.json", gson.toJson(options));
     }
 
-    public static void parseClickguiSettingsAndSet() {
+    static class ClickGuiFrame {
+        @SerializedName("Open")
+        private boolean isopen;
+        @SerializedName("Pos X")
+        private int x;
+        @SerializedName("Pos Y")
+        private int y;
+
+        public ClickGuiFrame(boolean isopen, int x, int y) {
+            this.isopen = isopen;
+            this.x = x;
+            this.y = y;
+        }
+
+        public boolean isOpen() {
+            return isopen;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+    }
+
+    public static void loadClickGui() {
+        updateRead();
+        if (clickgui == null) {
+            clickgui = new HashMap<>();
+            writeClickGui();
+            return;
+        }
+        for (Map.Entry<String, toast.client.utils.Config.ClickGuiFrame> frameNew : clickgui.entrySet()) {
+            for (Frame frame : ClickGui.getFrames()) {
+                if (frame.getCategory().toString().equals(frameNew.getKey())) {
+                    frame.setOpen(frameNew.getValue().isOpen());
+                    frame.setX(frameNew.getValue().getX());
+                    frame.setY(frameNew.getValue().getY());
+                }
+            }
+        }
+    }
+
+    public static void writeClickGui() {
+        clickgui.clear();
+        for (Frame frame : ClickGui.getFrames()) {
+            clickgui.put(frame.getCategory().toString(), new toast.client.utils.Config.ClickGuiFrame(frame.isOpen(), frame.getX(), frame.getY()));
+        }
+        FileManager.writeFile("clickgui.json", gson.toJson(clickgui));
         /*for (String line : getClickguiLines()) {
             if(line.equals("")) return;
             String[] split = line.split("\\|");
@@ -97,13 +150,19 @@ public class Config {
         }*/
     }
 
-    public static void writeClickgui() {
-        FileManager.writeFile("clickgui.json", gson.toJson(clickgui));
+    public static void writeConfig() {
+        config.put("prefix", "."); // hardcoded for now
+        FileManager.writeFile("config.json", gson.toJson(config));
     }
 
-    public static void writeConfig() {
-        config.put("prefix", ".");
-        FileManager.writeFile("config.json", gson.toJson(config));// hardcoded for now
+    public static void loadOptionsAuto() {
+        updateRead();
+        if (options == null) {
+            writeOptions();
+            updateRead();
+            return;
+        }
+        loadOptions(options);
     }
 
     public static void loadOptions(Map<String, Map<String, Setting>> options) {
@@ -114,6 +173,16 @@ public class Config {
                 }
             }
         }
+    }
+
+    public static void loadModulesAuto() {
+        updateRead();
+        if (modules == null) {
+            writeModules();
+            updateRead();
+            return;
+        }
+        loadModules(modules);
     }
 
     public static void loadModules(Map<String, Boolean> modules) {

@@ -44,13 +44,13 @@ public class ClickGui extends AbstractScreen {
 				}
 			}
 		}
-		Config.writeClickgui();
+		Config.writeClickGui();
 	}
 
 	@Override
 	public void init() {
 		Config.updateRead();
-		Config.parseClickguiSettingsAndSet();
+		Config.loadClickGui();
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class ClickGui extends AbstractScreen {
 			}
 			if (frame.isWithinHeader((int) mouseX, (int) mouseY) && button == 1) {
 				frame.setOpen(!frame.isOpen());
-				Config.writeClickgui();
+				Config.writeClickGui();
 			}
 			if (frame.isOpen()) {
 				if (!frame.getComponents().isEmpty()) {
@@ -119,7 +119,7 @@ public class ClickGui extends AbstractScreen {
 				}
 			}
 		}
-		Config.writeClickgui();
+		Config.writeClickGui();
 		return false;
 	}
 
