@@ -24,6 +24,7 @@ public class Config {
     public static Map<String, String> config = new HashMap<>();
     public static Map<String, Config.ClickGuiFrame> clickgui = new HashMap<>();
     public static Map<String, Map<String, Setting>> options = new HashMap<>();
+    public static String disabledOnStart = "Panic";
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -211,8 +212,12 @@ public class Config {
     public static void loadModules(Map<String, Boolean> modules) {
         for (Module module : ModuleManager.getModules()) {
             if (module != null && modules != null) {
-                if (modules.containsKey(module.getName())) {
-                    module.setToggled(modules.get(module.getName()));
+                if (!disabledOnStart.contains(module.getName())) {
+                    if (modules.containsKey(module.getName())) {
+                        module.setToggled(modules.get(module.getName()));
+                    }
+                } else {
+                    module.setToggled(false);
                 }
             }
         }
