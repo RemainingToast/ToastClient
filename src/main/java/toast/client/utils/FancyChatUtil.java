@@ -195,4 +195,18 @@ public class FancyChatUtil {
         return letters;
     }
 
+    static String unfancy_classic(String s) {
+        /* I heard you like lambdas */
+        return s.chars()
+            .mapToObj(x -> {
+                if (x > 0xFF00 && x < 0xFF60) {
+                    // https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
+                    return String.valueOf((char)(x - 0xFEE0));
+                } else {
+                    // later? https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
+                    return String.valueOf((char)(x));
+                }
+            })
+            .collect(java.util.stream.Collectors.joining());
+    } 
 }
