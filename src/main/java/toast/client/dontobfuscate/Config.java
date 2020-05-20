@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
-import net.minecraft.client.MinecraftClient;
 import toast.client.lemongui.clickgui.ClickGui;
 import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.Frame;
@@ -13,7 +12,6 @@ import toast.client.dontobfuscate.settings.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.FileManager;
-import toast.client.utils.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -28,11 +26,11 @@ public class Config {
     public static Map<String, Map<String, Setting>> options = new HashMap<>();
     public static String disabledOnStart = "Panic";
 
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void updateRead() {
         try {
-            modules = gson.fromJson(new FileReader(FileManager.createFile("modules.json")), new TypeToken<Map<String, Boolean>>(){}.getType());
+            modules = gson.fromJson(new FileReader(FileManager.createFile("modules.json")), new TypeToken<Map<String, Boolean>>() {}.getType());
             options = gson.fromJson(new FileReader(FileManager.createFile("options.json")), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
             config = gson.fromJson(new FileReader(FileManager.createFile("config.json")), new TypeToken<Map<String, String>>(){}.getType());
             clickgui = gson.fromJson(new FileReader(FileManager.createFile("clickgui.json")), new TypeToken<Map<String, Config.ClickGuiFrame>>(){}.getType());
