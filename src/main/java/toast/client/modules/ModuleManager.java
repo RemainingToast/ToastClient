@@ -10,6 +10,7 @@ import toast.client.modules.combat.AutoRespawn;
 import toast.client.modules.combat.KillAura;
 import toast.client.modules.dev.Panic;
 import toast.client.modules.misc.FancyChat;
+import toast.client.modules.misc.PortalChat;
 import toast.client.modules.misc.Spammer;
 import toast.client.modules.movement.Fly;
 import toast.client.modules.movement.Velocity;
@@ -99,6 +100,7 @@ public class ModuleManager {
         modules.add(new HUD());
         modules.add(new KillAura());
         modules.add(new Panic());
+        modules.add(new PortalChat());
         modules.add(new Spammer());
         modules.add(new Surround());
         modules.add(new Velocity());

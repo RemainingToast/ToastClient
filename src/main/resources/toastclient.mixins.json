@@ -5,6 +5,7 @@
   "mixins": [
     "MixinClientConnection",
     "MixinClientPlayerInteractionManager",
+    "MixinClientPlayerEntity",
     "MixinGameRenderer",
     "MixinInGameHud2",
     "MixinKeyboard",

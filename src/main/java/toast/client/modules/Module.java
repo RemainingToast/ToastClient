@@ -57,15 +57,7 @@ public class Module {
     }
 
     public void toggle() {
-        this.toggled = !toggled;
-        if(toggled) {
-            EventManager.register(this);
-            onEnable();
-        } else {
-            EventManager.unregister(this);
-            onDisable();
-        }
-        Config.writeModules();
+        setToggled(!isEnabled());
     }
 
     public void onEnable() {
