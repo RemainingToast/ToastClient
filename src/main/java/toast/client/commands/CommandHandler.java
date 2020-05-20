@@ -3,6 +3,7 @@ package toast.client.commands;
 import toast.client.ToastClient;
 import toast.client.commands.cmds.CommandGuireset;
 import toast.client.commands.cmds.CommandHelp;
+import toast.client.commands.cmds.CommandReload;
 import toast.client.commands.cmds.CommandTest;
 import toast.client.utils.Logger;
 import net.minecraft.client.MinecraftClient;
@@ -57,8 +58,10 @@ public class CommandHandler {
     }
 
     public static void initCommands() {
-        commands.add(new CommandTest());
-        commands.add(new CommandHelp());
+        // alphabetical order please
         commands.add(new CommandGuireset());
+        commands.add(new CommandHelp());
+        commands.add(new CommandReload());
+        commands.add(new CommandTest());
     }
 }

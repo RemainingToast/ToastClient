@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
+import net.minecraft.client.MinecraftClient;
 import toast.client.lemongui.clickgui.ClickGui;
 import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.Frame;
@@ -12,6 +13,7 @@ import toast.client.dontobfuscate.settings.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.FileManager;
+import toast.client.utils.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -138,6 +140,7 @@ public class Config {
             writeClickGui();
             return;
         }
+        if (ClickGui.getFrames() == null) return;
         for (Map.Entry<String, Config.ClickGuiFrame> frameNew : clickgui.entrySet()) {
             for (Frame frame : ClickGui.getFrames()) {
                 if (frame.getCategory().toString().equals(frameNew.getKey())) {

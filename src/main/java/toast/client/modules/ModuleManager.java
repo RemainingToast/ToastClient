@@ -89,6 +89,7 @@ public class ModuleManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        // alphabetical order please
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
         modules.add(new ClickGui());
