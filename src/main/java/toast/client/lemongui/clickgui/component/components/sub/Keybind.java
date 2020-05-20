@@ -1,5 +1,6 @@
 package toast.client.lemongui.clickgui.component.components.sub;
 
+import toast.client.dontobfuscate.Config;
 import toast.client.gui.hud.HUD;
 import toast.client.lemongui.clickgui.component.Component;
 import toast.client.lemongui.clickgui.component.components.Button;
@@ -73,6 +74,7 @@ public class Keybind extends Component {
 	public void keyTyped(String typedString, int key) {
 		if (this.binding) {
 			this.parent.mod.setKey(key);
+			Config.writeKeyBinds();
 			this.binding = false;
 		}
 	}

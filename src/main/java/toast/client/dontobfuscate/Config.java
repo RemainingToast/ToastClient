@@ -13,17 +13,17 @@ import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.FileManager;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
+    public static Map<String, Integer> keybinds = new HashMap<>();
     public static Map<String, Boolean> modules = new HashMap<>();
-    public static Map<String, Map<String, Setting>> options = new HashMap<>();
     public static Map<String, String> config = new HashMap<>();
     public static Map<String, Config.ClickGuiFrame> clickgui = new HashMap<>();
+    public static Map<String, Map<String, Setting>> options = new HashMap<>();
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -33,6 +33,7 @@ public class Config {
             options = gson.fromJson(new FileReader(FileManager.createFile("options.json")), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
             config = gson.fromJson(new FileReader(FileManager.createFile("config.json")), new TypeToken<Map<String, String>>(){}.getType());
             clickgui = gson.fromJson(new FileReader(FileManager.createFile("clickgui.json")), new TypeToken<Map<String, Config.ClickGuiFrame>>(){}.getType());
+            keybinds = gson.fromJson(new FileReader(FileManager.createFile("keybinds.json")), new TypeToken<Map<String, Integer>>(){}.getType());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -42,7 +43,6 @@ public class Config {
         Map<String, Boolean> modules = new HashMap<>();
         for (Module module : ModuleManager.modules) {
             modules.put(module.getName(), module.isEnabled());
-            // System.out.println(module.getName()+":"+module.isEnabled());
         }
         FileManager.writeFile("modules.json", gson.toJson(modules));
     }
@@ -51,9 +51,36 @@ public class Config {
         Map<String, Map<String, Setting>> options = new HashMap<>();
         for (Module module : ModuleManager.getModules()) {
             options.put(module.getName(), module.getSettings());
-            //System.out.println(module.getName()+" -> "+parseSettings(module));
         }
         FileManager.writeFile("options.json", gson.toJson(options));
+    }
+
+    public static void writeKeyBinds() {
+        Map<String, Integer> keybinds = new HashMap<>();
+        for (Module module : ModuleManager.getModules()) {
+            keybinds.put(module.getName(), module.getKey());
+        }
+        FileManager.writeFile("keybinds.json", gson.toJson(keybinds));
+    }
+
+    public static void loadKeyBindsAuto() {
+        updateRead();
+        if (keybinds == null) {
+            writeKeyBinds();
+            keybinds = new HashMap<>();
+            return;
+        }
+        loadKeyBinds(keybinds);
+    }
+
+    public static void loadKeyBinds(Map<String, Integer> keybinds) {
+        for (Module module : ModuleManager.getModules()) {
+            if (module != null && keybinds != null) {
+                if (keybinds.containsKey(module.getName())) {
+                    module.setKey(keybinds.get(module.getName()));
+                }
+            }
+        }
     }
 
     static class ClickGuiFrame {

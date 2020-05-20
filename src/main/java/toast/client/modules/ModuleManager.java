@@ -102,9 +102,8 @@ public class ModuleManager {
         modules.add(new Surround());
         modules.add(new Velocity());
         Config.loadOptions(options);
-        Config.writeOptions();
         Config.loadModules(moduleToggles);
-        Config.writeModules();
+        Config.loadKeyBindsAuto();
     }
 }
 

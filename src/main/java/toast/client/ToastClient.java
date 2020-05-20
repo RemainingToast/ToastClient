@@ -27,14 +27,6 @@ public class ToastClient implements ModInitializer {
         FileManager.initFileManager();
         ModuleManager.initModules();
         CommandHandler.initCommands();
-        // \/ doesnt work maybe remove if u want
-        /*System.out.println("before connected to: "+MinecraftClient.getInstance().getNetworkProxy().address());
-        boolean connectedToProxy = ProxyUtil.connectProxy("138.68.60.8",3128, Proxy.Type.HTTP);
-        if(connectedToProxy) {
-            System.out.println("Connected to: "+MinecraftClient.getInstance().getNetworkProxy().address());
-        } else {
-            System.out.println("Failed to connect to proxy");
-        }*/
         if(devMode) {
             boolean login = LoginUtil.loginCracked("ToastDeveloper"); // avoid generating lots of .dat files in singleplayer worlds
             if (login) {
