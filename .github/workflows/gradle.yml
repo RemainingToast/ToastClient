@@ -33,11 +33,13 @@ jobs:
     - name: Send message to discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
         UPDATESROLE: <@&711977862302924810>
         BOT_NAME: "Toast Client™ Releases"
-      run: grep -q true release && COMMITMESSAGE=`git log --format=%B -n 1` && UPDATEMSG=$UPDATESROLE\ New\ build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"$BOTNAME\", \"content\":\"$UPDATEMSG\"}" $DISCORD_WEBHOOK
+      run: if grep -q true release ; then WEBHOOK=$DISCORD_WEBHOOK && UPDATES=$UPDATESROLE ; else WEBHOOK=$DISCORD_WEBHOOK_DEV && UPDATES="" ; fi && COMMITMESSAGE=`git log --format=%B -n 1` && UPDATEMSG=$UPDATES\ New\ build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"$BOTNAME\", \"content\":\"$UPDATEMSG\"}" $WEBHOOK
     - name: Upload to discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      run: grep -q true release && curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@toastclient-$GITHUB_RUN_ID.jar" $DISCORD_WEBHOOK
+        DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
+      run: if grep -q true release ; then WEBHOOK=$DISCORD_WEBHOOK ; else WEBHOOK=$DISCORD_WEBHOOK_DEV ; fi && curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@toastclient-$GITHUB_RUN_ID.jar" $WEBHOOK
     
