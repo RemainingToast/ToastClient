@@ -1,18 +1,36 @@
 package toast.client.utils;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ObserverBlock;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.Items;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.util.Hand;
+import net.minecraft.util.UseAction;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RayTraceContext;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Environment(EnvType.CLIENT)
 public class WorldInteractionUtil {
-    public static List<Block> REPLACEABLE = Arrays.asList(Blocks.AIR, Blocks.CAVE_AIR, Blocks.LAVA, Blocks.WATER,
+    public static final List<Block> AIR = Arrays.asList(Blocks.AIR, Blocks.CAVE_AIR);
+
+    public static final List<Block> REPLACEABLE = Arrays.asList(Blocks.AIR, Blocks.CAVE_AIR, Blocks.LAVA, Blocks.WATER,
             Blocks.GRASS, Blocks.TALL_GRASS, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS, Blocks.FERN, Blocks.DEAD_BUSH,
             Blocks.VINE, Blocks.FIRE, Blocks.STRUCTURE_VOID);
                         //what i mean with special items are like if you rightclick a cauldron with a waterbottle it fills it
-    public static List<Block> RIGHTCLICKABLE_NOSPECIALITEM = Arrays.asList(Blocks.WATER, Blocks.LAVA, Blocks.DISPENSER, Blocks.NOTE_BLOCK, Blocks.WHITE_BED,
+    public static final List<Block> RIGHTCLICKABLE_NOSPECIALITEM = Arrays.asList(Blocks.WATER, Blocks.LAVA, Blocks.DISPENSER, Blocks.NOTE_BLOCK, Blocks.WHITE_BED,
             Blocks.ORANGE_BED, Blocks.MAGENTA_BED, Blocks.LIGHT_BLUE_BED, Blocks.YELLOW_BED, Blocks.LIME_BED, Blocks.PINK_BED, Blocks.GRAY_BED, Blocks.LIGHT_GRAY_BED,
             Blocks.CYAN_BED, Blocks.PURPLE_BED, Blocks.BLUE_BED, Blocks.BROWN_BED, Blocks.GREEN_BED, Blocks.RED_BED, Blocks.BLACK_BED, Blocks.CHEST,
             Blocks.FURNACE, Blocks.OAK_DOOR, Blocks.LEVER, Blocks.STONE_BUTTON, Blocks.CAKE, Blocks.REPEATER, Blocks.OAK_TRAPDOOR, Blocks.SPRUCE_TRAPDOOR,
@@ -28,25 +46,11 @@ public class WorldInteractionUtil {
             Blocks.STONECUTTER, Blocks.BELL, Blocks.SWEET_BERRY_BUSH, Blocks.STRUCTURE_BLOCK, Blocks.JIGSAW);
 
    public static boolean isReplaceable(Block b) {
-       boolean replaceable = false;
-       for (Block block : REPLACEABLE) {
-           if (b == block) {
-               replaceable = true;
-               break;
-           }
-       }
-       return replaceable;
+       return REPLACEABLE.contains(b);
    }
 
    public static boolean isRightClickable(Block b) {
-       boolean rightclickable = false;
-       for (Block block : REPLACEABLE) {
-           if (b == block) {
-               rightclickable = true;
-               break;
-           }
-       }
-       return rightclickable;
+       return RIGHTCLICKABLE_NOSPECIALITEM.contains(b);
    }
 
    public static boolean isFluid(Block b) {
@@ -61,4 +65,30 @@ public class WorldInteractionUtil {
        return isReplaceable(b.getBlock());
    }
 
+   public static boolean placeBlock(BlockPos pos, Hand hand) {
+       MinecraftClient mc = MinecraftClient.getInstance();
+       if (mc.world == null || mc.player == null) return false;
+       for (Direction direction : Direction.values()) {
+           BlockPos offsetPos = pos.offset(direction);
+           Block offsetBlock = mc.world.getBlockState(offsetPos).getBlock();
+           if (!isReplaceable(offsetBlock)) {
+               if (isRightClickable(offsetBlock)) {
+                   mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
+               }
+               if (mc.player.getStackInHand(hand).getItem() != null && mc.player.getStackInHand(hand).getItem() != Items.AIR) {
+                   mc.interactionManager.interactBlock(mc.player, mc.world, hand,
+                           new BlockHitResult(new Vec3d(pos), direction.getOpposite(), offsetPos, false));
+                   mc.player.swingHand(hand);
+               } else {
+                   return false;
+               }
+               if (isRightClickable(offsetBlock)) {
+                   mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+               }
+               return true;
+           }
+       }
+
+       return false;
+   }
 }
