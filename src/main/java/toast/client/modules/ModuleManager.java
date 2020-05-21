@@ -3,6 +3,8 @@ package toast.client.modules;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
 import toast.client.dontobfuscate.settings.Setting;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Environment(EnvType.CLIENT)
 public class ModuleManager {
     public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
     public static void initModules() {

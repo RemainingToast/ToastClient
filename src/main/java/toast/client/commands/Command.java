@@ -1,7 +1,10 @@
 package toast.client.commands;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 
+@Environment(EnvType.CLIENT)
 public abstract class Command {
     public String[] aliases;
     public String usage;

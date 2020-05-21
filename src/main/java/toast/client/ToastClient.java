@@ -1,5 +1,7 @@
 package toast.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
@@ -11,6 +13,7 @@ import toast.client.utils.LoginUtil;
 import java.util.Collections;
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class ToastClient implements ModInitializer {
     public static String version = "b1.0";
     public static String cleanPrefix = "ToastClient";

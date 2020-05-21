@@ -1,5 +1,7 @@
 package toast.client.modules;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import toast.client.event.EventManager;
 import toast.client.dontobfuscate.settings.*;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 public class Module {
     public String name;
     public boolean toggled;
