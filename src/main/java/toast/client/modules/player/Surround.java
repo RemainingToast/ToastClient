@@ -15,20 +15,23 @@ import toast.client.utils.WorldInteractionUtil;
 
 public class Surround extends Module {
 
+    private static int placements = 0;
+    private static int slot = -1;
+
     public Surround() {
         super("Surround", Category.PLAYER, -1);
         this.addBool("AutoDisable", true);
         this.addBool("Center", true);
         this.addBool("All blocks", false);
         this.addBool("Rotations", false);
-        this.addNumberOption("Blocks/Tick", 4, 1, 4, true);
+        this.addNumberOption("Blocks/Tick", 2, 1, 8, true);
     }
 
     @EventImpl
     public void onUpdate(EventRender event) {
         if(mc.player == null) return;
         int lastSlot = mc.player.inventory.selectedSlot;
-        int slot = mc.player.inventory.selectedSlot;
+        slot = mc.player.inventory.selectedSlot;
 
         if (this.getBool("All blocks")) {
             if(!has4OrMoreBuildBlockInHotbar()) return;
@@ -41,23 +44,143 @@ public class Surround extends Module {
         mc.player.inventory.selectedSlot = slot;
         if(this.getBool("Center")) centerPlayerPos();
 
-        int placements = 0;
+        placements = 0;
         for (int i = 0; i < (int) this.getDouble("Blocks/Tick"); i++) {
-            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
-                mc.player.inventory.selectedSlot = slot;
-                if (WorldInteractionUtil.placeBlock(new BlockPos(1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
-            }
-            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(-1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
-                mc.player.inventory.selectedSlot = slot;
-                if (WorldInteractionUtil.placeBlock(new BlockPos(-1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
-            }
-            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(0, 0, 1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
-                mc.player.inventory.selectedSlot = slot;
-                if (WorldInteractionUtil.placeBlock(new BlockPos(0, 0, 1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
-            }
-            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(0, 0, -1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
-                mc.player.inventory.selectedSlot = slot;
-                if (WorldInteractionUtil.placeBlock(new BlockPos(0, 0, -1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
+            /*
+             *     -Z
+             *
+             * -X       X
+             *
+             *      Z
+             */
+            double xDec = Math.abs(mc.player.getX() - Math.floor(mc.player.getX()));
+            double zDec = Math.abs(mc.player.getZ() - Math.floor(mc.player.getZ()));
+            if (xDec < 0.3) {
+                if (zDec < 0.3) {
+                    /*
+                     * QXXQ
+                     * XOOX
+                     * XOZX
+                     * QXXQ
+                     */
+                    tryPlace(1, 0, 0);
+                    tryPlace(0, 0, 1);
+                    tryPlace(1, 0, -1);
+                    tryPlace(-1, 0, 1);
+                    tryPlace(-2, 0, 0);
+                    tryPlace(0, 0, -2);
+                    tryPlace(-2, 0, -1);
+                    tryPlace(-1, 0, -2);
+                } else if (zDec > 0.7) {
+                    /*
+                     * QXXQ
+                     * XOZX
+                     * XOOX
+                     * QXXQ
+                     */
+                    tryPlace(-1, 0, -1);
+                    tryPlace(0, 0, -1);
+                    tryPlace(-2, 0, 0);
+                    tryPlace(1, 0, 0);
+                    tryPlace(-2, 0, 1);
+                    tryPlace(1, 0, 1);
+                    tryPlace(-1, 0, 2);
+                    tryPlace(0, 0, 2);
+                } else {
+                    /*
+                     * QXXQ
+                     * XZOX
+                     * QXXQ
+                     */
+                    tryPlace(-1, 0, -1);
+                    tryPlace(0, 0, -1);
+                    tryPlace(-2, 0, 0);
+                    tryPlace(1, 0, 0);
+                    tryPlace(-1, 0, 1);
+                    tryPlace(0, 0, 1);
+                }
+            } else if (xDec > 0.7) {
+                if (zDec < 0.3) {
+                    /*
+                     * QXXQ
+                     * XOOX
+                     * XZOX
+                     * QXXQ
+                     */
+                    tryPlace(0, 0, -2);
+                    tryPlace(1, 0, -2);
+                    tryPlace(-1, 0, -1);
+                    tryPlace(2, 0, -1);
+                    tryPlace(-1, 0, 0);
+                    tryPlace(2, 0, 0);
+                    tryPlace(0, 0, 1);
+                    tryPlace(1, 0, 1);
+                } else if (zDec > 0.7) {
+                    /*
+                     * QXXQ
+                     * XZOX
+                     * XOOX
+                     * QXXQ
+                     */
+                    tryPlace(0, 0, -1);
+                    tryPlace(1, 0, -1);
+                    tryPlace(-1, 0, 0);
+                    tryPlace(2, 0, 0);
+                    tryPlace(-1, 0, 1);
+                    tryPlace(2, 0, 1);
+                    tryPlace(0, 0, 2);
+                    tryPlace(1, 0, 2);
+                } else {
+                    /*
+                     * QXXQ
+                     * XZOX
+                     * QXXQ
+                     */
+                    tryPlace(0, 0, -1);
+                    tryPlace(1, 0, -1);
+                    tryPlace(-1, 0, 0);
+                    tryPlace(2, 0, 0);
+                    tryPlace(0, 0, 1);
+                    tryPlace(1, 0, 1);
+                }
+            } else {
+                if (zDec < 0.3) {
+                    /*
+                     * QXQ
+                     * XOX
+                     * XZX
+                     * QXQ
+                     */
+                    tryPlace(0, 0, -2);
+                    tryPlace(-1, 0, -1);
+                    tryPlace(1, 0, -1);
+                    tryPlace(-1, 0, 0);
+                    tryPlace(1, 0, 0);
+                    tryPlace(0, 0, 1);
+                } else if (zDec > 0.7) {
+                    /*
+                     * QXQ
+                     * XZX
+                     * XOX
+                     * QXQ
+                     */
+                    tryPlace(0, 0, -1);
+                    tryPlace(-1, 0, 0);
+                    tryPlace(1, 0, 0);
+                    tryPlace(-1, 0, 1);
+                    tryPlace(1, 0, 1);
+                    tryPlace(0, 0, 2);
+                } else {
+                    /*
+                     * QXQ
+                     * XZX
+                     * QXQ
+                     */
+                    tryPlace(1, 0, 0);
+                    tryPlace(-1, 0, 0);
+                    tryPlace(0, 0, 1);
+                    tryPlace(0, 0, -1);
+                }
             }
             if (placements == 0) {
                 mc.player.inventory.selectedSlot = lastSlot;
@@ -170,6 +293,14 @@ public class Surround extends Module {
             }
         }
         return slot;
+    }
+
+    private void tryPlace(double offX, double offY, double offZ) {
+        if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(offX, offY, offZ).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
+            mc.player.inventory.selectedSlot = slot;
+            if (WorldInteractionUtil.placeBlock(new BlockPos(offX, offY, offZ).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations")))
+                placements++;
+        }
     }
 
     /*public boolean canPlace(BlockPos pos, Direction direction) {

@@ -1,9 +1,12 @@
 package toast.client.utils;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 
+@Environment(EnvType.CLIENT)
 public class MovementUtil {
     private static MinecraftClient mc = MinecraftClient.getInstance();
 
