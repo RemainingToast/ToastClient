@@ -1,22 +1,17 @@
 package toast.client.modules.player;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import toast.client.event.EventImpl;
 import toast.client.event.events.player.EventRender;
 import toast.client.modules.Module;
+import toast.client.utils.WorldInteractionUtil;
 
 public class Surround extends Module {
 
@@ -25,12 +20,13 @@ public class Surround extends Module {
         this.addBool("AutoDisable", true);
         this.addBool("Center", true);
         this.addBool("All blocks", false);
+        this.addBool("Rotations", false);
+        this.addNumberOption("Blocks/Tick", 4, 1, 4, true);
     }
 
     @EventImpl
     public void onUpdate(EventRender event) {
         if(mc.player == null) return;
-        if (!mc.player.onGround) return;
         int lastSlot = mc.player.inventory.selectedSlot;
         int slot = mc.player.inventory.selectedSlot;
 
@@ -43,9 +39,33 @@ public class Surround extends Module {
         }
 
         mc.player.inventory.selectedSlot = slot;
-        if(this.getBool("Center") && !isCentered(mc.player.getPos())) centerPlayerPos();
+        if(this.getBool("Center")) centerPlayerPos();
 
-        final Vec3d vec = interpolateEntity(mc.player, event.getPartialTicks());
+        int placements = 0;
+        for (int i = 0; i < (int) this.getDouble("Blocks/Tick"); i++) {
+            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
+                mc.player.inventory.selectedSlot = slot;
+                if (WorldInteractionUtil.placeBlock(new BlockPos(1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
+            }
+            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(-1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
+                mc.player.inventory.selectedSlot = slot;
+                if (WorldInteractionUtil.placeBlock(new BlockPos(-1, 0, 0).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
+            }
+            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(0, 0, 1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
+                mc.player.inventory.selectedSlot = slot;
+                if (WorldInteractionUtil.placeBlock(new BlockPos(0, 0, 1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
+            }
+            if (placements < (int) this.getDouble("Blocks/Tick") && WorldInteractionUtil.isReplaceable(mc.world.getBlockState(new BlockPos(0, 0, -1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ())).getBlock())) {
+                mc.player.inventory.selectedSlot = slot;
+                if (WorldInteractionUtil.placeBlock(new BlockPos(0, 0, -1).add(mc.player.getPos().getX(), mc.player.getPos().getY(), mc.player.getPos().getZ()), Hand.MAIN_HAND, this.getBool("Rotations"))) placements++;
+            }
+            if (placements == 0) {
+                mc.player.inventory.selectedSlot = lastSlot;
+                if (this.getBool("AutoDisable")) setToggled(false);
+            }
+        }
+
+        /*final Vec3d vec = interpolateEntity(mc.player, event.getPartialTicks());
         final BlockPos playerPos = new BlockPos(vec.x, vec.y, vec.z);
 
         final BlockPos[] positions = {playerPos.north(), playerPos.south(), playerPos.east(), playerPos.west()};
@@ -72,15 +92,14 @@ public class Surround extends Module {
         }
         if (this.canPlace(positions[3], Direction.UP)) {
             this.place(positions[3], Direction.UP);
-        }
+        }*/
         mc.player.inventory.selectedSlot = lastSlot;
-        if (this.getBool("AutoDisable")) this.toggle();
     }
 
     public void centerPlayerPos() {
         if(mc.player == null) return;
         Vec3d p = mc.player.getPos();
-        mc.player.setPos(Math.floor(p.getX())+0.50, p.getY(), Math.floor(p.getZ())+0.50);
+        mc.player.updatePosition(Math.floor(p.getX())+0.50, Math.floor(p.getY()), Math.floor(p.getZ())+0.50);
     }
 
     public boolean isCentered(Vec3d pos) {
@@ -89,11 +108,11 @@ public class Surround extends Module {
                 pos.getZ() == Math.floor(pos.getZ())+0.50;
     }
 
-    public Vec3d interpolateEntity(Entity entity, float time) {
+    /*public Vec3d interpolateEntity(Entity entity, float time) {
         return new Vec3d(entity.lastRenderX + (entity.getX() - entity.lastRenderX) * time,
                 entity.lastRenderY + (entity.getY() - entity.lastRenderY) * time,
                 entity.lastRenderZ + (entity.getZ() - entity.lastRenderZ) * time);
-    }
+    }*/
 
     private boolean hasInHotbar(Item item) {
         if(mc.player == null) return false;
@@ -153,7 +172,7 @@ public class Surround extends Module {
         return slot;
     }
 
-    public boolean canPlace(BlockPos pos, Direction direction) {
+    /*public boolean canPlace(BlockPos pos, Direction direction) {
         if(mc.player == null || mc.world == null) return false;
         Block b =  mc.world.getBlockState(pos).getBlock();
         return mc.player.canPlaceOn(pos, direction, mc.player.inventory.getInvStack(mc.player.inventory.selectedSlot)) &&
@@ -169,5 +188,5 @@ public class Surround extends Module {
                 true)) != ActionResult.FAIL) {
             mc.player.swingHand(Hand.MAIN_HAND);
         }
-    }
+    }*/
 }

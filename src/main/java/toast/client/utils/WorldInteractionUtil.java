@@ -7,20 +7,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ObserverBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RayTraceContext;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class WorldInteractionUtil {
@@ -65,25 +63,35 @@ public class WorldInteractionUtil {
        return isReplaceable(b.getBlock());
    }
 
-   public static boolean placeBlock(BlockPos pos, Hand hand) {
+   public static boolean placeBlock(BlockPos pos, Hand hand, boolean doRotations) {
        MinecraftClient mc = MinecraftClient.getInstance();
        if (mc.world == null || mc.player == null) return false;
+       ClientPlayerEntity player = mc.player;
        for (Direction direction : Direction.values()) {
            BlockPos offsetPos = pos.offset(direction);
            Block offsetBlock = mc.world.getBlockState(offsetPos).getBlock();
            if (!isReplaceable(offsetBlock)) {
-               if (isRightClickable(offsetBlock)) {
-                   mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
+               if (doRotations) {
+                   double dx = (offsetPos.getX() + 0.5) - player.getX();
+                   double dy = (offsetPos.getY() + 0.5) - (player.getY() + player.getStandingEyeHeight());
+                   double dz = (offsetPos.getZ() + 0.5) - player.getZ();
+                   double dh = Math.sqrt(dx * dx + dz * dz);
+                   float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90;
+                   float pitch = (float) -Math.toDegrees(Math.atan2(dy, dh));
+                   player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(yaw, pitch, player.onGround));
                }
-               if (mc.player.getStackInHand(hand).getItem() != null && mc.player.getStackInHand(hand).getItem() != Items.AIR) {
-                   mc.interactionManager.interactBlock(mc.player, mc.world, hand,
+               if (isRightClickable(offsetBlock)) {
+                   player.networkHandler.sendPacket(new ClientCommandC2SPacket(player, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
+               }
+               if (player.getStackInHand(hand).getItem() != null && player.getStackInHand(hand).getItem() != Items.AIR) {
+                   mc.interactionManager.interactBlock(player, mc.world, hand,
                            new BlockHitResult(new Vec3d(pos), direction.getOpposite(), offsetPos, false));
-                   mc.player.swingHand(hand);
+                   player.swingHand(hand);
                } else {
                    return false;
                }
                if (isRightClickable(offsetBlock)) {
-                   mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+                   player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
                }
                return true;
            }
