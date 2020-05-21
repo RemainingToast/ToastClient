@@ -14,6 +14,9 @@ public class AutoTool extends Module {
     public AutoTool() {
         super("AutoTool", Category.PLAYER, -1);
     }
+
+    private int lastSlot = 0;
+
 //TODO: make this also look at enchantments
     public void setSlot(BlockPos blockPos) {
         if(mc.player == null || mc.world == null) return;
@@ -33,6 +36,7 @@ public class AutoTool extends Module {
         }
         //System.out.println("best slot: "+bestSlot+", selected: "+mc.player.inventory.selectedSlot);
         if (bestSlot != -1 && bestSlot != mc.player.inventory.selectedSlot) {
+            lastSlot = mc.player.inventory.selectedSlot;
             mc.player.inventory.selectedSlot = bestSlot;
         }
     }
@@ -54,8 +58,14 @@ public class AutoTool extends Module {
         }
         //System.out.println("best slot: "+bestSlot+", selected: "+mc.player.inventory.selectedSlot);
         if (bestSlot != -1 && bestSlot != mc.player.inventory.selectedSlot) {
+            lastSlot = mc.player.inventory.selectedSlot;
             mc.player.inventory.selectedSlot = bestSlot;
         }
+    }
+
+    public void onDisable() {
+        if(mc.player == null) return;
+        mc.player.inventory.selectedSlot = lastSlot;
     }
 
     @EventImpl

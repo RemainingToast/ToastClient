@@ -5,22 +5,17 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.ObserverBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RayTraceContext;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class WorldInteractionUtil {
@@ -30,7 +25,7 @@ public class WorldInteractionUtil {
             Blocks.GRASS, Blocks.TALL_GRASS, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS, Blocks.FERN, Blocks.DEAD_BUSH,
             Blocks.VINE, Blocks.FIRE, Blocks.STRUCTURE_VOID);
                         //what i mean with special items are like if you rightclick a cauldron with a waterbottle it fills it
-    public static final List<Block> RIGHTCLICKABLE_NOSPECIALITEM = Arrays.asList(Blocks.WATER, Blocks.LAVA, Blocks.DISPENSER, Blocks.NOTE_BLOCK, Blocks.WHITE_BED,
+    public static final List<Block> RIGHTCLICKABLE_NOSPECIALITEM = Arrays.asList(Blocks.DISPENSER, Blocks.NOTE_BLOCK, Blocks.WHITE_BED,
             Blocks.ORANGE_BED, Blocks.MAGENTA_BED, Blocks.LIGHT_BLUE_BED, Blocks.YELLOW_BED, Blocks.LIME_BED, Blocks.PINK_BED, Blocks.GRAY_BED, Blocks.LIGHT_GRAY_BED,
             Blocks.CYAN_BED, Blocks.PURPLE_BED, Blocks.BLUE_BED, Blocks.BROWN_BED, Blocks.GREEN_BED, Blocks.RED_BED, Blocks.BLACK_BED, Blocks.CHEST,
             Blocks.FURNACE, Blocks.OAK_DOOR, Blocks.LEVER, Blocks.STONE_BUTTON, Blocks.CAKE, Blocks.REPEATER, Blocks.OAK_TRAPDOOR, Blocks.SPRUCE_TRAPDOOR,
