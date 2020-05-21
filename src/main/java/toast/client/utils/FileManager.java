@@ -72,7 +72,7 @@ public class FileManager {
     }
 
     public static File createFile(File file, String[] lines) {
-       return createFile(file, String.join("\n", lines));
+        return createFile(file, String.join("\n", lines));
     }
 
     public static File createFile(String name, String[] lines) {
@@ -145,7 +145,7 @@ public class FileManager {
         if(index > lines.size()) {
             for (int i = lines.size(); i <= index; i++) {
                 if(i == index) lines.add(newLine);
-                 else lines.add("");
+                else lines.add("");
             }
         } else {
             lines.set(index, newLine);

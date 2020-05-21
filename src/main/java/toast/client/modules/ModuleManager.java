@@ -1,3 +1,4 @@
+
 package toast.client.modules;
 
 import com.google.gson.Gson;
@@ -112,4 +113,3 @@ public class ModuleManager {
         Config.loadKeyBindsAuto();
     }
 }
-

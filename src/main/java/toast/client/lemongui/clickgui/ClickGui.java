@@ -41,6 +41,7 @@ public class ClickGui extends AbstractScreen {
 			for (Component component : frame.getComponents()) {
 				if (component instanceof Button) {
 					((Button) component).setOpen(false);
+					((Button) component).parent.refresh();
 				}
 			}
 		}
