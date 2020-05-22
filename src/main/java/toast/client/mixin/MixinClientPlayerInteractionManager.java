@@ -20,7 +20,7 @@ public class MixinClientPlayerInteractionManager {
     @Inject(method = "attackEntity", at = @At("HEAD"))
     public void attackEntity(PlayerEntity playerEntity_1, Entity entity_1, CallbackInfo ci) {
         try {
-            EventAttack event = new EventAttack((LivingEntity) entity_1);
+            EventAttack event = new EventAttack(entity_1);
             EventManager.call(event);
             if (event.isCancelled()) ci.cancel();
         } catch (NullPointerException null_is_annoying) {

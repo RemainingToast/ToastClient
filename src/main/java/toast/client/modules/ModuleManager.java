@@ -15,6 +15,7 @@ import toast.client.modules.dev.Panic;
 import toast.client.modules.misc.FancyChat;
 import toast.client.modules.misc.PortalChat;
 import toast.client.modules.misc.Spammer;
+import toast.client.modules.movement.FastStop;
 import toast.client.modules.movement.Fly;
 import toast.client.modules.movement.Velocity;
 import toast.client.modules.player.AutoTool;
@@ -108,6 +109,7 @@ public class ModuleManager {
         modules.add(new Spammer());
         modules.add(new Surround());
         modules.add(new Velocity());
+        modules.add(new FastStop());
         Config.loadOptions(options);
         Config.loadModules(moduleToggles);
         Config.loadKeyBindsAuto();

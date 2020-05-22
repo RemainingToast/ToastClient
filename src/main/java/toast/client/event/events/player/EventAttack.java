@@ -1,14 +1,14 @@
 package toast.client.event.events.player;
 
+import net.minecraft.entity.Entity;
 import toast.client.event.events.AbstractSkippableEvent;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class EventAttack extends AbstractSkippableEvent {
-    public LivingEntity entity = null;
+    public Entity entity = null;
     public BlockPos block = null;
 
-    public EventAttack(LivingEntity entity) {
+    public EventAttack(Entity entity) {
         this.entity = entity;
     }
     public EventAttack(BlockPos block) {
@@ -19,7 +19,7 @@ public class EventAttack extends AbstractSkippableEvent {
         return block;
     }
 
-    public LivingEntity getEntity() {
+    public Entity getEntity() {
         return entity;
     }
 
