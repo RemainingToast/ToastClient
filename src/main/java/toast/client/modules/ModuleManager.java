@@ -46,7 +46,7 @@ public class ModuleManager {
         for (Module module : modules) {
             if (module.getKey() == key && action == GLFW.GLFW_PRESS) {
                 if(MinecraftClient.getInstance().inGameHud.getChatHud().isChatFocused()) continue;
-                if(!module.getClass().equals(Panic.class) && Panic.IsPanicing()) return;
+                if(!module.getClass().equals(Panic.class) && Panic.IsPanicking()) return;
                 module.toggle();
             }
         }

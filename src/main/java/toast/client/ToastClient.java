@@ -5,10 +5,11 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
+import toast.client.event.EventManager;
 import toast.client.modules.ModuleManager;
-import toast.client.dontobfuscate.Config;
 import toast.client.utils.FileManager;
 import toast.client.utils.LoginUtil;
+import toast.client.utils.TPSCalculator;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ToastClient implements ModInitializer {
         FileManager.initFileManager();
         ModuleManager.initModules();
         CommandHandler.initCommands();
+        TPSCalculator.calculatorInstance = new TPSCalculator();
         if(devMode) {
             boolean login = LoginUtil.loginCracked("ToastDeveloper"); // avoid generating lots of .dat files in singleplayer worlds
             if (login) {

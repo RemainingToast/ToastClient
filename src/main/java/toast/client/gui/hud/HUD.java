@@ -18,7 +18,7 @@ public class HUD {
     private static MinecraftClient mc = MinecraftClient.getInstance();
 
     public static void drawHUD() {
-        if(mc.options.debugEnabled || Panic.IsPanicing()) return;
+        if(mc.options.debugEnabled || Panic.IsPanicking()) return;
         Module hud = ModuleManager.getModule("HUD");
         if(!hud.isEnabled()) return;
 

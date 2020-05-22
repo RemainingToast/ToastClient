@@ -24,7 +24,7 @@ public class MixinMinecraftClient {
 
     @Inject(method = "getWindowTitle", at = @At(value = "RETURN"), cancellable = true)
     private void getWindowTitle(CallbackInfoReturnable cir) {
-        if(Panic.IsPanicing()) {
+        if(Panic.IsPanicking()) {
         } else {
             cir.setReturnValue("Minecraft "+SharedConstants.getGameVersion().getName()+" | "+ToastClient.cleanPrefix+" "+ToastClient.version);
         }

@@ -13,13 +13,13 @@ public class Panic extends Module {
         super("Panic", Category.DEV, GLFW.GLFW_KEY_P);
     }
 
-    private static boolean isPanicing = false;
+    private static boolean isPanicking = false;
 
     private List<Module> wasEnabled = new ArrayList<>();
 
     public void onEnable() {
         if(mc.currentScreen != null) return;
-        isPanicing = true;
+        isPanicking = true;
         for (Module module : ModuleManager.modules) {
             if(module.isEnabled() && !module.getClass().equals(this.getClass())) {
                 module.setToggled(false);
@@ -42,7 +42,7 @@ public class Panic extends Module {
     }
 
     public void onDisable() {
-        isPanicing = false;
+        isPanicking = false;
         for (Module module : ModuleManager.modules) {
             if(wasEnabled.contains(module)) {
                 module.setToggled(true);
@@ -54,7 +54,7 @@ public class Panic extends Module {
         }
     }
 
-    public static boolean IsPanicing() {
-        return isPanicing;
+    public static boolean IsPanicking() {
+        return isPanicking;
     }
 }

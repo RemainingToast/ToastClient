@@ -38,7 +38,7 @@ public class MixinClientConnection {
                     String[] args = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix+cmd, "").split(" ");
                     String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
                     System.out.println("cmd: "+cmd+", args: "+Arrays.toString(betterArgs));
-                    if(!Panic.IsPanicing()) {
+                    if(!Panic.IsPanicking()) {
                         CommandHandler.executeCmd(cmd, betterArgs);
                         ci.cancel();
                     }
