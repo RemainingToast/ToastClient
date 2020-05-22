@@ -9,13 +9,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkSection;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
@@ -72,6 +70,31 @@ public class WorldUtil {
             int z1 = MathHelper.floor(box.z1);
             int z2 = MathHelper.ceil(box.z2);
             BlockPos.stream(x1, y1, z1, x2 - 1, y2 - 1, z2 - 1).forEach(pos -> {
+                Block block = world.getBlockState(pos).getBlock();
+                if (matches.contains(block)) {
+                    map.put(pos, block);
+                }
+            });
+            latch.countDown();
+        }).start();
+        latch.await();
+        return map;
+    }
+
+    /**
+     * Asynchronously get all matches of given Block(s) inside a given List and collect them into a map of BlockPos and Block
+     *
+     * @param world World of the Box
+     * @param toCheck List of block positions to check against matches
+     * @param matches List of blocks to match against blocks inside the Box
+     * @return Matches inside the List collected as a map of BlockPos and Block
+     */
+    public static ConcurrentHashMap<BlockPos, Block> searchList(World world, List<BlockPos> toCheck, List<Block> matches) throws InterruptedException {
+        ConcurrentHashMap<BlockPos, Block> map = new ConcurrentHashMap<>();
+        // I'm trusting that the chunk is loaded
+        CountDownLatch latch = new CountDownLatch(1);
+        new Thread(() -> {
+            toCheck.forEach(pos -> {
                 Block block = world.getBlockState(pos).getBlock();
                 if (matches.contains(block)) {
                     map.put(pos, block);

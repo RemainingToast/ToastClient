@@ -2,7 +2,6 @@ package toast.client.modules.render;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;
-import org.lwjgl.glfw.GLFW;
 import toast.client.event.EventImpl;
 import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.Module;
