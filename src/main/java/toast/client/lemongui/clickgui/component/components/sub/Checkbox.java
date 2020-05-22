@@ -1,5 +1,7 @@
 package toast.client.lemongui.clickgui.component.components.sub;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import org.lwjgl.opengl.GL11;
@@ -12,6 +14,7 @@ import toast.client.dontobfuscate.settings.CheckSetting;
 
 import java.awt.*;
 
+@Environment(EnvType.CLIENT)
 public class Checkbox extends Component {
 
 	private boolean hovered;
@@ -52,8 +55,15 @@ public class Checkbox extends Component {
 		MinecraftClient.getInstance().textRenderer.drawWithShadow(this.name, (parent.parent.getX() + 10 + 4) * 2 + 5, (parent.parent.getY() + offset + 2) * 2 + 4, color);
 		GL11.glPopMatrix();
 		InGameHud.fill(parent.parent.getX() + 3 + 4, parent.parent.getY() + offset + 3, parent.parent.getX() + 9 + 4, parent.parent.getY() + offset + 9, color);
-		if(this.op.getValBoolean())
-			InGameHud.fill(parent.parent.getX() + 4 + 4, parent.parent.getY() + offset + 4, parent.parent.getX() + 8 + 4, parent.parent.getY() + offset + 8, 0xFF666666);
+		if(this.op.getValBoolean()) {
+			if (!ModuleManager.getModule(ClickGui.class).getBool("Reverse Checkboxes")) {
+				InGameHud.fill(parent.parent.getX() + 4 + 4, parent.parent.getY() + offset + 4, parent.parent.getX() + 8 + 4, parent.parent.getY() + offset + 8, 0xFF666666);
+			}
+		} else {
+			if (ModuleManager.getModule(ClickGui.class).getBool("Reverse Checkboxes")) {
+				InGameHud.fill(parent.parent.getX() + 4 + 4, parent.parent.getY() + offset + 4, parent.parent.getX() + 8 + 4, parent.parent.getY() + offset + 8, 0xFF666666);
+			}
+		}
 	}
 	
 	@Override

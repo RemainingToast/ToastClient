@@ -15,6 +15,7 @@ public class ClickGui extends Module {
 	public ClickGui() {
 		super("ClickGUI", Category.RENDER, GLFW.GLFW_KEY_RIGHT_SHIFT);
 		this.addBool("Rainbow", true);
+		this.addBool("Reverse Checkboxes", true);
 	}
 
 	public void onEnable() {

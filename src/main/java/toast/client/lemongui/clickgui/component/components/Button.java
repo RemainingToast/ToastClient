@@ -1,5 +1,7 @@
 package toast.client.lemongui.clickgui.component.components;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import org.lwjgl.opengl.GL11;
@@ -17,6 +19,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 public class Button extends toast.client.lemongui.clickgui.component.Component {
 
     public Module mod;
