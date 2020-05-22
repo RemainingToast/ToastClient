@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
 import toast.client.dontobfuscate.settings.Setting;
 import toast.client.modules.combat.AutoRespawn;
+import toast.client.modules.combat.BowSpam;
 import toast.client.modules.combat.KillAura;
 import toast.client.modules.dev.Panic;
 import toast.client.modules.misc.FancyChat;
@@ -104,6 +105,7 @@ public class ModuleManager {
         modules.add(new Fullbright());
         modules.add(new HUD());
         modules.add(new KillAura());
+        modules.add(new BowSpam());
         modules.add(new Panic());
         modules.add(new PortalChat());
         modules.add(new Spammer());
