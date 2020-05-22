@@ -221,8 +221,20 @@ public class Surround extends Module {
 
     public void centerPlayerPos() {
         if(mc.player == null) return;
+        double x = mc.player.getPos().getX();
+        double z = mc.player.getPos().getZ();
+        if (x < 0) {
+            x = Math.ceil(x) - 0.5d;
+        } else {
+            x = Math.floor(x) + 0.5d;
+        }
+        if (z < 0) {
+            z = Math.ceil(z) - 0.5d;
+        } else {
+            z = Math.floor(z) + 0.5d;
+        }
         Vec3d p = mc.player.getPos();
-        mc.player.updatePosition(Math.floor(p.getX())+0.50, Math.floor(p.getY()), Math.floor(p.getZ())+0.50);
+        mc.player.updatePosition(x, Math.floor(p.getY()), z);
     }
 
     public boolean isCentered(Vec3d pos) {
