@@ -41,7 +41,7 @@ public class WorldUtil {
                 for (int z = chunkZ * 16; z < chunkZ * 16 + 15; z++) {
                     Block block = world.getBlockState(new BlockPos(x, chunk.getHeightmap(WORLD_SURFACE).get(x, z), z)).getBlock();
                     if (matches.contains(block)) {
-                        queue.put(new BlockPos(x, y, z), block);
+                        queue.put(new BlockPos(x, chunk.getHeightmap(WORLD_SURFACE).get(x, z), z), block);
                     }
                 }
             }
