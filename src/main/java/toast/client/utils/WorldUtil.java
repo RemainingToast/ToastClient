@@ -31,7 +31,7 @@ public class WorldUtil {
      * @param matches List of blocks to match against blocks inside the Box
      * @return Matches inside the Box collected as a map of BlockPos and Block
      */
-    public ConcurrentHashMap<BlockPos, Block> searchChunk(World world, int chunkX, int chunkZ, List<Block> matches) throws InterruptedException {
+    public static ConcurrentHashMap<BlockPos, Block> searchChunk(World world, int chunkX, int chunkZ, List<Block> matches) throws InterruptedException {
         ConcurrentHashMap<BlockPos, Block> queue = new ConcurrentHashMap<>();
         if (!world.isChunkLoaded(new BlockPos(chunkX * 16d, 80d, chunkZ * 16d))) { return queue; }
         CountDownLatch latch = new CountDownLatch(1);
@@ -60,7 +60,7 @@ public class WorldUtil {
      * @param matches List of blocks to match against blocks inside the Box
      * @return Matches inside the Box collected as a map of BlockPos and Block
      */
-    public ConcurrentHashMap<BlockPos, Block> searchBox(World world, Box box, List<Block> matches) throws InterruptedException {
+    public static ConcurrentHashMap<BlockPos, Block> searchBox(World world, Box box, List<Block> matches) throws InterruptedException {
         ConcurrentHashMap<BlockPos, Block> map = new ConcurrentHashMap<>();
         // I'm trusting that the chunk is loaded
         CountDownLatch latch = new CountDownLatch(1);
@@ -92,12 +92,28 @@ public class WorldUtil {
      * @param chunkZ Chunk-level Z value (normal Z / 16.0D)
      * @return Tile entities inside the Chunk collected as a map of BlockPos and Block
      */
-    public LinkedHashMap<BlockPos, Block> getTileEntitiesInChunk(World world, int chunkX, int chunkZ) {
+    public static LinkedHashMap<BlockPos, Block> getTileEntitiesInChunk(World world, int chunkX, int chunkZ) {
         LinkedHashMap<BlockPos, Block> map = new LinkedHashMap<>();
         Chunk chunk = world.getChunk(chunkX, chunkZ);
         if (!world.isChunkLoaded(new BlockPos(chunkX * 16d, 80d, chunkZ * 16d))) { return map; }
         chunk.getBlockEntityPositions().forEach(tilePos -> {
             map.put(tilePos, world.getBlockState(tilePos).getBlock());
+        });
+        return map;
+    }
+
+    /**
+     * Get all tile entities inside a given world and collect them into a map of BlockPos and Block
+     *
+     * @see Chunk#getBlockEntityPositions()
+     * @param world World of the chunk
+     * @return Tile entities inside the world which are loaded by the player collected as a map of BlockPos and Block
+     */
+    public static LinkedHashMap<BlockPos, Block> getTileEntitiesInWorld(World world) {
+        LinkedHashMap<BlockPos, Block> map = new LinkedHashMap<>();
+        world.blockEntities.forEach(tilePos -> {
+            BlockPos pos = tilePos.getPos();
+            map.put(pos, world.getBlockState(pos).getBlock());
         });
         return map;
     }
