@@ -61,6 +61,7 @@ public class TPSCalculator {
             tps = MathHelper.clamp(totalTicks / ticksStored, 0, 20);
             nextPredictedTick = System.currentTimeMillis() + 1000 / tps;
         }
+        if (nextToCheck > ticks.length - 1) nextToCheck = 0;
     }
 
     @EventImpl
