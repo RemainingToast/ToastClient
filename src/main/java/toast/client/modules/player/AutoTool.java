@@ -1,7 +1,7 @@
 package toast.client.modules.player;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
@@ -41,7 +41,7 @@ public class AutoTool extends Module {
         }
     }
 
-    public void setSlot(LivingEntity entity) {
+    public void setSlot(Entity entity) {
         if(mc.player == null) return;
         float bestValue = 0.0F;
         int bestSlot = -1;
