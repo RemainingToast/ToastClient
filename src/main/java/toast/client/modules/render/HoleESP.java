@@ -7,6 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import toast.client.event.EventImpl;
 import toast.client.event.events.player.EventRender;
 import toast.client.modules.Module;
+import toast.client.utils.RenderUtil;
 import toast.client.utils.WorldInteractionUtil;
 import toast.client.utils.WorldUtil;
 
@@ -28,7 +29,7 @@ public class HoleESP extends Module {
     private static boolean awaiting = false;
 
     public HoleESP() {
-        super("StorageESP", Category.RENDER, -1);
+        super("HoleESP", Category.RENDER, -1);
         this.addBool("Bedrock (Green)", true);
         this.addBool("Obsidian (Red)", true);
         this.addBool("Mixed (Yellow)", true);
@@ -52,47 +53,48 @@ public class HoleESP extends Module {
             });
             latch.await();
             CountDownLatch latch2electricboogaloo = new CountDownLatch(airPositions.size());
-            airPositions.forEach(pos -> {
-                latch2electricboogaloo.countDown();
-                int bedrock = 0;
-                int obsidian = 0;
+            new Thread(() -> {
+                airPositions.forEach(pos -> {
+                    latch2electricboogaloo.countDown();
+                    int bedrock = 0;
+                    int obsidian = 0;
 
-                for (BlockPos blockPos : offsets) {
-                    if (((this.getBool("Bedrock (Green)") || this.getBool("Mixed (Yellow)")) && mc.world.getBlockState(pos.add(blockPos)).getBlock() == Blocks.BEDROCK)) {
-                        bedrock++;
+                    for (BlockPos blockPos : offsets) {
+                        if (((this.getBool("Bedrock (Green)") || this.getBool("Mixed (Yellow)")) && mc.world.getBlockState(pos.add(blockPos)).getBlock() == Blocks.BEDROCK)) {
+                            bedrock++;
+                        } else if ((this.getBool("Obsidian (Red)") || this.getBool("Mixed (Yellow)")) && mc.world.getBlockState(pos.add(blockPos)).getBlock() == Blocks.OBSIDIAN) {
+                            obsidian++;
+                        }
                     }
-                    else if ((this.getBool("Obsidian (Red)") || this.getBool("Mixed (Yellow)")) && mc.world.getBlockState(pos.add(blockPos)).getBlock() == Blocks.OBSIDIAN) {
-                        obsidian++;
-                    }
-                }
 
-                if (!((bedrock == 5 && !this.getBool("Bedrock (Green)")) || (obsidian == 5 && !this.getBool("Obsidian (Red)")) || (bedrock > 0 && obsidian > 0 && !this.getBool("Mixed (Yellow)"))) &&
-                        bedrock + obsidian == 5 &&
-                        (WorldInteractionUtil.AIR.contains(mc.world.getBlockState(pos.add(0, 1, 0)).getBlock())) &&
-                        (WorldInteractionUtil.AIR.contains(mc.world.getBlockState(pos.add(0, 2, 0)).getBlock()))) {
+                    if (!((bedrock == 5 && !this.getBool("Bedrock (Green)")) || (obsidian == 5 && !this.getBool("Obsidian (Red)")) || (bedrock > 0 && obsidian > 0 && !this.getBool("Mixed (Yellow)"))) &&
+                            bedrock + obsidian == 5 &&
+                            (WorldInteractionUtil.AIR.contains(mc.world.getBlockState(pos.add(0, 1, 0)).getBlock())) &&
+                            (WorldInteractionUtil.AIR.contains(mc.world.getBlockState(pos.add(0, 2, 0)).getBlock()))) {
 
-                    if (this.isMode("Box")) {
-                        /*if (bedrock == 5) {
-                            RenderUtils.drawFilledBox(pos, 0.08f, 1f, 0.35f, (float) (getSettings().get(4).toSlider().getValue() + 20) / 100);
-                        } else if (obsidian == 5) {
-                            RenderUtils.drawFilledBox(pos, 1f, 0f, 0f, (float) (getSettings().get(4).toSlider().getValue() + 20) / 100);
-                        } else {
-                            RenderUtils.drawFilledBox(pos, 1f, 1f, 0f, (float) (getSettings().get(4).toSlider().getValue() + 20) / 100);
-                        }*/
-                    } else if (this.isMode("Flat")) {
-                        /*if (bedrock == 5) {
-                            RenderUtils.drawFilledBox(new Box(Math.floor(pos.getX()), Math.floor(pos.getY()), Math.floor(pos.getZ()), Math.ceil(pos.getX() + 0.01), Math.floor(pos.getY()) - 0.0001, Math.ceil(pos.getZ() + 0.01)), 0.08f, 1f, 0.35f, (float) (getSettings().get(4).toSlider().getValue() + 20) / 100);
-                            //RenderUtils.drawQuad(Math.floor(pos.getX()), Math.floor(pos.getZ()), Math.ceil(pos.getX()), Math.ceil(pos.getZ()), Math.floor(pos.getY()), 0.08f, 1f, 0.35f, (float) getSettings().get(4).toSlider().getValue() / 100);
-                        } else if (obsidian == 5) {
-                            RenderUtils.drawFilledBox(new Box(Math.floor(pos.getX()), Math.floor(pos.getY()), Math.floor(pos.getZ()), Math.ceil(pos.getX() + 0.01), Math.floor(pos.getY()) - 0.0001, Math.ceil(pos.getZ() + 0.01)), 1f, 0f, 0f, (float) (getSettings().get(4).toSlider().getValue() + 20) / 100);
-                            //RenderUtils.drawQuad(Math.floor(pos.getX()), Math.floor(pos.getZ()), Math.ceil(pos.getX()), Math.ceil(pos.getZ()), Math.floor(pos.getY()), 1f, 1f, 0f, (float) getSettings().get(4).toSlider().getValue() / 100);
-                        } else {
-                            RenderUtils.drawFilledBox(new Box(Math.floor(pos.getX()), Math.floor(pos.getY()), Math.floor(pos.getZ()), Math.ceil(pos.getX() + 0.01), Math.floor(pos.getY()) - 0.0001, Math.ceil(pos.getZ() + 0.01)), 1f, 1f, 0f, (float) (getSettings().get(4).toSlider().getValue() + 20) / 100);
-                            //RenderUtils.drawQuad(Math.floor(pos.getX()), Math.floor(pos.getZ()), Math.ceil(pos.getX()), Math.ceil(pos.getZ()), Math.floor(pos.getY()), 1f, 0f, 0f, (float) getSettings().get(4).toSlider().getValue() / 100);
-                        }*/
+                        if (this.isMode("Box")) {
+                            if (bedrock == 5) {
+                                RenderUtil.drawFilledBox(pos, 0.08f, 1f, 0.35f, (float) (this.getDouble("Opacity") + 20) / 100);
+                            } else if (obsidian == 5) {
+                                RenderUtil.drawFilledBox(pos, 1f, 0f, 0f, (float) (this.getDouble("Opacity") + 20) / 100);
+                            } else {
+                                RenderUtil.drawFilledBox(pos, 1f, 1f, 0f, (float) (this.getDouble("Opacity") + 20) / 100);
+                            }
+                        } else if (this.isMode("Flat")) {
+                            if (bedrock == 5) {
+                                RenderUtil.drawFilledBox(new Box(Math.floor(pos.getX()), Math.floor(pos.getY()), Math.floor(pos.getZ()), Math.ceil(pos.getX() + 0.01), Math.floor(pos.getY()) - 0.0001, Math.ceil(pos.getZ() + 0.01)), 0.08f, 1f, 0.35f, (float) (this.getDouble("Opacity") + 20) / 100);
+                                //RenderUtils.drawQuad(Math.floor(pos.getX()), Math.floor(pos.getZ()), Math.ceil(pos.getX()), Math.ceil(pos.getZ()), Math.floor(pos.getY()), 0.08f, 1f, 0.35f, (float) getSettings().get(4).toSlider().getValue() / 100);
+                            } else if (obsidian == 5) {
+                                RenderUtil.drawFilledBox(new Box(Math.floor(pos.getX()), Math.floor(pos.getY()), Math.floor(pos.getZ()), Math.ceil(pos.getX() + 0.01), Math.floor(pos.getY()) - 0.0001, Math.ceil(pos.getZ() + 0.01)), 1f, 0f, 0f, (float) (this.getDouble("Opacity") + 20) / 100);
+                                //RenderUtils.drawQuad(Math.floor(pos.getX()), Math.floor(pos.getZ()), Math.ceil(pos.getX()), Math.ceil(pos.getZ()), Math.floor(pos.getY()), 1f, 1f, 0f, (float) getSettings().get(4).toSlider().getValue() / 100);
+                            } else {
+                                RenderUtil.drawFilledBox(new Box(Math.floor(pos.getX()), Math.floor(pos.getY()), Math.floor(pos.getZ()), Math.ceil(pos.getX() + 0.01), Math.floor(pos.getY()) - 0.0001, Math.ceil(pos.getZ() + 0.01)), 1f, 1f, 0f, (float) (this.getDouble("Opacity") + 20) / 100);
+                                //RenderUtils.drawQuad(Math.floor(pos.getX()), Math.floor(pos.getZ()), Math.ceil(pos.getX()), Math.ceil(pos.getZ()), Math.floor(pos.getY()), 1f, 0f, 0f, (float) getSettings().get(4).toSlider().getValue() / 100);
+                            }
+                        }
                     }
-                }
-            });
+                });
+            }).start();
             latch2electricboogaloo.await();
             awaiting = false;
         } catch (InterruptedException ignored) { awaiting = false; }

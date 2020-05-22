@@ -25,6 +25,7 @@ import toast.client.modules.render.ClickGui;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
 import toast.client.dontobfuscate.Config;
+import toast.client.modules.render.HoleESP;
 import toast.client.utils.FileManager;
 
 import java.io.FileNotFoundException;
@@ -103,6 +104,7 @@ public class ModuleManager {
         modules.add(new FancyChat());
         modules.add(new Fly());
         modules.add(new Fullbright());
+        modules.add(new HoleESP());
         modules.add(new HUD());
         modules.add(new KillAura());
         modules.add(new BowSpam());
