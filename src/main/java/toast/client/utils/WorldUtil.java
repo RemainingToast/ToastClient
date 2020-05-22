@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
+import static net.minecraft.world.Heightmap.Type.WORLD_SURFACE;
+
 @Environment(EnvType.CLIENT)
 public class WorldUtil {
     
@@ -33,14 +35,13 @@ public class WorldUtil {
         ConcurrentHashMap<BlockPos, Block> queue = new ConcurrentHashMap<>();
         if (!world.isChunkLoaded(new BlockPos(chunkX * 16d, 80d, chunkZ * 16d))) { return queue; }
         CountDownLatch latch = new CountDownLatch(1);
+        Chunk chunk = world.getChunk(chunkX, chunkZ);
         new Thread(() -> {
             for (int x = chunkX * 16; x < chunkX * 16 + 15; x++) {
-                for (int y = 0; y < 255; y++) {
-                    for (int z = chunkZ * 16; z < chunkZ * 16 + 15; z++) {
-                        Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                        if (matches.contains(block)) {
-                            queue.put(new BlockPos(x, y, z), block);
-                        }
+                for (int z = chunkZ * 16; z < chunkZ * 16 + 15; z++) {
+                    Block block = world.getBlockState(new BlockPos(x, chunk.getHeightmap(WORLD_SURFACE).get(x, z), z)).getBlock();
+                    if (matches.contains(block)) {
+                        queue.put(new BlockPos(x, y, z), block);
                     }
                 }
             }
