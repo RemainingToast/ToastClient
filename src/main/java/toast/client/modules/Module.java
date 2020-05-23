@@ -5,7 +5,10 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import toast.client.dontobfuscate.Config;
 import toast.client.dontobfuscate.ModuleSettings;
+import toast.client.dontobfuscate.Setting;
 import toast.client.event.EventManager;
+
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class Module {
@@ -60,8 +63,8 @@ public class Module {
         return settings;
     }
 
-    public void setSettings(ModuleSettings settings) {
-        this.settings = settings;
+    public void setSettings(Map<String, Setting> newSettings) {
+        this.settings.setSettings(newSettings);
     }
 
     public boolean isMode(String mode) {

@@ -19,12 +19,12 @@ public class Config {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static Map<String, Integer> keybinds = new HashMap<>();
     public static Map<String, Boolean> modules = new HashMap<>();
-    public static Map<String, ModuleSettings> config = new HashMap<>();
+    public static Map<String, Map<String, Setting>> config = new HashMap<>();
     public static String disabledOnStart = "Panic";
 
     public static void updateRead() {
         try {
-            config = gson.fromJson(new FileReader(FileManager.createFile(configFile)), new TypeToken<Map<String, ModuleSettings>>() {
+            config = gson.fromJson(new FileReader(FileManager.createFile(configFile)), new TypeToken<Map<String, Map<String, Setting>>>() {
             }.getType());
             modules = gson.fromJson(new FileReader(FileManager.createFile(modulesFile)), new TypeToken<Map<String, Boolean>>() {
             }.getType());
@@ -36,9 +36,9 @@ public class Config {
     }
 
     public static void writeConfig() {
-        Map<String, ModuleSettings> config = new HashMap<>();
+        Map<String, Map<String, Setting>> config = new HashMap<>();
         for (Module module : ModuleManager.getModules()) {
-            config.put(module.getName(), module.getSettings());
+            config.put(module.getName(), module.getSettings().getSettings());
         }
         FileManager.writeFile(configFile, gson.toJson(config));
     }
@@ -46,14 +46,14 @@ public class Config {
     public static void loadConfigAuto() {
         updateRead();
         if (config == null) {
-            writeModules();
+            writeConfig();
             updateRead();
             return;
         }
         loadConfig(config);
     }
 
-    public static void loadConfig(Map<String, ModuleSettings> config) {
+    public static void loadConfig(Map<String, Map<String, Setting>> config) {
         if (config == null || config.isEmpty()) return;
         for (Module module : ModuleManager.getModules()) {
             if (config.containsKey(module.getName())) {
