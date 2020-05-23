@@ -22,6 +22,14 @@ public class ModuleSettings {
         settingsDef.put(name, new SettingDef(minimumValue, maximumValue));
     }
 
+    public Setting getSetting(String name) {
+        return settings.get(name);
+    }
+
+    public SettingDef getSettingDef(String name) {
+        return settingsDef.get(name);
+    }
+
     public boolean getBoolean(String name) {
         return settings.get(name).isEnabled();
     }

@@ -32,7 +32,7 @@ public class HUD {
             double size = hud.getDouble("Watermark Size");
 //            double size = 1.5;
             GL11.glScaled(size, size, size);
-            String[] letters = ToastClient.cleanPrefix.split("");//TODO: fix the positions of the letters maybe not hardcoded in the future?
+            String[] letters = ToastClient.cleanPrefix.split(""); //TODO: fix the positions of the letters maybe not hardcoded in the future?
             int[] intarray = {7, 13, 19, 25, 31, 37, 43, 46, 48, 54, 60};
             for (int i = 0; i < letters.length; i++) {
                 mc.textRenderer.drawWithShadow(letters[i], intarray[i], 4, rainbow(i * 25));
@@ -41,10 +41,10 @@ public class HUD {
         }
 
         // arraylist/sortedset/modulelist/whatever
-        if (hud.getBool("\"SortedSet\"")) {
-            SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed());//TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
+        if (hud.getBool("SortedSet")) {
+            SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed()); //TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
             for (Module module : ModuleManager.modules) {
-                if (module.isEnabled()) {
+                if (module.isEnabled() && module.getBool("Show In SortedSet")) {
                     enabledModules.add(module.getName());
                 }
             }

@@ -25,6 +25,7 @@ public class Module {
         this.name = name;
         this.key = key;
         this.category = category;
+        this.settings.addBoolean("Show In SortedSet", true);
     }
 
     public boolean isEnabled() {

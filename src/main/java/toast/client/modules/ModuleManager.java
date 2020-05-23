@@ -78,16 +78,6 @@ public class ModuleManager {
 
     private static void loadModules() {
         modules.clear();
-        /*Map<String, ModuleSettings> config = new HashMap<>();
-        Map<String, Boolean> moduleToggles = new HashMap<>();
-        Gson gson = new GsonBuilder().create();
-        try {
-            moduleToggles = gson.fromJson(new FileReader(FileManager.createFile(modulesFile)), new TypeToken<Map<String, Boolean>>(){}.getType());
-            config = gson.fromJson(new FileReader(FileManager.createFile(configFile)), new TypeToken<Map<String, ModuleSettings>>(){}.getType());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
-        // alphabetical order please
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
         modules.add(new FancyChat());
@@ -103,10 +93,11 @@ public class ModuleManager {
         modules.add(new Surround());
         modules.add(new Velocity());
         modules.add(new FastStop());
-        //Config.loadConfig(config);
-        //Config.loadModules(moduleToggles);
         Config.loadConfigAuto();
         Config.loadKeyBindsAuto();
         Config.loadModulesAuto();
+        Config.writeConfig();
+        Config.writeModules();
+        Config.writeKeyBinds();
     }
 }

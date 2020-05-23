@@ -57,7 +57,11 @@ public class Config {
         if (config == null || config.isEmpty()) return;
         for (Module module : ModuleManager.getModules()) {
             if (config.containsKey(module.getName())) {
-                module.setSettings(config.get(module.getName()));
+                for (Map.Entry<String, Setting> setting : config.get(module.getName()).entrySet()) {
+                    if (module.getSettings().getSettings().containsKey(setting.getKey())) {
+                        module.getSettings().getSettings().replace(setting.getKey(), setting.getValue());
+                    }
+                }
             }
         }
     }
