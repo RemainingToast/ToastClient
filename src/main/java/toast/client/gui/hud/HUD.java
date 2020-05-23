@@ -30,7 +30,6 @@ public class HUD {
         // watermark
         if (hud.getBool("Watermark")) {
             double size = hud.getDouble("Watermark Size");
-//            double size = 1.5;
             GL11.glScaled(size, size, size);
             String[] letters = ToastClient.cleanPrefix.split(""); //TODO: fix the positions of the letters maybe not hardcoded in the future?
             int[] intarray = {7, 13, 19, 25, 31, 37, 43, 46, 48, 54, 60};

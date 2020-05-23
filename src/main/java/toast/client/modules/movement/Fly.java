@@ -6,6 +6,7 @@ import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 public class Fly extends Module {
+
     public Fly() {
         super("Fly", Category.MOVEMENT, GLFW.GLFW_KEY_G);
         this.settings.addMode("Mode", "Vanilla", "Vanilla");
