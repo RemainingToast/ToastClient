@@ -12,7 +12,7 @@ public class BowSpam extends Module {
 
     public BowSpam() {
         super("BowSpam", Category.COMBAT, -1);
-        this.addModes("No Charge", "Medium Charge", "Full Charge");
+        this.settings.addMode("Mode", "No Charge","No Charge", "Medium Charge", "Full Charge");
     }
 
     @EventImpl

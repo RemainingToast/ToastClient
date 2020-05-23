@@ -18,6 +18,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class HoleESP extends Module {
 
+    private static boolean awaiting = false;
     private List<BlockPos> offsets = Arrays.asList(
             new BlockPos(0, -1, 0),
             new BlockPos(1, 0, 0),
@@ -26,16 +27,14 @@ public class HoleESP extends Module {
             new BlockPos(0, 0, -1)
     );
 
-    private static boolean awaiting = false;
-
     public HoleESP() {
         super("HoleESP", Category.RENDER, -1);
-        this.addBool("Bedrock (Green)", true);
-        this.addBool("Obsidian (Red)", true);
-        this.addBool("Mixed (Yellow)", true);
-        this.addNumberOption("Range", 8, 1, 15, false);
-        this.addNumberOption("Opacity", 70, 0, 100, true);
-        this.addModes("Flat", "Box");
+        this.settings.addBoolean("Bedrock (Green)", true);
+        this.settings.addBoolean("Obsidian (Red)", true);
+        this.settings.addBoolean("Mixed (Yellow)", true);
+        this.settings.addSlider("Range", 1, 8, 15);
+        this.settings.addSlider("Opacity", 0, 70, 100);
+        this.settings.addMode("Mode", "Flat", "Flat", "Box");
     }
 
     @EventImpl
@@ -48,7 +47,8 @@ public class HoleESP extends Module {
             List<BlockPos> airPositions = new ArrayList<>(Arrays.asList());
             CountDownLatch latch = new CountDownLatch(positions.size());
             WorldUtil.searchList(mc.world, positions, WorldInteractionUtil.AIR).keySet().forEach(pos -> {
-                if (new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.50).distanceTo(mc.player.getPos()) <= this.getDouble("Range")) airPositions.add(pos);
+                if (new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.50).distanceTo(mc.player.getPos()) <= this.getDouble("Range"))
+                    airPositions.add(pos);
                 latch.countDown();
             });
             latch.await();
@@ -97,6 +97,8 @@ public class HoleESP extends Module {
             }).start();
             latch2electricboogaloo.await();
             awaiting = false;
-        } catch (InterruptedException ignored) { awaiting = false; }
+        } catch (InterruptedException ignored) {
+            awaiting = false;
+        }
     }
 }

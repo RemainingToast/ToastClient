@@ -12,15 +12,14 @@ public class CommandReload extends Command {
 
     public void run(String[] args) {
         if (args.length < 1) {
-            Config.loadOptionsAuto();
+            Config.loadConfigAuto();
             Config.loadModulesAuto();
             Config.loadKeyBindsAuto();
-            Config.loadClickGui();
             Logger.message("Reloaded all configuration files.", Logger.INFO);
         } else {
             switch (args[0]) {
-                case "options":
-                    Config.loadOptionsAuto();
+                case "config":
+                    Config.loadConfigAuto();
                     Logger.message("Reloaded module options.", Logger.INFO);
                     break;
                 case "modules":
@@ -30,14 +29,6 @@ public class CommandReload extends Command {
                 case "keybinds":
                     Config.loadKeyBindsAuto();
                     Logger.message("Reloaded keybinds.", Logger.INFO);
-                    break;
-                case "clickgui":
-                    Config.loadClickGui();
-                    Logger.message("Reloaded clickgui.", Logger.INFO);
-                    break;
-                case "config":
-                    Config.loadClickGui();
-                    Logger.message("Reloaded client config.", Logger.INFO);
                     break;
                 default:
                     Logger.message("Invalid argument, valid arguments are:", Logger.WARN);

@@ -10,15 +10,15 @@ import toast.client.utils.WorldUtil;
 public class StorageESP extends Module {
     public StorageESP() {
         super("StorageESP", Category.RENDER, -1);
-        this.addBool("Chests", true);
-        this.addBool("Trapped Chests", true);
-        this.addBool("Minecart Chests", true);
-        this.addBool("Furnaces", true);
-        this.addBool("Smokers", true);
-        this.addBool("Blast Furnaces", true);
-        this.addBool("Barrels", true);
-        this.addBool("Dispensers", true);
-        this.addBool("Droppers", true);
+        this.settings.addBoolean("Chests", true);
+        this.settings.addBoolean("Trapped Chests", true);
+        this.settings.addBoolean("Minecart Chests", true);
+        this.settings.addBoolean("Furnaces", true);
+        this.settings.addBoolean("Smokers", true);
+        this.settings.addBoolean("Blast Furnaces", true);
+        this.settings.addBoolean("Barrels", true);
+        this.settings.addBoolean("Dispensers", true);
+        this.settings.addBoolean("Droppers", true);
     }
 
     @EventImpl

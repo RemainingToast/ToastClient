@@ -56,7 +56,6 @@ public class CommandHandler {
 
     public static void initCommands() {
         // alphabetical order please
-        commands.add(new CommandGuireset());
         commands.add(new CommandHelp());
         commands.add(new CommandReload());
         commands.add(new CommandTest());

@@ -16,16 +16,17 @@ public class Fullbright extends Module {
 
     public Fullbright() {
         super("Fullbright", Module.Category.RENDER, -1);
-        this.addModes("Potion", "Gamma");
+        this.settings.addMode("Mode", "Potion", "Potion", "Gamma");
     }
 
     @EventImpl
     public void onTick(EventUpdate event) {
-        if(mc.player == null) return; // avoid excessive logs and client crashing
+        if (mc.player == null) return; // avoid excessive logs and client crashing
         if (this.isMode("Gamma") && !increasedGamma) {
             if (lastMode.equals("Potion")) {
                 assert mc.player != null;
-                if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 69) mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+                if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 69)
+                    mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
             }
             if (mc.options.gamma < 16) increaseGamma();
             lastMode = "Gamma";

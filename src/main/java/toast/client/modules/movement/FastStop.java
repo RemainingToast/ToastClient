@@ -7,7 +7,7 @@ import toast.client.modules.Module;
 public class FastStop extends Module {
     public FastStop() {
         super("Fast Stop", Category.MOVEMENT, -1);
-        this.addBool("Air Stop", false);
+        this.settings.addBoolean("Air Stop", false);
     }
 
     @EventImpl

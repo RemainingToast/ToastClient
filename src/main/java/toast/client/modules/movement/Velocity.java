@@ -1,10 +1,10 @@
 package toast.client.modules.movement;
 
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import toast.client.event.EventImpl;
 import toast.client.event.events.network.EventPacketReceived;
 import toast.client.modules.Module;
-import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 
 public class Velocity extends Module {
     public double lastx = 0;
@@ -13,10 +13,10 @@ public class Velocity extends Module {
 
     public Velocity() {
         super("Velocity", Module.Category.MOVEMENT, -1);
-        this.addModes("Vanilla", "YTeleport");
-        this.addBool("Cancel", true);
-        this.addNumberOption("HVel", 0.0, -100.0, 100.0);
-        this.addNumberOption("VVel", 0.0, -100.0, 100.0);
+        this.settings.addMode("Mode", "Vanilla", "Vanilla", "YTeleport");
+        this.settings.addBoolean("Cancel", true);
+        this.settings.addSlider("HVel", -100.0, 0.0, 100.0);
+        this.settings.addSlider("VVel", -100.0, 0.0, 100.0);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Velocity extends Module {
     @EventImpl
     public void onPacket(EventPacketReceived e) {
         if (this.isEnabled()) {
-            if(mc.player == null) return;
+            if (mc.player == null) return;
             if (this.isMode("Vanilla")) {
                 if (e.getPacket() instanceof ExplosionS2CPacket) {
                     ExplosionS2CPacket s27 = (ExplosionS2CPacket) e.getPacket();

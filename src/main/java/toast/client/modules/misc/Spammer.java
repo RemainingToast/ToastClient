@@ -14,21 +14,21 @@ import java.util.List;
 public class Spammer extends Module {
     private List<String> lines = new ArrayList<>();
     private int currentLine = 0;
+    private TimerUtil timer = new TimerUtil();
 
     public Spammer() {
-        super("Spammer", Category.MISC,-1);
-                this.addNumberOption("Delay", 1.0D, 0.0D, 20.0D);
-                this.addBool("AntiSpam", false);
-                this.addNumberOption("AntiSpam length", 20, 1, 25);
+        super("Spammer", Category.MISC, -1);
+        this.settings.addSlider("Delay", 0.0D, 1.0D, 20.0D);
+        this.settings.addBoolean("AntiSpam", false);
+        this.settings.addSlider("AntiSpam length", 1, 20, 25);
     }
-    private TimerUtil timer = new TimerUtil();
 
     public void onEnable() {
         timer.reset();
         lines = FileManager.readFile(FileManager.createFile("spammer.txt"));
-        if(lines == null || lines.size() < 1) {
+        if (lines == null || lines.size() < 1) {
             Logger.message("spammer.txt was empty!", Logger.WARN);
-            this.setToggled(false);
+            this.setEnabled(false);
         }
     }
 
@@ -38,15 +38,15 @@ public class Spammer extends Module {
 
     @EventImpl
     public void onTick(EventUpdate event) {
-        if(lines.isEmpty() || mc.player == null) return;
+        if (lines.isEmpty() || mc.player == null) return;
         if (this.timer.isDelayComplete((long) (this.getDouble("Delay") * 1000L))) {
             this.timer.setLastMS();
-            if(!this.getBool("AntiSpam")) {
+            if (!this.getBool("AntiSpam")) {
                 mc.player.sendChatMessage(lines.get(currentLine));
-            } else if(this.getBool("AntiSpam")) {
-                mc.player.sendChatMessage(lines.get(currentLine)+" ["+RandomStringUtils.randomAlphanumeric((int) this.getDouble("AntiSpam length")).toLowerCase()+"]");
+            } else if (this.getBool("AntiSpam")) {
+                mc.player.sendChatMessage(lines.get(currentLine) + " [" + RandomStringUtils.randomAlphanumeric((int) this.getDouble("AntiSpam length")).toLowerCase() + "]");
             }
-            if(currentLine >= lines.size() - 1) {
+            if (currentLine >= lines.size() - 1) {
                 currentLine = 0;
             } else {
                 currentLine++;

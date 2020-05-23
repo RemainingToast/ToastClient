@@ -11,15 +11,15 @@ import toast.client.event.events.player.EventAttack;
 import toast.client.modules.Module;
 
 public class AutoTool extends Module {
+    private int lastSlot = 0;
+
     public AutoTool() {
         super("AutoTool", Category.PLAYER, -1);
     }
 
-    private int lastSlot = 0;
-
-//TODO: make this also look at enchantments
+    //TODO: make this also look at enchantments
     public void setSlot(BlockPos blockPos) {
-        if(mc.player == null || mc.world == null) return;
+        if (mc.player == null || mc.world == null) return;
         float bestSpeed = 0.0F;
         int bestSlot = -1;
         if (mc.player.isCreative()) return;
@@ -42,7 +42,7 @@ public class AutoTool extends Module {
     }
 
     public void setSlot(Entity entity) {
-        if(mc.player == null) return;
+        if (mc.player == null) return;
         float bestValue = 0.0F;
         int bestSlot = -1;
         if (mc.player.isCreative()) return;
@@ -64,16 +64,16 @@ public class AutoTool extends Module {
     }
 
     public void onDisable() {
-        if(mc.player == null) return;
+        if (mc.player == null) return;
         mc.player.inventory.selectedSlot = lastSlot;
     }
 
     @EventImpl
     public void onEvent(EventAttack event) {
         //System.out.println("attack event: entity: "+event.isAttackingEntity()+" block: "+event.isAttackingBlock());
-        if(event.isAttackingBlock()) {
+        if (event.isAttackingBlock()) {
             setSlot(event.getBlock());
-        } else if(event.isAttackingEntity()) {
+        } else if (event.isAttackingEntity()) {
             setSlot(event.getEntity());
         }
     }
