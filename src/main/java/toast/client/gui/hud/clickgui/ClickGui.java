@@ -44,26 +44,14 @@ public class ClickGui extends Screen {
     public boolean isMouseOverRect(int mouseX, int mouseY, int x, int y, int width, int height) {
         boolean xOver = false;
         boolean yOver = false;
-        if (x < width) {
-            if (mouseX > x && mouseX < width) {
-                xOver = true;
-            }
-        } else if (x > width) {
-            if (mouseX < x && mouseX > width) {
-                xOver = true;
-            }
+        if (mouseX >= x && mouseX <= width + x) {
+            xOver = true;
         }
-        if (y < height) {
-            if (mouseY > y && mouseY < height) {
-                yOver = true;
-            }
-        } else if (y > height) {
-            if (mouseY < y && mouseY > height) {
-                yOver = true;
-            }
+        if (mouseY >= y && mouseY <= height + y) {
+            yOver = true;
         }
         if (xOver && yOver) return true;
-        return false;
+        else return false;
     }
 
     @Override
@@ -73,25 +61,26 @@ public class ClickGui extends Screen {
         int normalBgColor =new Color(0, 0, 0, 64).getRGB();
         int hoverBgColor =new Color(131, 212, 252, 92).getRGB();
         int clickBgColor =new Color(0, 0, 0, 64).getRGB();
-        String prefix = "> ";
+        String catPrefix = "> ";
+        String modPrefix = " > ";
         int width = 100;
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
         int i = 0;
         for (Module.Category category : Module.Category.values()) {
             int x = 10+(100*i)+(10*i);
-            int catColor = normalBgColor;
             if (isMouseOverRect(mouseX, mouseY, x, 10, width, height)) {
-                catColor = hoverBgColor;
+                drawTextBox(x, 10, width, height, onTextColor, hoverBgColor, catPrefix, category.toString());
+            } else {
+                drawTextBox(x, 10, width, height, onTextColor, normalBgColor, catPrefix, category.toString());
             }
-            drawTextBox(x, 10, width, height, onTextColor, catColor, prefix, category.toString());
             int u = 1;
             for (Module module : ModuleManager.getModulesInCategory(category)) {
-                int modColor = normalBgColor;
-                int y = 10+u+height*u;
+                int y = 10 + u + height * u;
                 if (isMouseOverRect(mouseX, mouseY, x, y, width, height)) {
-                    modColor = hoverBgColor;
+                    drawTextBox(x, y, width, height, offTextColor, hoverBgColor, modPrefix, module.getName());
+                } else {
+                    drawTextBox(x, y, width, height, offTextColor, normalBgColor, modPrefix, module.getName());
                 }
-                drawTextBox(x, y, width, height, offTextColor, modColor, " " + prefix, module.getName());
                 u++;
             }
             i++;
