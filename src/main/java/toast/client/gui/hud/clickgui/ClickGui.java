@@ -8,6 +8,7 @@ import net.minecraft.text.LiteralText;
 import toast.client.modules.Module;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ClickGui extends Screen {
     public static final String catPrefix = "> ";
@@ -74,10 +75,17 @@ public class ClickGui extends Screen {
         int width = 100;
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
         int i = 0;
+        ArrayList<Category> categories = new ArrayList<>();
         for (Module.Category category : Module.Category.values()) {
-            int x = offsetX+(100*i)+(xSpacing*i);
-            new Category(x, offsetY, mouseX, mouseY, width, height, category);
+            int x = offsetX + (100 * i) + (xSpacing * i);
+            categories.add(new Category(x, offsetY, mouseX, mouseY, width, height, category));
             i++;
+        }
+        for (Category category : categories) {
+            if (category.hasDesc) {
+                drawTextBox(category.descPosX, category.descPosY, MinecraftClient.getInstance().textRenderer.getStringWidth(category.desc) + 4, height, onTextColor, descriptionBgColor, "", category.desc);
+                break;
+            }
         }
     }
 
