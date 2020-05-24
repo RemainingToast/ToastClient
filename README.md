@@ -1,2 +1,2 @@
 # ToastClient
-Thank you HeroCode & xTrM_ for the ClickGUI!
+Thank you ~~HeroCode & xTrM_~~ wnuke for the ClickGUI!
