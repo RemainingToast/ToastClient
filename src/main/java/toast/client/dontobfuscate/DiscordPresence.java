@@ -1,13 +1,11 @@
-package toast.client;
+package toast.client.dontobfuscate;
 
 
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
-import net.minecraft.MinecraftVersion;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.toast.Toast;
-import net.minecraft.server.MinecraftServer;
+import toast.client.ToastClient;
 
 import static toast.client.ToastClient.*;
 

@@ -6,6 +6,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
+import toast.client.dontobfuscate.DiscordPresence;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.FileManager;
 import toast.client.utils.LoginUtil;
