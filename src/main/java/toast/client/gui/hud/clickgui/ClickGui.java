@@ -59,27 +59,45 @@ public class ClickGui extends Screen {
         int onTextColor = new Color(255, 255, 255, 255).getRGB();
         int offTextColor = new Color(177, 177, 177, 255).getRGB();
         int normalBgColor =new Color(0, 0, 0, 64).getRGB();
+        int descriptionBgColor =new Color(83, 83, 83, 255).getRGB();
         int hoverBgColor =new Color(131, 212, 252, 92).getRGB();
         int clickBgColor =new Color(0, 0, 0, 64).getRGB();
         String catPrefix = "> ";
         String modPrefix = " > ";
+        int offsetX = 5;
+        int xSpacing = 10;
+        int offsetY = 5;
         int width = 100;
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
         int i = 0;
+        int descriptionWidth = 0;
+        int descriptionX = 0;
+        int descriptionY = 0;
+        boolean descriptionShow = false;
         for (Module.Category category : Module.Category.values()) {
-            int x = 10+(100*i)+(10*i);
-            if (isMouseOverRect(mouseX, mouseY, x, 10, width, height)) {
-                drawTextBox(x, 10, width, height, onTextColor, hoverBgColor, catPrefix, category.toString());
+            int x = offsetX+(100*i)+(xSpacing*i);
+            if (isMouseOverRect(mouseX, mouseY, x, offsetY, width, height)) {
+                drawTextBox(x, offsetY, width, height, onTextColor, hoverBgColor, catPrefix, category.toString());
             } else {
-                drawTextBox(x, 10, width, height, onTextColor, normalBgColor, catPrefix, category.toString());
+                drawTextBox(x, offsetY, width, height, onTextColor, normalBgColor, catPrefix, category.toString());
             }
             int u = 1;
             for (Module module : ModuleManager.getModulesInCategory(category)) {
-                int y = 10 + u + height * u;
+                int y = offsetY + u + height * u;
                 if (isMouseOverRect(mouseX, mouseY, x, y, width, height)) {
                     drawTextBox(x, y, width, height, offTextColor, hoverBgColor, modPrefix, module.getName());
+                    String description = module.getCategory().toString();
+                    descriptionX = x+width;
+                    descriptionY = y;
+                    descriptionWidth = MinecraftClient.getInstance().textRenderer.getStringWidth(description) + 4;
+                    if (descriptionWidth < width + xSpacing) {
+                        descriptionWidth = width + xSpacing;
+                    }
+                    drawTextBox(descriptionX, descriptionY, descriptionWidth, height, onTextColor, descriptionBgColor, "", description);
+                    descriptionShow = true;
                 } else {
-                    drawTextBox(x, y, width, height, offTextColor, normalBgColor, modPrefix, module.getName());
+                    if (descriptionShow && descriptionY == y && descriptionX + xSpacing == x);
+                    else drawTextBox(x, y, width, height, offTextColor, normalBgColor, modPrefix, module.getName());
                 }
                 u++;
             }
