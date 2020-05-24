@@ -35,8 +35,10 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-    compile "com.github.ZeroMemes:Alpine:1.9"
+//    compile "com.github.ZeroMemes:Alpine:1.9"
     compile group: 'net.jodah', name: 'typetools', version: '0.6.2'
+//    implementation 'com.github.Vatuu:discord-rpc:1.6.2'
+    compile 'club.minnced:java-discord-rpc:2.0.2'
 }
 
 processResources {
