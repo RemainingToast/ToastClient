@@ -1,10 +1,12 @@
 package toast.client.gui.hud.clickgui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
-import org.lwjgl.opengl.GL11;
+import toast.client.modules.Module;
+import toast.client.modules.ModuleManager;
 
 import java.awt.*;
 
@@ -13,28 +15,87 @@ public class ClickGui extends Screen {
         super(new LiteralText("ClickGui"));
     }
 
-    public void drawText(String text, int x, int y, int color, float scale) {
+    public void drawText(String text, int x, int y, int color) {
         MinecraftClient.getInstance().textRenderer.drawWithShadow(text, x, y, color);
+        RenderSystem.pushMatrix();
+        RenderSystem.popMatrix();
     }
 
-    public void drawRect(int x, int y, int width, int height, int color, float scale) {
-        InGameHud.fill(x, y, width, height, color);
+    public void drawRect(int x, int y, int width, int height, int color) {
+        InGameHud.fill(x, y, x + width, y + height, color);
+        RenderSystem.pushMatrix();
+        RenderSystem.popMatrix();
+    }
+
+    public void drawHollowRect(int x, int y, int width, int height, int lW, int color) {
+        drawRect(x-lW, y-lW, width + lW*2, lW, color); // top line
+        drawRect(x-lW, y, lW, height, color); // left line
+        drawRect(x-lW, y + height, width + lW*2, lW, color); // bottom line
+        drawRect(x + width, y, lW, height, color); // right line
+    }
+
+    public void drawTextBox(int x, int y, int width, int height, int color, int bgColor, String prefix, String text) {
+        drawRect(x-2, y-2, width, height, bgColor);
+        drawHollowRect(x-2, y-2, width, height, 1, new Color(0, 0, 0, 255).getRGB());
+        drawText(prefix, x, y, new Color(8, 189, 8, 255).getRGB());
+        drawText(text, x + MinecraftClient.getInstance().textRenderer.getStringWidth(prefix), y, color);
+    }
+
+    public boolean isMouseOverRect(int mouseX, int mouseY, int x, int y, int width, int height) {
+        boolean xOver = false;
+        boolean yOver = false;
+        if (x < width) {
+            if (mouseX > x && mouseX < width) {
+                xOver = true;
+            }
+        } else if (x > width) {
+            if (mouseX < x && mouseX > width) {
+                xOver = true;
+            }
+        }
+        if (y < height) {
+            if (mouseY > y && mouseY < height) {
+                yOver = true;
+            }
+        } else if (y > height) {
+            if (mouseY < y && mouseY > height) {
+                yOver = true;
+            }
+        }
+        if (xOver && yOver) return true;
+        return false;
     }
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        drawRect(20, 20, 100, 5, new Color(0, 0, 0, 0).getRGB(), 1);
-        drawRect(20, 50, 100, 5, new Color(0, 0, 0, 50).getRGB(), 1);
-        drawRect(20, 80, 100, 5, new Color(0, 0, 0, 100).getRGB(), 1);
-        drawRect(20, 110, 100, 5, new Color(0, 0, 0, 150).getRGB(), 1);
-        drawRect(20, 140, 100, 5, new Color(0, 0, 0, 200).getRGB(), 1);
-        GL11.glPushMatrix();
-        drawText("TESTING1", 20, 20, 0x00C400FF, 1);
-        drawText("TESTING2", 20, 50, 0xFFC40000, 1);
-        drawText("TESTING3", 20, 80, 0x00C4FF00, 1);
-        drawText("TESTING4", 20, 110, 0xFFC4FFFF, 1);
-        drawText("TESTING5", 20, 140, 0xFFFFFFFF, 1);
-        GL11.glPopMatrix();
+        int onTextColor = new Color(255, 255, 255, 255).getRGB();
+        int offTextColor = new Color(177, 177, 177, 255).getRGB();
+        int normalBgColor =new Color(0, 0, 0, 64).getRGB();
+        int hoverBgColor =new Color(131, 212, 252, 92).getRGB();
+        int clickBgColor =new Color(0, 0, 0, 64).getRGB();
+        String prefix = "> ";
+        int width = 100;
+        int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
+        int i = 0;
+        for (Module.Category category : Module.Category.values()) {
+            int x = 10+(100*i)+(10*i);
+            int catColor = normalBgColor;
+            if (isMouseOverRect(mouseX, mouseY, x, 10, width, height)) {
+                catColor = hoverBgColor;
+            }
+            drawTextBox(x, 10, width, height, onTextColor, catColor, prefix, category.toString());
+            int u = 1;
+            for (Module module : ModuleManager.getModulesInCategory(category)) {
+                int modColor = normalBgColor;
+                int y = 10+u+height*u;
+                if (isMouseOverRect(mouseX, mouseY, x, y, width, height)) {
+                    modColor = hoverBgColor;
+                }
+                drawTextBox(x, y, width, height, offTextColor, modColor, " " + prefix, module.getName());
+                u++;
+            }
+            i++;
+        }
     }
 
     public boolean isPauseScreen() {
