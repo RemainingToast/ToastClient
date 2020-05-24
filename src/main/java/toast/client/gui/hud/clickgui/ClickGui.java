@@ -5,14 +5,19 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
+import toast.client.dontobfuscate.CategorySetting;
 import toast.client.modules.Module;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClickGui extends Screen {
+    public static Map<Module.Category, CategorySetting> categorySettingMap = new HashMap<>();
     public static final String catPrefix = "> ";
     public static final String modPrefix = " > ";
+    public static final String modSetPrefix = "  > ";
     public static final int onTextColor = new Color(255, 255, 255, 255).getRGB();
     public static final int offTextColor = new Color(177, 177, 177, 255).getRGB();
     public static final int normalBgColor =new Color(0, 0, 0, 64).getRGB();
@@ -63,23 +68,22 @@ public class ClickGui extends Screen {
         else return false;
     }
 
-    public static void drawTextBoxUnderlay(int x, int y, int width, int height, int color, int bgColor, String prefix, String text, int underX, int underY, int underWidth, int underHeight) {
-
+    public static void initCategories() {
+        int i = 0;
+        for (Module.Category category : Module.Category.values()) {
+            int x = 10 + (100 * i) + (10 * i);
+            categorySettingMap.put(category, new CategorySetting(x, 10, false, new String[]{}));
+            i++;
+        }
     }
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        int offsetX = 5;
-        int xSpacing = 10;
-        int offsetY = 5;
         int width = 100;
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
-        int i = 0;
         ArrayList<Category> categories = new ArrayList<>();
         for (Module.Category category : Module.Category.values()) {
-            int x = offsetX + (100 * i) + (xSpacing * i);
-            categories.add(new Category(x, offsetY, mouseX, mouseY, width, height, category));
-            i++;
+            categories.add(new Category(mouseX, mouseY, width, height, category));
         }
         for (Category category : categories) {
             if (category.hasDesc) {
@@ -87,6 +91,18 @@ public class ClickGui extends Screen {
                 break;
             }
         }
+    }
+
+    public static CategorySetting getSettings(Module.Category category) {
+        return categorySettingMap.get(category);
+    }
+
+    public static Map<Module.Category, CategorySetting> getCategorySettingMap() {
+        return categorySettingMap;
+    }
+
+    public static void setCategorySettingMap(Map<Module.Category, CategorySetting> categorySettingMap) {
+        ClickGui.categorySettingMap = categorySettingMap;
     }
 
     public boolean isPauseScreen() {
