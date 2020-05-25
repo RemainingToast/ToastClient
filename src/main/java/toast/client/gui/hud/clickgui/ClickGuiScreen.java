@@ -119,7 +119,7 @@ public class ClickGuiScreen extends Screen {
         }
         for (Category category : categories) {
             if (category.hasDesc) {
-                drawTextBox(category.descPosX, category.descPosY, textRenderer.getStringWidth(category.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, category.desc);
+                drawTextBox(category.descPosX, category.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + category.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, category.desc);
                 break;
             }
         }
