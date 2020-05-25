@@ -160,6 +160,8 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public void onClose() {
+        settings.savePositions();
+        settings.saveColors();
         ModuleManager.getModule(ClickGui.class).disable();
     }
 }
