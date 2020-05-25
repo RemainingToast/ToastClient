@@ -53,7 +53,7 @@ public class ClickGuiSettings {
         for (Module.Category category : Module.Category.values()) {
             int x = 5 + (clickGui.width * i) + (5 * i);
             if (x + clickGui.width + 10 > MinecraftClient.getInstance().getWindow().getWidth()/2) {
-                y = y + 100;
+                y = y + (MinecraftClient.getInstance().getWindow().getHeight()/2)/3;
                 x = 5;
                 i = 0;
             }

@@ -129,10 +129,6 @@ public class ClickGuiScreen extends Screen {
         else return false;
     }
 
-    public static ClickGuiSettings getSettings() {
-        return settings;
-    }
-
     private boolean mouseIsClickedL = false;
     private boolean mouseIsClickedR = false;
     private boolean clickedOnce = false;
@@ -199,5 +195,9 @@ public class ClickGuiScreen extends Screen {
     public void reloadConfig() {
         settings.loadColors();
         settings.loadPositions();
+    }
+
+    public ClickGuiSettings getSettings() {
+        return settings;
     }
 }
