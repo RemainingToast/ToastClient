@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import toast.client.gui.hud.clickgui.ClickGuiScreen;
+import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.ModuleManager;
 
 @Mixin(Keyboard.class)

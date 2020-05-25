@@ -1,4 +1,4 @@
-package toast.client.gui.hud.clickgui;
+package toast.client.gui.clickgui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -18,6 +18,7 @@ public class ClickGuiScreen extends Screen {
     private static TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
     public static ClickGuiSettings settings = new ClickGuiSettings();
+    public static ArrayList<Category> categories = new ArrayList<>();
 
     public ClickGuiScreen() {
         super(new LiteralText("ClickGuiScreen"));
@@ -109,20 +110,47 @@ public class ClickGuiScreen extends Screen {
         return settings;
     }
 
+    private boolean mouseIsClicked = false;
+    private boolean clickedOnce = false;
+
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         int width = 100;
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
-        ArrayList<Category> categories = new ArrayList<>();
         for (Module.Category category : Module.Category.values()) {
-            categories.add(new Category(mouseX, mouseY, width, height, category));
+            categories.add(new Category(mouseX, mouseY, width, height, category, mouseIsClicked));
+        }
+        if (clickedOnce) {
+            mouseIsClicked = false;
         }
         for (Category category : categories) {
             if (category.hasDesc) {
                 drawTextBox(category.descPosX, category.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + category.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, category.desc);
+                category.hasDesc = false;
                 break;
             }
+            category.hasDesc = false;
         }
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0 && !clickedOnce) {
+            mouseIsClicked = true;
+            clickedOnce = true;
+        } else {
+            mouseIsClicked = false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (button == 0) {
+            mouseIsClicked = false;
+            clickedOnce = false;
+        }
+        return false;
     }
 
     public boolean isPauseScreen() {
