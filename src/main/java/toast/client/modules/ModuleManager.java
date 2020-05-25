@@ -18,6 +18,7 @@ import toast.client.modules.movement.Fly;
 import toast.client.modules.movement.Velocity;
 import toast.client.modules.player.AutoTool;
 import toast.client.modules.player.Surround;
+import toast.client.modules.render.ClickGui;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
 
@@ -79,6 +80,7 @@ public class ModuleManager {
         modules.clear();
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
+        modules.add(new ClickGui());
         modules.add(new FancyChat());
         modules.add(new Fly());
         modules.add(new Fullbright());

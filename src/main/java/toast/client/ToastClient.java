@@ -5,7 +5,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
-import toast.client.event.EventManager;
+import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.FileManager;
 import toast.client.utils.LoginUtil;
@@ -21,6 +21,7 @@ public class ToastClient implements ModInitializer {
     public static String chatPrefix = Formatting.DARK_GRAY+"["+Formatting.LIGHT_PURPLE+"ToastClient"+Formatting.DARK_GRAY+"]";
     public static String cmdPrefix = ".";
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
+    public static ClickGuiScreen clickGui;
 
     public static Boolean devMode = false;
 
@@ -41,5 +42,4 @@ public class ToastClient implements ModInitializer {
             }
         }
     }
-
 }

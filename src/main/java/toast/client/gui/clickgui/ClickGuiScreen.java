@@ -8,6 +8,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import toast.client.dontobfuscate.ClickGuiSettings;
 import toast.client.modules.Module;
+import toast.client.modules.ModuleManager;
+import toast.client.modules.render.ClickGui;
 
 import java.util.ArrayList;
 
@@ -154,5 +156,10 @@ public class ClickGuiScreen extends Screen {
 
     public boolean isPauseScreen() {
         return false;
+    }
+
+    @Override
+    public void onClose() {
+        ModuleManager.getModule(ClickGui.class).disable();
     }
 }
