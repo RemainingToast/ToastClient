@@ -3,6 +3,7 @@ package toast.client.dontobfuscate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import net.minecraft.client.MinecraftClient;
 import toast.client.modules.Module;
 import toast.client.utils.FileManager;
 
@@ -46,9 +47,16 @@ public class ClickGuiSettings {
     public void initCategoryPositions() {
         categoryPositions = new HashMap<>();
         int i = 0;
+        int y = 5;
+        System.out.println(MinecraftClient.getInstance().getWindow().getWidth());
         for (Module.Category category : Module.Category.values()) {
-            int x = 10 + (clickGui.width * i) + (10 * i);
-            categoryPositions.put(category.toString(), new CategorySetting(x, 10, false, new String[]{}));
+            int x = 5 + (clickGui.width * i) + (5 * i);
+            if (x + clickGui.width + 10 > MinecraftClient.getInstance().getWindow().getWidth()/2) {
+                y = y + 100;
+                x = 5;
+                i = 0;
+            }
+            categoryPositions.put(category.toString(), new CategorySetting(x, y, false, new String[]{}));
             i++;
         }
     }

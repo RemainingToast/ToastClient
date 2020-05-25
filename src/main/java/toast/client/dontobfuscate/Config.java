@@ -20,7 +20,7 @@ public class Config {
     public static Map<String, Integer> keybinds = new HashMap<>();
     public static Map<String, Boolean> modules = new HashMap<>();
     public static Map<String, Map<String, Setting>> config = new HashMap<>();
-    public static String disabledOnStart = "Panic";
+    public static String disabledOnStart = "Panic, ClickGui";
 
     public static void updateRead() {
         try {
