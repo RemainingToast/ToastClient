@@ -2,6 +2,8 @@ package toast.client.dontobfuscate;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class CategorySetting {
     @SerializedName("Pos X")
     private int posX;
@@ -10,9 +12,9 @@ public class CategorySetting {
     @SerializedName("Expanded")
     private boolean expanded;
     @SerializedName("Expanded Modules")
-    private String[] expandedModules;
+    private ArrayList<String> expandedModules;
 
-    public CategorySetting(int x, int y, boolean expanded, String[] expandedModules) {
+    public CategorySetting(int x, int y, boolean expanded, ArrayList<String> expandedModules) {
         this.posX = x;
         this.posY = y;
         this.expanded = expanded;
@@ -35,7 +37,7 @@ public class CategorySetting {
         this.expanded = expanded;
     }
 
-    public void setExpandedModules(String[] expandedModules) {
+    public void setExpandedModules(ArrayList<String> expandedModules) {
         this.expandedModules = expandedModules;
     }
 
@@ -47,7 +49,7 @@ public class CategorySetting {
         this.posY = posy;
     }
 
-    public String[] getExpandedModules() {
+    public ArrayList<String> getExpandedModules() {
         return expandedModules;
     }
 }

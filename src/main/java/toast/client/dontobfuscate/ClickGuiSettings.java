@@ -10,6 +10,7 @@ import toast.client.utils.FileManager;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public class ClickGuiSettings {
                 x = 5;
                 i = 0;
             }
-            categoryPositions.put(category.toString(), new CategorySetting(x, y, false, new String[]{}));
+            categoryPositions.put(category.toString(), new CategorySetting(x, y, false, new ArrayList<>()));
             i++;
         }
     }

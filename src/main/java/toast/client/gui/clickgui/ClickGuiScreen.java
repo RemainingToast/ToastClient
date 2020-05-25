@@ -133,7 +133,8 @@ public class ClickGuiScreen extends Screen {
         return settings;
     }
 
-    private boolean mouseIsClicked = false;
+    private boolean mouseIsClickedL = false;
+    private boolean mouseIsClickedR = false;
     private boolean clickedOnce = false;
 
     @Override
@@ -141,10 +142,11 @@ public class ClickGuiScreen extends Screen {
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
         categories.clear();
         for (Module.Category category : Module.Category.values()) {
-            categories.add(new Category(mouseX, mouseY, width, height, category, mouseIsClicked));
+            categories.add(new Category(mouseX, mouseY, width, height, category, mouseIsClickedL, mouseIsClickedR));
         }
         if (clickedOnce) {
-            mouseIsClicked = false;
+            mouseIsClickedL = false;
+            mouseIsClickedR = false;
         }
         for (Category category : categories) {
             if (category.hasDesc) {
@@ -156,19 +158,28 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0 && !clickedOnce) {
-            mouseIsClicked = true;
-            clickedOnce = true;
+        if (!clickedOnce) {
+            if (button == 0) {
+                mouseIsClickedL = true;
+                mouseIsClickedR = false;
+                clickedOnce = true;
+            } else if (button == 1) {
+                mouseIsClickedL = false;
+                mouseIsClickedR = true;
+                clickedOnce = true;
+            }
         } else {
-            mouseIsClicked = false;
+            mouseIsClickedL = false;
+            mouseIsClickedR = false;
         }
         return false;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (button == 0) {
-            mouseIsClicked = false;
+        if (button == 0 || button == 1) {
+            mouseIsClickedL = false;
+            mouseIsClickedR = false;
             clickedOnce = false;
         }
         return false;

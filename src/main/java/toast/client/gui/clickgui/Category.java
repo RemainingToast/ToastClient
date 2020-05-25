@@ -16,13 +16,13 @@ public class Category {
     public int descPosY = 0;
     public String desc = "";
     public static ClickGuiSettings.Colors colors = settings.getColors();
-    public Category(int mouseX, int mouseY, int boxWidth, int boxHeight, Module.Category category, boolean clicked) {
+    public Category(int mouseX, int mouseY, int boxWidth, int boxHeight, Module.Category category, boolean clickedL, boolean clickedR) {
         this.category = category.toString();
         int x = settings.getPositions(category.toString()).getPosX();
         int catY = settings.getPositions(category.toString()).getPosY();
         int catBgColor = colors.categoryBgColor;
         if (isMouseOverRect(mouseX, mouseY, x, catY, boxWidth, boxHeight)) {
-            if (clicked) {
+            if (clickedR) {
                 catBgColor = colors.categoryClickColor;
                 settings.getPositions(this.category).setExpanded(!settings.getPositions(this.category).isExpanded());
             } else {
@@ -44,9 +44,15 @@ public class Category {
                     moduleBgColor = colors.moduleOffBgColor;
                 }
                 if (isMouseOverRect(mouseX, mouseY, x, y, boxWidth, boxHeight)) {
-                    if (clicked) {
+                    if (clickedL) {
                         moduleBgColor = colors.moduleClickColor;
                         module.toggle();
+                    } else if (clickedR) {
+                        if (settings.getPositions(this.category).getExpandedModules().contains(module.getName())) {
+                            settings.getPositions(this.category).getExpandedModules().remove(module.getName());
+                        } else {
+                            settings.getPositions(this.category).getExpandedModules().add(module.getName());
+                        }
                     } else {
                         moduleBgColor = colors.moduleHoverBgColor;
                     }
@@ -74,7 +80,7 @@ public class Category {
                                         settingBgColor = colors.settingOffBgColor;
                                     }
                                     if (isMouseOverRect(mouseX, mouseY, x, y, boxWidth, boxHeight)) {
-                                        if (clicked) {
+                                        if (clickedL) {
                                             settingBgColor = colors.settingClickColor;
                                             setting.setEnabled(!setting.isEnabled());
                                         } else {
