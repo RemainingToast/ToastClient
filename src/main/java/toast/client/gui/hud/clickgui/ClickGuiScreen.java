@@ -1,7 +1,5 @@
 package toast.client.gui.hud.clickgui;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -16,18 +14,19 @@ import java.util.ArrayList;
 ;
 
 public class ClickGuiScreen extends Screen {
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
+    public static ClickGuiSettings settings = new ClickGuiSettings();
+
     public ClickGuiScreen() {
         super(new LiteralText("ClickGuiScreen"));
-        ClickGuiSettings.loadPositions();
-        ClickGuiSettings.loadColors();
+        settings.loadPositions();
+        settings.loadColors();
     }
 
     /**
-     * Draws text at the give coordinates
+     * Draws text at the given coordinates
      *
      * @param text Text to draw
      * @param x X coordinate of the top left corner of the text
@@ -41,7 +40,7 @@ public class ClickGuiScreen extends Screen {
     }
 
     /**
-     * Draws a rectangle at the give coordinates
+     * Draws a rectangle at the given coordinates
      *
      * @param x X coordinate of the top left corner of the rectangle
      * @param y Y coordinate of the top left corner of the rectangle
@@ -56,7 +55,7 @@ public class ClickGuiScreen extends Screen {
     }
 
     /**
-     * Draws a box at the give coordinates
+     * Draws a box at the given coordinates
      *
      * @param x X coordinate of the top left corner of the inside of the box
      * @param y Y coordinate of the top left corner of the inside of the box
@@ -73,7 +72,7 @@ public class ClickGuiScreen extends Screen {
     }
 
     /**
-     * Draw a text box at the give coordinates
+     * Draw a text box at the given coordinates
      *
      * @param x X coordinate of the top left corner of the inside of the text box
      * @param y Y coordinate of the top left corner of the inside of the text box
@@ -106,6 +105,10 @@ public class ClickGuiScreen extends Screen {
         else return false;
     }
 
+    public static ClickGuiSettings getSettings() {
+        return settings;
+    }
+
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         int width = 100;
@@ -116,7 +119,7 @@ public class ClickGuiScreen extends Screen {
         }
         for (Category category : categories) {
             if (category.hasDesc) {
-                drawTextBox(category.descPosX, category.descPosY, textRenderer.getStringWidth(category.desc) + 4, height, ClickGuiSettings.colors.descriptionBoxColor, ClickGuiSettings.colors.descriptionTextColor, ClickGuiSettings.colors.categoryPrefixColor, ClickGuiSettings.colors.descriptionBgColor, ClickGuiSettings.colors.descriptionPrefix, category.desc);
+                drawTextBox(category.descPosX, category.descPosY, textRenderer.getStringWidth(category.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, category.desc);
                 break;
             }
         }

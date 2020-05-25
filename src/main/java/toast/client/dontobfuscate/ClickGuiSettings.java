@@ -25,22 +25,23 @@ public class ClickGuiSettings {
     public static final int defaultPrefixColor = new Color(8, 189, 8, 255).getRGB();
     public static final int defaultClickColor = new Color(121, 205, 255, 128).getRGB();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public static Colors colors = new Colors();
+    public Colors colors = new Colors();
     public static Map<String, CategorySetting> categoryPositions = new HashMap<>();
 
-    public static CategorySetting getPositions(String category) {
+    public CategorySetting getPositions(String category) {
         return categoryPositions.get(category);
     }
 
-    public static Map<String, CategorySetting> getCategoryPositions() {
+    public Map<String, CategorySetting> getCategoryPositions() {
         return categoryPositions;
     }
 
-    public static void setCategoryPositions(Map<String, CategorySetting> categoryPositions) {
+    public void setCategoryPositions(Map<String, CategorySetting> categoryPositions) {
         ClickGuiSettings.categoryPositions = categoryPositions;
     }
 
-    public static void initCategoryPositions() {
+    public void initCategoryPositions() {
+        categoryPositions = new HashMap<>();
         int i = 0;
         for (Module.Category category : Module.Category.values()) {
             int x = 10 + (100 * i) + (10 * i);
@@ -49,7 +50,11 @@ public class ClickGuiSettings {
         }
     }
 
-    public static void loadPositions() {
+    public Colors getColors() {
+        return colors;
+    }
+
+    public void loadPositions() {
         try {
             categoryPositions = gson.fromJson(new FileReader(FileManager.createFile(clickguiPosFile)), new TypeToken<Map<String, CategorySetting>>() {
             }.getType());
@@ -62,7 +67,7 @@ public class ClickGuiSettings {
         }
     }
 
-    public static void savePositions() {
+    public void savePositions() {
         try {
             FileWriter fw = new FileWriter(FileManager.createFile(clickguiPosFile));
             gson.toJson(categoryPositions, fw);
@@ -71,7 +76,7 @@ public class ClickGuiSettings {
         }
     }
 
-    public static void saveColors() {
+    public void saveColors() {
         try {
             FileWriter fw = new FileWriter(FileManager.createFile(guiColorsFile));
             gson.toJson(colors, fw);
@@ -80,14 +85,15 @@ public class ClickGuiSettings {
         }
     }
 
-    public static void allDefaults() {
+    public void allDefaults() {
+        colors = new Colors();
         setCategoryDefaults();
         setDescriptionDefaults();
         setModuleDefaults();
         setSettingsDefaults();
     }
 
-    public static void setCategoryDefaults() {
+    public void setCategoryDefaults() {
         colors.categoryBgColor = defaultBgColor;
         colors.categoryBoxColor = defaultBoxColor;
         colors.categoryClickColor = defaultClickColor;
@@ -97,7 +103,7 @@ public class ClickGuiSettings {
         colors.categoryTextColor = defaultOnTextColor;
     }
 
-    public static void setDescriptionDefaults() {
+    public void setDescriptionDefaults() {
         colors.descriptionBgColor = new Color(83, 83, 83, 255).getRGB();
         colors.descriptionBoxColor = defaultBoxColor;
         colors.descriptionPrefix = "";
@@ -105,7 +111,7 @@ public class ClickGuiSettings {
         colors.descriptionTextColor = defaultOnTextColor;
     }
 
-    public static void setModuleDefaults() {
+    public void setModuleDefaults() {
         colors.moduleBoxColor = defaultBoxColor;
         colors.moduleClickColor = defaultClickColor;
         colors.moduleHoverBgColor = defaultHoverBgColor;
@@ -117,7 +123,7 @@ public class ClickGuiSettings {
         colors.modulePrefixColor = defaultPrefixColor;
     }
 
-    public static void setSettingsDefaults() {
+    public void setSettingsDefaults() {
         colors.settingBoxColor = defaultBoxColor;
         colors.settingClickColor = defaultClickColor;
         colors.settingHoverBgColor = defaultHoverBgColor;
@@ -129,7 +135,7 @@ public class ClickGuiSettings {
         colors.settingPrefixColor = defaultPrefixColor;
     }
 
-    public static void loadColors() {
+    public void loadColors() {
         try {
             colors = gson.fromJson(new FileReader(FileManager.createFile(guiColorsFile)), new TypeToken<Colors>() {
             }.getType());
