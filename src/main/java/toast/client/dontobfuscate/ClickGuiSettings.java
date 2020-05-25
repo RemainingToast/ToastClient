@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static toast.client.ToastClient.clickGui;
+
 public class ClickGuiSettings {
     public static final String clickguiColorsFile = "guicolors.json";
     public static final String clickguiPosFile = "clickGuiPositions.json";
@@ -27,6 +29,9 @@ public class ClickGuiSettings {
     public static Map<String, CategorySetting> categoryPositions = new HashMap<>();
 
     public CategorySetting getPositions(String category) {
+        if (categoryPositions == null) {
+            loadPositions();
+        }
         return categoryPositions.get(category);
     }
 
@@ -42,7 +47,7 @@ public class ClickGuiSettings {
         categoryPositions = new HashMap<>();
         int i = 0;
         for (Module.Category category : Module.Category.values()) {
-            int x = 10 + (100 * i) + (10 * i);
+            int x = 10 + (clickGui.width * i) + (10 * i);
             categoryPositions.put(category.toString(), new CategorySetting(x, 10, false, new String[]{}));
             i++;
         }
@@ -56,7 +61,7 @@ public class ClickGuiSettings {
         try {
             categoryPositions = gson.fromJson(new FileReader(FileManager.createFile(clickguiPosFile)), new TypeToken<Map<String, CategorySetting>>() {
             }.getType());
-            if (categoryPositions == null) {
+            if (categoryPositions == null && clickGui != null) {
                 initCategoryPositions();
                 savePositions();
             }

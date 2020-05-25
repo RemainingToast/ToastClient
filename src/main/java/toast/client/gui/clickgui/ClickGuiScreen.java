@@ -7,25 +7,46 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import toast.client.dontobfuscate.ClickGuiSettings;
+import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.render.ClickGui;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 ;
 
 public class ClickGuiScreen extends Screen {
-
     private static TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
     public static ClickGuiSettings settings = new ClickGuiSettings();
     public static ArrayList<Category> categories = new ArrayList<>();
 
+    public static int width = 50;
+
     public ClickGuiScreen() {
         super(new LiteralText("ClickGuiScreen"));
         settings.loadPositions();
         settings.loadColors();
+        for (Module.Category category : Module.Category.values()) {
+            int catWidth = textRenderer.getStringWidth(settings.colors.categoryPrefix + category.toString());
+            if (catWidth > width) {
+                width = catWidth + 4;
+            }
+        }
+        for (Module module : ModuleManager.getModules()) {
+            int moduleWidth = textRenderer.getStringWidth(settings.colors.modulePrefix + module.getName());
+            if (moduleWidth > width) {
+                width = moduleWidth + 4;
+            }
+            for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
+                int settingWidth = textRenderer.getStringWidth(settings.colors.settingPrefix + settingEntry.getKey());
+                if (settingWidth > width) {
+                    width = settingWidth + 4;
+                }
+            }
+        }
     }
 
     /**
@@ -117,7 +138,6 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        int width = 100;
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
         categories.clear();
         for (Module.Category category : Module.Category.values()) {
@@ -163,5 +183,10 @@ public class ClickGuiScreen extends Screen {
         settings.savePositions();
         settings.saveColors();
         ModuleManager.getModule(ClickGui.class).disable();
+    }
+
+    public void reloadConfig() {
+        settings.loadColors();
+        settings.loadPositions();
     }
 }

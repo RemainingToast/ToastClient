@@ -13,17 +13,19 @@ public class ClickGui extends Module {
 
     @Override
     public void onEnable() {
-        if (clickGui == null) {
-            clickGui = new ClickGuiScreen();
-        }
-        if (mc.currentScreen == null) {
-            mc.openScreen(clickGui);
+        if (mc.player != null) {
+            if (clickGui == null) {
+                clickGui = new ClickGuiScreen();
+            }
+            if (mc.currentScreen == null) {
+                mc.openScreen(clickGui);
+            }
         }
     }
 
     @Override
     public void onDisable() {
-        if (mc.currentScreen == clickGui) {
+        if (mc.currentScreen == clickGui && mc.player != null) {
             mc.openScreen(null);
         }
     }

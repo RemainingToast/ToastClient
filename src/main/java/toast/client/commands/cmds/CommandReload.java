@@ -5,6 +5,8 @@ import toast.client.commands.Command;
 import toast.client.dontobfuscate.Config;
 import toast.client.utils.Logger;
 
+import static toast.client.ToastClient.clickGui;
+
 public class CommandReload extends Command {
     public CommandReload() {
         super("reload [config]", "Reloads all or one of the configuration files", false, "reload", "rl");
@@ -15,6 +17,7 @@ public class CommandReload extends Command {
             Config.loadConfigAuto();
             Config.loadModulesAuto();
             Config.loadKeyBindsAuto();
+            clickGui.reloadConfig();
             Logger.message("Reloaded all configuration files.", Logger.INFO);
         } else {
             switch (args[0]) {
@@ -30,9 +33,11 @@ public class CommandReload extends Command {
                     Config.loadKeyBindsAuto();
                     Logger.message("Reloaded keybinds.", Logger.INFO);
                     break;
+                case "clickgui":
+                    clickGui.reloadConfig();
+                    break;
                 default:
                     Logger.message("Invalid argument, valid arguments are:", Logger.WARN);
-                    Logger.message(Formatting.GRAY + "  options " + Formatting.YELLOW + "reloads all module options", Logger.EMPTY);
                     Logger.message(Formatting.GRAY + "  modules " + Formatting.YELLOW + "reloads the enabled state of modules", Logger.EMPTY);
                     Logger.message(Formatting.GRAY + "  keybinds " + Formatting.YELLOW + "reloads all keybinds", Logger.EMPTY);
                     Logger.message(Formatting.GRAY + "  clickgui " + Formatting.YELLOW + "reloads the clickgui", Logger.EMPTY);

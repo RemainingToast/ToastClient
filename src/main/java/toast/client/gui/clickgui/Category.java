@@ -1,8 +1,11 @@
 package toast.client.gui.clickgui;
 
 import toast.client.dontobfuscate.ClickGuiSettings;
+import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
+
+import java.util.Map;
 
 import static toast.client.gui.clickgui.ClickGuiScreen.*;
 
@@ -54,6 +57,37 @@ public class Category {
                 }
                 drawTextBox(x, y, boxWidth, boxHeight, colors.moduleBoxColor, moduleTextColor, colors.modulePrefixColor, moduleBgColor, colors.modulePrefix, module.getName());
                 u++;
+                if (!module.getSettings().getSettings().isEmpty()) {
+                    for (String modName : settings.getPositions(this.category).getExpandedModules()) {
+                        if (modName.equals(module.getName())) {
+                            for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
+                                y = catY + u + boxHeight * u;
+                                Setting setting = settingEntry.getValue();
+                                if (setting.getType().equals("boolean")) {
+                                    int settingTextColor;
+                                    int settingBgColor;
+                                    if (setting.isEnabled()) {
+                                        settingTextColor = colors.settingOnTextColor;
+                                        settingBgColor = colors.settingOnBgColor;
+                                    } else {
+                                        settingTextColor = colors.settingOffTextColor;
+                                        settingBgColor = colors.settingOffBgColor;
+                                    }
+                                    if (isMouseOverRect(mouseX, mouseY, x, y, boxWidth, boxHeight)) {
+                                        if (clicked) {
+                                            settingBgColor = colors.settingClickColor;
+                                            setting.setEnabled(!setting.isEnabled());
+                                        } else {
+                                            settingBgColor = colors.settingHoverBgColor;
+                                        }
+                                    }
+                                    drawTextBox(x, y, boxWidth, boxHeight, colors.settingBoxColor, settingTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey());
+                                    u++;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
