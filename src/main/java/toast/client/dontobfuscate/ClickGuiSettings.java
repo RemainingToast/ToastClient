@@ -9,13 +9,11 @@ import toast.client.utils.FileManager;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ClickGuiSettings {
-    public static final String guiColorsFile = "guicolors.json";
+    public static final String clickguiColorsFile = "guicolors.json";
     public static final String clickguiPosFile = "clickGuiPositions.json";
     public static final int defaultOnTextColor = new Color(255, 255, 255, 255).getRGB();
     public static final int defaultOffTextColor = new Color(177, 177, 177, 255).getRGB();
@@ -68,21 +66,11 @@ public class ClickGuiSettings {
     }
 
     public void savePositions() {
-        try {
-            FileWriter fw = new FileWriter(FileManager.createFile(clickguiPosFile));
-            gson.toJson(categoryPositions, fw);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileManager.writeFile(clickguiPosFile, gson.toJson(categoryPositions));
     }
 
     public void saveColors() {
-        try {
-            FileWriter fw = new FileWriter(FileManager.createFile(guiColorsFile));
-            gson.toJson(colors, fw);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileManager.writeFile(clickguiColorsFile, gson.toJson(colors));
     }
 
     public void allDefaults() {
@@ -137,7 +125,7 @@ public class ClickGuiSettings {
 
     public void loadColors() {
         try {
-            colors = gson.fromJson(new FileReader(FileManager.createFile(guiColorsFile)), new TypeToken<Colors>() {
+            colors = gson.fromJson(new FileReader(FileManager.createFile(clickguiColorsFile)), new TypeToken<Colors>() {
             }.getType());
             if (colors == null) {
                 allDefaults();
