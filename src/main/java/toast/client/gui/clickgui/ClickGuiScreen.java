@@ -14,8 +14,7 @@ import toast.client.modules.render.ClickGui;
 
 import java.util.ArrayList;
 import java.util.Map;
-
-;
+import java.util.Objects;
 
 public class ClickGuiScreen extends Screen {
     private static TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -125,20 +124,22 @@ public class ClickGuiScreen extends Screen {
         if (mouseY >= y && mouseY <= height + y) {
             yOver = true;
         }
-        if (xOver && yOver) return true;
-        else return false;
+        return xOver && yOver;
     }
 
     private boolean mouseIsClickedL = false;
     private boolean mouseIsClickedR = false;
     private boolean clickedOnce = false;
+    private boolean dragging = false;
+    private int dragXD = 0;
+    private int dragYD = 0;
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
         categories.clear();
         for (Module.Category category : Module.Category.values()) {
-            categories.add(new Category(mouseX, mouseY, width, height, category, mouseIsClickedL, mouseIsClickedR));
+            categories.add(new Category(mouseX, mouseY, width, height, category, mouseIsClickedL, mouseIsClickedR, dragging, dragXD, dragYD));
         }
         if (clickedOnce) {
             mouseIsClickedL = false;
@@ -181,6 +182,20 @@ public class ClickGuiScreen extends Screen {
         return false;
     }
 
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if (button == 0) {
+            dragging = true;
+            dragXD = (int) deltaX;
+            dragYD = (int) deltaY;
+        } else {
+            dragging = false;
+            dragXD = 0;
+            dragYD = 0;
+        }
+        return false;
+    }
+
     public boolean isPauseScreen() {
         return false;
     }
@@ -189,7 +204,7 @@ public class ClickGuiScreen extends Screen {
     public void onClose() {
         settings.savePositions();
         settings.saveColors();
-        ModuleManager.getModule(ClickGui.class).disable();
+        Objects.requireNonNull(ModuleManager.getModule(ClickGui.class)).disable();
     }
 
     public void reloadConfig() {

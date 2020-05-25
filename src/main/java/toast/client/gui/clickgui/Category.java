@@ -16,7 +16,7 @@ public class Category {
     public int descPosY = 0;
     public String desc = "";
     public static ClickGuiSettings.Colors colors = settings.getColors();
-    public Category(int mouseX, int mouseY, int boxWidth, int boxHeight, Module.Category category, boolean clickedL, boolean clickedR) {
+    public Category(int mouseX, int mouseY, int boxWidth, int boxHeight, Module.Category category, boolean clickedL, boolean clickedR, boolean dragging, int dragXD, int dragYD) {
         this.category = category.toString();
         int x = settings.getPositions(category.toString()).getPosX();
         int catY = settings.getPositions(category.toString()).getPosY();
@@ -27,6 +27,10 @@ public class Category {
                 settings.getPositions(this.category).setExpanded(!settings.getPositions(this.category).isExpanded());
             } else {
                 catBgColor = colors.categoryHoverBgColor;
+            }
+            if (dragging) {
+                x += dragXD;
+                catY += dragYD;
             }
         }
         drawTextBox(x, catY, boxWidth, boxHeight, colors.categoryBoxColor, colors.categoryTextColor, colors.categoryPrefixColor, catBgColor, colors.categoryPrefix, category.toString());
@@ -96,5 +100,7 @@ public class Category {
                 }
             }
         }
+        settings.getPositions(this.category).setPosX(x);
+        settings.getPositions(this.category).setPosY(catY);
     }
 }
