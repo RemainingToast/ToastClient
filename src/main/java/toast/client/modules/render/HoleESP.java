@@ -28,7 +28,7 @@ public class HoleESP extends Module {
     );
 
     public HoleESP() {
-        super("HoleESP", Category.RENDER, -1);
+        super("HoleESP", "Highlights holes (air) in the world.", Category.RENDER, -1);
         this.settings.addBoolean("Bedrock (Green)", true);
         this.settings.addBoolean("Obsidian (Red)", true);
         this.settings.addBoolean("Mixed (Yellow)", true);

@@ -18,7 +18,7 @@ public class KillAura extends Module {
     private TimerUtil timer = new TimerUtil();
 
     public KillAura() {
-        super("KillAura", Category.COMBAT, GLFW.GLFW_KEY_K);
+        super("KillAura", "Automatically attacks mobs and players around you.", Category.COMBAT, GLFW.GLFW_KEY_K);
         this.settings.addBoolean("Players", true);
         this.settings.addBoolean("Animals", false);
         this.settings.addBoolean("Monsters", false);

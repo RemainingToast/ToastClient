@@ -9,7 +9,7 @@ import toast.client.utils.WorldUtil;
 
 public class StorageESP extends Module {
     public StorageESP() {
-        super("StorageESP", Category.RENDER, -1);
+        super("StorageESP", "Highlights storage blocks in the world.", Category.RENDER, -1);
         this.settings.addBoolean("Chests", true);
         this.settings.addBoolean("Trapped Chests", true);
         this.settings.addBoolean("Minecart Chests", true);

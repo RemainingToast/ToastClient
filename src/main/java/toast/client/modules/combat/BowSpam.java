@@ -11,7 +11,7 @@ public class BowSpam extends Module {
     int ticksLeft = -1;
 
     public BowSpam() {
-        super("BowSpam", Category.COMBAT, -1);
+        super("BowSpam", "Makes your bow fully automatic.", Category.COMBAT, -1);
         this.settings.addMode("Mode", "No Charge","No Charge", "Medium Charge", "Full Charge");
     }
 

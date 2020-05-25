@@ -14,7 +14,7 @@ public class AutoTool extends Module {
     private int lastSlot = 0;
 
     public AutoTool() {
-        super("AutoTool", Category.PLAYER, -1);
+        super("AutoTool", "Automatically selects the ideal tool for breaking a block.", Category.PLAYER, -1);
     }
 
     //TODO: make this also look at enchantments

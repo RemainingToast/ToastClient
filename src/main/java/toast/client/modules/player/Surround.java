@@ -19,7 +19,7 @@ public class Surround extends Module {
     private static int slot = -1;
 
     public Surround() {
-        super("Surround", Category.PLAYER, -1);
+        super("Surround", "Surrounds your feet with blocks.", Category.PLAYER, -1);
         this.settings.addBoolean("AutoDisable", true);
         this.settings.addBoolean("Center", true);
         this.settings.addBoolean("All blocks", false);

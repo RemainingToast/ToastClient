@@ -13,6 +13,7 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class Module {
     public String name;
+    public String description;
     public boolean enabled;
     public int key;
     public Category category;
@@ -21,11 +22,16 @@ public class Module {
 
     public MinecraftClient mc = MinecraftClient.getInstance();
 
-    public Module(String name, Category category, int key) {
+    public Module(String name, String description, Category category, int key) {
         this.name = name;
+        this.description = description;
         this.key = key;
         this.category = category;
         this.settings.addBoolean("Show In SortedSet", true);
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public boolean isEnabled() {

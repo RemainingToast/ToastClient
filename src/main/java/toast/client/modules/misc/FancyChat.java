@@ -11,7 +11,7 @@ public class FancyChat extends Module {
     private boolean isMadeByFancyChat = false;
 
     public FancyChat() {
-        super("FancyChat", Category.MISC, -1);
+        super("FancyChat", "Modifies you chat messages to make them stick out.", Category.MISC, -1);
         this.settings.addMode("Mode", "Classic", "Classic", "Rainbow", "Spaces", "FaNcY", "Watermark", "Grammar");
         this.settings.addBoolean("Normal client cmds", true);
         this.settings.addBoolean("Normal mc cmds", false);

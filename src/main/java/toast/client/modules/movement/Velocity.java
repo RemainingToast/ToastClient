@@ -12,7 +12,7 @@ public class Velocity extends Module {
     public double lastz = 0;
 
     public Velocity() {
-        super("Velocity", Module.Category.MOVEMENT, -1);
+        super("Velocity", "Changes your velocity, can stop things from pushing you.", Module.Category.MOVEMENT, -1);
         this.settings.addMode("Mode", "Vanilla", "Vanilla", "YTeleport");
         this.settings.addBoolean("Cancel", true);
         this.settings.addSlider("HVel", -100.0, 0.0, 100.0);

@@ -13,7 +13,7 @@ public class Panic extends Module {
     private List<Module> wasEnabled = new ArrayList<>();
 
     public Panic() {
-        super("Panic", Category.DEV, GLFW.GLFW_KEY_P);
+        super("Panic", "Makes the client disappear until you relaunch the game.", Category.DEV, GLFW.GLFW_KEY_P);
     }
 
     public static boolean IsPanicking() {
@@ -30,7 +30,7 @@ public class Panic extends Module {
             }
         }
         if (mc.inGameHud != null) {
-            List<String> msgs = mc.inGameHud.getChatHud().getMessageHistory();//doesnt work no idea why doesnt delete shit
+            List<String> msgs = mc.inGameHud.getChatHud().getMessageHistory(); // doesn't work no idea why doesn't delete shit
             List<Integer> toDelete = new ArrayList<>();
             for (int i = msgs.size() - 1; i >= 0; i--) {
                 if (msgs.get(i).contains(ToastClient.cleanPrefix)) {

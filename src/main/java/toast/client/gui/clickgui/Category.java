@@ -47,7 +47,7 @@ public class Category {
                     } else {
                         moduleBgColor = colors.moduleHoverBgColor;
                     }
-                    desc = module.getCategory().toString();
+                    desc = module.getDescription();
                     descPosX = x + boxWidth;
                     descPosY = y;
                     hasDesc = true;

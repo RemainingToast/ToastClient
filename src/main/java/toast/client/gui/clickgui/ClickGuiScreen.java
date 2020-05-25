@@ -117,6 +117,7 @@ public class ClickGuiScreen extends Screen {
     public void render(int mouseX, int mouseY, float partialTicks) {
         int width = 100;
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
+        categories.clear();
         for (Module.Category category : Module.Category.values()) {
             categories.add(new Category(mouseX, mouseY, width, height, category, mouseIsClicked));
         }
@@ -126,10 +127,8 @@ public class ClickGuiScreen extends Screen {
         for (Category category : categories) {
             if (category.hasDesc) {
                 drawTextBox(category.descPosX, category.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + category.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, category.desc);
-                category.hasDesc = false;
                 break;
             }
-            category.hasDesc = false;
         }
     }
 

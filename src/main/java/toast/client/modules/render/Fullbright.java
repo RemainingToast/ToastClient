@@ -15,7 +15,7 @@ public class Fullbright extends Module {
     private static String lastMode;
 
     public Fullbright() {
-        super("Fullbright", Module.Category.RENDER, -1);
+        super("Fullbright", "Night Vision, allows you to see in the dark.", Module.Category.RENDER, -1);
         this.settings.addMode("Mode", "Potion", "Potion", "Gamma");
     }
 

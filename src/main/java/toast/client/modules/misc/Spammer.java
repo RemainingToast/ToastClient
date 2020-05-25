@@ -17,7 +17,7 @@ public class Spammer extends Module {
     private TimerUtil timer = new TimerUtil();
 
     public Spammer() {
-        super("Spammer", Category.MISC, -1);
+        super("Spammer", "Spams messages in chat from a file.", Category.MISC, -1);
         this.settings.addSlider("Delay", 0.0D, 1.0D, 20.0D);
         this.settings.addBoolean("AntiSpam", false);
         this.settings.addSlider("AntiSpam length", 1, 20, 25);

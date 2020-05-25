@@ -17,7 +17,7 @@ public class BlockESP extends Module {
     private static List<Block> checkedChunks;
 
     public BlockESP() {
-        super("BlockESP", Category.RENDER, -1);
+        super("BlockESP", "Highlights blocks in the world.", Category.RENDER, -1);
     }
 
     @EventImpl

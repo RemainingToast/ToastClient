@@ -11,7 +11,7 @@ public class AutoRespawn extends Module {
     private TimerUtil timer = new TimerUtil();
 
     public AutoRespawn() {
-        super("AutoRespawn", Category.COMBAT, -1);
+        super("AutoRespawn", "Automatically presses the respawn button for you.", Category.COMBAT, -1);
         this.settings.addSlider("Speed", 1, 2, 20);
     }
 
