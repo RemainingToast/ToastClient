@@ -20,7 +20,6 @@ import toast.client.modules.player.AutoTool;
 import toast.client.modules.player.Surround;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
-import toast.client.modules.render.HoleESP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +82,7 @@ public class ModuleManager {
         modules.add(new FancyChat());
         modules.add(new Fly());
         modules.add(new Fullbright());
-        modules.add(new HoleESP());
+        //modules.add(new HoleESP());
         modules.add(new HUD());
         modules.add(new KillAura());
         modules.add(new BowSpam());
