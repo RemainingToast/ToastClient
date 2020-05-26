@@ -20,7 +20,7 @@ public class ClickGuiScreen extends Screen {
     private static TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
     public static ClickGuiSettings settings = new ClickGuiSettings();
-    public static ArrayList<Category> categories = new ArrayList<>();
+    public static ArrayList<CategoryRenderer> categoryRenderers = new ArrayList<>();
 
     public static int width = 50;
 
@@ -115,7 +115,7 @@ public class ClickGuiScreen extends Screen {
         drawText(text, x + textRenderer.getStringWidth(prefix), y, textColor);
     }
 
-    public static boolean isMouseOverRect(int mouseX, int mouseY, int x, int y, int width, int height) {
+    public static boolean isMouseOverRect(double mouseX, double mouseY, double x, double y, int width, int height) {
         boolean xOver = false;
         boolean yOver = false;
         if (mouseX >= x && mouseX <= width + x) {
@@ -130,24 +130,21 @@ public class ClickGuiScreen extends Screen {
     private boolean mouseIsClickedL = false;
     private boolean mouseIsClickedR = false;
     private boolean clickedOnce = false;
-    private boolean dragging = false;
-    private int dragXD = 0;
-    private int dragYD = 0;
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
-        categories.clear();
+        categoryRenderers.clear();
         for (Module.Category category : Module.Category.values()) {
-            categories.add(new Category(mouseX, mouseY, width, height, category, mouseIsClickedL, mouseIsClickedR, dragging, dragXD, dragYD));
+            categoryRenderers.add(new CategoryRenderer(mouseX, mouseY, width, height, category, mouseIsClickedL, mouseIsClickedR));
         }
         if (clickedOnce) {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
         }
-        for (Category category : categories) {
-            if (category.hasDesc) {
-                drawTextBox(category.descPosX, category.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + category.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, category.desc);
+        for (CategoryRenderer categoryRenderer : categoryRenderers) {
+            if (categoryRenderer.hasDesc) {
+                drawTextBox(categoryRenderer.descPosX, categoryRenderer.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.desc);
                 break;
             }
         }
@@ -185,15 +182,18 @@ public class ClickGuiScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (button == 0) {
-            dragging = true;
-            dragXD = (int) deltaX;
-            dragYD = (int) deltaY;
-        } else {
-            dragging = false;
-            dragXD = 0;
-            dragYD = 0;
+            for (CategoryRenderer categoryRenderer : categoryRenderers) {
+                categoryRenderer.updatePosition(deltaX, deltaY);
+            }
         }
         return false;
+    }
+
+    @Override
+    public void mouseMoved(double mouseX, double mouseY) {
+        for (CategoryRenderer categoryRenderer : categoryRenderers) {
+            categoryRenderer.updateMousePos(mouseX, mouseY);
+        }
     }
 
     public boolean isPauseScreen() {

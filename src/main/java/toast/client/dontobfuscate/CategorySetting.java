@@ -6,15 +6,15 @@ import java.util.ArrayList;
 
 public class CategorySetting {
     @SerializedName("Pos X")
-    private int posX;
+    private double posX;
     @SerializedName("Pos Y")
-    private int posY;
+    private double posY;
     @SerializedName("Expanded")
     private boolean expanded;
     @SerializedName("Expanded Modules")
     private ArrayList<String> expandedModules;
 
-    public CategorySetting(int x, int y, boolean expanded, ArrayList<String> expandedModules) {
+    public CategorySetting(double x, double y, boolean expanded, ArrayList<String> expandedModules) {
         this.posX = x;
         this.posY = y;
         this.expanded = expanded;
@@ -25,11 +25,11 @@ public class CategorySetting {
         return expanded;
     }
 
-    public int getPosX() {
+    public double getPosX() {
         return posX;
     }
 
-    public int getPosY() {
+    public double getPosY() {
         return posY;
     }
 
@@ -41,11 +41,11 @@ public class CategorySetting {
         this.expandedModules = expandedModules;
     }
 
-    public void setPosX(int posx) {
+    public void setPosX(double posx) {
         this.posX = posx;
     }
 
-    public void setPosY(int posy) {
+    public void setPosY(double posy) {
         this.posY = posy;
     }
 
