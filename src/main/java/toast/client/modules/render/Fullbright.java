@@ -38,9 +38,9 @@ public class Fullbright extends Module {
     }
 
     public void onDisable() {
+        if(mc.player == null) return;
         mc.options.gamma = previousGamma;
         increasedGamma = false;
-        if(mc.player == null) return;
         if (mc.player.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
             if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 42069)
                 mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
