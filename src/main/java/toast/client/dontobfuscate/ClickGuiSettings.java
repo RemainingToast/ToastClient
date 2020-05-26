@@ -133,7 +133,12 @@ public class ClickGuiSettings {
         colors.settingOffTextColor = defaultOffTextColor;
         colors.settingOnBgColor = defaultBgColor;
         colors.settingOnTextColor = defaultOnTextColor;
-        colors.settingPrefix = "  > ";
+        colors.settingSliderBarColor = defaultOffTextColor;
+        colors.settingSliderKnobColor = defaultOnTextColor;
+        colors.settingSliderKnobDragColor = defaultOnTextColor;
+        colors.settingSliderKnobHoverColor = defaultHoverBgColor;
+        colors.settingSliderSideNumbersColor = defaultOnTextColor;
+        colors.settingPrefix = "    ";
         colors.settingPrefixColor = defaultPrefixColor;
     }
 
@@ -174,6 +179,11 @@ public class ClickGuiSettings {
         public int moduleClickColor;
         public String settingPrefix;
         public int settingOnTextColor;
+        public int settingSliderBarColor;
+        public int settingSliderKnobColor;
+        public int settingSliderKnobDragColor;
+        public int settingSliderKnobHoverColor;
+        public int settingSliderSideNumbersColor;
         public int settingOnBgColor;
         public int settingOffTextColor;
         public int settingOffBgColor;

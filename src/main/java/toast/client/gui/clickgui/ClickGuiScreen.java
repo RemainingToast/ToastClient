@@ -7,7 +7,6 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import toast.client.dontobfuscate.ClickGuiSettings;
-import toast.client.dontobfuscate.Config;
 import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
@@ -166,6 +165,9 @@ public class ClickGuiScreen extends Screen {
                 mouseIsClickedL = true;
                 mouseIsClickedR = false;
                 clickedOnce = true;
+                for (CategoryRenderer categoryRenderer : categoryRenderers) {
+                    categoryRenderer.mouseHeldL(true);
+                }
             } else if (button == 1) {
                 mouseIsClickedL = false;
                 mouseIsClickedR = true;
@@ -184,6 +186,9 @@ public class ClickGuiScreen extends Screen {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
             clickedOnce = false;
+            for (CategoryRenderer categoryRenderer : categoryRenderers) {
+                categoryRenderer.mouseHeldL(false);
+            }
         }
         return false;
     }
@@ -213,9 +218,6 @@ public class ClickGuiScreen extends Screen {
     public void onClose() {
         settings.savePositions();
         settings.saveColors();
-        Config.writeModules();
-        Config.writeConfig();
-        Config.writeKeyBinds();
         Objects.requireNonNull(ModuleManager.getModule(ClickGui.class)).disable();
     }
 

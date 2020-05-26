@@ -30,6 +30,7 @@ public class Setting {
         this.mode = newMode;
         this.value = null;
         this.enabled = null;
+        Config.writeConfig();
     }
 
     public double getValue() {
@@ -40,6 +41,7 @@ public class Setting {
         this.mode = null;
         this.value = newValue;
         this.enabled = null;
+        Config.writeConfig();
     }
 
     public boolean isEnabled() {
@@ -50,6 +52,7 @@ public class Setting {
         this.mode = null;
         this.value = null;
         this.enabled = enabled;
+        Config.writeConfig();
     }
 
     public int getType() {

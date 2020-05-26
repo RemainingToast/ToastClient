@@ -1,5 +1,7 @@
 package toast.client.gui.clickgui;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import toast.client.dontobfuscate.ClickGuiSettings;
 import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
@@ -18,6 +20,7 @@ public class CategoryRenderer {
     public String desc = "";
     public boolean clickedL;
     public boolean clickedR;
+    public boolean mouseLHeld;
     public double mouseX;
     public double mouseY;
     public int boxWidth;
@@ -25,6 +28,7 @@ public class CategoryRenderer {
     public boolean isOver;
     public static ClickGuiSettings.Colors colors = settings.getColors();
     public CategoryRenderer(double mouseX, double mouseY, int boxWidth, int boxHeight, Module.Category category, boolean clickedL, boolean clickedR) {
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         this.category = category.toString();
         this.clickedL = clickedL;
         this.clickedR = clickedR;
@@ -38,6 +42,7 @@ public class CategoryRenderer {
             if (isClickedR()) {
                 catBgColor = colors.categoryClickColor;
                 settings.getPositions(this.category).setExpanded(!settings.getPositions(this.category).isExpanded());
+                settings.savePositions();
             } else {
                 catBgColor = colors.categoryHoverBgColor;
             }
@@ -48,7 +53,6 @@ public class CategoryRenderer {
         if (settings.getPositions(category.toString()).isExpanded()) {
             int u = 1;
             for (Module module : ModuleManager.getModulesInCategory(category)) {
-                double y = getY() + u + boxHeight * u;
                 int moduleTextColor;
                 int moduleBgColor;
                 if (module.isEnabled()) {
@@ -58,35 +62,35 @@ public class CategoryRenderer {
                     moduleTextColor = colors.moduleOffTextColor;
                     moduleBgColor = colors.moduleOffBgColor;
                 }
-                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
-                        if (isClickedL()) {
-                            moduleBgColor = colors.moduleClickColor;
-                            module.toggle();
-                        } else if (isClickedR()) {
-                            if (settings.getPositions(this.category).getExpandedModules().contains(module.getName())) {
-                                settings.getPositions(this.category).getExpandedModules().remove(module.getName());
-                            } else {
-                                settings.getPositions(this.category).getExpandedModules().add(module.getName());
-                            }
+                if (isMouseOverRect(getMouseX(), getMouseY(), getX(), getYIteration(u), boxWidth, boxHeight)) {
+                    if (isClickedL()) {
+                        moduleBgColor = colors.moduleClickColor;
+                        module.toggle();
+                    } else if (isClickedR()) {
+                        if (settings.getPositions(this.category).getExpandedModules().contains(module.getName())) {
+                            settings.getPositions(this.category).getExpandedModules().remove(module.getName());
                         } else {
-                            moduleBgColor = colors.moduleHoverBgColor;
+                            settings.getPositions(this.category).getExpandedModules().add(module.getName());
                         }
-                        desc = module.getDescription();
-                        descPosX = (int) Math.round(getX() + boxWidth);
-                        descPosY = (int) Math.round(y);
-                        hasDesc = true;
+                        settings.savePositions();
+                    } else {
+                        moduleBgColor = colors.moduleHoverBgColor;
                     }
-                drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.moduleBoxColor, moduleTextColor, colors.modulePrefixColor, moduleBgColor, colors.modulePrefix, module.getName());
+                    desc = module.getDescription();
+                    descPosX = (int) Math.round(getX() + boxWidth);
+                    descPosY = (int) Math.round(getYIteration(u));
+                    hasDesc = true;
+                }
+                drawTextBox(getXint(), (int) Math.round(getYIteration(u)), boxWidth, boxHeight, colors.moduleBoxColor, moduleTextColor, colors.modulePrefixColor, moduleBgColor, colors.modulePrefix, module.getName());
                 u++;
                 if (!module.getSettings().getSettings().isEmpty()) {
                     for (String modName : settings.getPositions(this.category).getExpandedModules()) {
                         if (modName.equals(module.getName())) {
                             for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
-                                y = getY() + u + boxHeight * u;
                                 Setting setting = settingEntry.getValue();
                                 if (setting.getType() == 0) {
                                     int settingBgColor = colors.settingOnBgColor;
-                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
+                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), getYIteration(u), boxWidth, boxHeight)) {
                                         if (isClickedL()) {
                                             settingBgColor = colors.settingClickColor;
                                             ArrayList<String> modes = module.getSettings().getSettingDef(settingEntry.getKey()).getModes();
@@ -101,7 +105,41 @@ public class CategoryRenderer {
                                             settingBgColor = colors.settingHoverBgColor;
                                         }
                                     }
-                                    drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey() + ": " + setting.getMode());
+                                    drawTextBox(getXint(), (int) Math.round(getYIteration(u)), boxWidth, boxHeight, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey() + ": " + setting.getMode());
+                                    u++;
+                                }
+                                if (setting.getType() == 1) {
+                                    int settingBgColor = colors.settingOnBgColor;
+                                    int settingKnobColor = colors.settingSliderKnobColor;
+                                    int minValLenght = textRenderer.getStringWidth(module.getSettings().getSettingDef(settingEntry.getKey()).getMinValue().toString());
+                                    int maxValLenght = textRenderer.getStringWidth(module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue().toString());
+                                    int barLength = boxWidth - 14 - minValLenght - maxValLenght;
+                                    int barX = getXint() + 5 + minValLenght;
+                                    int barY = (int) Math.round(getYIteration(u + 1)) + boxHeight / 2 - 3;
+                                    int knobCenterX = (int) Math.round(((setting.getValue() / module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue()) * barLength) + barX);
+                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), getYIteration(u), boxWidth, boxHeight * 2)) {
+                                        if (isMouseOverRect(getMouseX(), getMouseY(), knobCenterX - 1, barY - 2, 4, 6)) {
+                                            if (isMouseLHeld()) {
+                                                if (mouseX >= barX && mouseX <= barX + barLength) {
+                                                    knobCenterX = (int) Math.round(mouseX);
+                                                    setting.setValue(((mouseX / barLength) * module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue()));
+                                                    settingKnobColor = colors.settingSliderKnobDragColor;
+                                                }
+                                            } else {
+                                                settingKnobColor = colors.settingSliderKnobHoverColor;
+                                            }
+                                        } else if (isClickedL()) {
+                                            settingBgColor = colors.settingClickColor;
+                                        } else {
+                                            settingBgColor = colors.settingHoverBgColor;
+                                        }
+                                    }
+                                    drawTextBox(getXint(), (int) Math.round(getYIteration(u)), boxWidth, boxHeight * 2, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey() + ": " + setting.getValue());
+                                    u++;
+                                    drawRect(barX, barY, barLength, 2, colors.settingSliderBarColor);
+                                    drawRect(knobCenterX - 1, barY - 2, 4, 6, settingKnobColor);
+                                    drawText(module.getSettings().getSettingDef(settingEntry.getKey()).getMinValue().toString(), getXint() + 2, (int) Math.round(getYIteration(u)), colors.settingSliderSideNumbersColor);
+                                    drawText(module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue().toString(), getXint() + boxWidth - 6 - maxValLenght, (int) Math.round(getYIteration(u)), colors.settingSliderSideNumbersColor);
                                     u++;
                                 }
                                 if (setting.getType() == 2) {
@@ -114,7 +152,7 @@ public class CategoryRenderer {
                                         settingTextColor = colors.settingOffTextColor;
                                         settingBgColor = colors.settingOffBgColor;
                                     }
-                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
+                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), getYIteration(u), boxWidth, boxHeight)) {
                                         if (isClickedL()) {
                                             settingBgColor = colors.settingClickColor;
                                             setting.setEnabled(!setting.isEnabled());
@@ -124,11 +162,11 @@ public class CategoryRenderer {
                                         if (settingEntry.getKey().equals("Visible")) {
                                             desc = "Whether or not to show on the hud.";
                                             descPosX = (int) Math.round(getX() + boxWidth);
-                                            descPosY = (int) Math.round(y);
+                                            descPosY = (int) Math.round(getYIteration(u));
                                             hasDesc = true;
                                         }
                                     }
-                                    drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.settingBoxColor, settingTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey());
+                                    drawTextBox(getXint(), (int) Math.round(getYIteration(u)), boxWidth, boxHeight, colors.settingBoxColor, settingTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey());
                                     u++;
                                 }
                             }
@@ -145,6 +183,10 @@ public class CategoryRenderer {
 
     public double getY() {
         return settings.getPositions(this.category).getPosY();
+    }
+
+    public double getYIteration(int iteration) {
+        return getY() + iteration + boxHeight * iteration;
     }
 
     public int getXint() {
@@ -188,10 +230,19 @@ public class CategoryRenderer {
         this.mouseY = mouseY;
     }
 
+    public boolean isMouseLHeld() {
+        return mouseLHeld;
+    }
+
+    public void mouseHeldL(boolean isheld) {
+        this.mouseLHeld = isheld;
+    }
+
     public void updatePosition(double dragX, double dragY) {
         if (this.isMouseOverCat()) {
             this.setX(this.getX() + dragX);
             this.setY(this.getY() + dragY);
+            settings.savePositions();
         }
     }
 }

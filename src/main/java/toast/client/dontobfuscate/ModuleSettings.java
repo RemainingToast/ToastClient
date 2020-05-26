@@ -63,6 +63,7 @@ public class ModuleSettings {
 
     public void setSettings(Map<String, Setting> settings) {
         this.settings = settings;
+        Config.writeConfig();
     }
 
     public Map<String, SettingDef> getSettingsDef() {
