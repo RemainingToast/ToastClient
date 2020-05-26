@@ -32,19 +32,20 @@ public class Fullbright extends Module {
             lastMode = "Gamma";
         } else if (this.isMode("Potion")) {
             assert mc.player != null;
-            mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 82820, 69));
+            mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 82820, 42069));
             lastMode = "Potion";
         }
     }
 
-// causes client to crash
-    /*public void onDisable() {
+    public void onDisable() {
         mc.options.gamma = previousGamma;
         increasedGamma = false;
         if(mc.player == null) return;
-        if (mc.player.getStatusEffect(StatusEffects.NIGHT_VISION).getAmplifier() == 42069)
-           mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
-    }*/
+        if (mc.player.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
+            if (Objects.requireNonNull(mc.player.getStatusEffect(StatusEffects.NIGHT_VISION)).getAmplifier() == 42069)
+                mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
+        }
+    }
 
     public void onEnable() {
         if (mc.player == null) return;
