@@ -27,7 +27,7 @@ public class Module {
         this.description = description;
         this.key = key;
         this.category = category;
-        this.settings.addBoolean("Show In SortedSet", true);
+        this.settings.addBoolean("Visible", true);
     }
 
     public String getDescription() {

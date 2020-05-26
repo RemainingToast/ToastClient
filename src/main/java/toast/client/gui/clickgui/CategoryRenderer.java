@@ -84,27 +84,6 @@ public class CategoryRenderer {
                             for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
                                 y = getY() + u + boxHeight * u;
                                 Setting setting = settingEntry.getValue();
-                                if (setting.getType() == 2) {
-                                    int settingTextColor;
-                                    int settingBgColor;
-                                    if (setting.isEnabled()) {
-                                        settingTextColor = colors.settingOnTextColor;
-                                        settingBgColor = colors.settingOnBgColor;
-                                    } else {
-                                        settingTextColor = colors.settingOffTextColor;
-                                        settingBgColor = colors.settingOffBgColor;
-                                    }
-                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
-                                        if (isClickedL()) {
-                                            settingBgColor = colors.settingClickColor;
-                                            setting.setEnabled(!setting.isEnabled());
-                                        } else {
-                                            settingBgColor = colors.settingHoverBgColor;
-                                        }
-                                    }
-                                    drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.settingBoxColor, settingTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey());
-                                    u++;
-                                }
                                 if (setting.getType() == 0) {
                                     int settingBgColor = colors.settingOnBgColor;
                                     if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
@@ -123,6 +102,33 @@ public class CategoryRenderer {
                                         }
                                     }
                                     drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey() + ": " + setting.getMode());
+                                    u++;
+                                }
+                                if (setting.getType() == 2) {
+                                    int settingTextColor;
+                                    int settingBgColor;
+                                    if (setting.isEnabled()) {
+                                        settingTextColor = colors.settingOnTextColor;
+                                        settingBgColor = colors.settingOnBgColor;
+                                    } else {
+                                        settingTextColor = colors.settingOffTextColor;
+                                        settingBgColor = colors.settingOffBgColor;
+                                    }
+                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
+                                        if (isClickedL()) {
+                                            settingBgColor = colors.settingClickColor;
+                                            setting.setEnabled(!setting.isEnabled());
+                                        } else {
+                                            settingBgColor = colors.settingHoverBgColor;
+                                        }
+                                        if (settingEntry.getKey().equals("Visible")) {
+                                            desc = "Whether or not to show on the hud.";
+                                            descPosX = (int) Math.round(getX() + boxWidth);
+                                            descPosY = (int) Math.round(y);
+                                            hasDesc = true;
+                                        }
+                                    }
+                                    drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.settingBoxColor, settingTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey());
                                     u++;
                                 }
                             }
