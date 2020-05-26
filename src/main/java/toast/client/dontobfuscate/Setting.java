@@ -52,10 +52,10 @@ public class Setting {
         this.enabled = enabled;
     }
 
-    public String getType() {
-        if (mode != null) return "mode";
-        else if (value != null) return "value";
-        else if (enabled != null) return "boolean";
-        else return null;
+    public int getType() {
+        if (mode != null) return 0;
+        else if (value != null) return 1;
+        else if (enabled != null) return 2;
+        else return 3;
     }
 }

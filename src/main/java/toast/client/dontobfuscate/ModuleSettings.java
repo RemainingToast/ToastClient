@@ -1,5 +1,7 @@
 package toast.client.dontobfuscate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,8 @@ public class ModuleSettings {
 
     public void addMode(String name, String defaultMode, String... modes) {
         settings.put(name, new Setting(defaultMode));
-        settingsDef.put(name, new SettingDef(modes));
+        ArrayList<String> modeList = new ArrayList<>(Arrays.asList(modes));
+        settingsDef.put(name, new SettingDef(modeList));
     }
 
     public void addSlider(String name, double minimumValue, double defaultValue, double maximumValue) {
@@ -42,7 +45,7 @@ public class ModuleSettings {
         return settings.get(name).getValue();
     }
 
-    public String[] getModes(String name) {
+    public ArrayList<String> getModes(String name) {
         return settingsDef.get(name).getModes();
     }
 

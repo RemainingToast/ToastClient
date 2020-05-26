@@ -5,6 +5,7 @@ import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static toast.client.gui.clickgui.ClickGuiScreen.*;
@@ -23,7 +24,7 @@ public class CategoryRenderer {
     public int boxHeight;
     public boolean isOver;
     public static ClickGuiSettings.Colors colors = settings.getColors();
-    public CategoryRenderer(double mouseX, double mouseY, int boxWidth, int boxHeight, Module.Category category, boolean clickedR, boolean clickedL) {
+    public CategoryRenderer(double mouseX, double mouseY, int boxWidth, int boxHeight, Module.Category category, boolean clickedL, boolean clickedR) {
         this.category = category.toString();
         this.clickedL = clickedL;
         this.clickedR = clickedR;
@@ -83,7 +84,7 @@ public class CategoryRenderer {
                             for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
                                 y = getY() + u + boxHeight * u;
                                 Setting setting = settingEntry.getValue();
-                                if (setting.getType().equals("boolean")) {
+                                if (setting.getType() == 2) {
                                     int settingTextColor;
                                     int settingBgColor;
                                     if (setting.isEnabled()) {
@@ -93,15 +94,35 @@ public class CategoryRenderer {
                                         settingTextColor = colors.settingOffTextColor;
                                         settingBgColor = colors.settingOffBgColor;
                                     }
-                                        if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
-                                            if (isClickedL()) {
-                                                settingBgColor = colors.settingClickColor;
-                                                setting.setEnabled(!setting.isEnabled());
-                                            } else {
-                                                settingBgColor = colors.settingHoverBgColor;
-                                            }
+                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
+                                        if (isClickedL()) {
+                                            settingBgColor = colors.settingClickColor;
+                                            setting.setEnabled(!setting.isEnabled());
+                                        } else {
+                                            settingBgColor = colors.settingHoverBgColor;
                                         }
+                                    }
                                     drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.settingBoxColor, settingTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey());
+                                    u++;
+                                }
+                                if (setting.getType() == 0) {
+                                    int settingBgColor = colors.settingOnBgColor;
+                                    if (isMouseOverRect(getMouseX(), getMouseY(), getX(), y, boxWidth, boxHeight)) {
+                                        if (isClickedL()) {
+                                            settingBgColor = colors.settingClickColor;
+                                            ArrayList<String> modes = module.getSettings().getSettingDef(settingEntry.getKey()).getModes();
+                                            if (modes.size() > 0) {
+                                                if (modes.indexOf(setting.getMode()) == modes.size() - 1) {
+                                                    setting.setMode(modes.get(0));
+                                                } else {
+                                                    setting.setMode(modes.get(modes.indexOf(setting.getMode()) + 1));
+                                                }
+                                            }
+                                        } else {
+                                            settingBgColor = colors.settingHoverBgColor;
+                                        }
+                                    }
+                                    drawTextBox(getXint(), (int) Math.round(y), boxWidth, boxHeight, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey() + ": " + setting.getMode());
                                     u++;
                                 }
                             }
@@ -155,22 +176,6 @@ public class CategoryRenderer {
     public boolean isMouseOverCat() {
         return isMouseOverRect(getMouseX(), getMouseY(), getX(), getY(), boxWidth, boxHeight);
     }
-
-    /*public void updateClick(int button, boolean clicked) {
-        if (clicked) {
-            if (button == 0) {
-                this.clickedL = true;
-                this.clickedR = false;
-                return;
-            } else if (button == 1) {
-                this.clickedR = true;
-                this.clickedL = false;
-                return;
-            }
-        }
-        this.clickedL = false;
-        this.clickedR = false;
-    }*/
 
     public void updateMousePos(double mouseX, double mouseY) {
         this.mouseX = mouseX;

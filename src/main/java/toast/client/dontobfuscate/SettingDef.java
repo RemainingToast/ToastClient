@@ -1,12 +1,14 @@
 package toast.client.dontobfuscate;
 
+import java.util.ArrayList;
+
 public class SettingDef {
-    private String[] modes;
+    private ArrayList<String> modes;
     private boolean isBool;
     private Double maxvalue;
     private Double minvalue;
 
-    public SettingDef(String[] modes) {
+    public SettingDef(ArrayList<String> modes) {
         this.modes = modes;
         this.isBool = false;
         this.maxvalue = this.minvalue = null;
@@ -25,7 +27,7 @@ public class SettingDef {
         this.maxvalue = this.minvalue = null;
     }
 
-    public String[] getModes() {
+    public ArrayList<String> getModes() {
         return modes;
     }
 

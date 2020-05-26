@@ -7,6 +7,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import toast.client.dontobfuscate.ClickGuiSettings;
+import toast.client.dontobfuscate.Config;
 import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
@@ -43,6 +44,14 @@ public class ClickGuiScreen extends Screen {
                 int settingWidth = textRenderer.getStringWidth(settings.colors.settingPrefix + settingEntry.getKey());
                 if (settingWidth > width) {
                     width = settingWidth + 4;
+                }
+                if (settingEntry.getValue().getType() == 0) {
+                    for (String mode : module.getSettings().getSettingDef(settingEntry.getKey()).getModes()) {
+                        int modeWidth = textRenderer.getStringWidth(settings.colors.settingPrefix + settingEntry.getKey() + ": " + mode);
+                        if (modeWidth > width) {
+                            width = modeWidth + 4;
+                        }
+                    }
                 }
             }
         }
@@ -204,6 +213,9 @@ public class ClickGuiScreen extends Screen {
     public void onClose() {
         settings.savePositions();
         settings.saveColors();
+        Config.writeModules();
+        Config.writeConfig();
+        Config.writeKeyBinds();
         Objects.requireNonNull(ModuleManager.getModule(ClickGui.class)).disable();
     }
 
