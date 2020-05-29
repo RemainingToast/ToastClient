@@ -12,17 +12,19 @@ import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.render.ClickGui;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class ClickGuiScreen extends Screen {
-    private static TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
     public static ClickGuiSettings settings = new ClickGuiSettings();
-    public static ArrayList<CategoryRenderer> categoryRenderers = new ArrayList<>();
-
+    public static Map<Module.Category, CategoryRenderer> categoryRenderers = new HashMap<>();
     public static int width = 50;
+    public static int height = 10;
+    private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    private boolean mouseIsClickedL = false;
+    private boolean mouseIsClickedR = false;
+    private boolean clickedOnce = false;
 
     public ClickGuiScreen() {
         super(new LiteralText("ClickGuiScreen"));
@@ -59,9 +61,9 @@ public class ClickGuiScreen extends Screen {
     /**
      * Draws text at the given coordinates
      *
-     * @param text Text to draw
-     * @param x X coordinate of the top left corner of the text
-     * @param y Y coordinate of the top left corner of the text
+     * @param text  Text to draw
+     * @param x     X coordinate of the top left corner of the text
+     * @param y     Y coordinate of the top left corner of the text
      * @param color Color of the box
      */
     public static void drawText(String text, int x, int y, int color) {
@@ -73,11 +75,11 @@ public class ClickGuiScreen extends Screen {
     /**
      * Draws a rectangle at the given coordinates
      *
-     * @param x X coordinate of the top left corner of the rectangle
-     * @param y Y coordinate of the top left corner of the rectangle
-     * @param width Width of the box
+     * @param x      X coordinate of the top left corner of the rectangle
+     * @param y      Y coordinate of the top left corner of the rectangle
+     * @param width  Width of the box
      * @param height Height of the box
-     * @param color Color of the box
+     * @param color  Color of the box
      */
     public static void drawRect(int x, int y, int width, int height, int color) {
         InGameHud.fill(x, y, x + width, y + height, color);
@@ -88,37 +90,37 @@ public class ClickGuiScreen extends Screen {
     /**
      * Draws a box at the given coordinates
      *
-     * @param x X coordinate of the top left corner of the inside of the box
-     * @param y Y coordinate of the top left corner of the inside of the box
-     * @param width Width of the inside of the box
+     * @param x      X coordinate of the top left corner of the inside of the box
+     * @param y      Y coordinate of the top left corner of the inside of the box
+     * @param width  Width of the inside of the box
      * @param height Height of the inside of the box
-     * @param lW Width of the lines of the box
-     * @param color Color of the box
+     * @param lW     Width of the lines of the box
+     * @param color  Color of the box
      */
     public static void drawHollowRect(int x, int y, int width, int height, int lW, int color) {
-        drawRect(x-lW, y-lW, width + lW*2, lW, color); // top line
-        drawRect(x-lW, y, lW, height, color); // left line
-        drawRect(x-lW, y + height, width + lW*2, lW, color); // bottom line
+        drawRect(x - lW, y - lW, width + lW * 2, lW, color); // top line
+        drawRect(x - lW, y, lW, height, color); // left line
+        drawRect(x - lW, y + height, width + lW * 2, lW, color); // bottom line
         drawRect(x + width, y, lW, height, color); // right line
     }
 
     /**
      * Draw a text box at the given coordinates
      *
-     * @param x X coordinate of the top left corner of the inside of the text box
-     * @param y Y coordinate of the top left corner of the inside of the text box
-     * @param width Width of the inside of the box
-     * @param height Height of the inside of the box
-     * @param color Color of the box outlines
-     * @param textColor Color of the text
+     * @param x           X coordinate of the top left corner of the inside of the text box
+     * @param y           Y coordinate of the top left corner of the inside of the text box
+     * @param width       Width of the inside of the box
+     * @param height      Height of the inside of the box
+     * @param color       Color of the box outlines
+     * @param textColor   Color of the text
      * @param prefixColor Color of the text prefix
-     * @param bgColor Color of the box's background
-     * @param prefix Text to prepend to the main text
-     * @param text Main text to put in the box
+     * @param bgColor     Color of the box's background
+     * @param prefix      Text to prepend to the main text
+     * @param text        Main text to put in the box
      */
     public static void drawTextBox(int x, int y, int width, int height, int color, int textColor, int prefixColor, int bgColor, String prefix, String text) {
-        drawRect(x-2, y-2, width, height, bgColor);
-        drawHollowRect(x-2, y-2, width, height, 1, color);
+        drawRect(x - 2, y - 2, width, height, bgColor);
+        drawHollowRect(x - 2, y - 2, width, height, 1, color);
         drawText(prefix, x, y, prefixColor);
         drawText(text, x + textRenderer.getStringWidth(prefix), y, textColor);
     }
@@ -135,22 +137,19 @@ public class ClickGuiScreen extends Screen {
         return xOver && yOver;
     }
 
-    private boolean mouseIsClickedL = false;
-    private boolean mouseIsClickedR = false;
-    private boolean clickedOnce = false;
-
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        int height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100)+3;
+        height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100) + 3;
         categoryRenderers.clear();
         for (Module.Category category : Module.Category.values()) {
-            categoryRenderers.add(new CategoryRenderer(mouseX, mouseY, width, height, category, mouseIsClickedL, mouseIsClickedR));
+            categoryRenderers.put(category, new CategoryRenderer(mouseX, mouseY, category, mouseIsClickedL, mouseIsClickedR));
         }
         if (clickedOnce) {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
         }
-        for (CategoryRenderer categoryRenderer : categoryRenderers) {
+        for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
+            CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
             if (categoryRenderer.hasDesc) {
                 drawTextBox(categoryRenderer.descPosX, categoryRenderer.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.desc);
                 break;
@@ -165,9 +164,6 @@ public class ClickGuiScreen extends Screen {
                 mouseIsClickedL = true;
                 mouseIsClickedR = false;
                 clickedOnce = true;
-                for (CategoryRenderer categoryRenderer : categoryRenderers) {
-                    categoryRenderer.mouseHeldL(true);
-                }
             } else if (button == 1) {
                 mouseIsClickedL = false;
                 mouseIsClickedR = true;
@@ -186,9 +182,6 @@ public class ClickGuiScreen extends Screen {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
             clickedOnce = false;
-            for (CategoryRenderer categoryRenderer : categoryRenderers) {
-                categoryRenderer.mouseHeldL(false);
-            }
         }
         return false;
     }
@@ -196,18 +189,24 @@ public class ClickGuiScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (button == 0) {
-            for (CategoryRenderer categoryRenderer : categoryRenderers) {
+            for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
+                CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
                 categoryRenderer.updatePosition(deltaX, deltaY);
             }
         }
         return false;
     }
 
-    @Override
-    public void mouseMoved(double mouseX, double mouseY) {
-        for (CategoryRenderer categoryRenderer : categoryRenderers) {
+    public void updateMousePos(double mouseX, double mouseY) {
+        for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
+            CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
             categoryRenderer.updateMousePos(mouseX, mouseY);
         }
+    }
+
+    @Override
+    public void mouseMoved(double mouseX, double mouseY) {
+        updateMousePos(mouseX, mouseY);
     }
 
     public boolean isPauseScreen() {
