@@ -118,7 +118,9 @@ public class CategoryRenderer {
                                     int sliderX = getXint() + 5 + minValLength;
                                     int sliderY = (int) Math.round(getYIteration(u + 1)) + getBoxHeight() / 2 - 3;
                                     int sliderLength = getBoxWidth() - 14 - minValLength - maxValLength;
-                                    double sliderKnobX = Math.round(((setting.getValue() / module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue()) * sliderLength) + sliderX);
+                                    double sliderMin = module.getSettings().getSettingDef(settingEntry.getKey()).getMinValue();
+                                    double sliderMax = module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue();
+                                    double sliderKnobX = Math.round((setting.getValue() - sliderMin / (sliderMax - sliderMin) * sliderLength) + sliderX);
                                     sliders.add(new Slider(sliderX, sliderY, sliderLength, sliderKnobX, module, setting, settingEntry.getKey()));
                                     if (isMouseOverRect(getMouseX(), getMouseY(), getX(), getYIteration(u), getBoxWidth(), getBoxHeight() * 2)) {
                                         if (isMouseOverRect(getMouseX(), getMouseY(), sliders.get(sliders.size() - 1).sliderKnobX - 1, sliders.get(sliders.size() - 1).sliderPosY - 2, 4, 6)) {
@@ -129,7 +131,13 @@ public class CategoryRenderer {
                                             settingBgColor = colors.settingHoverBgColor;
                                         }
                                     }
-                                    drawTextBox(getXint(), (int) Math.round(getYIteration(u)), getBoxWidth(), getBoxHeight() * 2 + 1, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey() + ": " + setting.getValue());
+                                    String curVal;
+                                    if (String.valueOf(setting.getValue()).length() > 5) {
+                                        curVal = String.valueOf(setting.getValue()).substring(0, 5);
+                                    } else {
+                                        curVal = String.valueOf(setting.getValue());
+                                    }
+                                    drawTextBox(getXint(), (int) Math.round(getYIteration(u)), getBoxWidth(), getBoxHeight() * 2 + 1, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, settingBgColor, colors.settingPrefix, settingEntry.getKey() + ": " + curVal);
                                     u++;
                                     drawRect(sliders.get(sliders.size() - 1).sliderPosX, sliders.get(sliders.size() - 1).sliderPosY, sliders.get(sliders.size() - 1).sliderBarLength, 2, colors.settingSliderBarColor);
                                     drawRect((int) Math.round(sliders.get(sliders.size() - 1).sliderKnobX - 1), sliders.get(sliders.size() - 1).sliderPosY - 2, 4, 6, settingKnobColor);
