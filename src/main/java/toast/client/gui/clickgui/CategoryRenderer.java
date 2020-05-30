@@ -120,7 +120,7 @@ public class CategoryRenderer {
                                     int sliderLength = getBoxWidth() - 14 - minValLength - maxValLength;
                                     double sliderMin = module.getSettings().getSettingDef(settingEntry.getKey()).getMinValue();
                                     double sliderMax = module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue();
-                                    double sliderKnobX = Math.round((setting.getValue() - sliderMin / (sliderMax - sliderMin) * sliderLength) + sliderX);
+                                    double sliderKnobX = Math.round(((setting.getValue() / sliderMax) * sliderLength) + sliderX);
                                     sliders.add(new Slider(sliderX, sliderY, sliderLength, sliderKnobX, module, setting, settingEntry.getKey()));
                                     if (isMouseOverRect(getMouseX(), getMouseY(), getX(), getYIteration(u), getBoxWidth(), getBoxHeight() * 2)) {
                                         if (isMouseOverRect(getMouseX(), getMouseY(), sliders.get(sliders.size() - 1).sliderKnobX - 1, sliders.get(sliders.size() - 1).sliderPosY - 2, 4, 6)) {
@@ -269,10 +269,10 @@ public class CategoryRenderer {
             if (sliders.size() > 0) {
                 for (Slider slider : sliders) {
                     if (isMouseOverRect(mouseX, mouseY, slider.sliderKnobX - 1, slider.sliderPosY - 2, 2, 6)) {
-                        double newSliderKnobX = slider.sliderKnobX + dragX;
+                        double newSliderKnobX = mouseX;
                         if (newSliderKnobX >= slider.sliderPosX && newSliderKnobX <= slider.sliderPosX + slider.sliderBarLength) {
                             slider.sliderKnobX = newSliderKnobX;
-                            slider.setting.setValue(((mouseX / slider.sliderBarLength) * slider.module.getSettings().getSettingDef(slider.settingName).getMaxValue()));
+                            slider.setting.setValue((((mouseX - slider.sliderPosX) / slider.sliderBarLength) * slider.module.getSettings().getSettingDef(slider.settingName).getMaxValue()));
                         }
                     }
                 }
