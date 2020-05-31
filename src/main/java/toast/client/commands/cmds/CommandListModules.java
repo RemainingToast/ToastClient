@@ -18,14 +18,16 @@ public class CommandListModules extends Command {
                 Logger.message("  " + category.name(), Logger.EMPTY);
             }
         } else {
-            if (Module.Category.valueOf(args[0]) != null) {
-                Logger.message("Modules in " + args[0] + ":", Logger.INFO);
-                for (Module module : ModuleManager.getModulesInCategory(Module.Category.valueOf(args[0]))) {
-                    Logger.message("  " + module.getName() + ": " + module.getDescription(), Logger.EMPTY);
+            for (Module.Category category : Module.Category.values()) {
+                if (category.name().equalsIgnoreCase(args[0])) {
+                    Logger.message("Modules in " + args[0] + ":", Logger.INFO);
+                    for (Module module : ModuleManager.getModulesInCategory(Module.Category.valueOf(args[0].toUpperCase()))) {
+                        Logger.message("  " + module.getName() + ": " + module.getDescription(), Logger.EMPTY);
+                    }
+                    return;
                 }
-            } else {
-                Logger.message(args[0] + " is not a valid category.", Logger.WARN);
             }
+            Logger.message(args[0] + " is not a valid category.", Logger.WARN);
         }
     }
 }

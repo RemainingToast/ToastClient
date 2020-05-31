@@ -58,7 +58,9 @@ public class CommandHandler {
         // alphabetical order please
         commands.add(new CommandHelp());
         commands.add(new CommandFixGui());
+        commands.add(new CommandListModules());
         commands.add(new CommandReload());
+        commands.add(new CommandSet());
         commands.add(new CommandTest());
         commands.add(new CommandToggle());
     }
