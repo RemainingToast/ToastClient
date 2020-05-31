@@ -16,7 +16,7 @@ public class CategoryRenderer {
     public TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
     public ClickGuiSettings settings = ClickGuiScreen.settings;
     public ClickGuiSettings.Colors colors = settings.getColors();
-    private ArrayList<Slider> sliders = new ArrayList<>();
+    private final ArrayList<Slider> sliders = new ArrayList<>();
     public boolean hasDesc = false;
     public int descPosX = 0;
     public int descPosY = 0;
@@ -27,11 +27,6 @@ public class CategoryRenderer {
     public double mouseY;
     public String categoryString;
     public Module.Category category;
-    public int sliderLength;
-    public int sliderX;
-    public int sliderY;
-    public double sliderKnobX;
-    public boolean hasSlider;
     public boolean isCategory;
 
     public CategoryRenderer(int mouseX, int mouseY, Module.Category category, boolean clickedL, boolean clickedR) {
@@ -118,7 +113,6 @@ public class CategoryRenderer {
                                     int sliderX = getXint() + 5 + minValLength;
                                     int sliderY = (int) Math.round(getYIteration(u + 1)) + getBoxHeight() / 2 - 3;
                                     int sliderLength = getBoxWidth() - 14 - minValLength - maxValLength;
-                                    double sliderMin = module.getSettings().getSettingDef(settingEntry.getKey()).getMinValue();
                                     double sliderMax = module.getSettings().getSettingDef(settingEntry.getKey()).getMaxValue();
                                     double sliderKnobX = Math.round(((setting.getValue() / sliderMax) * sliderLength) + sliderX);
                                     sliders.add(new Slider(sliderX, sliderY, sliderLength, sliderKnobX, module, setting, settingEntry.getKey()));

@@ -18,31 +18,27 @@ import java.util.List;
 public class ToastClient implements ModInitializer {
     public static String version = "b1.0";
     public static String cleanPrefix = "ToastClient";
-    public static String chatPrefix = Formatting.DARK_GRAY+"["+Formatting.LIGHT_PURPLE+"ToastClient"+Formatting.DARK_GRAY+"]";
+    public static String chatPrefix = Formatting.DARK_GRAY + "[" + Formatting.LIGHT_PURPLE + "ToastClient" + Formatting.DARK_GRAY + "]";
     public static String cmdPrefix = ".";
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
     public static ClickGuiScreen clickGui;
 
-    public static Boolean devMode = false;
-
-    static {
-        System.setProperty("java.awt.headless", "false");
-    }
+    public static Boolean devMode = true;
 
     @Override
     public void onInitialize() {
-        System.out.println(cleanPrefix+" Initialized");
-        System.out.println("Special thanks to all contributors of this project "+devs);
+        System.out.println(cleanPrefix + " Initialized");
+        System.out.println("Special thanks to all contributors of this project " + devs);
         FileManager.initFileManager();
         ModuleManager.initModules();
         CommandHandler.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
         if (devMode) {
-            boolean login = LoginUtil.loginCracked("ToastClientDev"); // avoid generating lots of .dat files in SinglePlayer worlds
+            boolean login = LoginUtil.loginCracked("ToastDev"); // avoid generating lots of .dat files in SinglePlayer worlds
             if (login) {
                 System.out.println("Logged in as Developer");
             } else {
-                System.out.println("Failed login ;C");
+                System.out.println("Developer login failed.");
             }
         }
     }

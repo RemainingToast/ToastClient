@@ -7,6 +7,7 @@ import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Session;
 import org.apache.commons.codec.binary.Hex;
+import toast.client.ToastClient;
 import toast.client.auth.gui.NoAuthPopup;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class LoginUtil {
     }
 
     public static boolean isAuthorized(String playerUUID) {
+        if (ToastClient.devMode) return true;
         NoAuthPopup.createWindow();
         try {
             ArrayList<String> uuidList = new ArrayList<>();
@@ -54,6 +56,9 @@ public class LoginUtil {
     }
 
     public static boolean setSession(Session newSession) {
+        if (mc == null) return false;
+        if (mc.getClass() == null) return false;
+        if (mc.getClass().getDeclaredFields() == null) return false;
         Field newField = null;
         for (Field field : mc.getClass().getDeclaredFields()) {
             if(field.getName().equalsIgnoreCase("session") || field.getName().equalsIgnoreCase("field_1726")) {

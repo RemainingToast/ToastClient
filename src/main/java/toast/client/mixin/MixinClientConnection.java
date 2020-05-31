@@ -3,20 +3,15 @@ package toast.client.mixin;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import net.minecraft.network.packet.s2c.login.LoginSuccessS2CPacket;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import toast.client.ToastClient;
-import toast.client.auth.gui.NoAuthPopup;
-import toast.client.auth.gui.NoAuthScreen;
 import toast.client.commands.CommandHandler;
 import toast.client.event.EventManager;
 import toast.client.event.events.network.EventPacketReceived;
@@ -27,64 +22,44 @@ import java.util.Arrays;
 import java.util.concurrent.Future;
 
 @Mixin(ClientConnection.class)
-public abstract class MixinClientConnection {
+public class MixinClientConnection {
+
     @Inject(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
     public void send(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
-        EventPacketSent ep = new EventPacketSent(packet);
-        EventManager.call(ep);
-        if (ep.isCancelled()) ci.cancel();
-        if (packet instanceof ChatMessageC2SPacket) {
-            ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
-            if (packet2.getChatMessage().startsWith(ToastClient.cmdPrefix)) {
-                String cmd = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix, "");
-                if (packet2.getChatMessage().contains(" ")) {
-                    cmd = cmd.split(" ")[0];
+            EventPacketSent ep = new EventPacketSent(packet);
+            EventManager.call(ep);
+            if (ep.isCancelled()) ci.cancel();
+            if (packet instanceof ChatMessageC2SPacket) {
+                ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
+                if (packet2.getChatMessage().startsWith(ToastClient.cmdPrefix)) {
+                        String cmd = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix, "");
+                    if (packet2.getChatMessage().contains(" ")) {
+                        cmd = cmd.split(" ")[0];
+                    }
+                    String[] args = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix+cmd, "").split(" ");
+                    String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
+                    System.out.println("cmd: "+cmd+", args: "+Arrays.toString(betterArgs));
+                    if(!Panic.IsPanicking()) {
+                        CommandHandler.executeCmd(cmd, betterArgs);
+                        ci.cancel();
+                    }
                 }
-                String[] args = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix + cmd, "").split(" ");
-                String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
-                System.out.println("cmd: " + cmd + ", args: " + Arrays.toString(betterArgs));
-                if (!Panic.IsPanicking()) {
-                    CommandHandler.executeCmd(cmd, betterArgs);
-                    ci.cancel();
-                }
-            }
         }
     }
 
     @Shadow
     private Channel channel;
 
-    @Shadow
-    public abstract void disconnect(Text text_1);
-
-    @Shadow
-    public abstract Text getDisconnectReason();
-
-    @Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "channelRead0",at = @At("HEAD"), cancellable = true)
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo ci) {
         if (this.channel.isOpen()) {
             try {
                 EventPacketReceived ep = new EventPacketReceived(packet);
                 EventManager.call(ep);
-                if (packet instanceof LoginSuccessS2CPacket) {
-                    if (ToastClient.devs.contains(((LoginSuccessS2CPacket) packet).getProfile().getName())) {
-                        System.out.println("Should be connected");
-                    } else {
-                        System.out.println("Should be disconnected");
-                        disconnect(getDisconnectReason());
-                        MinecraftClient.getInstance().openScreen(new NoAuthScreen());
-                        NoAuthPopup.createWindow();
-                    }
-                }
                 if (ep.isCancelled()) ci.cancel();
             } catch (Exception ignored) {
             }
         }
 
     }
-
-//    @Inject(method = "connect",at = @At("HEAD"), cancellable = true)
-//    private static void connect(InetAddress inetAddress_1, int int_1, boolean boolean_1, CallbackInfoReturnable<ClientConnection> cir) {
-//
-//    }
 }
