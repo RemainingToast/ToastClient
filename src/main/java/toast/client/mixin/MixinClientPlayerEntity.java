@@ -2,6 +2,7 @@ package toast.client.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.misc.PortalChat;
 import toast.client.modules.player.Surround;
+import toast.client.utils.LoginUtil;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientPlayerEntity.class)

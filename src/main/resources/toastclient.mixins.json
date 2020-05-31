@@ -10,6 +10,7 @@
     "MixinInGameHud2",
     "MixinKeyboard",
     "MixinMinecraftClient",
+    "MixinNewSession",
     "MixinPlayerEntity",
     "MixinSharedConstants"
   ],

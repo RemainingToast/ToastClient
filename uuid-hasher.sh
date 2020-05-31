@@ -6,10 +6,11 @@ if [ `which jq` ]
     HASHES=$""
     while read line
     do
-    CURRENTNAME=$(echo -n "$line")
-    CURRENTUUID=$(curl -s "https://api.mojang.com/users/profiles/minecraft/"$CURRENTNAME | jq -r '.id')
+    CURRENTNAME=`echo -n "$line"`
+    CURRENTUUID=`curl -s "https://api.mojang.com/users/profiles/minecraft/"$CURRENTNAME | jq -r '.id'`
     echo "Hashing $line: $CURRENTUUID..."
-    HASHES+=$(echo "$CURRENTUUID" | openssl dgst -sha256)"\n"
+    HASH=`echo -n "$CURRENTUUID" | openssl sha256`"\n"
+    HASHES+=`echo -n "${HASH/(stdin)= /}"`
     done
     echo -e "$HASHES" > "$1"
     echo "Done."

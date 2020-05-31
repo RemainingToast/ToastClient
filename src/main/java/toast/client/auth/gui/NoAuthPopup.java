@@ -1,13 +1,8 @@
 package toast.client.auth.gui;
 
-import net.minecraft.client.MinecraftClient;
-
-import javax.swing.*;
-import java.awt.*;
-
 public class NoAuthPopup {
     public static void createWindow(){
-        System.out.println("Creating Window");
+        /*System.out.println("Creating Window");
         JFrame f = new JFrame("Error");
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,7 +14,7 @@ public class NoAuthPopup {
         f.pack();
         f.setAlwaysOnTop(true);
         f.setResizable(false);
-        System.out.println("Window should of been made!");
+        System.out.println("Window should of been made!");*/
     }
 
 
