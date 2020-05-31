@@ -10,7 +10,11 @@ public class EventPacketReceived extends AbstractSkippableEvent {
             this.packet = packet;
         }
 
-        public Packet getPacket() {
+    public EventPacketReceived() {
+
+    }
+
+    public Packet getPacket() {
             return this.packet;
         }
 
