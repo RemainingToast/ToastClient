@@ -11,6 +11,8 @@
     "MixinKeyboard",
     "MixinMinecraftClient",
     "MixinPlayerEntity",
+    "MixinTitleScreen",
+    "MixinServerScreen",
     "MixinSharedConstants"
   ],
   "client": [
