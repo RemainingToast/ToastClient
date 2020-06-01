@@ -3,9 +3,11 @@ package toast.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
 import toast.client.gui.clickgui.ClickGuiScreen;
+import toast.client.dontobfuscate.DiscordPresence;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.ASCII;
 import toast.client.utils.FileManager;
@@ -17,6 +19,9 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class ToastClient implements ModInitializer {
+
+    public static String APP_ID = "669916916290420736";
+
     public static String version = "b1.0";
     public static String cleanPrefix = "ToastClient";
     public static String chatPrefix = Formatting.DARK_GRAY + "[" + Formatting.LIGHT_PURPLE + "ToastClient" + Formatting.DARK_GRAY + "]";
@@ -36,12 +41,15 @@ public class ToastClient implements ModInitializer {
         CommandHandler.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
         if (devMode) {
-            boolean login = LoginUtil.loginCracked("ToastDev"); // avoid generating lots of .dat files in SinglePlayer worlds
+            boolean login = LoginUtil.loginCracked("ToastDeveloper"); // avoid generating lots of .dat files in worlds
             if (login) {
                 System.out.println("Logged in as Developer");
             } else {
                 System.out.println("Developer login failed.");
             }
         }
+        System.out.println("Starting RPC");
+        // RPC
+        DiscordPresence.start();
     }
 }
