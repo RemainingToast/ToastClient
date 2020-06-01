@@ -21,8 +21,8 @@ public class CommandHandler {
                             notfound = true;
                             continue;
                         }
-                        command.run(args);
                         notfound = false;
+                        command.run(args);
                     } catch(Exception err) {
                         err.printStackTrace();
                         Logger.message("Sorry but something went wrong", Logger.ERR);
