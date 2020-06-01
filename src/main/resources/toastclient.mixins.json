@@ -12,6 +12,8 @@
     "MixinMinecraftClient",
     "MixinNewSession",
     "MixinPlayerEntity",
+    "MixinTitleScreen",
+    "MixinServerScreen",
     "MixinSharedConstants"
   ],
   "client": [

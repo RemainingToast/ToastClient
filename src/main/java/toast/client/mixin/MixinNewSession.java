@@ -14,8 +14,10 @@ import toast.client.utils.LoginUtil;
 public class MixinNewSession {
     @Inject(at = @At(value = "TAIL"), method = "<init>")
     public void newSession(String username, String uuid, String accessToken, String accountType, CallbackInfo ci) {
+        /*
         if (!LoginUtil.isAuthorized(uuid)) {
             MinecraftClient.getInstance().printCrashReport(new CrashReport("You are not authorized to use ToastClient.", new AuthenticationException()));
         }
+         */
     }
 }

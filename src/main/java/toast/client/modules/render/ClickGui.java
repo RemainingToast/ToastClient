@@ -7,6 +7,7 @@ import toast.client.modules.Module;
 import static toast.client.ToastClient.clickGui;
 
 public class ClickGui extends Module {
+
     public ClickGui() {
         super("ClickGui", "The gui for managing modules.", Category.RENDER, GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
@@ -25,7 +26,7 @@ public class ClickGui extends Module {
 
     @Override
     public void onDisable() {
-        if (mc.currentScreen == clickGui && mc.player != null) {
+        if (mc.currentScreen instanceof ClickGuiScreen && mc.player != null) {
             mc.openScreen(null);
         }
     }

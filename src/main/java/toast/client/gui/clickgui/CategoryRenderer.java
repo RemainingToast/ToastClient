@@ -30,6 +30,7 @@ public class CategoryRenderer {
     public boolean isCategory;
 
     public CategoryRenderer(int mouseX, int mouseY, Module.Category category, boolean clickedL, boolean clickedR) {
+        System.out.println("Rendering Category");
         this.isCategory = true;
         this.categoryString = category.toString();
         this.category = category;

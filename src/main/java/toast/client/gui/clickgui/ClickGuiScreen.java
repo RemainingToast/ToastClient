@@ -139,10 +139,14 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
+        System.out.println("Render click Gui");
         height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100) + 3;
         categoryRenderers.clear();
+        System.out.println("Clear category renderer");
         for (Module.Category category : Module.Category.values()) {
+            System.out.println("For Loop");
             categoryRenderers.put(category, new CategoryRenderer(mouseX, mouseY, category, mouseIsClickedL, mouseIsClickedR));
+            System.out.println("add to category renderer");
         }
         if (clickedOnce) {
             mouseIsClickedL = false;
