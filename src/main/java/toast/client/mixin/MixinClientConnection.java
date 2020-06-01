@@ -24,33 +24,33 @@ import java.util.concurrent.Future;
 @Mixin(ClientConnection.class)
 public class MixinClientConnection {
 
-    @Inject(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
-    public void send(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
-            EventPacketSent ep = new EventPacketSent(packet);
-            EventManager.call(ep);
-            if (ep.isCancelled()) ci.cancel();
-            if (packet instanceof ChatMessageC2SPacket) {
-                ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
-                if (packet2.getChatMessage().startsWith(ToastClient.cmdPrefix)) {
-                        String cmd = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix, "");
-                    if (packet2.getChatMessage().contains(" ")) {
-                        cmd = cmd.split(" ")[0];
-                    }
-                    String[] args = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix+cmd, "").split(" ");
-                    String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
-                    System.out.println("cmd: "+cmd+", args: "+Arrays.toString(betterArgs));
-                    if(!Panic.IsPanicking()) {
-                        CommandHandler.executeCmd(cmd, betterArgs);
-                        ci.cancel();
-                    }
-                }
-        }
-    }
-
     @Shadow
     private Channel channel;
 
-    @Inject(method = "channelRead0",at = @At("HEAD"), cancellable = true)
+    @Inject(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
+    public void send(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
+        EventPacketSent ep = new EventPacketSent(packet);
+        EventManager.call(ep);
+        if (ep.isCancelled()) ci.cancel();
+        if (packet instanceof ChatMessageC2SPacket) {
+            ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
+            if (packet2.getChatMessage().startsWith(ToastClient.cmdPrefix)) {
+                String cmd = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix, "");
+                if (packet2.getChatMessage().contains(" ")) {
+                    cmd = cmd.split(" ")[0];
+                }
+                String[] args = packet2.getChatMessage().replaceFirst(ToastClient.cmdPrefix + cmd, "").split(" ");
+                String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
+                System.out.println("cmd: " + cmd + ", args: " + Arrays.toString(betterArgs));
+                if (!Panic.IsPanicking()) {
+                    CommandHandler.executeCmd(cmd, betterArgs);
+                    ci.cancel();
+                }
+            }
+        }
+    }
+
+    @Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true)
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo ci) {
         if (this.channel.isOpen()) {
             try {

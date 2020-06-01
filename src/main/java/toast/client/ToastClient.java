@@ -23,7 +23,7 @@ public class ToastClient implements ModInitializer {
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
     public static ClickGuiScreen clickGui;
 
-    public static Boolean devMode = true;
+    public static Boolean devMode = false;
 
     @Override
     public void onInitialize() {
