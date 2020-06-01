@@ -7,6 +7,7 @@ import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
 import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.ModuleManager;
+import toast.client.utils.ASCII;
 import toast.client.utils.FileManager;
 import toast.client.utils.LoginUtil;
 import toast.client.utils.TPSCalculator;
@@ -27,6 +28,7 @@ public class ToastClient implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ASCII.printFancyConsoleMSG();
         System.out.println(cleanPrefix + " Initialized");
         System.out.println("Special thanks to all contributors of this project " + devs);
         FileManager.initFileManager();
