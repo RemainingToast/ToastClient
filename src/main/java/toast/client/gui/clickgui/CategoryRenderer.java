@@ -245,7 +245,7 @@ public class CategoryRenderer {
     }
 
     public boolean isMouseOverCat() {
-        return isMouseOverRect(getMouseX(), getMouseY(), getX(), getY(), getBoxWidth(), getBoxHeight());
+        return isMouseOverRect(getMouseX(), getMouseY(), getX() - 4, getY() - 4, getBoxWidth() + 4, getBoxHeight() + 2);
     }
 
     public void updateMousePos(double mouseX, double mouseY) {
@@ -261,7 +261,7 @@ public class CategoryRenderer {
         } else {
             if (sliders.size() > 0) {
                 for (Slider slider : sliders) {
-                    if (isMouseOverRect(mouseX, mouseY, slider.sliderKnobX - 1, slider.sliderPosY - 2, 2, 6)) {
+                    if (isMouseOverRect(mouseX, mouseY, slider.sliderKnobX - 4, slider.sliderPosY - 4, 10, 10)) {
                         double newSliderKnobX = mouseX;
                         if (newSliderKnobX >= slider.sliderPosX && newSliderKnobX <= slider.sliderPosX + slider.sliderBarLength) {
                             slider.sliderKnobX = newSliderKnobX;
