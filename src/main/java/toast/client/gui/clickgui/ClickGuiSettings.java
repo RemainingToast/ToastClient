@@ -37,14 +37,6 @@ public class ClickGuiSettings {
         return categoryPositions.get(category);
     }
 
-    public Map<String, CategorySetting> getCategoryPositions() {
-        return categoryPositions;
-    }
-
-    public void setCategoryPositions(Map<String, CategorySetting> categoryPositions) {
-        ClickGuiSettings.categoryPositions = categoryPositions;
-    }
-
     public void initCategoryPositions() {
         categoryPositions = new HashMap<>();
         int i = 0;

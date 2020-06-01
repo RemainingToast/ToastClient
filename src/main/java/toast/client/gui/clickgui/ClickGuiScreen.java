@@ -6,6 +6,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
+import org.lwjgl.glfw.GLFW;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.config.Setting;
@@ -54,6 +55,8 @@ public class ClickGuiScreen extends Screen {
                     }
                 }
             }
+            String keyWidth = "Keybind: " + GLFW.glfwGetKeyName(module.getKey(), GLFW.glfwGetKeyScancode(module.getKey()));
+            if (keyWidth.length() > width) width = keyWidth.length();
         }
     }
 
@@ -124,6 +127,16 @@ public class ClickGuiScreen extends Screen {
         drawText(text, x + textRenderer.getStringWidth(prefix), y, textColor);
     }
 
+    /**
+     * Check if the mouse if over a box on screen
+     *
+     * @param mouseX      Current X coordinate of the mouse
+     * @param mouseY      Current Y coordinate of the mouse
+     * @param x           X coordinate of the top left corner of the inside of the text box
+     * @param y           Y coordinate of the top left corner of the inside of the text box
+     * @param width       Width of the inside of the box
+     * @param height      Height of the inside of the box
+     */
     public static boolean isMouseOverRect(double mouseX, double mouseY, double x, double y, int width, int height) {
         boolean xOver = false;
         boolean yOver = false;
@@ -135,6 +148,8 @@ public class ClickGuiScreen extends Screen {
         }
         return xOver && yOver;
     }
+
+    protected static CategoryRenderer keybindPressedCategory = null;
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
@@ -149,6 +164,9 @@ public class ClickGuiScreen extends Screen {
         }
         for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
             CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
+            if (categoryRenderer.keybindPressed) {
+                keybindPressedCategory = categoryRenderer;
+            }
             if (categoryRenderer.hasDesc) {
                 drawTextBox(categoryRenderer.descPosX, categoryRenderer.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.desc);
                 break;
@@ -217,6 +235,15 @@ public class ClickGuiScreen extends Screen {
         settings.savePositions();
         settings.saveColors();
         Objects.requireNonNull(ModuleManager.getModule(ClickGui.class)).disable();
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode != GLFW.GLFW_KEY_UNKNOWN) {
+            if (keyCode == GLFW.GLFW_KEY_ESCAPE) this.onClose();
+            else if (keybindPressedCategory != null) keybindPressedCategory.setKeyPressed(keyCode);
+        }
+        return false;
     }
 
     public void reloadConfig() {

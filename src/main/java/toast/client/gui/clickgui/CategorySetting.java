@@ -37,10 +37,6 @@ public class CategorySetting {
         this.expanded = expanded;
     }
 
-    public void setExpandedModules(ArrayList<String> expandedModules) {
-        this.expandedModules = expandedModules;
-    }
-
     public void setPosX(double posx) {
         this.posX = posx;
     }

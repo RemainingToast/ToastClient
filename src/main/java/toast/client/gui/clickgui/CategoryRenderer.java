@@ -2,6 +2,7 @@ package toast.client.gui.clickgui;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import org.lwjgl.glfw.GLFW;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.config.Setting;
@@ -16,7 +17,11 @@ public class CategoryRenderer {
     public ClickGuiSettings settings = ClickGuiScreen.settings;
     public ClickGuiSettings.Colors colors = settings.getColors();
     private final ArrayList<Slider> sliders = new ArrayList<>();
+    public boolean keybindPressed = false;
+    public Module keybindModule = null;
     public boolean hasDesc = false;
+    public int keyPressed = -1;
+    public boolean isKeyPressed = false;
     public int descPosX = 0;
     public int descPosY = 0;
     public String desc = "";
@@ -165,6 +170,29 @@ public class CategoryRenderer {
                                     u++;
                                 }
                             }
+                            int keybindBgColor = colors.settingOnBgColor;
+                            String keybindText;
+                            if (isMouseOverRect(getMouseX(), getMouseY(), getX(), getYIteration(u), getBoxWidth(), getBoxHeight())) {
+                                keybindBgColor = colors.settingHoverBgColor;
+                                if (isClickedL()) {
+                                    this.keybindPressed = true;
+                                    this.keybindModule = module;
+                                }
+                            }
+                            if (keybindPressedCategory != null && keybindPressedCategory.keybindModule == module) {
+                                keybindBgColor = colors.settingHoverBgColor;
+                                keybindText = "Keybind: ...";
+                                if (!isKeyPressed) {
+                                    keybindPressed = true;
+                                    keybindModule = module;
+                                }
+                            } else {
+                                int key = module.getKey();
+                                if (key == -1) keybindText = "Keybind: NONE";
+                                else keybindText = "Keybind: " + GLFW.glfwGetKeyName(key, GLFW.glfwGetKeyScancode(key));
+                            }
+                            drawTextBox(getXint(), (int) Math.round(getYIteration(u)), getBoxWidth(), getBoxHeight(), colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, keybindBgColor, colors.settingPrefix, keybindText);
+                            u++;
                         }
                     }
                 }
@@ -246,6 +274,16 @@ public class CategoryRenderer {
 
     public boolean isMouseOverCat() {
         return isMouseOverRect(getMouseX(), getMouseY(), getX() - 4, getY() - 4, getBoxWidth() + 4, getBoxHeight() + 2);
+    }
+
+    public void setKeyPressed(int keyPressed) {
+        if (this.keybindPressed) {
+            if (keyPressed == -1) return;
+            else if (keyPressed == GLFW.GLFW_KEY_BACKSPACE) this.keybindModule.setKey(-1);
+            else this.keybindModule.setKey(keyPressed);
+            this.isKeyPressed = true;
+            keybindPressedCategory = null;
+        } else this.keybindPressed = true;
     }
 
     public void updateMousePos(double mouseX, double mouseY) {
