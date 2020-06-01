@@ -1,4 +1,3 @@
-
 package toast.client.modules;
 
 import net.fabricmc.api.EnvType;
@@ -29,6 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Environment(EnvType.CLIENT)
 public class ModuleManager {
     public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
+
     public static void initModules() {
         loadModules();
     }
@@ -36,9 +36,9 @@ public class ModuleManager {
     public static void onKey(long window, int key, int scancode, int action, int mods) {
         if (modules == null) return;
         for (Module module : modules) {
-            if (module.getKey() == key && action == GLFW.GLFW_PRESS) {
-                if(MinecraftClient.getInstance().inGameHud.getChatHud().isChatFocused()) continue;
-                if(!module.getClass().equals(Panic.class) && Panic.IsPanicking()) return;
+            if (module.getKey() == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
+                if (MinecraftClient.getInstance().inGameHud.getChatHud().isChatFocused()) continue;
+                if (!module.getClass().equals(Panic.class) && Panic.IsPanicking()) return;
                 module.toggle();
             }
         }
@@ -46,7 +46,7 @@ public class ModuleManager {
 
     public static Module getModule(Class classs) {
         for (Module module : modules) {
-            if(module.getClass() == classs) {
+            if (module.getClass() == classs) {
                 return module;
             }
         }
@@ -55,7 +55,7 @@ public class ModuleManager {
 
     public static Module getModule(String name) {
         for (Module module : modules) {
-            if(module.getName().equals(name)) {
+            if (module.getName().equals(name)) {
                 return module;
             }
         }
@@ -69,7 +69,7 @@ public class ModuleManager {
     public static List<Module> getModulesInCategory(Module.Category category) {
         List<Module> moduleList = new ArrayList<>();
         for (Module module : modules) {
-            if(module.getCategory() == category) {
+            if (module.getCategory() == category) {
                 moduleList.add(module);
             }
         }

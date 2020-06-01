@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFW;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.config.Setting;
+import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,7 +21,6 @@ public class CategoryRenderer {
     public boolean keybindPressed = false;
     public Module keybindModule = null;
     public boolean hasDesc = false;
-    public int keyPressed = -1;
     public boolean isKeyPressed = false;
     public int descPosX = 0;
     public int descPosY = 0;
@@ -283,6 +283,7 @@ public class CategoryRenderer {
             else this.keybindModule.setKey(keyPressed);
             this.isKeyPressed = true;
             keybindPressedCategory = null;
+            Config.writeKeyBinds();
         } else this.keybindPressed = true;
     }
 
