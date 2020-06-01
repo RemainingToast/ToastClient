@@ -22,9 +22,9 @@ public class MixinTitleScreen extends Screen {
 
     @Inject(at = @At("HEAD"), method = "init()V")
     private void init(CallbackInfo info) {
-        addButton(new ButtonWidget(width / 2 - 124, height / 4 + 96, 20, 20, "TC", button -> {
+        /*addButton(new ButtonWidget(width / 2 - 124, height / 4 + 96, 20, 20, "TC", button -> {
             assert minecraft != null;
             minecraft.openScreen(new ToastTitleScreen());
-        }));
+        }));*/
     }
 }

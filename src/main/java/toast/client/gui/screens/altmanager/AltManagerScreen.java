@@ -8,6 +8,8 @@ import net.minecraft.text.LiteralText;
 public class AltManagerScreen extends Screen {
 
     public ButtonWidget loginButt;
+    public ButtonWidget editButt;
+    public ButtonWidget deleteButt;
 
 
     public AltManagerScreen() {
@@ -16,12 +18,11 @@ public class AltManagerScreen extends Screen {
 
     protected void init() {
         super.init();
-
         this.addButton(new ButtonWidget(this.width / 2 - 154, this.height - 52, 75, 20, ("Add"), (buttonWidget) -> {
-
+            addAlt(true);
         }));
         loginButt = this.addButton(new ButtonWidget(this.width / 2 - 75, this.height - 52, 70, 20, ("Login"), (buttonWidget) -> {
-            loginButt.active = false;
+
         }));
 
         this.addButton(new ButtonWidget(this.width / 2 + 4, this.height - 52, 70, 20, ("Direct"), (buttonWidget) -> {
@@ -34,16 +35,17 @@ public class AltManagerScreen extends Screen {
         this.addButton(new ButtonWidget(this.width / 2 - 76, this.height - 28, 150, 20, ("Back"), (buttonWidget) -> {
             minecraft.openScreen(new TitleScreen());
         }));
-        this.addButton(new ButtonWidget(this.width / 2 + 4 + 76, this.height - 52, 75, 20, ("Delete"), (buttonWidget) -> {
-
+        deleteButt = this.addButton(new ButtonWidget(this.width / 2 + 4 + 76, this.height - 52, 75, 20, ("Delete"), (buttonWidget) -> {
+            removeAlt(true);
         }));
-        this.addButton(new ButtonWidget(this.width / 2 + 4 + 76, this.height - 28, 75, 20, ("Edit"), (buttonWidget) -> {
+        editButt = this.addButton(new ButtonWidget(this.width / 2 + 4 + 76, this.height - 28, 75, 20, ("Edit"), (buttonWidget) -> {
+            editAlt(true);
         }));
+        loginButt.active = false;
+        deleteButt.active = false;
+        editButt.active = false;
     }
 
-    private void refresh() {
-
-    }
 
     private void removeAlt(boolean confirmedAction) {
 
