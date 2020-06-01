@@ -1,11 +1,11 @@
-package toast.client.dontobfuscate;
+package toast.client.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
-import toast.client.utils.FileManager;
+import toast.client.modules.config.Setting;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

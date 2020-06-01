@@ -6,10 +6,9 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
-import toast.client.dontobfuscate.ClickGuiSettings;
-import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
+import toast.client.modules.config.Setting;
 import toast.client.modules.render.ClickGui;
 
 import java.util.HashMap;

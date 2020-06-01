@@ -5,7 +5,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
-import toast.client.dontobfuscate.Config;
 import toast.client.modules.combat.AutoRespawn;
 import toast.client.modules.combat.BowSpam;
 import toast.client.modules.combat.KillAura;
@@ -21,6 +20,7 @@ import toast.client.modules.player.Surround;
 import toast.client.modules.render.ClickGui;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
+import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.List;

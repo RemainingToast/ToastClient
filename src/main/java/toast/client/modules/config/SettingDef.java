@@ -1,4 +1,4 @@
-package toast.client.dontobfuscate;
+package toast.client.modules.config;
 
 import java.util.ArrayList;
 

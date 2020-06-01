@@ -3,10 +3,10 @@ package toast.client.modules;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import toast.client.dontobfuscate.Config;
-import toast.client.dontobfuscate.ModuleSettings;
-import toast.client.dontobfuscate.Setting;
 import toast.client.event.EventManager;
+import toast.client.modules.config.ModuleSettings;
+import toast.client.modules.config.Setting;
+import toast.client.utils.Config;
 
 import java.util.Map;
 
@@ -75,8 +75,7 @@ public class Module {
     }
 
     public boolean isMode(String mode) {
-        if (this.settings.getMode("Mode").equals(mode)) return true;
-        return false;
+        return this.settings.getMode("Mode").equals(mode);
     }
 
     public String getMode() {
@@ -89,10 +88,6 @@ public class Module {
 
     public boolean getBool(String name) {
         return this.settings.getBoolean(name);
-    }
-
-    public void enable() {
-        setEnabled(true);
     }
 
     public void disable() {

@@ -1,9 +1,11 @@
 package toast.client.commands.cmds;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import toast.client.commands.Command;
-import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
+import toast.client.modules.config.Setting;
+import toast.client.modules.config.SettingDef;
 import toast.client.utils.Logger;
 
 import java.util.Map;
@@ -36,21 +38,38 @@ public class CommandSet extends Command {
             if (args.length == 1) {
                 Module module = ModuleManager.getModule(args[0]);
                 if (module != null) {
-                    Logger.message("Setting(s) for module " + module.getName() + ": ", Logger.INFO);
-                    for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
-                        displaySetting(settingEntry.getKey(), settingEntry.getValue(), module);
-                    }
-                } else {
-                    Logger.message(args[0] + " is not a module.", Logger.WARN);
-                }
-            } else if (args.length == 2) {
-                Module module = ModuleManager.getModule(args[0]);
-                if (module != null) {
-                    Setting setting = module.getSettings().getSetting(args[1]);
-                    if (setting != null) {
-                        displaySetting(args[1], setting, module);
+                    if (args.length == 1) {
+                        Logger.message("Setting(s) for module " + module.getName() + ": ", Logger.INFO);
+                        for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
+                            displaySetting(settingEntry.getKey(), settingEntry.getValue(), module);
+                        }
                     } else {
-                        Logger.message(args[1] + " is not a setting.", Logger.WARN);
+                        Setting setting = module.getSettings().getSetting(args[1]);
+                        if (setting != null) {
+                            if (args.length == 2) {
+                                displaySetting(args[1], setting, module);
+                            } else {
+                                SettingDef settingDef = module.getSettings().getSettingDef(args[1]);
+                                if (setting.getType() == 1) {
+                                    if (NumberUtils.isParsable(args[2])) {
+                                        double newNum = Double.parseDouble(args[2]);
+                                        if (newNum <= settingDef.getMaxValue()) {
+                                            if (newNum >= settingDef.getMinValue()) {
+                                                setting.setValue(newNum);
+                                            } else {
+                                                Logger.message(newNum + " is too small, the minimum value is: " + settingDef.getMinValue(), Logger.WARN);
+                                            }
+                                        } else {
+                                            Logger.message(newNum + " is too big, the maximum value is: " + settingDef.getMaxValue(), Logger.WARN);
+                                        }
+                                    } else {
+                                        Logger.message(args[2] + " is an invalid value for this setting, please give a number.", Logger.WARN);
+                                    }
+                                }
+                            }
+                        } else {
+                            Logger.message(args[1] + " is not a setting.", Logger.WARN);
+                        }
                     }
                 } else {
                     Logger.message(args[0] + " is not a module.", Logger.WARN);

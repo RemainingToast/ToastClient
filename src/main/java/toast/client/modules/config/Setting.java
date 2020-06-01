@@ -1,6 +1,7 @@
-package toast.client.dontobfuscate;
+package toast.client.modules.config;
 
 import com.google.gson.annotations.SerializedName;
+import toast.client.utils.Config;
 
 public class Setting {
     @SerializedName("Current Mode")

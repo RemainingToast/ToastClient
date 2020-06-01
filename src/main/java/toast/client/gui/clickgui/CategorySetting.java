@@ -1,4 +1,4 @@
-package toast.client.dontobfuscate;
+package toast.client.gui.clickgui;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -2,7 +2,7 @@ package toast.client.commands.cmds;
 
 import net.minecraft.util.Formatting;
 import toast.client.commands.Command;
-import toast.client.dontobfuscate.Config;
+import toast.client.utils.Config;
 import toast.client.utils.Logger;
 
 import static toast.client.ToastClient.clickGui;

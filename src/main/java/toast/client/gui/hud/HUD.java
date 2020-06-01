@@ -15,11 +15,12 @@ import java.util.TreeSet;
 
 public class HUD {
 
-    private static MinecraftClient mc = MinecraftClient.getInstance();
+    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
     public static void drawHUD() {
         if (mc.options.debugEnabled || Panic.IsPanicking()) return;
         Module hud = ModuleManager.getModule("HUD");
+        if (hud == null) return;
         if (!hud.isEnabled()) return;
 
         boolean rgb = false;
@@ -54,8 +55,8 @@ public class HUD {
                 int moduleNameWidth = mc.textRenderer.getStringWidth(moduleName);
                 int fontHeight = mc.textRenderer.fontHeight;
 
-                int textcolor = 0;
-                int borderColor = 0;
+                int textcolor;
+                int borderColor;
                 if (rgb) {
                     textcolor = HTB((count) * 35);
                     borderColor = HTB(50);
@@ -117,32 +118,14 @@ public class HUD {
         }
     }
 
-    public static int getRainbow(int speed, int offset) {
-        float hue = (System.currentTimeMillis() + offset) % speed;
-        hue /= speed;
-        return Color.getHSBColor(hue, 0.2f, 0.8f).getRGB();
-    }
-
     public static int rainbow(final int delay) {
-        double rainbowState = Math.ceil((System.currentTimeMillis() + delay) / 4L);
+        double rainbowState = Math.ceil((System.currentTimeMillis() + delay) >> 2);
         rainbowState %= 360.0;
         return Color.getHSBColor((float) (rainbowState / 360.0), 0.2f, 3f).getRGB();
     }
 
-    public static int rainbow2(final int delay) {
-        double rainbowState = Math.ceil((System.currentTimeMillis() + delay) / 4L);
-        rainbowState %= 360.0;
-        return Color.getHSBColor((float) (rainbowState / 360.0), 0.2f, 2f).getRGB();
-    }
-
-    public static int rainbow3(final int delay) {
-        double rainbowState = Math.ceil((System.currentTimeMillis() + delay) / 4L);
-        rainbowState %= 360.0;
-        return Color.getHSBColor((float) (rainbowState / 360.0), 0.12f, 3f).getRGB();
-    }
-
     public static int HTB(final int delay) {
-        double rainbowState = Math.ceil((System.currentTimeMillis() + delay) / 4L);
+        double rainbowState = Math.ceil((System.currentTimeMillis() + delay) >> 2);
         rainbowState %= 360.0;
         return Color.getHSBColor((float) (rainbowState / 360.0), (float) (0.3),
                 (float) (0.97)).getRGB();

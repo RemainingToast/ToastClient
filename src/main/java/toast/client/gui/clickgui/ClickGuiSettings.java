@@ -1,10 +1,9 @@
-package toast.client.dontobfuscate;
+package toast.client.gui.clickgui;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import net.minecraft.client.MinecraftClient;
-import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.Module;
 import toast.client.utils.FileManager;
 
@@ -181,7 +180,6 @@ public class ClickGuiSettings {
         public int settingOnTextColor;
         public int settingSliderBarColor;
         public int settingSliderKnobColor;
-        public int settingSliderKnobDragColor;
         public int settingSliderKnobHoverColor;
         public int settingSliderSideNumbersColor;
         public int settingOnBgColor;

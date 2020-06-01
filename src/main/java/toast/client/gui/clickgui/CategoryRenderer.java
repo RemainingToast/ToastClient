@@ -2,10 +2,9 @@ package toast.client.gui.clickgui;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import toast.client.dontobfuscate.ClickGuiSettings;
-import toast.client.dontobfuscate.Setting;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
+import toast.client.modules.config.Setting;
 
 import java.util.ArrayList;
 import java.util.Map;

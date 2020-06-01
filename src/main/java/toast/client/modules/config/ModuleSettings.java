@@ -1,4 +1,6 @@
-package toast.client.dontobfuscate;
+package toast.client.modules.config;
+
+import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
