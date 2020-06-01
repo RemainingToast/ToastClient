@@ -11,12 +11,12 @@ public class AutoRespawn extends Module {
     private TimerUtil timer = new TimerUtil();
 
     public AutoRespawn() {
-        super("AutoRespawn", Category.COMBAT, -1);
-        this.addNumberOption("Speed", 2, 1, 20);
+        super("AutoRespawn", "Automatically presses the respawn button for you.", Category.COMBAT, -1);
+        this.settings.addSlider("Speed", 1, 2, 20);
     }
 
     public void onEnable() {
-       timer.reset();
+        timer.reset();
     }
 
     public void onDisable() {
@@ -25,10 +25,10 @@ public class AutoRespawn extends Module {
 
     @EventImpl
     public void onEvent(EventUpdate event) {
-        if(mc.currentScreen != null) {
-            if(this.timer.isDelayComplete((long) (this.getDouble("Speed") * 1000L))) {
+        if (mc.currentScreen != null) {
+            if (this.timer.isDelayComplete((long) (this.getDouble("Speed") * 1000L))) {
                 this.timer.setLastMS();
-                if(mc.currentScreen instanceof DeathScreen) {
+                if (mc.currentScreen instanceof DeathScreen) {
                     mc.player.requestRespawn();
                     mc.openScreen(null);
                 }

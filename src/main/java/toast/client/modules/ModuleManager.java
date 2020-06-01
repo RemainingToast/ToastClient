@@ -1,14 +1,11 @@
 
 package toast.client.modules;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
-import toast.client.dontobfuscate.settings.Setting;
+import toast.client.dontobfuscate.Config;
 import toast.client.modules.combat.AutoRespawn;
 import toast.client.modules.combat.BowSpam;
 import toast.client.modules.combat.KillAura;
@@ -24,16 +21,9 @@ import toast.client.modules.player.Surround;
 import toast.client.modules.render.ClickGui;
 import toast.client.modules.render.Fullbright;
 import toast.client.modules.render.HUD;
-import toast.client.dontobfuscate.Config;
-import toast.client.modules.render.HoleESP;
-import toast.client.utils.FileManager;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Environment(EnvType.CLIENT)
@@ -88,23 +78,13 @@ public class ModuleManager {
 
     private static void loadModules() {
         modules.clear();
-        Map<String, Map<String, Setting>> options = new HashMap<>();
-        Map<String, Boolean> moduleToggles = new HashMap<>();
-        Gson gson = new GsonBuilder().create();
-        try {
-            moduleToggles = gson.fromJson(new FileReader(FileManager.createFile("modules.json")), new TypeToken<Map<String, Boolean>>(){}.getType());
-            options = gson.fromJson(new FileReader(FileManager.createFile("options.json")), new TypeToken<Map<String, Map<String, Setting>>>(){}.getType());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        // alphabetical order please
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
         modules.add(new ClickGui());
         modules.add(new FancyChat());
         modules.add(new Fly());
         modules.add(new Fullbright());
-        modules.add(new HoleESP());
+        //modules.add(new HoleESP());
         modules.add(new HUD());
         modules.add(new KillAura());
         modules.add(new BowSpam());
@@ -114,8 +94,11 @@ public class ModuleManager {
         modules.add(new Surround());
         modules.add(new Velocity());
         modules.add(new FastStop());
-        Config.loadOptions(options);
-        Config.loadModules(moduleToggles);
+        Config.loadConfigAuto();
         Config.loadKeyBindsAuto();
+        Config.loadModulesAuto();
+        Config.writeConfig();
+        Config.writeModules();
+        Config.writeKeyBinds();
     }
 }

@@ -24,22 +24,16 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Download obfuscator
-      run: wget https://github.com/superblaubeere27/obfuscator/releases/download/v1.9.3/obfuscator-1.9.3.jar -O obfuscator.jar
-    - name: Create obfuscator config
-      run: echo \{\"input\":\"./build/libs/toastclient-1.0.0.jar\",\"output\":\"./toastclient-$GITHUB_RUN_ID.jar\",\"script\":\"function isRemappingEnabledForClass\(node\) \{\\n    var flag1 \\u003d \!node.name.startsWith\(\\\"com/google/gson\\\"\)\;\\n    var flag2 \\u003d \!node.name.startsWith\(\\\"toast/client/dontobfuscate\\\"\)\;\\n    return flag1 \\u0026\\u0026 flag2\;\\n\}\\nfunction isObfuscatorEnabledForClass\(node\) \{\\n    var flag1 \\u003d \!node.name.startsWith\(\\\"com/google/gson\\\"\)\;\\n    var flag2 \\u003d \!node.name.startsWith\(\\\"toast/client/dontobfuscate\\\"\)\;\\n    return flag1 \\u0026\\u0026 flag2\;\\n\}\",\"libraries\":\[\],\"Crasher\":\{\"Enabled\":false\},\"InvokeDynamic\":\{\"Enabled\":false\},\"HWIDPRotection\":\{\"Enabled\":false,\"HWID\":\"FFCCABD426C0A88AEDF0AA4362FC4361\"\},\"Optimizer\":\{\"Enabled\":false,\"Replace String.equals\(\)\":false,\"Replace String.equalsIgnoreCase\(\)\":false,\"Optimize static string calls\":false\},\"LineNumberRemover\":\{\"Enabled\":true,\"Rename local variables\":true,\"Remove Line Numbers\":true,\"Remove Debug Names\":true,\"Add Local Variables\":true,\"New SourceFile Name\":\"\"\},\"StringEncryption\":\{\"Enabled\":true,\"HideStrings\":false,\"AES\":false\},\"NumberObfuscation\":\{\"Enabled\":true,\"Extract to Array\":true,\"Obfuscate Zero\":true,\"Shift\":false,\"And\":false,\"Multiple Instructions\":true\},\"ReferenceProxy\":\{\"Enabled\":false\},\"ShuffleMembers\":\{\"Enabled\":true\},\"InnerClassRemover\":\{\"Enabled\":true,\"Remap\":false,\"Remove Metadata\":true\},\"NameObfuscation\":\{\"Enabled\":false\},\"Packager\":\{\"Enabled\":false,\"Use MainClass from the JAR manifest\":true,\"Main class\":\"org.example.Main\"\},\"FlowObfuscator\":\{\"Enabled\":true,\"Mangle Comparisons\":true,\"Replace GOTO\":true,\"Replace If\":true,\"Bad POP\":true,\"Bad Concat\":true,\"Mangle Switches\":false,\"Mangle Return\":false,\"Mangle Local Variables\":false\},\"HideMembers\":\{\"Enabled\":true\},\"Inlining\":\{\"Enabled\":false\}\} > config
-    - name: Obfuscate
-      run: java -jar obfuscator.jar --jarIn ./build/libs/toastclient-1.0.0.jar --jarOut toastclient-$GITHUB_RUN_ID.jar --config config
+    - name: Rename file
+      run: mv build/libs/toastclient-1.0.0.jar "toastclient-$GITHUB_RUN_ID.jar"
     - name: Send message to discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
         UPDATESROLE: <@&711977862302924810>
-        BOT_NAME: "Toast Client™ Releases"
-      run: if grep -q true release ; then WEBHOOK=$DISCORD_WEBHOOK && UPDATES=$UPDATESROLE ; else WEBHOOK=$DISCORD_WEBHOOK_DEV && UPDATES="" ; fi && COMMITMESSAGE=`git log --format=%B -n 1` && UPDATEMSG=$UPDATES\ New\ build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"$BOTNAME\", \"content\":\"$UPDATEMSG\"}" $WEBHOOK
+        BOT_NAME: "Toast Client™ Builds"
+      run: COMMITMESSAGE=`git log --format=%B -n 1` && UPDATEMSG=$UPDATES\ New\ build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"$BOTNAME\", \"content\":\"$UPDATEMSG\"}" $DISCORD_WEBHOOK
     - name: Upload to discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
-      run: if grep -q true release ; then WEBHOOK=$DISCORD_WEBHOOK ; else WEBHOOK=$DISCORD_WEBHOOK_DEV ; fi && curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@toastclient-$GITHUB_RUN_ID.jar" $WEBHOOK
+      run: curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@toastclient-$GITHUB_RUN_ID.jar" $DISCORD_WEBHOOK
     

@@ -15,8 +15,8 @@ import java.util.List;
 
 public class Nuker extends Module {
     public Nuker() {
-        super("Nuker", Category.PLAYER, -1);
-        this.addNumberOption("Range", 5, 1, 10);
+        super("Nuker", "Automatically destroys blocks around you.", Category.PLAYER, -1);
+        this.settings.addSlider("Range", 1, 5, 10);
     }
     public ArrayList<BlockPos> getBlocks() {
         if(mc.player == null || mc.world == null) return null;

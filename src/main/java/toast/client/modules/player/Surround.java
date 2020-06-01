@@ -19,30 +19,30 @@ public class Surround extends Module {
     private static int slot = -1;
 
     public Surround() {
-        super("Surround", Category.PLAYER, -1);
-        this.addBool("AutoDisable", true);
-        this.addBool("Center", true);
-        this.addBool("All blocks", false);
-        this.addBool("Rotations", false);
-        this.addNumberOption("Blocks/Tick", 2, 1, 8, true);
+        super("Surround", "Surrounds your feet with blocks.", Category.PLAYER, -1);
+        this.settings.addBoolean("AutoDisable", true);
+        this.settings.addBoolean("Center", true);
+        this.settings.addBoolean("All blocks", false);
+        this.settings.addBoolean("Rotations", false);
+        this.settings.addSlider("Blocks/Tick", 1, 2, 8);
     }
 
     @EventImpl
     public void onUpdate(EventRender event) {
-        if(mc.player == null) return;
+        if (mc.player == null) return;
         int lastSlot = mc.player.inventory.selectedSlot;
         slot = mc.player.inventory.selectedSlot;
 
         if (this.getBool("All blocks")) {
-            if(!has4OrMoreBuildBlockInHotbar()) return;
-                slot = getSlotForBuildBlocksInHotbar();
-        } else if(!this.getBool("All blocks")) {
-            if(!hasInHotbar(Items.OBSIDIAN)) return;
+            if (!has4OrMoreBuildBlockInHotbar()) return;
+            slot = getSlotForBuildBlocksInHotbar();
+        } else if (!this.getBool("All blocks")) {
+            if (!hasInHotbar(Items.OBSIDIAN)) return;
             slot = getItemSlotInHotbar(Items.OBSIDIAN);
         }
 
         mc.player.inventory.selectedSlot = slot;
-        if(this.getBool("Center")) centerPlayerPos();
+        if (this.getBool("Center")) centerPlayerPos();
 
         placements = 0;
         for (int i = 0; i < (int) this.getDouble("Blocks/Tick"); i++) {
@@ -184,7 +184,7 @@ public class Surround extends Module {
             }
             if (placements == 0) {
                 mc.player.inventory.selectedSlot = lastSlot;
-                if (this.getBool("AutoDisable")) setToggled(false);
+                if (this.getBool("AutoDisable")) setEnabled(false);
             }
         }
 
@@ -220,7 +220,7 @@ public class Surround extends Module {
     }
 
     public void centerPlayerPos() {
-        if(mc.player == null) return;
+        if (mc.player == null) return;
         double x = mc.player.getPos().getX();
         double z = mc.player.getPos().getZ();
         if (x < 0) {
@@ -238,9 +238,9 @@ public class Surround extends Module {
     }
 
     public boolean isCentered(Vec3d pos) {
-        if(pos == null) return false;
-        return pos.getX() == Math.floor(pos.getX())+0.50 &&
-                pos.getZ() == Math.floor(pos.getZ())+0.50;
+        if (pos == null) return false;
+        return pos.getX() == Math.floor(pos.getX()) + 0.50 &&
+                pos.getZ() == Math.floor(pos.getZ()) + 0.50;
     }
 
     /*public Vec3d interpolateEntity(Entity entity, float time) {
@@ -250,12 +250,12 @@ public class Surround extends Module {
     }*/
 
     private boolean hasInHotbar(Item item) {
-        if(mc.player == null) return false;
+        if (mc.player == null) return false;
         boolean found = false;
         for (int i = 0; i < PlayerInventory.getHotbarSize(); i++) {
             Item curritem = mc.player.inventory.getInvStack(i).getItem();
             if (!mc.player.inventory.getInvStack(i).isEmpty()) {
-                if(item == curritem) {
+                if (item == curritem) {
                     found = true;
                 }
             }
@@ -264,7 +264,7 @@ public class Surround extends Module {
     }
 
     private boolean has4OrMoreBuildBlockInHotbar() {
-        if(mc.player == null) return false;
+        if (mc.player == null) return false;
         boolean found = false;
         int slotamount = 0;
         for (int i = 0; i < PlayerInventory.getHotbarSize(); i++) {
@@ -280,7 +280,7 @@ public class Surround extends Module {
     }
 
     private int getSlotForBuildBlocksInHotbar() {
-        if(mc.player == null) return -1;
+        if (mc.player == null) return -1;
         int found = -1;
         for (int i = 0; i < PlayerInventory.getHotbarSize(); i++) {
             ItemStack curritem = mc.player.inventory.getInvStack(i);
@@ -294,12 +294,12 @@ public class Surround extends Module {
     }
 
     private int getItemSlotInHotbar(Item item) {
-        if(mc.player == null) return -1;
+        if (mc.player == null) return -1;
         int slot = -1;
         for (int i = 0; i < PlayerInventory.getHotbarSize(); i++) {
             Item curritem = mc.player.inventory.getInvStack(i).getItem();
             if (!mc.player.inventory.getInvStack(i).isEmpty()) {
-                if(item == curritem) {
+                if (item == curritem) {
                     slot = i;
                 }
             }

@@ -14,7 +14,7 @@ public class NameTags extends Module {
     private static MinecraftClient mc = MinecraftClient.getInstance();
 
     public NameTags() {
-        super("NameTags", Category.RENDER, -1);
+        super("NameTags", "Displays a nametag above other players", Category.RENDER, -1);
     }
 
     //TODO: custom nametags (not just health and not mc code)

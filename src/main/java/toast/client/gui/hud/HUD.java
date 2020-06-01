@@ -1,12 +1,12 @@
 package toast.client.gui.hud;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.InGameHud;
+import org.lwjgl.opengl.GL11;
 import toast.client.ToastClient;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.modules.dev.Panic;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Comparator;
@@ -18,21 +18,20 @@ public class HUD {
     private static MinecraftClient mc = MinecraftClient.getInstance();
 
     public static void drawHUD() {
-        if(mc.options.debugEnabled || Panic.IsPanicking()) return;
+        if (mc.options.debugEnabled || Panic.IsPanicking()) return;
         Module hud = ModuleManager.getModule("HUD");
-        if(!hud.isEnabled()) return;
+        if (!hud.isEnabled()) return;
 
         boolean rgb = false;
-        if(hud.getBool("Rainbow")) {
+        if (hud.getBool("Rainbow")) {
             rgb = true;
         }
 
         // watermark
-        if(hud.getBool("Watermark")) {
+        if (hud.getBool("Watermark")) {
             double size = hud.getDouble("Watermark Size");
-//            double size = 1.5;
             GL11.glScaled(size, size, size);
-            String[] letters = ToastClient.cleanPrefix.split("");//TODO: fix the positions of the letters maybe not hardcoded in the future?
+            String[] letters = ToastClient.cleanPrefix.split(""); //TODO: fix the positions of the letters maybe not hardcoded in the future?
             int[] intarray = {7, 13, 19, 25, 31, 37, 43, 46, 48, 54, 60};
             for (int i = 0; i < letters.length; i++) {
                 mc.textRenderer.drawWithShadow(letters[i], intarray[i], 4, rainbow(i * 25));
@@ -41,10 +40,10 @@ public class HUD {
         }
 
         // arraylist/sortedset/modulelist/whatever
-        if(hud.getBool("\"SortedSet\"")) {
-            SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed());//TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
+        if (hud.getBool("SortedSet")) {
+            SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed()); //TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
             for (Module module : ModuleManager.modules) {
-                if (module.isEnabled()) {
+                if (module.isEnabled() && module.getBool("Show In SortedSet")) {
                     enabledModules.add(module.getName());
                 }
             }
@@ -57,7 +56,7 @@ public class HUD {
 
                 int textcolor = 0;
                 int borderColor = 0;
-                if(rgb) {
+                if (rgb) {
                     textcolor = HTB((count) * 35);
                     borderColor = HTB(50);
                 } else {
@@ -67,7 +66,7 @@ public class HUD {
 
                 int extralineoffset = 0;
 
-                if(hud.getBool("Right line")) {
+                if (hud.getBool("Right line")) {
                     extralineoffset = 1;
                 }
 
@@ -85,7 +84,7 @@ public class HUD {
                         (count * 12) - 10,
                         textcolor);
 
-                if(hud.getBool("Left line")) {
+                if (hud.getBool("Left line")) {
                     // | <-- line
                     InGameHud.fill(
                             windowWidth - moduleNameWidth - 3 - extralineoffset,
@@ -95,7 +94,7 @@ public class HUD {
                             borderColor);
                 }
 
-                if(hud.getBool("Middle line")) {
+                if (hud.getBool("Middle line")) {
                     // __ \/ line
                     InGameHud.fill(
                             windowWidth - moduleNameWidth - 4,
@@ -105,7 +104,7 @@ public class HUD {
                             borderColor);
                 }
 
-                if(extralineoffset >= 1) {
+                if (extralineoffset >= 1) {
                     // --> | line
                     InGameHud.fill(
                             windowWidth,

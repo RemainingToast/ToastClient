@@ -11,10 +11,10 @@ public class FancyChat extends Module {
     private boolean isMadeByFancyChat = false;
 
     public FancyChat() {
-        super("FancyChat", Category.MISC, -1);
-        this.addModes("Classic", "Rainbow", "Spaces", "FaNcY", "Watermark", "Grammar");
-        this.addBool("Normal client cmds", true);
-        this.addBool("Normal mc cmds", false);
+        super("FancyChat", "Modifies you chat messages to make them stick out.", Category.MISC, -1);
+        this.settings.addMode("Mode", "Classic", "Classic", "Rainbow", "Spaces", "FaNcY", "Watermark", "Grammar");
+        this.settings.addBoolean("Normal client cmds", true);
+        this.settings.addBoolean("Normal mc cmds", false);
     }
 
     public void onEnable() {
@@ -25,47 +25,47 @@ public class FancyChat extends Module {
     public void onEvent(EventPacketSent event) {
         if (event.getPacket() instanceof ChatMessageC2SPacket) {
             String packetMessage = ((ChatMessageC2SPacket) event.getPacket()).getChatMessage();
-            if(packetMessage.startsWith(ToastClient.cmdPrefix) && this.getBool("Normal client cmds")) return;
-            if(packetMessage.startsWith("/") && this.getBool("Normal mc cmds")) return;
-            if(this.getMode().equals("Classic")) {
+            if (packetMessage.startsWith(ToastClient.cmdPrefix) && this.getBool("Normal client cmds")) return;
+            if (packetMessage.startsWith("/") && this.getBool("Normal mc cmds")) return;
+            if (this.getMode().equals("Classic")) {
                 String msg = FancyChatUtil.classicFancy(packetMessage);
                 isMadeByFancyChat = !isMadeByFancyChat;
-                if(isMadeByFancyChat) return;
+                if (isMadeByFancyChat) return;
                 event.setCancelled(true);
                 mc.player.sendChatMessage(msg);
             }
-            if(this.getMode().equals("Rainbow")) {
+            if (this.getMode().equals("Rainbow")) {
                 String msg = FancyChatUtil.rainbowText(packetMessage);
                 isMadeByFancyChat = !isMadeByFancyChat;
-                if(isMadeByFancyChat) return;
+                if (isMadeByFancyChat) return;
                 event.setCancelled(true);
                 mc.player.sendChatMessage(msg);
             }
-            if(this.getMode().equals("Spaces")) {
+            if (this.getMode().equals("Spaces")) {
                 String msg = FancyChatUtil.spaces(packetMessage);
                 isMadeByFancyChat = !isMadeByFancyChat;
-                if(isMadeByFancyChat) return;
+                if (isMadeByFancyChat) return;
                 event.setCancelled(true);
                 mc.player.sendChatMessage(msg);
             }
-            if(this.getMode().equals("FaNcY")) {
+            if (this.getMode().equals("FaNcY")) {
                 String msg = FancyChatUtil.FaNcY(packetMessage);
                 isMadeByFancyChat = !isMadeByFancyChat;
-                if(isMadeByFancyChat) return;
+                if (isMadeByFancyChat) return;
                 event.setCancelled(true);
                 mc.player.sendChatMessage(msg);
             }
-            if(this.getMode().equals("Watermark")) {
+            if (this.getMode().equals("Watermark")) {
                 String msg = FancyChatUtil.Watermark(packetMessage);
                 isMadeByFancyChat = !isMadeByFancyChat;
-                if(isMadeByFancyChat) return;
+                if (isMadeByFancyChat) return;
                 event.setCancelled(true);
                 mc.player.sendChatMessage(msg);
             }
-            if(this.getMode().equals("Grammar")) {
+            if (this.getMode().equals("Grammar")) {
                 String msg = FancyChatUtil.Grammar(packetMessage);
                 isMadeByFancyChat = !isMadeByFancyChat;
-                if(isMadeByFancyChat) return;
+                if (isMadeByFancyChat) return;
                 event.setCancelled(true);
                 mc.player.sendChatMessage(msg);
             }

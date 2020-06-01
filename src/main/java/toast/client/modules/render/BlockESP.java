@@ -5,7 +5,6 @@ import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import toast.client.event.EventImpl;
 import toast.client.event.events.network.EventPacketReceived;
-import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.Module;
 import toast.client.utils.WorldUtil;
 
@@ -18,7 +17,7 @@ public class BlockESP extends Module {
     private static List<Block> checkedChunks;
 
     public BlockESP() {
-        super("BlockESP", Category.RENDER, -1);
+        super("BlockESP", "Highlights blocks in the world.", Category.RENDER, -1);
     }
 
     @EventImpl

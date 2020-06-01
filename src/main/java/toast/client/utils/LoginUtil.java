@@ -15,6 +15,9 @@ public class LoginUtil {
     private static MinecraftClient mc = MinecraftClient.getInstance();
 
     public static boolean setSession(Session newSession) {
+        if (mc == null) return false;
+        if (mc.getClass() == null) return false;
+        if (mc.getClass().getDeclaredFields() == null) return false;
         Field newField = null;
         for (Field field : mc.getClass().getDeclaredFields()) {
             if(field.getName().equalsIgnoreCase("session") || field.getName().equalsIgnoreCase("field_1726")) {

@@ -1,29 +1,32 @@
 package toast.client.modules.render;
 
 import org.lwjgl.glfw.GLFW;
+import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.Module;
 
-/**
- * Made by HeroCode & xTrM_ it's free to use but you have to credit us
- *
- * @author HeroCode
- */
+import static toast.client.ToastClient.clickGui;
+
 public class ClickGui extends Module {
+    public ClickGui() {
+        super("ClickGui", "The gui for managing modules.", Category.RENDER, GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
 
-	public toast.client.lemongui.clickgui.ClickGui clickgui;
+    @Override
+    public void onEnable() {
+        if (mc.player != null) {
+            if (clickGui == null) {
+                clickGui = new ClickGuiScreen();
+            }
+            if (mc.currentScreen == null) {
+                mc.openScreen(clickGui);
+            }
+        }
+    }
 
-	public ClickGui() {
-		super("ClickGUI", Category.RENDER, GLFW.GLFW_KEY_RIGHT_SHIFT);
-		this.addBool("Rainbow", true);
-		this.addBool("Reverse Checkboxes", true);
-	}
-
-	public void onEnable() {
-		if (this.clickgui == null)
-			this.clickgui = new toast.client.lemongui.clickgui.ClickGui();
-		if(mc.player == null) return;
-		mc.openScreen(this.clickgui);
-		toggle();
-	}
-
+    @Override
+    public void onDisable() {
+        if (mc.currentScreen instanceof ClickGuiScreen && mc.player != null) {
+            mc.openScreen(null);
+        }
+    }
 }

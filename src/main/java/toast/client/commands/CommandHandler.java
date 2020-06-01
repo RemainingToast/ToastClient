@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CommandHandler {
-    public static CopyOnWriteArrayList<Command> commands = new CopyOnWriteArrayList<Command>();
+    public static CopyOnWriteArrayList<Command> commands = new CopyOnWriteArrayList<>();
 
     public static void executeCmd(String name, String[] args) {
         boolean notfound = true;
@@ -56,9 +56,11 @@ public class CommandHandler {
 
     public static void initCommands() {
         // alphabetical order please
-        commands.add(new CommandGuireset());
         commands.add(new CommandHelp());
+        commands.add(new CommandFixGui());
+        commands.add(new CommandListModules());
         commands.add(new CommandReload());
+        commands.add(new CommandSet());
         commands.add(new CommandTest());
         commands.add(new CommandToggle());
     }
