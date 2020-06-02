@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
 import toast.client.modules.combat.AutoRespawn;
+import toast.client.modules.combat.AutoTotem;
 import toast.client.modules.combat.BowSpam;
 import toast.client.modules.combat.KillAura;
 import toast.client.modules.dev.Panic;
@@ -78,6 +79,7 @@ public class ModuleManager {
 
     private static void loadModules() {
         modules.clear();
+        modules.add(new AutoTotem());
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
         modules.add(new ClickGui());

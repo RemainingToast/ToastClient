@@ -26,8 +26,6 @@ public class ToastClient implements ModInitializer {
     public static ClickGuiScreen clickGui;
     public static Boolean clickGuiHasOpened;
 
-    public static Boolean devMode = false;
-
     @Override
     public void onInitialize() {
         if(clickGui == null){
@@ -40,13 +38,5 @@ public class ToastClient implements ModInitializer {
         ModuleManager.initModules();
         CommandHandler.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
-        if (devMode) {
-            boolean login = LoginUtil.loginCracked("ToastDeveloper"); // avoid generating lots of .dat files in worlds
-            if (login) {
-                System.out.println("Logged in as Developer");
-            } else {
-                System.out.println("Developer login failed.");
-            }
-        }
     }
 }

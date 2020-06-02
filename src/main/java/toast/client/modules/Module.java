@@ -3,7 +3,10 @@ package toast.client.modules;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import toast.client.event.EventImpl;
 import toast.client.event.EventManager;
+import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.config.ModuleSettings;
 import toast.client.modules.config.Setting;
 import toast.client.utils.Config;
@@ -18,9 +21,11 @@ public class Module {
     public int key;
     public Category category;
 
+
     public ModuleSettings settings = new ModuleSettings();
 
     public MinecraftClient mc = MinecraftClient.getInstance();
+    public ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
     public Module(String name, String description, Category category, int key) {
         this.name = name;
