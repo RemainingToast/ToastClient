@@ -10,11 +10,11 @@ import toast.client.modules.Module;
 
 public class AutoTotem extends Module {
     int totems = 0;
-    String totemCount = Integer.toString(totems);
+    String totemCount;
     boolean moving;
     boolean returning;
     public AutoTotem() {
-        super("AutoTotem: " , "Automatically places totem into offhand", Category.COMBAT, -1);
+        super("AutoTotem" , "Automatically places totem into offhand", Category.COMBAT, -1);
         settings.addBoolean("Force Totem", true);
 
     }
@@ -23,8 +23,10 @@ public class AutoTotem extends Module {
     public void onUpdate(EventUpdate event) {
         if (mc.player == null || mc.currentScreen instanceof ContainerScreen || mc.interactionManager == null) return;
         totems = mc.player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
-        totemCount = Integer.toString(totems);
-        super.name = "AutoTotem " + totemCount;
+        if(totems != 0){
+            totemCount = Integer.toString(totems);
+            super.name = "AutoTotem: " + totemCount;
+        }
         if (mc.player.getOffHandStack().getItem() == Items.TOTEM_OF_UNDYING) totems++;
         else {
             if (!mc.player.inventory.offHand.isEmpty() && mc.player.inventory.offHand.get(0).getItem() != Items.TOTEM_OF_UNDYING && !settings.getBoolean("Force Totem")) return;
