@@ -2,8 +2,9 @@ package toast.client.commands.cmds;
 
 import toast.client.commands.Command;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 import toast.client.utils.Logger;
+
+import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class ListModules extends Command {
     public ListModules() {
@@ -21,7 +22,7 @@ public class ListModules extends Command {
             for (Module.Category category : Module.Category.values()) {
                 if (category.name().equalsIgnoreCase(args[0])) {
                     Logger.message("Modules in " + args[0] + ":", Logger.INFO);
-                    for (Module module : ModuleManager.getModulesInCategory(Module.Category.valueOf(args[0].toUpperCase()))) {
+                    for (Module module : MODULE_MANAGER.getModulesInCategory(Module.Category.valueOf(args[0].toUpperCase()))) {
                         Logger.message("  " + module.getName() + ": " + module.getDescription(), Logger.EMPTY);
                     }
                     return;

@@ -3,12 +3,13 @@ package toast.client.commands.cmds;
 import org.apache.commons.lang3.math.NumberUtils;
 import toast.client.commands.Command;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 import toast.client.modules.config.Setting;
 import toast.client.modules.config.SettingDef;
 import toast.client.utils.Logger;
 
 import java.util.Map;
+
+import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class Set extends Command {
     public Set() {
@@ -35,7 +36,7 @@ public class Set extends Command {
     @Override
     public void run(String[] args) {
         if (args.length > 0) {
-            Module module = ModuleManager.getModule(args[0]);
+            Module module = MODULE_MANAGER.getModule(args[0]);
             if (module != null) {
                 if (args.length > 1) {
                     Setting setting = module.getSettings().getSetting(args[1]);

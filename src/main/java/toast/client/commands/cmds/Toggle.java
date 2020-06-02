@@ -2,8 +2,9 @@ package toast.client.commands.cmds;
 
 import toast.client.commands.Command;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 import toast.client.utils.Logger;
+
+import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class Toggle extends Command {
     public Toggle() {
@@ -14,7 +15,7 @@ public class Toggle extends Command {
         if (args.length < 1) {
             Logger.message("Please provide a module name", Logger.WARN);
         } else {
-            for (Module module : ModuleManager.getModules()) {
+            for (Module module : MODULE_MANAGER.getModules()) {
                 if (module.getName().replaceAll(" ", "").toLowerCase().equals(args[0].toLowerCase())) {
                     module.toggle();
                     if (module.isEnabled()) {

@@ -4,14 +4,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import org.lwjgl.glfw.GLFW;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 import toast.client.modules.config.Setting;
 import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import static toast.client.gui.clickgui.ClickGuiScreen.*;
+import static toast.client.ToastClient.MODULE_MANAGER;
+import static toast.client.gui.clickgui.ClickGuiScreen.keybindPressedCategory;
 import static toast.client.utils.TwoDRenderUtils.*;
 
 public class CategoryRenderer {
@@ -55,7 +55,7 @@ public class CategoryRenderer {
         drawTextBox(getXint(), getYint(), getBoxWidth(), getBoxHeight(), colors.categoryBoxColor, colors.categoryTextColor, colors.categoryPrefixColor, catBgColor, colors.categoryPrefix, category.toString());
         if (settings.getPositions(category.toString()).isExpanded()) {
             int u = 1;
-            for (Module module : ModuleManager.getModulesInCategory(category)) {
+            for (Module module : MODULE_MANAGER.getModulesInCategory(category)) {
                 int moduleTextColor;
                 int moduleBgColor;
                 if (module.isEnabled()) {

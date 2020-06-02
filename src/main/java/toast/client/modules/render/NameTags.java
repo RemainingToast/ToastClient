@@ -17,6 +17,11 @@ public class NameTags extends Module {
         super("NameTags", "Displays a nametag above other players", Category.RENDER, -1);
     }
 
+    @Override
+    public void onEnable() {
+        disable();
+    }
+
     // TODO: custom nametags (not just health and not mc code)
     public static void renderNameTag(Entity entity, String name, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int int_1) {
         double distance = MinecraftClient.getInstance().getEntityRenderManager().getSquaredDistanceToCamera(entity);

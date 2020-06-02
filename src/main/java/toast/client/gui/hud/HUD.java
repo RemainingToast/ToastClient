@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import toast.client.ToastClient;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 import toast.client.modules.misc.Panic;
 
 import java.awt.*;
@@ -14,6 +13,7 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static toast.client.ToastClient.MODULE_MANAGER;
 import static toast.client.utils.TwoDRenderUtils.drawRect;
 import static toast.client.utils.TwoDRenderUtils.renderNineWideInvItems;
 
@@ -23,7 +23,7 @@ public class HUD {
 
     public static void drawHUD() {
         if (mc.options.debugEnabled || Panic.IsPanicking()) return;
-        Module hud = ModuleManager.getModule("HUD");
+        Module hud = MODULE_MANAGER.getModule("HUD");
         if (hud == null) return;
         if (!hud.isEnabled()) return;
 
@@ -73,7 +73,7 @@ public class HUD {
         // arraylist/sortedset/modulelist/whatever
         if (hud.getBool("SortedSet")) {
             SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed()); //TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
-            for (Module module : ModuleManager.modules) {
+            for (Module module : MODULE_MANAGER.getModules()) {
                 if (module.isEnabled() && module.getBool("Visible")) {
                     enabledModules.add(module.getName());
                 }

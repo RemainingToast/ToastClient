@@ -6,7 +6,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 import toast.client.modules.config.Setting;
 import toast.client.modules.render.ClickGui;
 
@@ -14,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static toast.client.ToastClient.MODULE_MANAGER;
 import static toast.client.utils.TwoDRenderUtils.drawTextBox;
 
 public class ClickGuiScreen extends Screen {
@@ -36,7 +36,7 @@ public class ClickGuiScreen extends Screen {
                 width = catWidth + 4;
             }
         }
-        for (Module module : ModuleManager.getModules()) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             int moduleWidth = textRenderer.getStringWidth(settings.colors.modulePrefix + module.getName());
             if (moduleWidth > width) {
                 width = moduleWidth + 4;
@@ -145,7 +145,7 @@ public class ClickGuiScreen extends Screen {
     public void onClose() {
         settings.savePositions();
         settings.saveColors();
-        Objects.requireNonNull(ModuleManager.getModule(ClickGui.class)).disable();
+        Objects.requireNonNull(MODULE_MANAGER.getModule(ClickGui.class)).disable();
     }
 
     @Override

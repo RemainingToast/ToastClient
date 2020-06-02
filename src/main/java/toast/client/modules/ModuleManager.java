@@ -16,17 +16,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Environment(EnvType.CLIENT)
 public class ModuleManager {
-    public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
+    public CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
 
-    public static void initModules() {
-        try {
-            loadModules();
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void onKey(long window, int key, int scancode, int action, int mods) {
+    public void onKey(long window, int key, int scancode, int action, int mods) {
         if (modules == null) return;
         for (Module module : modules) {
             if (module.getKey() == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
@@ -37,7 +29,7 @@ public class ModuleManager {
         }
     }
 
-    public static Module getModule(Class classs) {
+    public Module getModule(Class classs) {
         for (Module module : modules) {
             if (module.getClass() == classs) {
                 return module;
@@ -46,7 +38,7 @@ public class ModuleManager {
         return null;
     }
 
-    public static Module getModule(String name) {
+    public Module getModule(String name) {
         for (Module module : modules) {
             if (module.getName().equals(name)) {
                 return module;
@@ -55,11 +47,11 @@ public class ModuleManager {
         return null;
     }
 
-    public static CopyOnWriteArrayList<Module> getModules() {
+    public CopyOnWriteArrayList<Module> getModules() {
         return modules;
     }
 
-    public static List<Module> getModulesInCategory(Module.Category category) {
+    public List<Module> getModulesInCategory(Module.Category category) {
         List<Module> moduleList = new ArrayList<>();
         for (Module module : modules) {
             if (module.getCategory() == category) {
@@ -69,8 +61,9 @@ public class ModuleManager {
         return moduleList;
     }
 
-    private static void loadModules() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void loadModules() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         modules.clear();
+        System.out.println(this.getClass().getCanonicalName());
         Reflections reflections = new Reflections("toast.client.modules");
         Set<Class<? extends Module>> moduleClasses = reflections.getSubTypesOf(Module.class);
         for (Class<? extends Module> moduleClass : moduleClasses) {

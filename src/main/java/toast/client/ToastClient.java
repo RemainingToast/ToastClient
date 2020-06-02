@@ -23,6 +23,8 @@ public class ToastClient implements ModInitializer {
     public static String chatPrefix = Formatting.DARK_GRAY + "[" + Formatting.LIGHT_PURPLE + "ToastClient" + Formatting.DARK_GRAY + "]";
     public static String cmdPrefix = ".";
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
+    public static ModuleManager MODULE_MANAGER = new ModuleManager();
+    public static CommandHandler COMMAND_HANDLER = new CommandHandler();
     public static ClickGuiScreen clickGui;
     public static Boolean clickGuiHasOpened;
 
@@ -35,9 +37,9 @@ public class ToastClient implements ModInitializer {
         System.out.println(cleanPrefix + " Initialized");
         System.out.println("Special thanks to all contributors of this project " + devs);
         FileManager.initFileManager();
-        ModuleManager.initModules();
         try {
-            CommandHandler.initCommands();
+            MODULE_MANAGER.loadModules();
+            COMMAND_HANDLER.initCommands();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }

@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 import toast.client.modules.config.Setting;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+
+import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class Config {
     public static final String configFile = "config.json";
@@ -37,7 +38,7 @@ public class Config {
 
     public static void writeConfig() {
         Map<String, Map<String, Setting>> config = new HashMap<>();
-        for (Module module : ModuleManager.getModules()) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             config.put(module.getName(), module.getSettings().getSettings());
         }
         FileManager.writeFile(configFile, gson.toJson(config));
@@ -55,7 +56,7 @@ public class Config {
 
     public static void loadConfig(Map<String, Map<String, Setting>> config) {
         if (config == null || config.isEmpty()) return;
-        for (Module module : ModuleManager.getModules()) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             if (config.containsKey(module.getName())) {
                 for (Map.Entry<String, Setting> setting : config.get(module.getName()).entrySet()) {
                     if (module.getSettings().getSettings().containsKey(setting.getKey())) {
@@ -68,7 +69,7 @@ public class Config {
 
     public static void writeKeyBinds() {
         Map<String, Integer> keybinds = new HashMap<>();
-        for (Module module : ModuleManager.getModules()) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             keybinds.put(module.getName(), module.getKey());
         }
         FileManager.writeFile(keybindsFile, gson.toJson(keybinds));
@@ -86,7 +87,7 @@ public class Config {
 
     public static void loadKeyBinds(Map<String, Integer> keybinds) {
         if (keybinds == null || keybinds.isEmpty()) return;
-        for (Module module : ModuleManager.getModules()) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             if (module != null && keybinds != null) {
                 if (keybinds.containsKey(module.getName())) {
                     module.setKey(keybinds.get(module.getName()));
@@ -97,7 +98,7 @@ public class Config {
 
     public static void writeModules() {
         Map<String, Boolean> modules = new HashMap<>();
-        for (Module module : ModuleManager.modules) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             modules.put(module.getName(), module.isEnabled());
         }
         FileManager.writeFile(modulesFile, gson.toJson(modules));
@@ -115,7 +116,7 @@ public class Config {
 
     public static void loadModules(Map<String, Boolean> modules) {
         if (modules == null || modules.isEmpty()) return;
-        for (Module module : ModuleManager.getModules()) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             if (module != null && modules != null) {
                 if (!disabledOnStart.contains(module.getName())) {
                     if (modules.containsKey(module.getName())) {

@@ -3,10 +3,11 @@ package toast.client.modules.misc;
 import org.lwjgl.glfw.GLFW;
 import toast.client.ToastClient;
 import toast.client.modules.Module;
-import toast.client.modules.ModuleManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class Panic extends Module {
     private static boolean isPanicking = false;
@@ -23,7 +24,7 @@ public class Panic extends Module {
     public void onEnable() {
         if (mc.currentScreen != null) return;
         isPanicking = true;
-        for (Module module : ModuleManager.modules) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             if (module.isEnabled() && !module.getClass().equals(this.getClass())) {
                 module.setEnabled(false);
                 wasEnabled.add(module);
@@ -46,7 +47,7 @@ public class Panic extends Module {
 
     public void onDisable() {
         isPanicking = false;
-        for (Module module : ModuleManager.modules) {
+        for (Module module : MODULE_MANAGER.getModules()) {
             if (wasEnabled.contains(module)) {
                 module.setEnabled(true);
                 wasEnabled.remove(module);

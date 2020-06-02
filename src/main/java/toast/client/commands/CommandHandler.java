@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CommandHandler {
     public static CopyOnWriteArrayList<Command> commands = new CopyOnWriteArrayList<>();
 
-    public static void executeCmd(String name, String[] args) {
+    public void executeCmd(String name, String[] args) {
         boolean notfound = true;
         for (Command command : commands) {
             for (String alias : command.aliases) {
@@ -37,15 +37,15 @@ public class CommandHandler {
         }
     }
 
-    public static boolean isDevCancel(Command c) {
+    public boolean isDevCancel(Command c) {
         return c.isDev() && !ToastClient.devs.contains(Objects.requireNonNull(MinecraftClient.getInstance().player).getDisplayName().asFormattedString());
     }
 
-    public static CopyOnWriteArrayList<Command> getCommands() {
+    public CopyOnWriteArrayList<Command> getCommands() {
         return commands;
     }
 
-    public static Command getCommand(String cmd) {
+    public Command getCommand(String cmd) {
         for (Command command : commands) {
             for (String alias : command.aliases) {
                 if (alias.equalsIgnoreCase(cmd)) {
@@ -56,7 +56,7 @@ public class CommandHandler {
         return null;
     }
 
-    public static void initCommands() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void initCommands() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Reflections reflections = new Reflections("toast.client.commands");
         Set<Class<? extends Command>> commandClasses = reflections.getSubTypesOf(Command.class);
         for (Class<? extends Command> commandClass : commandClasses) {

@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import toast.client.ToastClient;
-import toast.client.commands.CommandHandler;
 import toast.client.event.EventManager;
 import toast.client.event.events.network.EventPacketReceived;
 import toast.client.event.events.network.EventPacketSent;
@@ -20,6 +19,8 @@ import toast.client.modules.misc.Panic;
 
 import java.util.Arrays;
 import java.util.concurrent.Future;
+
+import static toast.client.ToastClient.COMMAND_HANDLER;
 
 @Mixin(ClientConnection.class)
 public class MixinClientConnection {
@@ -43,7 +44,7 @@ public class MixinClientConnection {
                 String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
                 System.out.println("cmd: " + cmd + ", args: " + Arrays.toString(betterArgs));
                 if (!Panic.IsPanicking()) {
-                    CommandHandler.executeCmd(cmd, betterArgs);
+                    COMMAND_HANDLER.executeCmd(cmd, betterArgs);
                     ci.cancel();
                 }
             }
