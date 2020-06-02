@@ -45,18 +45,19 @@ public class HUD {
 
         // invenotry preview
         if (hud.getBool("Inventory")) {
-            int startX = 0;
-            int startY = 0;
+            mc.getWindow().getScaledHeight();
+            int startX = mc.getWindow().getScaledWidth() / 2 + 100;
+            int startY = mc.getWindow().getScaledHeight() - 51;
             int x = startX;
             int y = startY;
-            if (hud.getBool("Inventory BG")) drawRect(x, y, 17 * 9, 17 * 3, new Color(125, 125, 125, 175).getRGB());
+            if (hud.getBool("Inventory BG")) drawRect(x, y, 153, 51, new Color(125, 125, 125, 175).getRGB());
             if (mc.player != null) {
                 int i = 0;
                 for (ItemStack itemStack : mc.player.inventory.main) {
                     if (i > 8) {
                         if (!itemStack.isEmpty()) mc.getItemRenderer().renderGuiItem(itemStack, x + 1, y + 1);
                         if (x == 17 * 8 + startX) {
-                            x = 0;
+                            x = startX;
                             y += 17;
                         } else x += 17;
                     }
