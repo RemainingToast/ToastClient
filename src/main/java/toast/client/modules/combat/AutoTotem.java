@@ -20,27 +20,27 @@ public class AutoTotem extends Module {
     @EventImpl
     public void onUpdate(EventUpdate event) {
         if (mc.player == null || mc.currentScreen instanceof ContainerScreen || mc.interactionManager == null) return;
-        totems = player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
-        if (player.getOffHandStack().getItem() == Items.TOTEM_OF_UNDYING) totems++;
+        totems = mc.player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
+        if (mc.player.getOffHandStack().getItem() == Items.TOTEM_OF_UNDYING) totems++;
         else {
-            if (!player.inventory.offHand.isEmpty() && player.inventory.offHand.get(0).getItem() != Items.TOTEM_OF_UNDYING && !settings.getBoolean("Force Totem")) return;
+            if (!mc.player.inventory.offHand.isEmpty() && mc.player.inventory.offHand.get(0).getItem() != Items.TOTEM_OF_UNDYING && !settings.getBoolean("Force Totem")) return;
             if (moving) {
-                mc.interactionManager.clickSlot(0, 45, 0, SlotActionType.PICKUP, player);
+                mc.interactionManager.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player);
                 moving = false;
-                if (!player.inventory.isInvEmpty()) returning = true;
+                if (!mc.player.inventory.isInvEmpty()) returning = true;
                 return;
             }
-            if (player.inventory.isInvEmpty()) {
+            if (!mc.player.inventory.isInvEmpty()) {
                 if (totems == 0) return;
                 int t = -1;
                 for (int i = 0; i < 45; i++) {
-                    if (player.inventory.getInvStack(i).getItem() == Items.TOTEM_OF_UNDYING) {
+                    if (mc.player.inventory.getInvStack(i).getItem() == Items.TOTEM_OF_UNDYING) {
                         t = i;
                         break;
                     }
                 }
                 if (t == -1) return;
-                mc.interactionManager.clickSlot(0, t < 9 ? t + 36 : t, 0, SlotActionType.PICKUP, player);
+                mc.interactionManager.clickSlot(0, t < 9 ? t + 36 : t, 0, SlotActionType.PICKUP, mc.player);
                 moving = true;
             }
         }
