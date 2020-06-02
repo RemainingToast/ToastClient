@@ -16,6 +16,7 @@ public class ClickGui extends Module {
     public void onEnable() {
         if (mc.player != null) {
             if (clickGui == null) {
+                clickGuiHasOpened = false;
                 clickGui = new ClickGuiScreen();
             }
             if (mc.currentScreen == null) {
