@@ -5,8 +5,8 @@ import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.Logger;
 
-public class CommandToggle extends Command {
-    public CommandToggle() {
+public class Toggle extends Command {
+    public Toggle() {
         super("toggle [module]", "Toggles the specified module", false, "toggle", "t");
     }
 

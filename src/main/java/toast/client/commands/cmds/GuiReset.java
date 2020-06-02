@@ -6,8 +6,8 @@ import toast.client.utils.Logger;
 import static toast.client.ToastClient.clickGui;
 import static toast.client.ToastClient.clickGuiHasOpened;
 
-public class CommandGuiReset extends Command {
-    public CommandGuiReset() {
+public class GuiReset extends Command {
+    public GuiReset() {
         super("guireset", "Regenerates clickgui category positions according to current screen size", false, "guireset", "gr");
     }
 

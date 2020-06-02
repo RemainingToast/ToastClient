@@ -188,7 +188,7 @@ public class CategoryRenderer {
                                 }
                             } else {
                                 int key = module.getKey();
-                                if (key == -1) keybindText = "Keybind: NONE";
+                                if (key == GLFW.GLFW_KEY_UNKNOWN) keybindText = "Keybind: NONE";
                                 else keybindText = "Keybind: " + GLFW.glfwGetKeyName(key, GLFW.glfwGetKeyScancode(key));
                             }
                             drawTextBox(getXint(), (int) Math.round(getYIteration(u)), getBoxWidth(), getBoxHeight(), colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, keybindBgColor, colors.settingPrefix, keybindText);

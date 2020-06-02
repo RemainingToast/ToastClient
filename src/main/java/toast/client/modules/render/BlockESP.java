@@ -20,6 +20,11 @@ public class BlockESP extends Module {
         super("BlockESP", "Highlights blocks in the world.", Category.RENDER, -1);
     }
 
+    @Override
+    public void onEnable() {
+        this.disable();
+    }
+
     @EventImpl
     public void onPacketReceived(EventPacketReceived event) {
         if (mc.world == null) return;

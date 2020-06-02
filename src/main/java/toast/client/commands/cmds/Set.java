@@ -10,8 +10,8 @@ import toast.client.utils.Logger;
 
 import java.util.Map;
 
-public class CommandSet extends Command {
-    public CommandSet() {
+public class Set extends Command {
+    public Set() {
         super("set <module> [setting] [newvalue]", "Changes module settings", false, "set", "config", "settings");
     }
 

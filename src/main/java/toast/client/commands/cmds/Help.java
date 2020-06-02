@@ -6,8 +6,8 @@ import toast.client.commands.Command;
 import toast.client.commands.CommandHandler;
 import toast.client.utils.Logger;
 
-public class CommandHelp extends Command {
-    public CommandHelp() {
+public class Help extends Command {
+    public Help() {
         super("help [command]", "Shows all commands", false, "help", "commands");
     }
 

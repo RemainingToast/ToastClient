@@ -8,8 +8,8 @@ import toast.client.utils.Logger;
 import static toast.client.ToastClient.clickGui;
 import static toast.client.ToastClient.clickGuiHasOpened;
 
-public class CommandReload extends Command {
-    public CommandReload() {
+public class Reload extends Command {
+    public Reload() {
         super("reload [config]", "Reloads all or one of the configuration files", false, "reload", "rl");
     }
 

@@ -5,8 +5,8 @@ import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.Logger;
 
-public class CommandListModules extends Command {
-    public CommandListModules() {
+public class ListModules extends Command {
+    public ListModules() {
         super("list [category]", "Lists categories or modules in a category", false, "cat", "list", "mods");
     }
 

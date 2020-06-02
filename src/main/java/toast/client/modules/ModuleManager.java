@@ -4,27 +4,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
-import toast.client.modules.combat.AutoRespawn;
-import toast.client.modules.combat.AutoTotem;
-import toast.client.modules.combat.BowSpam;
-import toast.client.modules.combat.KillAura;
+import org.reflections.Reflections;
 import toast.client.modules.misc.Panic;
-import toast.client.modules.misc.FancyChat;
-import toast.client.modules.misc.PortalChat;
-import toast.client.modules.misc.Spammer;
-import toast.client.modules.movement.FastStop;
-import toast.client.modules.movement.Fly;
-import toast.client.modules.movement.NoFall;
-import toast.client.modules.movement.Velocity;
-import toast.client.modules.player.AutoTool;
-import toast.client.modules.player.Surround;
-import toast.client.modules.render.ClickGui;
-import toast.client.modules.render.Fullbright;
-import toast.client.modules.render.HUD;
 import toast.client.utils.Config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Environment(EnvType.CLIENT)
@@ -32,7 +19,11 @@ public class ModuleManager {
     public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
 
     public static void initModules() {
-        loadModules();
+        try {
+            loadModules();
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void onKey(long window, int key, int scancode, int action, int mods) {
@@ -78,27 +69,14 @@ public class ModuleManager {
         return moduleList;
     }
 
-    private static void loadModules() {
+    private static void loadModules() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         modules.clear();
-        modules.add(new AutoRespawn());
-        modules.add(new AutoTool());
-        modules.add(new AutoTotem());
-        //modules.add(new BlockESP());
-        modules.add(new BowSpam());
-        modules.add(new ClickGui());
-        modules.add(new FancyChat());
-        modules.add(new FastStop());
-        modules.add(new Fly());
-        modules.add(new Fullbright());
-        //modules.add(new HoleESP());
-        modules.add(new HUD());
-        modules.add(new KillAura());
-        modules.add(new NoFall());
-        modules.add(new Panic());
-        modules.add(new PortalChat());
-        modules.add(new Spammer());
-        modules.add(new Surround());
-        modules.add(new Velocity());
+        Reflections reflections = new Reflections("toast.client.modules");
+        Set<Class<? extends Module>> moduleClasses = reflections.getSubTypesOf(Module.class);
+        for (Class<? extends Module> moduleClass : moduleClasses) {
+            Module module = moduleClass.getConstructor().newInstance();
+            modules.add(module);
+        }
         Config.loadConfigAuto();
         Config.loadKeyBindsAuto();
         Config.loadModulesAuto();

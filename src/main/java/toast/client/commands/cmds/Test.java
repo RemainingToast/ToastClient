@@ -5,9 +5,9 @@ import toast.client.ToastClient;
 import toast.client.commands.Command;
 import toast.client.utils.Logger;
 
-public class CommandTest extends Command {
+public class Test extends Command {
 
-    public CommandTest() {
+    public Test() {
         super("test", "Secret test command", false, "test");
     }
 

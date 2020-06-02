@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '0.2.5-SNAPSHOT'
     id 'maven-publish'
+    id "io.github.manosbatsis.gradle.plugin.reflections" version "1.1"
 }
 
 apply plugin: 'java'
@@ -36,6 +37,8 @@ dependencies {
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
     compile group: 'net.jodah', name: 'typetools', version: '0.6.2'
+
+    compile 'org.reflections:reflections:0.9.10'
 }
 
 processResources {
@@ -49,6 +52,10 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude "fabric.mod.json"
     }
+}
+
+reflections{
+    dependsOn classes
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
@@ -68,6 +75,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 jar {
     from "LICENSE"
+    dependsOn reflections
 }
 
 // configure the maven publication

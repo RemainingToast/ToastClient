@@ -7,8 +7,8 @@ import toast.client.utils.Logger;
 
 import static toast.client.ToastClient.clickGui;
 
-public class CommandSave extends Command {
-    public CommandSave() {
+public class Save extends Command {
+    public Save() {
         super("save [config]", "Saves the configuration files", false, "save");
     }
 

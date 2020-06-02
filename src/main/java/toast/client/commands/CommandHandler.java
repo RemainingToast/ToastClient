@@ -1,11 +1,13 @@
 package toast.client.commands;
 
-import toast.client.ToastClient;
-import toast.client.commands.cmds.*;
-import toast.client.utils.Logger;
 import net.minecraft.client.MinecraftClient;
+import org.reflections.Reflections;
+import toast.client.ToastClient;
+import toast.client.utils.Logger;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CommandHandler {
@@ -54,16 +56,12 @@ public class CommandHandler {
         return null;
     }
 
-    public static void initCommands() {
-        // alphabetical order please | shit my bad didn't even see this....
-        commands.add(new CommandHelp());
-        commands.add(new CommandGuiReset());
-        commands.add(new CommandListModules());
-        commands.add(new CommandReload());
-        commands.add(new CommandSet());
-        commands.add(new CommandTest());
-        commands.add(new CommandToggle());
-        commands.add(new CommandSave());
-        commands.add(new CommandPrefix());
+    public static void initCommands() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Reflections reflections = new Reflections("toast.client.commands");
+        Set<Class<? extends Command>> commandClasses = reflections.getSubTypesOf(Command.class);
+        for (Class<? extends Command> commandClass : commandClasses) {
+            Command command = commandClass.getConstructor().newInstance();
+            commands.add(command);
+        }
     }
 }

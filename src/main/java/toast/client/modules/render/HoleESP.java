@@ -13,13 +13,14 @@ import toast.client.utils.WorldUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class HoleESP extends Module {
 
     private static boolean awaiting = false;
-    private List<BlockPos> offsets = Arrays.asList(
+    private final List<BlockPos> offsets = Arrays.asList(
             new BlockPos(0, -1, 0),
             new BlockPos(1, 0, 0),
             new BlockPos(-1, 0, 0),
@@ -37,6 +38,11 @@ public class HoleESP extends Module {
         this.settings.addMode("Mode", "Flat", "Flat", "Box");
     }
 
+    @Override
+    public void onEnable() {
+        this.disable();
+    }
+
     @EventImpl
     public void onRender(EventRender event) {
         if (mc.player == null || mc.world == null || awaiting) return;
@@ -44,7 +50,7 @@ public class HoleESP extends Module {
         double range = getDouble("Range");
         try {
             List<BlockPos> positions = WorldUtil.getBlockPositionsInArea(mc.player.getBlockPos().add(-range, -range, -range), mc.player.getBlockPos().add(range, range, range));
-            List<BlockPos> airPositions = new ArrayList<>(Arrays.asList());
+            List<BlockPos> airPositions = new ArrayList<>(Collections.emptyList());
             CountDownLatch latch = new CountDownLatch(positions.size());
             WorldUtil.searchList(mc.world, positions, WorldInteractionUtil.AIR).keySet().forEach(pos -> {
                 if (new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.50).distanceTo(mc.player.getPos()) <= this.getDouble("Range"))

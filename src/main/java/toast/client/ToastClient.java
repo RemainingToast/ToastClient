@@ -9,9 +9,9 @@ import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.ASCII;
 import toast.client.utils.FileManager;
-import toast.client.utils.LoginUtil;
 import toast.client.utils.TPSCalculator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +36,11 @@ public class ToastClient implements ModInitializer {
         System.out.println("Special thanks to all contributors of this project " + devs);
         FileManager.initFileManager();
         ModuleManager.initModules();
-        CommandHandler.initCommands();
+        try {
+            CommandHandler.initCommands();
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
         TPSCalculator.calculatorInstance = new TPSCalculator();
     }
 }
