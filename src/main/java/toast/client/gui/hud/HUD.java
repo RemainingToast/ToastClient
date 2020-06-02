@@ -45,7 +45,6 @@ public class HUD {
 
         // invenotry preview
         if (hud.getBool("Inventory")) {
-            mc.getWindow().getScaledHeight();
             int startX = mc.getWindow().getScaledWidth() / 2 + 100;
             int startY = mc.getWindow().getScaledHeight() - 51;
             int x = startX;
