@@ -14,6 +14,7 @@ public class AutoTotem extends Module {
     boolean returning;
     public AutoTotem() {
         super("AutoTotem", "Automatically places totem into offhand", Category.COMBAT, -1);
+        settings.addBoolean("Force Totem", true);
     }
 
     @EventImpl
@@ -22,7 +23,7 @@ public class AutoTotem extends Module {
         totems = player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
         if (player.getOffHandStack().getItem() == Items.TOTEM_OF_UNDYING) totems++;
         else {
-            if (!player.inventory.offHand.isEmpty()) return;
+            if (!player.inventory.offHand.isEmpty() && player.inventory.offHand.get(0).getItem() != Items.TOTEM_OF_UNDYING && !settings.getBoolean("Force Totem")) return;
             if (moving) {
                 mc.interactionManager.clickSlot(0, 45, 0, SlotActionType.PICKUP, player);
                 moving = false;
