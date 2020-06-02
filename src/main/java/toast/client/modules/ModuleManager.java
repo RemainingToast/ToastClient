@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Environment(EnvType.CLIENT)
 public class ModuleManager {
-    public CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
 
     public void onKey(long window, int key, int scancode, int action, int mods) {
         if (modules == null) return;
