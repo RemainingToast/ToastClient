@@ -70,7 +70,7 @@ public class AltManagerScreen extends Screen {
     public void render(int mouseX, int mouseY, float delta) {
         this.renderBackground();
         this.drawCenteredString(this.font, this.title.asFormattedString(), this.width / 2, 20, 16777215);
-        this.drawString(mc.textRenderer, "Logged in as: " + mc.player.getName(), 14, 14, 235235);
+        this.drawString(mc.textRenderer, "Logged in as: " + mc.getSession().getUsername(), 14, 14, 235235);
         super.render(mouseX, mouseY, delta);
     }
 }
