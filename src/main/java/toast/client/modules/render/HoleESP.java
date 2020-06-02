@@ -38,11 +38,6 @@ public class HoleESP extends Module {
         this.settings.addMode("Mode", "Flat", "Flat", "Box");
     }
 
-    @Override
-    public void onEnable() {
-        this.disable();
-    }
-
     @EventImpl
     public void onRender(EventRender event) {
         if (mc.player == null || mc.world == null || awaiting) return;

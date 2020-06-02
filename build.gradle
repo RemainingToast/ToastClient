@@ -1,7 +1,6 @@
 plugins {
     id 'fabric-loom' version '0.2.5-SNAPSHOT'
     id 'maven-publish'
-    id "io.github.manosbatsis.gradle.plugin.reflections" version "1.1"
 }
 
 apply plugin: 'java'
@@ -37,8 +36,6 @@ dependencies {
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
     compile group: 'net.jodah', name: 'typetools', version: '0.6.2'
-
-    modCompile group: 'org.reflections', name: 'reflections', version: '0.9.10'
 }
 
 processResources {
@@ -65,17 +62,8 @@ tasks.withType(JavaCompile) {
 // if it is present.
 // If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier = 'sources'
+    classifier = "sources"
     from sourceSets.main.allSource
-}
-
-reflections{
-    dependsOn classes
-}
-
-jar {
-    from "LICENSE"
-    dependsOn reflections
 }
 
 // configure the maven publication

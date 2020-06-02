@@ -12,7 +12,7 @@ import toast.client.utils.Config;
 import toast.client.utils.FileManager;
 import toast.client.utils.TPSCalculator;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,19 +32,15 @@ public class ToastClient implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        if(clickGui == null){
+        if (clickGui == null) {
             clickGuiHasOpened = false;
         }
         ASCII.printFancyConsoleMSG();
         System.out.println(cleanPrefix + " Initialized");
         System.out.println("Special thanks to all contributors of this project " + devs);
         FileManager.initFileManager();
-        try {
-            MODULE_MANAGER.loadModules();
-            COMMAND_HANDLER.initCommands();
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
-        }
+        MODULE_MANAGER.loadModules();
+        COMMAND_HANDLER.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
     }
 }

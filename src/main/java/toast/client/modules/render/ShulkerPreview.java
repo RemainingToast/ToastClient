@@ -18,11 +18,6 @@ public class ShulkerPreview extends Module {
         super("ShulkerPreview", "Displays contents of a shulker box when hovered over in inventory", Category.RENDER, -1);
     }
 
-    @Override
-    public void onEnable() {
-        disable();
-    }
-
     @EventImpl
     public void onRender(EventRender event) {
         if (mc.player != null && mc.currentScreen instanceof ContainerScreen) {

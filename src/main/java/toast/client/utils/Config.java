@@ -39,7 +39,7 @@ public class Config {
 
     public void writeConfig() {
         if (canWrite) {
-            config.clear();
+            config = new HashMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 config.put(module.getName(), module.getSettings().getSettings());
             }
@@ -68,7 +68,7 @@ public class Config {
 
     public void writeKeyBinds() {
         if (canWrite) {
-            keybinds.clear();
+            keybinds = new HashMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 keybinds.put(module.getName(), module.getKey());
             }
@@ -95,7 +95,7 @@ public class Config {
 
     public void writeModules() {
         if (canWrite) {
-            modules.clear();
+            modules = new HashMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 modules.put(module.getName(), module.isEnabled());
             }
