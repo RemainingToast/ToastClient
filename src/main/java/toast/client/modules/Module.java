@@ -3,7 +3,6 @@ package toast.client.modules;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import toast.client.event.EventManager;
 import toast.client.modules.config.ModuleSettings;
 import toast.client.modules.config.Setting;
@@ -111,8 +110,7 @@ public class Module {
         MOVEMENT,
         RENDER,
         COMBAT,
-        MISC,
-        DEV
+        MISC
     }
 
 }

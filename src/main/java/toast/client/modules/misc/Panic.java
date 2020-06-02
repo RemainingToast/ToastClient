@@ -13,7 +13,7 @@ public class Panic extends Module {
     private List<Module> wasEnabled = new ArrayList<>();
 
     public Panic() {
-        super("Panic", "Makes the client disappear until you relaunch the game.", Category.DEV, GLFW.GLFW_KEY_P);
+        super("Panic", "Makes the client disappear until you relaunch the game.", Category.MISC, GLFW.GLFW_KEY_P);
     }
 
     public static boolean IsPanicking() {
