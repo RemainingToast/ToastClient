@@ -5,16 +5,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ChatUtil;
 import toast.client.utils.LoginUtil;
 
 import java.net.IDN;
 import java.util.function.Predicate;
 
-public class DirectLoginScreen extends Screen {
+public class AddAccountScreen extends Screen {
     private ButtonWidget buttonAdd;
     private final BooleanConsumer callback;
 //    private final ServerInfo server;
@@ -40,7 +38,7 @@ public class DirectLoginScreen extends Screen {
         }
     };
 
-    public DirectLoginScreen(Screen parent, BooleanConsumer callback) {
+    public AddAccountScreen(Screen parent, BooleanConsumer callback) {
         super(new LiteralText("Direct Login"));
         this.parent = parent;
         this.callback = callback;

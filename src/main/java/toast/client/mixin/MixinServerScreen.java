@@ -1,5 +1,6 @@
 package toast.client.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -13,6 +14,8 @@ import toast.client.gui.screens.altmanager.AltManagerScreen;
 @Mixin(MultiplayerScreen.class)
 public class MixinServerScreen extends Screen {
 
+
+
     protected MixinServerScreen(Text text_1) {
         super(text_1);
     }
@@ -22,5 +25,6 @@ public class MixinServerScreen extends Screen {
         addButton(new ButtonWidget(7, 7, 125, 20, "Account Manager", button -> {
             minecraft.openScreen(new AltManagerScreen());
         }));
+
     }
 }

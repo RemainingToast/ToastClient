@@ -1,5 +1,6 @@
 package toast.client.gui.screens.altmanager;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -7,6 +8,7 @@ import net.minecraft.text.LiteralText;
 
 public class AltManagerScreen extends Screen {
 
+    public MinecraftClient mc = MinecraftClient.getInstance();
     public ButtonWidget loginButt;
     public ButtonWidget editButt;
     public ButtonWidget deleteButt;
@@ -26,7 +28,7 @@ public class AltManagerScreen extends Screen {
         }));
 
         this.addButton(new ButtonWidget(this.width / 2 + 4, this.height - 52, 70, 20, ("Direct"), (buttonWidget) -> {
-//            minecraft.openScreen(new DirectLoginScreen());
+            minecraft.openScreen(new DirectLoginScreen(this,this::addAlt));
         }));
 
         this.addButton(new ButtonWidget(this.width / 2 - 154, this.height - 28, 75, 20, ("Random"), (buttonWidget) -> {
@@ -41,9 +43,11 @@ public class AltManagerScreen extends Screen {
         editButt = this.addButton(new ButtonWidget(this.width / 2 + 4 + 76, this.height - 28, 75, 20, ("Edit"), (buttonWidget) -> {
             editAlt(true);
         }));
+
         loginButt.active = false;
         deleteButt.active = false;
         editButt.active = false;
+
     }
 
 
@@ -66,6 +70,7 @@ public class AltManagerScreen extends Screen {
     public void render(int mouseX, int mouseY, float delta) {
         this.renderBackground();
         this.drawCenteredString(this.font, this.title.asFormattedString(), this.width / 2, 20, 16777215);
+        this.drawString(mc.textRenderer, "Logged in as: " + mc.player.getName(), 14, 14, 235235);
         super.render(mouseX, mouseY, delta);
     }
 }
