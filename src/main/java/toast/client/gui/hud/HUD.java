@@ -15,6 +15,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static toast.client.utils.TwoDRenderUtils.drawRect;
+import static toast.client.utils.TwoDRenderUtils.renderNineWideInvItems;
 
 public class HUD {
 
@@ -45,26 +46,11 @@ public class HUD {
 
         // inventory preview
         if (hud.getBool("Inventory")) {
-            int startX = mc.getWindow().getScaledWidth() / 2 + 100;
-            int startY = mc.getWindow().getScaledHeight() - 51;
-            int x = startX;
-            int y = startY;
+            int x = mc.getWindow().getScaledWidth() / 2 + 100;
+            int y = mc.getWindow().getScaledHeight() - 51;
             if (hud.getBool("Inventory BG")) drawRect(x, y, 153, 51, new Color(125, 125, 125, 175).getRGB());
             if (mc.player != null) {
-                int i = 0;
-                for (ItemStack itemStack : mc.player.inventory.main) {
-                    if (i > 8) {
-                        if (!itemStack.isEmpty()) {
-                            mc.getItemRenderer().renderGuiItem(itemStack, x + 1, y + 1);
-                            mc.getItemRenderer().renderGuiItemOverlay(mc.textRenderer, itemStack, x + 1, y + 1);
-                        }
-                        if (x == 17 * 8 + startX) {
-                            x = startX;
-                            y += 17;
-                        } else x += 17;
-                    }
-                    i++;
-                }
+                renderNineWideInvItems(mc.player.inventory.main.subList(0, 26), x, y);
             }
         }
 

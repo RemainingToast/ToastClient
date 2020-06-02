@@ -60,28 +60,6 @@ public class ClickGuiScreen extends Screen {
         }
     }
 
-    /**
-     * Check if the mouse if over a box on screen
-     *
-     * @param mouseX      Current X coordinate of the mouse
-     * @param mouseY      Current Y coordinate of the mouse
-     * @param x           X coordinate of the top left corner of the inside of the text box
-     * @param y           Y coordinate of the top left corner of the inside of the text box
-     * @param width       Width of the inside of the box
-     * @param height      Height of the inside of the box
-     */
-    public static boolean isMouseOverRect(double mouseX, double mouseY, double x, double y, int width, int height) {
-        boolean xOver = false;
-        boolean yOver = false;
-        if (mouseX >= x && mouseX <= width + x) {
-            xOver = true;
-        }
-        if (mouseY >= y && mouseY <= height + y) {
-            yOver = true;
-        }
-        return xOver && yOver;
-    }
-
     protected static CategoryRenderer keybindPressedCategory = null;
 
     @Override
