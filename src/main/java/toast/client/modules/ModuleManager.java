@@ -30,10 +30,9 @@ import static toast.client.ToastClient.CONFIG_MANAGER;
 
 @Environment(EnvType.CLIENT)
 public class ModuleManager {
-    private CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
 
-    public void onKey(long window, int key, int scancode, int action, int mods) {
-        if (modules == null) return;
+    public void onKey(int key, int action) {
         for (Module module : modules) {
             if (module.getKey() == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
                 if (MinecraftClient.getInstance().inGameHud.getChatHud().isChatFocused()) continue;
@@ -43,9 +42,9 @@ public class ModuleManager {
         }
     }
 
-    public Module getModule(Class classs) {
+    public Module getModule(Class<? extends Module> moduleClass) {
         for (Module module : modules) {
-            if (module.getClass() == classs) {
+            if (module.getClass() == moduleClass) {
                 return module;
             }
         }

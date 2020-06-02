@@ -12,6 +12,6 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 public class MixinKeyboard {
     @Inject(at = @At(value = "RETURN"), method = "onKey")
     public void onKey(long window, int key, int scancode, int i, int j, CallbackInfo ci) {
-        MODULE_MANAGER.onKey(window, key, scancode, i, j);
+        MODULE_MANAGER.onKey(key, i);
     }
 }

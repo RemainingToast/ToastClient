@@ -19,27 +19,11 @@ public class Config {
     public static final String keybindsFile = "keybinds.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String disabledOnStart = "Panic, ClickGui";
-    private Map<String, Integer> keybinds = new HashMap<>();
-    private Map<String, Boolean> modules = new HashMap<>();
-    private Map<String, Map<String, Setting>> config = new HashMap<>();
     private boolean canWrite = false;
-
-    public void updateRead() {
-        try {
-            config = gson.fromJson(new FileReader(FileManager.createFile(configFile)), new TypeToken<Map<String, Map<String, Setting>>>() {
-            }.getType());
-            modules = gson.fromJson(new FileReader(FileManager.createFile(modulesFile)), new TypeToken<Map<String, Boolean>>() {
-            }.getType());
-            keybinds = gson.fromJson(new FileReader(FileManager.createFile(keybindsFile)), new TypeToken<Map<String, Integer>>() {
-            }.getType());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void writeConfig() {
         if (canWrite) {
-            config = new HashMap<>();
+            Map<String, Map<String, Setting>> config = new HashMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 config.put(module.getName(), module.getSettings().getSettings());
             }
@@ -48,13 +32,18 @@ public class Config {
     }
 
     public void loadConfig() {
-        updateRead();
-        if (config == null) {
-            writeConfig();
-            config = new HashMap<>();
+        Map<String, Map<String, Setting>> config;
+        try {
+            config = gson.fromJson(new FileReader(FileManager.createFile(configFile)), new TypeToken<Map<String, Map<String, Setting>>>() {
+            }.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return;
         }
-        if (config.isEmpty()) return;
+        if (config == null || config.isEmpty()) {
+            writeConfig();
+            return;
+        }
         for (Module module : MODULE_MANAGER.getModules()) {
             if (config.containsKey(module.getName())) {
                 for (Map.Entry<String, Setting> setting : config.get(module.getName()).entrySet()) {
@@ -67,6 +56,7 @@ public class Config {
     }
 
     public void writeKeyBinds() {
+        Map<String, Integer> keybinds;
         if (canWrite) {
             keybinds = new HashMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
@@ -77,15 +67,20 @@ public class Config {
     }
 
     public void loadKeyBinds() {
-        updateRead();
-        if (keybinds == null) {
-            writeKeyBinds();
-            keybinds = new HashMap<>();
+        Map<String, Integer> keybinds;
+        try {
+            keybinds = gson.fromJson(new FileReader(FileManager.createFile(keybindsFile)), new TypeToken<Map<String, Integer>>() {
+            }.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return;
         }
-        if (keybinds.isEmpty()) return;
+        if (keybinds == null || keybinds.isEmpty()) {
+            writeKeyBinds();
+            return;
+        }
         for (Module module : MODULE_MANAGER.getModules()) {
-            if (module != null && keybinds != null) {
+            if (module != null) {
                 if (keybinds.containsKey(module.getName())) {
                     module.setKey(keybinds.get(module.getName()));
                 }
@@ -95,7 +90,7 @@ public class Config {
 
     public void writeModules() {
         if (canWrite) {
-            modules = new HashMap<>();
+            Map<String, Boolean> modules = new HashMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 modules.put(module.getName(), module.isEnabled());
             }
@@ -104,15 +99,20 @@ public class Config {
     }
 
     public void loadModules() {
-        updateRead();
-        if (modules == null) {
-            writeModules();
-            modules = new HashMap<>();
+        Map<String, Boolean> modules;
+        try {
+            modules = gson.fromJson(new FileReader(FileManager.createFile(modulesFile)), new TypeToken<Map<String, Boolean>>() {
+            }.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return;
         }
-        if (modules.isEmpty()) return;
+        if (modules == null || modules.isEmpty()) {
+            writeModules();
+            return;
+        }
         for (Module module : MODULE_MANAGER.getModules()) {
-            if (module != null && modules != null) {
+            if (module != null) {
                 if (!disabledOnStart.contains(module.getName())) {
                     if (modules.containsKey(module.getName())) {
                         module.setEnabled(modules.get(module.getName()));

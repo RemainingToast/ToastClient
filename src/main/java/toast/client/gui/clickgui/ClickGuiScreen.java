@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static toast.client.ToastClient.MODULE_MANAGER;
+import static toast.client.ToastClient.clickGui;
 import static toast.client.utils.TwoDRenderUtils.drawTextBox;
 
 public class ClickGuiScreen extends Screen {
@@ -151,8 +152,9 @@ public class ClickGuiScreen extends Screen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode != GLFW.GLFW_KEY_UNKNOWN) {
-            if (keyCode == GLFW.GLFW_KEY_ESCAPE) this.onClose();
+            if (keyCode == GLFW.GLFW_KEY_ESCAPE) clickGui.onClose();
             else if (keybindPressedCategory != null) keybindPressedCategory.setKeyPressed(keyCode);
+            if (keyCode == MODULE_MANAGER.getModule(ClickGui.class).getKey()) clickGui.onClose();
         }
         return false;
     }
