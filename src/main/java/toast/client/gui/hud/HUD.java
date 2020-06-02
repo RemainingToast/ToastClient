@@ -43,7 +43,7 @@ public class HUD {
             GL11.glScaled(1d / size, 1d / size, 1d / size);
         }
 
-        // invenotry preview
+        // inventory preview
         if (hud.getBool("Inventory")) {
             int startX = mc.getWindow().getScaledWidth() / 2 + 100;
             int startY = mc.getWindow().getScaledHeight() - 51;
@@ -54,13 +54,32 @@ public class HUD {
                 int i = 0;
                 for (ItemStack itemStack : mc.player.inventory.main) {
                     if (i > 8) {
-                        if (!itemStack.isEmpty()) mc.getItemRenderer().renderGuiItem(itemStack, x + 1, y + 1);
+                        if (!itemStack.isEmpty()) {
+                            mc.getItemRenderer().renderGuiItem(itemStack, x + 1, y + 1);
+                            mc.getItemRenderer().renderGuiItemOverlay(mc.textRenderer, itemStack, x + 1, y + 1);
+                        }
                         if (x == 17 * 8 + startX) {
                             x = startX;
                             y += 17;
                         } else x += 17;
                     }
                     i++;
+                }
+            }
+        }
+
+        // armor hud
+        if (hud.getBool("Armor")) {
+            int startX = mc.getWindow().getScaledWidth() / 2 + 74;
+            int y = mc.getWindow().getScaledHeight() - 60;
+            int x = startX;
+            if (mc.player != null) {
+                for (ItemStack itemStack : mc.player.inventory.armor) {
+                    if (!itemStack.isEmpty()) {
+                        mc.getItemRenderer().renderGuiItem(itemStack, x + 1, y + 1);
+                        mc.getItemRenderer().renderGuiItemOverlay(mc.textRenderer, itemStack, x + 1, y + 1);
+                    }
+                    x -= 17;
                 }
             }
         }
