@@ -16,7 +16,7 @@ import toast.client.commands.CommandHandler;
 import toast.client.event.EventManager;
 import toast.client.event.events.network.EventPacketReceived;
 import toast.client.event.events.network.EventPacketSent;
-import toast.client.modules.dev.Panic;
+import toast.client.modules.misc.Panic;
 
 import java.util.Arrays;
 import java.util.concurrent.Future;

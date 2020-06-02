@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import toast.client.modules.dev.Panic;
+import toast.client.modules.misc.Panic;
 
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {

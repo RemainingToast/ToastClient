@@ -1,4 +1,4 @@
-package toast.client.modules.dev;
+package toast.client.modules.misc;
 
 import org.lwjgl.glfw.GLFW;
 import toast.client.ToastClient;

@@ -8,7 +8,7 @@ import toast.client.modules.combat.AutoRespawn;
 import toast.client.modules.combat.AutoTotem;
 import toast.client.modules.combat.BowSpam;
 import toast.client.modules.combat.KillAura;
-import toast.client.modules.dev.Panic;
+import toast.client.modules.misc.Panic;
 import toast.client.modules.misc.FancyChat;
 import toast.client.modules.misc.PortalChat;
 import toast.client.modules.misc.Spammer;

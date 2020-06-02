@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 import toast.client.ToastClient;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
-import toast.client.modules.dev.Panic;
+import toast.client.modules.misc.Panic;
 
 import java.awt.*;
 import java.util.Comparator;
