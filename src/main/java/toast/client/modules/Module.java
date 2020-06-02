@@ -99,11 +99,9 @@ public class Module {
         setEnabled(!isEnabled());
     }
 
-    public void onEnable() {
-    }
+    public void onEnable() {}
 
-    public void onDisable() {
-    }
+    public void onDisable() {}
 
     public enum Category {
         PLAYER,

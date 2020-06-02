@@ -8,6 +8,8 @@ public class HUD extends Module {
         this.settings.addBoolean("Rainbow", true);
         this.settings.addBoolean("Watermark", true);
         this.settings.addSlider("Watermark Size", 0.5, 0.75, 1.5);
+        this.settings.addBoolean("Inventory", true);
+        this.settings.addBoolean("Inventory BG", false);
         this.settings.addBoolean("SortedSet", true);
         this.settings.addBoolean("Right line", true);
         this.settings.addBoolean("Left line", true);

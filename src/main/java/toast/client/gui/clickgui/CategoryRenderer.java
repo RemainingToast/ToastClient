@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static toast.client.gui.clickgui.ClickGuiScreen.*;
+import static toast.client.utils.TwoDRenderUtils.*;
 
 public class CategoryRenderer {
     public TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;

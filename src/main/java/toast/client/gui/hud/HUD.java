@@ -2,6 +2,7 @@ package toast.client.gui.hud;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import toast.client.ToastClient;
 import toast.client.modules.Module;
@@ -12,6 +13,8 @@ import java.awt.*;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import static toast.client.utils.TwoDRenderUtils.drawRect;
 
 public class HUD {
 
@@ -38,6 +41,28 @@ public class HUD {
                 mc.textRenderer.drawWithShadow(letters[i], intarray[i], 4, rainbow(i * 25));
             }
             GL11.glScaled(1d / size, 1d / size, 1d / size);
+        }
+
+        // invenotry preview
+        if (hud.getBool("Inventory")) {
+            int startX = 0;
+            int startY = 0;
+            int x = startX;
+            int y = startY;
+            if (hud.getBool("Inventory BG")) drawRect(x, y, 17 * 9, 17 * 3, new Color(125, 125, 125, 175).getRGB());
+            if (mc.player != null) {
+                int i = 0;
+                for (ItemStack itemStack : mc.player.inventory.main) {
+                    if (i > 8) {
+                        if (!itemStack.isEmpty()) mc.getItemRenderer().renderGuiItem(itemStack, x + 1, y + 1);
+                        if (x == 17 * 8 + startX) {
+                            x = 0;
+                            y += 17;
+                        } else x += 17;
+                    }
+                    i++;
+                }
+            }
         }
 
         // arraylist/sortedset/modulelist/whatever
