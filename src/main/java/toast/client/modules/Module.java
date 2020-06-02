@@ -6,9 +6,10 @@ import net.minecraft.client.MinecraftClient;
 import toast.client.event.EventManager;
 import toast.client.modules.config.ModuleSettings;
 import toast.client.modules.config.Setting;
-import toast.client.utils.Config;
 
 import java.util.Map;
+
+import static toast.client.ToastClient.CONFIG_MANAGER;
 
 @Environment(EnvType.CLIENT)
 public class Module {
@@ -48,7 +49,7 @@ public class Module {
             EventManager.unregister(this);
             onDisable();
         }
-        Config.writeModules();
+        CONFIG_MANAGER.writeModules();
     }
 
     public int getKey() {

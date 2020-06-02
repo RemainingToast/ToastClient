@@ -5,11 +5,11 @@ import net.minecraft.client.font.TextRenderer;
 import org.lwjgl.glfw.GLFW;
 import toast.client.modules.Module;
 import toast.client.modules.config.Setting;
-import toast.client.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Map;
 
+import static toast.client.ToastClient.CONFIG_MANAGER;
 import static toast.client.ToastClient.MODULE_MANAGER;
 import static toast.client.gui.clickgui.ClickGuiScreen.keybindPressedCategory;
 import static toast.client.utils.TwoDRenderUtils.*;
@@ -280,11 +280,11 @@ public class CategoryRenderer {
     public void setKeyPressed(int keyPressed) {
         if (this.keybindPressed) {
             if (keyPressed == -1) return;
-            else if (keyPressed == GLFW.GLFW_KEY_BACKSPACE) this.keybindModule.setKey(-1);
+            else if (keyPressed == GLFW.GLFW_KEY_BACKSPACE || keyPressed == GLFW.GLFW_KEY_DELETE) this.keybindModule.setKey(-1);
             else this.keybindModule.setKey(keyPressed);
             this.isKeyPressed = true;
             keybindPressedCategory = null;
-            Config.writeKeyBinds();
+            CONFIG_MANAGER.writeKeyBinds();
         } else this.keybindPressed = true;
     }
 

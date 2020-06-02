@@ -18,12 +18,13 @@ public class Config {
     public static final String modulesFile = "modules.json";
     public static final String keybindsFile = "keybinds.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public static Map<String, Integer> keybinds = new HashMap<>();
-    public static Map<String, Boolean> modules = new HashMap<>();
-    public static Map<String, Map<String, Setting>> config = new HashMap<>();
-    public static String disabledOnStart = "Panic, ClickGui";
+    private static final String disabledOnStart = "Panic, ClickGui";
+    private Map<String, Integer> keybinds = new HashMap<>();
+    private Map<String, Boolean> modules = new HashMap<>();
+    private Map<String, Map<String, Setting>> config = new HashMap<>();
+    private boolean canWrite = false;
 
-    public static void updateRead() {
+    public void updateRead() {
         try {
             config = gson.fromJson(new FileReader(FileManager.createFile(configFile)), new TypeToken<Map<String, Map<String, Setting>>>() {
             }.getType());
@@ -36,26 +37,24 @@ public class Config {
         }
     }
 
-    public static void writeConfig() {
-        Map<String, Map<String, Setting>> config = new HashMap<>();
-        for (Module module : MODULE_MANAGER.getModules()) {
-            config.put(module.getName(), module.getSettings().getSettings());
+    public void writeConfig() {
+        if (canWrite) {
+            config.clear();
+            for (Module module : MODULE_MANAGER.getModules()) {
+                config.put(module.getName(), module.getSettings().getSettings());
+            }
+            FileManager.writeFile(configFile, gson.toJson(config));
         }
-        FileManager.writeFile(configFile, gson.toJson(config));
     }
 
-    public static void loadConfigAuto() {
+    public void loadConfig() {
         updateRead();
         if (config == null) {
             writeConfig();
-            updateRead();
+            config = new HashMap<>();
             return;
         }
-        loadConfig(config);
-    }
-
-    public static void loadConfig(Map<String, Map<String, Setting>> config) {
-        if (config == null || config.isEmpty()) return;
+        if (config.isEmpty()) return;
         for (Module module : MODULE_MANAGER.getModules()) {
             if (config.containsKey(module.getName())) {
                 for (Map.Entry<String, Setting> setting : config.get(module.getName()).entrySet()) {
@@ -67,26 +66,24 @@ public class Config {
         }
     }
 
-    public static void writeKeyBinds() {
-        Map<String, Integer> keybinds = new HashMap<>();
-        for (Module module : MODULE_MANAGER.getModules()) {
-            keybinds.put(module.getName(), module.getKey());
+    public void writeKeyBinds() {
+        if (canWrite) {
+            keybinds.clear();
+            for (Module module : MODULE_MANAGER.getModules()) {
+                keybinds.put(module.getName(), module.getKey());
+            }
+            FileManager.writeFile(keybindsFile, gson.toJson(keybinds));
         }
-        FileManager.writeFile(keybindsFile, gson.toJson(keybinds));
     }
 
-    public static void loadKeyBindsAuto() {
+    public void loadKeyBinds() {
         updateRead();
         if (keybinds == null) {
             writeKeyBinds();
             keybinds = new HashMap<>();
             return;
         }
-        loadKeyBinds(keybinds);
-    }
-
-    public static void loadKeyBinds(Map<String, Integer> keybinds) {
-        if (keybinds == null || keybinds.isEmpty()) return;
+        if (keybinds.isEmpty()) return;
         for (Module module : MODULE_MANAGER.getModules()) {
             if (module != null && keybinds != null) {
                 if (keybinds.containsKey(module.getName())) {
@@ -96,26 +93,24 @@ public class Config {
         }
     }
 
-    public static void writeModules() {
-        Map<String, Boolean> modules = new HashMap<>();
-        for (Module module : MODULE_MANAGER.getModules()) {
-            modules.put(module.getName(), module.isEnabled());
+    public void writeModules() {
+        if (canWrite) {
+            modules.clear();
+            for (Module module : MODULE_MANAGER.getModules()) {
+                modules.put(module.getName(), module.isEnabled());
+            }
+            FileManager.writeFile(modulesFile, gson.toJson(modules));
         }
-        FileManager.writeFile(modulesFile, gson.toJson(modules));
     }
 
-    public static void loadModulesAuto() {
+    public void loadModules() {
         updateRead();
         if (modules == null) {
             writeModules();
-            updateRead();
+            modules = new HashMap<>();
             return;
         }
-        loadModules(modules);
-    }
-
-    public static void loadModules(Map<String, Boolean> modules) {
-        if (modules == null || modules.isEmpty()) return;
+        if (modules.isEmpty()) return;
         for (Module module : MODULE_MANAGER.getModules()) {
             if (module != null && modules != null) {
                 if (!disabledOnStart.contains(module.getName())) {
@@ -127,5 +122,9 @@ public class Config {
                 }
             }
         }
+    }
+
+    public void enableWrite() {
+        this.canWrite = true;
     }
 }

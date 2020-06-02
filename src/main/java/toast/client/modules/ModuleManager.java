@@ -6,13 +6,14 @@ import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
 import org.reflections.Reflections;
 import toast.client.modules.misc.Panic;
-import toast.client.utils.Config;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static toast.client.ToastClient.CONFIG_MANAGER;
 
 @Environment(EnvType.CLIENT)
 public class ModuleManager {
@@ -70,11 +71,9 @@ public class ModuleManager {
             Module module = moduleClass.getConstructor().newInstance();
             modules.add(module);
         }
-        Config.loadConfigAuto();
-        Config.loadKeyBindsAuto();
-        Config.loadModulesAuto();
-        Config.writeConfig();
-        Config.writeModules();
-        Config.writeKeyBinds();
+        CONFIG_MANAGER.enableWrite();
+        CONFIG_MANAGER.loadConfig();
+        CONFIG_MANAGER.loadKeyBinds();
+        CONFIG_MANAGER.loadModules();
     }
 }

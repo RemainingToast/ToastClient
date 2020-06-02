@@ -1,7 +1,8 @@
 package toast.client.modules.config;
 
 import com.google.gson.annotations.SerializedName;
-import toast.client.utils.Config;
+
+import static toast.client.ToastClient.CONFIG_MANAGER;
 
 public class Setting {
     @SerializedName("Current Mode")
@@ -31,7 +32,7 @@ public class Setting {
         this.mode = newMode;
         this.value = null;
         this.enabled = null;
-        Config.writeConfig();
+        CONFIG_MANAGER.writeConfig();
     }
 
     public double getValue() {
@@ -42,7 +43,7 @@ public class Setting {
         this.mode = null;
         this.value = newValue;
         this.enabled = null;
-        Config.writeConfig();
+        CONFIG_MANAGER.writeConfig();
     }
 
     public boolean isEnabled() {
@@ -53,7 +54,7 @@ public class Setting {
         this.mode = null;
         this.value = null;
         this.enabled = enabled;
-        Config.writeConfig();
+        CONFIG_MANAGER.writeConfig();
     }
 
     public int getType() {

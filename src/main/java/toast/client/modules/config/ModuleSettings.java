@@ -1,11 +1,11 @@
 package toast.client.modules.config;
 
-import toast.client.utils.Config;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static toast.client.ToastClient.CONFIG_MANAGER;
 
 public class ModuleSettings {
     private Map<String, Setting> settings = new HashMap<>();
@@ -65,7 +65,7 @@ public class ModuleSettings {
 
     public void setSettings(Map<String, Setting> settings) {
         this.settings = settings;
-        Config.writeConfig();
+        CONFIG_MANAGER.writeConfig();
     }
 
     public Map<String, SettingDef> getSettingsDef() {
