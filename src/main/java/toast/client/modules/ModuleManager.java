@@ -14,6 +14,7 @@ import toast.client.modules.misc.PortalChat;
 import toast.client.modules.misc.Spammer;
 import toast.client.modules.movement.FastStop;
 import toast.client.modules.movement.Fly;
+import toast.client.modules.movement.NoFall;
 import toast.client.modules.movement.Velocity;
 import toast.client.modules.player.AutoTool;
 import toast.client.modules.player.Surround;
@@ -79,24 +80,25 @@ public class ModuleManager {
 
     private static void loadModules() {
         modules.clear();
-        modules.add(new AutoTotem());
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
+        modules.add(new AutoTotem());
         //modules.add(new BlockESP());
+        modules.add(new BowSpam());
         modules.add(new ClickGui());
         modules.add(new FancyChat());
+        modules.add(new FastStop());
         modules.add(new Fly());
         modules.add(new Fullbright());
         //modules.add(new HoleESP());
         modules.add(new HUD());
         modules.add(new KillAura());
-        modules.add(new BowSpam());
+        modules.add(new NoFall());
         modules.add(new Panic());
         modules.add(new PortalChat());
         modules.add(new Spammer());
         modules.add(new Surround());
         modules.add(new Velocity());
-        modules.add(new FastStop());
         Config.loadConfigAuto();
         Config.loadKeyBindsAuto();
         Config.loadModulesAuto();
