@@ -7,7 +7,6 @@ import net.minecraft.item.Items;
 import toast.client.event.EventImpl;
 import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.Module;
-import toast.client.utils.Logger;
 
 public class AutoTotem extends Module {
     protected int totems;
@@ -19,7 +18,7 @@ public class AutoTotem extends Module {
 
     @EventImpl
     public void onUpdate(EventUpdate event) {
-        if (mc.player == null || mc.currentScreen instanceof ContainerScreen) return;
+        if (mc.player == null || mc.currentScreen instanceof ContainerScreen || mc.interactionManager == null) return;
         totems = player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
         if (player.getOffHandStack().getItem() == Items.TOTEM_OF_UNDYING) totems++;
         else {
