@@ -82,6 +82,7 @@ public class ModuleManager {
         modules.add(new AutoTotem());
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
+        //modules.add(new BlockESP());
         modules.add(new ClickGui());
         modules.add(new FancyChat());
         modules.add(new Fly());
