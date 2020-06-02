@@ -24,11 +24,15 @@ public class ToastClient implements ModInitializer {
     public static String cmdPrefix = ".";
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
     public static ClickGuiScreen clickGui;
+    public static Boolean clickGuiHasOpened;
 
-    public static Boolean devMode = false;
+    public static Boolean devMode = true;
 
     @Override
     public void onInitialize() {
+        if(clickGui == null){
+            clickGuiHasOpened = false;
+        }
         ASCII.printFancyConsoleMSG();
         System.out.println(cleanPrefix + " Initialized");
         System.out.println("Special thanks to all contributors of this project " + devs);

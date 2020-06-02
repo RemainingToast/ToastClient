@@ -1,17 +1,19 @@
 package toast.client.commands.cmds;
 
 import net.minecraft.client.MinecraftClient;
+import toast.client.ToastClient;
 import toast.client.commands.Command;
 import toast.client.utils.Logger;
 
 public class CommandTest extends Command {
 
     public CommandTest() {
-        super("test", "Secret test command", true, "test");
+        super("test", "Secret test command", false, "test");
     }
 
     public void run(String[] args) {
-        Logger.message(";OOO you found secret test command", Logger.INFO);
-        MinecraftClient.getInstance().inGameHud.setOverlayMessage("hello me secret command", true);
+//        Logger.message("ClickGUIhasOpened = "+ ToastClient.clickGuiHasOpened, Logger.INFO);
+        Logger.message(";O you found secret test command", Logger.INFO);
+        MinecraftClient.getInstance().inGameHud.setOverlayMessage("Toast Client on Top", true);
     }
 }

@@ -1,6 +1,7 @@
 package toast.client.utils;
 
 import com.mojang.authlib.Agent;
+import com.mojang.authlib.AuthenticationService;
 import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
@@ -12,7 +13,9 @@ import java.net.Proxy;
 import java.util.UUID;
 
 public class LoginUtil {
+
     private static MinecraftClient mc = MinecraftClient.getInstance();
+
 
     public static boolean setSession(Session newSession) {
         if (mc == null) return false;

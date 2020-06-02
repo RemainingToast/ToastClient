@@ -6,6 +6,7 @@ import toast.client.utils.Config;
 import toast.client.utils.Logger;
 
 import static toast.client.ToastClient.clickGui;
+import static toast.client.ToastClient.clickGuiHasOpened;
 
 public class CommandReload extends Command {
     public CommandReload() {
@@ -17,7 +18,7 @@ public class CommandReload extends Command {
             Config.loadConfigAuto();
             Config.loadModulesAuto();
             Config.loadKeyBindsAuto();
-            clickGui.reloadConfig();
+            if(clickGuiHasOpened){clickGui.reloadConfig();}
             Logger.message("Reloaded all configuration files.", Logger.INFO);
         } else {
             switch (args[0]) {
@@ -34,7 +35,8 @@ public class CommandReload extends Command {
                     Logger.message("Reloaded keybinds.", Logger.INFO);
                     break;
                 case "clickgui":
-                    clickGui.reloadConfig();
+                    if(clickGuiHasOpened){clickGui.reloadConfig();}
+                    else{Logger.message("ClickGUI hasn't been opened yet", Logger.ERR);}
                     break;
                 default:
                     Logger.message("Invalid argument, valid arguments are:", Logger.WARN);

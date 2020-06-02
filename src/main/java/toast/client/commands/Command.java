@@ -35,5 +35,5 @@ public abstract class Command {
         return dev;
     }
 
-    public abstract void run(String[] args);
+    public abstract void run(String[] args) throws InterruptedException;
 }

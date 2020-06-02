@@ -55,13 +55,15 @@ public class CommandHandler {
     }
 
     public static void initCommands() {
-        // alphabetical order please
+        // alphabetical order please | shit my bad didn't even see this....
         commands.add(new CommandHelp());
-        commands.add(new CommandFixGui());
+        commands.add(new CommandGuiReset());
         commands.add(new CommandListModules());
         commands.add(new CommandReload());
         commands.add(new CommandSet());
         commands.add(new CommandTest());
         commands.add(new CommandToggle());
+        commands.add(new CommandSave());
+        commands.add(new CommandPrefix());
     }
 }

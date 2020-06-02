@@ -26,7 +26,7 @@ public class AltManagerScreen extends Screen {
         }));
 
         this.addButton(new ButtonWidget(this.width / 2 + 4, this.height - 52, 70, 20, ("Direct"), (buttonWidget) -> {
-
+//            minecraft.openScreen(new DirectLoginScreen());
         }));
 
         this.addButton(new ButtonWidget(this.width / 2 - 154, this.height - 28, 75, 20, ("Random"), (buttonWidget) -> {

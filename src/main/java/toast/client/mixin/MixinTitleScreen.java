@@ -14,8 +14,6 @@ import toast.client.gui.screens.ToastTitleScreen;
 @Mixin(TitleScreen.class)
 public class MixinTitleScreen extends Screen {
 
-    int y = this.height / 4 + 48;
-
     protected MixinTitleScreen(Text text_1) {
         super(text_1);
     }

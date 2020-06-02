@@ -5,6 +5,7 @@ import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.Module;
 
 import static toast.client.ToastClient.clickGui;
+import static toast.client.ToastClient.clickGuiHasOpened;
 
 public class ClickGui extends Module {
     public ClickGui() {
@@ -19,6 +20,7 @@ public class ClickGui extends Module {
             }
             if (mc.currentScreen == null) {
                 mc.openScreen(clickGui);
+                clickGuiHasOpened = true;
             }
         }
     }
