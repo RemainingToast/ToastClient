@@ -26,7 +26,7 @@ public class ToastClient implements ModInitializer {
     public static ClickGuiScreen clickGui;
     public static Boolean clickGuiHasOpened;
 
-    public static Boolean devMode = true;
+    public static Boolean devMode = false;
 
     @Override
     public void onInitialize() {
