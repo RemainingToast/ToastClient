@@ -79,8 +79,8 @@ public class ClickGuiScreen extends Screen {
             if (categoryRenderer.keybindPressed) {
                 keybindPressedCategory = categoryRenderer;
             }
-            if (categoryRenderer.hasDesc) {
-                drawTextBox(categoryRenderer.descPosX, categoryRenderer.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.desc);
+            if (categoryRenderer.description != null) {
+                drawTextBox(categoryRenderer.description.descPosX, categoryRenderer.description.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.description.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.description.desc);
                 break;
             }
         }
