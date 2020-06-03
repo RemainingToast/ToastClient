@@ -1,6 +1,5 @@
 package toast.client.commands.cmds;
 
-import net.minecraft.client.MinecraftClient;
 import toast.client.commands.Command;
 import toast.client.utils.Logger;
 import toast.client.utils.RandomMOTD;
