@@ -2,20 +2,26 @@ package toast.client.mixin;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import toast.client.gui.screens.ToastTitleScreen;
+import toast.client.utils.RandomMOTD;
+
+import java.util.Random;
 
 
 @Mixin(TitleScreen.class)
 public class MixinTitleScreen extends Screen {
 
-    protected MixinTitleScreen(Text text_1) {
-        super(text_1);
+    @Shadow
+    private String splashText;
+
+    protected MixinTitleScreen() {
+        super(new LiteralText("Yeet"));
     }
 
     @Inject(at = @At("HEAD"), method = "init()V")
@@ -24,5 +30,8 @@ public class MixinTitleScreen extends Screen {
             assert minecraft != null;
             minecraft.openScreen(new ToastTitleScreen());
         }));*/
+
+
+        this.splashText = RandomMOTD.randomMOTD();
     }
 }

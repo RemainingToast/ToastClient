@@ -7,10 +7,7 @@ import net.minecraft.util.Formatting;
 import toast.client.commands.CommandHandler;
 import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.ModuleManager;
-import toast.client.utils.ASCII;
-import toast.client.utils.Config;
-import toast.client.utils.FileManager;
-import toast.client.utils.TPSCalculator;
+import toast.client.utils.*;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -35,6 +32,7 @@ public class ToastClient implements ModInitializer {
         if (clickGui == null) {
             clickGuiHasOpened = false;
         }
+        RandomMOTD.addMOTDS();
         ASCII.printFancyConsoleMSG();
         System.out.println(cleanPrefix + " Initialized");
         System.out.println("Special thanks to all contributors of this project " + devs);

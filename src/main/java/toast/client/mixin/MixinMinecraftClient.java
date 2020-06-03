@@ -26,7 +26,7 @@ public class MixinMinecraftClient {
     private void getWindowTitle(CallbackInfoReturnable cir) {
         if(Panic.IsPanicking()) {
         } else {
-            cir.setReturnValue("Minecraft "+SharedConstants.getGameVersion().getName()+" | "+ToastClient.cleanPrefix+" "+ToastClient.version);
+            cir.setReturnValue(ToastClient.cleanPrefix+" "+ToastClient.version);
         }
     }
 

@@ -10,6 +10,7 @@ public class Logger {
     public static final int INFO = 1;
     public static final int ERR = 2;
     public static final int WARN = 3;
+    public static final int SUCC = 4;
 
     public static void message(String text, int type) {
         String prefix2 = "";
@@ -21,6 +22,8 @@ public class Logger {
             prefix2 = Formatting.DARK_RED + "" + Formatting.BOLD + "ERROR:" + Formatting.RED;
         } else if (type == Logger.WARN) {
             prefix2 = Formatting.GOLD + "" + Formatting.BOLD + "WARN:" + Formatting.YELLOW;
+        } else if (type == Logger.SUCC) {
+            prefix2 = Formatting.DARK_GREEN + "" + Formatting.BOLD + "SUCC:" + Formatting.GREEN;
         } else return;
         try {
             MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(ToastClient.chatPrefix + Formatting.RESET + " " + prefix2 + (prefix2.equals("") ? "" : " ") + text));
