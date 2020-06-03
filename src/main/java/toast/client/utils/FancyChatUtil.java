@@ -27,22 +27,22 @@ public class FancyChatUtil {
     }
 
     public static String retardChat(String text) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         boolean upperCase = true;
         for (String letter : text.split("")) {
             if(letter.equals(" ")) {
-                result+=" ";
+                result.append(" ");
             } else {
                 if(upperCase) {
-                    result+=letter.toUpperCase();
+                    result.append(letter.toUpperCase());
                     upperCase = false;
                 } else {
-                    result+=letter.toLowerCase();
+                    result.append(letter.toLowerCase());
                     upperCase = true;
                 }
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String classicFancy(String text) {
@@ -73,21 +73,21 @@ public class FancyChatUtil {
     }
 
     public static String customSuffix(String text, String separator,String suffix, String separator2, Boolean surround) {
-        String output = "null"; //Should never happen
+        String output;
         if(suffix.isEmpty()){
             Logger.message("No custom suffix, using default!", Logger.ERR);
             output = text + CustomChat.suffix;
-        }
-        if(surround && !suffix.isEmpty()){
+        } else if(surround){
             output = text + separator + suffix + separator2;
-        } else if(!suffix.isEmpty()) {
+        } else {
             output = text + separator + suffix;
         }
         return output;
     }
 
     public static String grammar(String text) {
-        String newText = StringUtil.capitalize(text);
+        if (text == null || text.isEmpty()) return "";
+        String newText = text.toUpperCase();
         if(newText.endsWith("?") || newText.endsWith(".") || newText.endsWith("!")) {
             return newText;
         } else {
@@ -109,8 +109,8 @@ public class FancyChatUtil {
         return valueFound;
     }
 
-    private static Map<String, String> getClassicLetters() {// TODO: find a easier way to do this
-        Map<String, String> letters = Stream.of(new String[][] {
+    private static Map<String, String> getClassicLetters() { // TODO: find a easier way to do this
+        return Stream.of(new String[][] {
                 { "0", "０" },
                 { "1", "１" },
                 { "2", "２" },
@@ -206,7 +206,6 @@ public class FancyChatUtil {
                 { "}", "｝" },
                 { "~", "～" },
         }).collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1]));
-        return letters;
     }
 
     public static String antiFancyChat(String s) {
