@@ -27,7 +27,7 @@ import static toast.client.ToastClient.CONFIG_MANAGER;
 
 @Environment(EnvType.CLIENT)
 public class ModuleManager {
-    private final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
+    public static final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
 
     public void onKey(int key, int action) {
         for (Module module : modules) {

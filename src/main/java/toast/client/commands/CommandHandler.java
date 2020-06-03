@@ -58,6 +58,7 @@ public class CommandHandler {
     public void initCommands() {
         commands.clear();
         // alphabetical order please
+        commands.add(new Bind());
         commands.add(new ClearChat());
         commands.add(new Help());
         commands.add(new GuiReset());
