@@ -26,7 +26,8 @@ public class ClickGuiScreen extends Screen {
     private boolean mouseIsClickedL = false;
     private boolean mouseIsClickedR = false;
     private boolean clickedOnce = false;
-   public static boolean descriptions = true;
+    public static boolean descriptions = true;
+
 
     public ClickGuiScreen() {
         super(new LiteralText("ClickGuiScreen"));
@@ -125,9 +126,9 @@ public class ClickGuiScreen extends Screen {
                 CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
                 categoryRenderer.updatePosition(deltaX, deltaY);
             }
-        }
-        return false;
+        } return false;
     }
+
 
     public void updateMousePos(double mouseX, double mouseY) {
         for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
@@ -156,6 +157,7 @@ public class ClickGuiScreen extends Screen {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode != GLFW.GLFW_KEY_UNKNOWN) {
             if (keyCode == GLFW.GLFW_KEY_ESCAPE) clickGui.onClose();
+            if (keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT) clickGui.onClose();
             else if (keybindPressedCategory != null) keybindPressedCategory.setKeyPressed(keyCode);
             if (keyCode == MODULE_MANAGER.getModule(ClickGui.class).getKey()) clickGui.onClose();
         }

@@ -4,14 +4,19 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
+import org.lwjgl.glfw.GLFW;
 import toast.client.commands.CommandHandler;
 import toast.client.gui.clickgui.ClickGuiScreen;
+import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.*;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static toast.client.modules.ModuleManager.modules;
 
 @Environment(EnvType.CLIENT)
 public class ToastClient implements ModInitializer {
@@ -27,6 +32,7 @@ public class ToastClient implements ModInitializer {
     public static ClickGuiScreen clickGui;
     public static Boolean clickGuiHasOpened;
 
+
     @Override
     public void onInitialize() {
         if (clickGui == null) {
@@ -34,11 +40,13 @@ public class ToastClient implements ModInitializer {
         }
         RandomMOTD.addMOTDS();
         ASCII.printFancyConsoleMSG();
-        System.out.println(cleanPrefix + " Initialized");
-        System.out.println("Special thanks to all contributors of this project " + devs);
+        System.out.println("Special thanks to all contributors of this project: ");
+        System.out.println(("" + devs.toString().replaceAll("[\\[\\](){}]","")));
+        System.out.println("_________________________________________________________");
         FileManager.initFileManager();
         MODULE_MANAGER.loadModules();
         COMMAND_HANDLER.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
     }
 }
+

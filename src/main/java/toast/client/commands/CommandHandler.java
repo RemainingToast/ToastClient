@@ -64,6 +64,7 @@ public class CommandHandler {
         commands.add(new GuiReset());
         commands.add(new Help());
         commands.add(new ListModules());
+        commands.add(new Panic());
         commands.add(new Prefix());
         commands.add(new Reload());
         commands.add(new MOTD());

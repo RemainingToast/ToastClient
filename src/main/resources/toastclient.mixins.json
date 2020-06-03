@@ -4,16 +4,16 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinClientConnection",
-    "MixinClientPlayerInteractionManager",
     "MixinClientPlayerEntity",
+    "MixinClientPlayerInteractionManager",
     "MixinGameRenderer",
     "MixinInGameHud2",
     "MixinKeyboard",
     "MixinMinecraftClient",
     "MixinPlayerEntity",
-    "MixinTitleScreen",
     "MixinServerScreen",
-    "MixinSharedConstants"
+    "MixinSharedConstants",
+    "MixinTitleScreen"
   ],
   "client": [
   ],

@@ -23,6 +23,7 @@ public class Bind extends Command {
             Module module = MODULE_MANAGER.getModule(args[0]);
             if(args[0].equals("all")){
                 if(args[1].equals("none")) {
+
                     for (int i = 0; true; i++) {
                         modules.get(i).key = GLFW.GLFW_KEY_UNKNOWN;
                         Logger.message(modules.get(i).name + " keybind set to NONE", Logger.SUCC);
