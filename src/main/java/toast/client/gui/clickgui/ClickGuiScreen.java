@@ -26,6 +26,7 @@ public class ClickGuiScreen extends Screen {
     private boolean mouseIsClickedL = false;
     private boolean mouseIsClickedR = false;
     private boolean clickedOnce = false;
+   public static boolean descriptions = true;
 
     public ClickGuiScreen() {
         super(new LiteralText("ClickGuiScreen"));
@@ -74,14 +75,16 @@ public class ClickGuiScreen extends Screen {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
         }
-        for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
-            CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
-            if (categoryRenderer.keybindPressed) {
-                keybindPressedCategory = categoryRenderer;
-            }
-            if (categoryRenderer.description != null) {
-                drawTextBox(categoryRenderer.description.descPosX, categoryRenderer.description.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.description.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.description.desc);
-                break;
+        if(descriptions) {
+            for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
+                CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
+                if (categoryRenderer.keybindPressed) {
+                    keybindPressedCategory = categoryRenderer;
+                }
+                if (categoryRenderer.description != null) {
+                    drawTextBox(categoryRenderer.description.descPosX, categoryRenderer.description.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.description.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.description.desc);
+                    break;
+                }
             }
         }
     }
