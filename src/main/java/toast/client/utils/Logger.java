@@ -23,7 +23,7 @@ public class Logger {
         } else if (type == Logger.WARN) {
             prefix2 = Formatting.GOLD + "" + Formatting.BOLD + "WARN:" + Formatting.YELLOW;
         } else if (type == Logger.SUCC) {
-            prefix2 = Formatting.DARK_GREEN + "" + Formatting.BOLD + "SUCC:" + Formatting.GREEN;
+            prefix2 = Formatting.DARK_GREEN + "" + Formatting.BOLD + "SUCCESS:" + Formatting.GREEN;
         } else return;
         try {
             MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(ToastClient.chatPrefix + Formatting.RESET + " " + prefix2 + (prefix2.equals("") ? "" : " ") + text));

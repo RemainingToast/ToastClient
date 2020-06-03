@@ -8,6 +8,7 @@ public class RandomMOTD {
     static int size;
 
     public static void addMOTDS(){
+
         MOTDS.add("RemainingToast on Top");
         MOTDS.add("Wnuke nuked the client");
         MOTDS.add("Meteor who?");
@@ -16,6 +17,8 @@ public class RandomMOTD {
         MOTDS.add("Fleebs did math again");
         MOTDS.add("Qther is probably out of bounds");
         MOTDS.add("Dewy doing dewy stuff");
+        MOTDS.add("RemainingToast actually does code");
+        MOTDS.add("Axo is the anime cum god");
 
         size = MOTDS.size();
     }
