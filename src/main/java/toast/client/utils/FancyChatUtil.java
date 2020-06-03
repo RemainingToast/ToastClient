@@ -1,11 +1,15 @@
 package toast.client.utils;
 
+import toast.client.modules.misc.CustomChat;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FancyChatUtil {
+
+
     public static String rainbowText(String text) {
         String[] colors = {"&c", "&6", "&e", "&a", "&b", "&9", "&d"};
         final String[] result = {""};
@@ -22,7 +26,7 @@ public class FancyChatUtil {
         return result[0];
     }
 
-    public static String FaNcY(String text) {
+    public static String retardChat(String text) {
         String result = "";
         boolean upperCase = true;
         for (String letter : text.split("")) {
@@ -68,11 +72,21 @@ public class FancyChatUtil {
         return finalString.toString();
     }
 
-    public static String Watermark(String text) {
-        return text + " ⏐ ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ";
+    public static String customSuffix(String text, String separator,String suffix, String separator2, Boolean surround) {
+        String output = "null"; //Should never happen
+        if(suffix.isEmpty()){
+            Logger.message("No custom suffix, using default!", Logger.ERR);
+            output = text + CustomChat.suffix;
+        }
+        if(surround && !suffix.isEmpty()){
+            output = text + separator + suffix + separator2;
+        } else if(!suffix.isEmpty()) {
+            output = text + separator + suffix;
+        }
+        return output;
     }
 
-    public static String Grammar(String text) {
+    public static String grammar(String text) {
         String newText = StringUtil.capitalize(text);
         if(newText.endsWith("?") || newText.endsWith(".") || newText.endsWith("!")) {
             return newText;
@@ -195,7 +209,7 @@ public class FancyChatUtil {
         return letters;
     }
 
-    static String unfancy_classic(String s) {
+    public static String antiFancyChat(String s) {
         /* I heard you like lambdas */
         return s.chars()
             .mapToObj(x -> {

@@ -63,6 +63,7 @@ public class CommandHandler {
         commands.add(new Prefix());
         commands.add(new Reload());
         commands.add(new Save());
+        commands.add(new Suffix());
         commands.add(new Set());
         commands.add(new Test());
         commands.add(new Toggle());
