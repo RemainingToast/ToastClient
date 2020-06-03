@@ -9,10 +9,7 @@ import toast.client.modules.combat.AutoTotem;
 import toast.client.modules.combat.BowSpam;
 import toast.client.modules.combat.KillAura;
 import toast.client.modules.misc.*;
-import toast.client.modules.movement.FastStop;
-import toast.client.modules.movement.Fly;
-import toast.client.modules.movement.NoFall;
-import toast.client.modules.movement.Velocity;
+import toast.client.modules.movement.*;
 import toast.client.modules.player.AutoTool;
 import toast.client.modules.player.Surround;
 import toast.client.modules.render.ClickGui;
@@ -74,6 +71,7 @@ public class ModuleManager {
     public void loadModules() {
         modules.clear();
         // alphabetical order please
+        modules.add(new AutoWalk());
         modules.add(new AutoRespawn());
         modules.add(new AutoTool());
         modules.add(new AutoTotem());

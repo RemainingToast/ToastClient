@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import toast.client.commands.Command;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
+import toast.client.utils.KeyUtil;
 import toast.client.utils.Logger;
 
 import static toast.client.ToastClient.CONFIG_MANAGER;
@@ -19,6 +20,7 @@ public class Bind extends Command {
     @Override
     public void run(String[] args) throws InterruptedException {
         if(args.length > 0){
+            Module module = MODULE_MANAGER.getModule(args[0]);
             if(args[0].equals("all")){
                 if(args[1].equals("none")) {
                     for (int i = 0; true; i++) {
@@ -31,8 +33,21 @@ public class Bind extends Command {
                         }
                     }
                 }
-            }
+            } else if(module != null){
+                if(KeyUtil.isNumeric(args[1])){
+                        try
+                        {
+                            module.setKey(Integer.parseInt(args[1]));
+                            System.out.println(Integer.parseInt(args[1]));
+                            CONFIG_MANAGER.writeKeyBinds();
 
+                        }
+                        catch(NumberFormatException nfe)
+                        {
+                            System.out.println("Failed");
+                        }
+                }
+            }
         }
     }
 }

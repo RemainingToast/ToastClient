@@ -60,8 +60,9 @@ public class CommandHandler {
         // alphabetical order please
         commands.add(new Bind());
         commands.add(new ClearChat());
-        commands.add(new Help());
+        commands.add(new FOV());
         commands.add(new GuiReset());
+        commands.add(new Help());
         commands.add(new ListModules());
         commands.add(new Prefix());
         commands.add(new Reload());
