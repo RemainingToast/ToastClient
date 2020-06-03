@@ -1,6 +1,5 @@
 package toast.client.modules.combat;
 
-import net.minecraft.client.gui.screen.ingame.ContainerScreen;
 import net.minecraft.container.SlotActionType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -21,7 +20,7 @@ public class AutoTotem extends Module {
 
     @EventImpl
     public void onUpdate(EventUpdate event) {
-        if (mc.player == null || mc.currentScreen instanceof ContainerScreen || mc.interactionManager == null) return;
+        if (mc.player == null || mc.interactionManager == null) return;
         totems = mc.player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
         if(totems != 0){
             totemCount = Integer.toString(totems);
