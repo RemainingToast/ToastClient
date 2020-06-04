@@ -86,14 +86,14 @@ public class FancyChatUtil {
         return output;
     }
 
-    public static String grammar(String text) {
-        String newText = StringUtil.capitalize(text);
-        if (newText.endsWith("?") || newText.endsWith(".") || newText.endsWith("!")) {
-            return newText;
-        } else {
-            return newText+".";
-        }
-    }
+//    public static String grammar(String text) {
+//        String newText = StringUtil.capitalize(text);
+//        if (newText.endsWith("?") || newText.endsWith(".") || newText.endsWith("!")) {
+//            return newText;
+//        } else {
+//            return newText+".";
+//        }
+//    }
 
     public static String getValueFromKey(Map<String, String> map, String key, boolean caseSensitive) {
         String valueFound = null;

@@ -114,34 +114,6 @@ public class CustomChat extends Module {
                         mc.player.sendChatMessage(msg2);
                     }
                 }
-                if(this.settings.getMode("Fancy chat type").equals("Grammar")){
-                    String msg = FancyChatUtil.grammar(packetMessage);
-                    isMadeByCustomChat = !isMadeByCustomChat;
-                    if (isMadeByCustomChat) return;
-                    e.setCancelled(true);
-//                    mc.player.sendChatMessage("msg1" +msg);
-                    if(this.settings.getMode("Separator").equals("None")){
-                        String msg2 = FancyChatUtil.customSuffix(msg, " ", suffix, "", false);
-                        isMadeByCustomChat = !isMadeByCustomChat;
-                        if (isMadeByCustomChat) return;
-                        e.setCancelled(true);
-                        mc.player.sendChatMessage(msg2);
-                    }
-                    if(this.settings.getMode("Separator").equals("Default")){
-                        String msg2 = FancyChatUtil.customSuffix(msg, " | " ,suffix,"", false);
-                        isMadeByCustomChat = !isMadeByCustomChat;
-                        if (isMadeByCustomChat) return;
-                        e.setCancelled(true);
-                        mc.player.sendChatMessage(msg2);
-                    }
-                    if(this.settings.getMode("Separator").equals("Brackets")){
-                        String msg2 = FancyChatUtil.customSuffix(msg, " < ", suffix," > ", true);
-                        isMadeByCustomChat = !isMadeByCustomChat;
-                        if (isMadeByCustomChat) return;
-                        e.setCancelled(true);
-                        mc.player.sendChatMessage(msg2);
-                    }
-                }
                 if(this.settings.getMode("Fancy chat type").equals("Spaced")){
                     String msg = FancyChatUtil.spaces(packetMessage);
                     isMadeByCustomChat = !isMadeByCustomChat;
