@@ -41,14 +41,13 @@ public class ToastClient implements ModInitializer {
         }
         RandomMOTD.addMOTDS();
         ASCII.printFancyConsoleMSG();
-        System.out.println("Special thanks to all contributors of this project: ");
-        System.out.println(("" + devs.toString().replaceAll("[\\[\\](){}]","")));
-        System.out.println("_________________________________________________________");
         FileManager.initFileManager();
         MODULE_MANAGER.loadModules();
         COMMAND_HANDLER.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
-        DiscordRpc.main(appID);
+        System.out.println("Special thanks to all contributors of this project: ");
+        System.out.println(("" + devs.toString().replaceAll("[\\[\\](){}]","")));
+        System.out.println("_________________________________________________________");
     }
 }
 

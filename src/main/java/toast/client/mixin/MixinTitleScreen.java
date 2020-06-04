@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import toast.client.DiscordRpc;
+import toast.client.ToastClient;
 import toast.client.utils.RandomMOTD;
 
 import java.util.Random;
@@ -30,8 +32,6 @@ public class MixinTitleScreen extends Screen {
             assert minecraft != null;
             minecraft.openScreen(new ToastTitleScreen());
         }));*/
-
-
         this.splashText = RandomMOTD.randomMOTD();
     }
 }

@@ -1,10 +1,7 @@
 package toast.client;
 
-import club.minnced.discord.rpc.DiscordEventHandlers;
-import club.minnced.discord.rpc.DiscordRPC;
-import club.minnced.discord.rpc.DiscordRichPresence;
-
 public class DiscordRpc {
+    /*TODO
     public static void main(String appid) {
         DiscordRPC lib = DiscordRPC.INSTANCE;
         String steamId = "";
@@ -24,5 +21,5 @@ public class DiscordRpc {
                 } catch (InterruptedException ignored) {}
             }
         }, "RPC-Callback-Handler").start();
-    }
+    }*/
 }
