@@ -27,22 +27,22 @@ public class FancyChatUtil {
     }
 
     public static String retardChat(String text) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         boolean upperCase = true;
         for (String letter : text.split("")) {
             if(letter.equals(" ")) {
-                result+=" ";
+                result.append(" ");
             } else {
                 if(upperCase) {
-                    result+=letter.toUpperCase();
+                    result.append(letter.toUpperCase());
                     upperCase = false;
                 } else {
-                    result+=letter.toLowerCase();
+                    result.append(letter.toLowerCase());
                     upperCase = true;
                 }
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String classicFancy(String text) {
@@ -72,15 +72,15 @@ public class FancyChatUtil {
         return finalString.toString();
     }
 
-    public static String customSuffix(String text, String separator,String suffix, String separator2, Boolean surround) {
+    public static String customSuffix(String text, String separator, String suffix, String separator2, Boolean surround) {
         String output = "null"; //Should never happen
-        if(suffix.isEmpty()){
+        if (suffix.isEmpty()) {
             Logger.message("No custom suffix, using default!", Logger.ERR);
             output = text + CustomChat.suffix;
         }
-        if(surround && !suffix.isEmpty()){
+        if (surround && !suffix.isEmpty()) {
             output = text + separator + suffix + separator2;
-        } else if(!suffix.isEmpty()) {
+        } else if (!suffix.isEmpty()) {
             output = text + separator + suffix;
         }
         return output;
@@ -88,7 +88,7 @@ public class FancyChatUtil {
 
     public static String grammar(String text) {
         String newText = StringUtil.capitalize(text);
-        if(newText.endsWith("?") || newText.endsWith(".") || newText.endsWith("!")) {
+        if (newText.endsWith("?") || newText.endsWith(".") || newText.endsWith("!")) {
             return newText;
         } else {
             return newText+".";
@@ -110,103 +110,102 @@ public class FancyChatUtil {
     }
 
     private static Map<String, String> getClassicLetters() {// TODO: find a easier way to do this
-        Map<String, String> letters = Stream.of(new String[][] {
-                { "0", "０" },
-                { "1", "１" },
-                { "2", "２" },
-                { "3", "３" },
-                { "4", "４" },
-                { "5", "５" },
-                { "6", "６" },
-                { "7", "７" },
-                { "8", "８" },
-                { "9", "９" },
-                { "A", "Ａ" },
-                { "B", "Ｂ" },
-                { "C", "Ｃ" },
-                { "D", "Ｄ" },
-                { "E", "Ｅ" },
-                { "F", "Ｆ" },
-                { "G", "Ｇ" },
-                { "H", "Ｈ" },
-                { "I", "Ｉ" },
-                { "J", "Ｊ" },
-                { "K", "Ｋ" },
-                { "L", "Ｌ" },
-                { "M", "Ｍ" },
-                { "N", "Ｎ" },
-                { "O", "Ｏ" },
-                { "P", "Ｐ" },
-                { "Q", "Ｑ" },
-                { "R", "Ｒ" },
-                { "S", "Ｓ" },
-                { "T", "Ｔ" },
-                { "U", "Ｕ" },
-                { "V", "Ｖ" },
-                { "W", "Ｗ" },
-                { "X", "Ｘ" },
-                { "Y", "Ｙ" },
-                { "Z", "Ｚ" },
-                { "a", "ａ" },
-                { "b", "ｂ" },
-                { "c", "ｃ" },
-                { "d", "ｄ" },
-                { "e", "ｅ" },
-                { "f", "ｆ" },
-                { "g", "ｇ" },
-                { "h", "ｈ" },
-                { "i", "ｉ" },
-                { "j", "ｊ" },
-                { "k", "ｋ" },
-                { "l", "ｌ" },
-                { "m", "ｍ" },
-                { "n", "ｎ" },
-                { "o", "ｏ" },
-                { "p", "ｐ" },
-                { "q", "ｑ" },
-                { "r", "ｒ" },
-                { "s", "ｓ" },
-                { "t", "ｔ" },
-                { "u", "ｕ" },
-                { "v", "ｖ" },
-                { "w", "ｗ" },
-                { "x", "ｘ" },
-                { "y", "ｙ" },
-                { "z", "ｚ" },
-                { "!", "！" },
-                { "\"", "＂" },
-                { "#", "＃" },
-                { "$", "＄" },
-                { "%", "％" },
-                { "&", "＆" },
-                { "'", "＇" },
-                { "(", "（" },
-                { ")", "）" },
-                { "*", "＊" },
-                { "+", "＋" },
-                { ",", "，" },
-                { "-", "－" },
-                { ".", "．" },
-                { "/", "／" },
-                { ":", "：" },
-                { ";", "；" },
-                { "<", "＜" },
-                { "=", "＝" },
-                { ">", "＞" },
-                { "?", "？" },
-                { "@", "＠" },
-                { "[", "［" },
-                { "\\", "＼" },
-                { "]", "］" },
-                { "^", "＾" },
-                { "_", "＿" },
-                { "`", "｀" },
-                { "{", "｛" },
-                { "|", "｜" },
-                { "}", "｝" },
-                { "~", "～" },
+        return Stream.of(new String[][]{
+                {"0", "０"},
+                {"1", "１"},
+                {"2", "２"},
+                {"3", "３"},
+                {"4", "４"},
+                {"5", "５"},
+                {"6", "６"},
+                {"7", "７"},
+                {"8", "８"},
+                {"9", "９"},
+                {"A", "Ａ"},
+                {"B", "Ｂ"},
+                {"C", "Ｃ"},
+                {"D", "Ｄ"},
+                {"E", "Ｅ"},
+                {"F", "Ｆ"},
+                {"G", "Ｇ"},
+                {"H", "Ｈ"},
+                {"I", "Ｉ"},
+                {"J", "Ｊ"},
+                {"K", "Ｋ"},
+                {"L", "Ｌ"},
+                {"M", "Ｍ"},
+                {"N", "Ｎ"},
+                {"O", "Ｏ"},
+                {"P", "Ｐ"},
+                {"Q", "Ｑ"},
+                {"R", "Ｒ"},
+                {"S", "Ｓ"},
+                {"T", "Ｔ"},
+                {"U", "Ｕ"},
+                {"V", "Ｖ"},
+                {"W", "Ｗ"},
+                {"X", "Ｘ"},
+                {"Y", "Ｙ"},
+                {"Z", "Ｚ"},
+                {"a", "ａ"},
+                {"b", "ｂ"},
+                {"c", "ｃ"},
+                {"d", "ｄ"},
+                {"e", "ｅ"},
+                {"f", "ｆ"},
+                {"g", "ｇ"},
+                {"h", "ｈ"},
+                {"i", "ｉ"},
+                {"j", "ｊ"},
+                {"k", "ｋ"},
+                {"l", "ｌ"},
+                {"m", "ｍ"},
+                {"n", "ｎ"},
+                {"o", "ｏ"},
+                {"p", "ｐ"},
+                {"q", "ｑ"},
+                {"r", "ｒ"},
+                {"s", "ｓ"},
+                {"t", "ｔ"},
+                {"u", "ｕ"},
+                {"v", "ｖ"},
+                {"w", "ｗ"},
+                {"x", "ｘ"},
+                {"y", "ｙ"},
+                {"z", "ｚ"},
+                {"!", "！"},
+                {"\"", "＂"},
+                {"#", "＃"},
+                {"$", "＄"},
+                {"%", "％"},
+                {"&", "＆"},
+                {"'", "＇"},
+                {"(", "（"},
+                {")", "）"},
+                {"*", "＊"},
+                {"+", "＋"},
+                {",", "，"},
+                {"-", "－"},
+                {".", "．"},
+                {"/", "／"},
+                {":", "："},
+                {";", "；"},
+                {"<", "＜"},
+                {"=", "＝"},
+                {">", "＞"},
+                {"?", "？"},
+                {"@", "＠"},
+                {"[", "［"},
+                {"\\", "＼"},
+                {"]", "］"},
+                {"^", "＾"},
+                {"_", "＿"},
+                {"`", "｀"},
+                {"{", "｛"},
+                {"|", "｜"},
+                {"}", "｝"},
+                {"~", "～"},
         }).collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1]));
-        return letters;
     }
 
     public static String antiFancyChat(String s) {
