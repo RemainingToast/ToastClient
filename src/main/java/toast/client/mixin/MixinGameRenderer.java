@@ -10,7 +10,7 @@ import toast.client.event.EventManager;
 import toast.client.event.events.player.EventRender;
 
 @Mixin(GameRenderer.class)
-public class MixinGameRenderer {
+public abstract class MixinGameRenderer {
     @Shadow
     private int ticks;
 

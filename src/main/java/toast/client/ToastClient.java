@@ -25,6 +25,7 @@ public class ToastClient implements ModInitializer {
     public static String cleanPrefix = "ToastClient";
     public static String chatPrefix = Formatting.DARK_GRAY + "[" + Formatting.LIGHT_PURPLE + "ToastClient" + Formatting.DARK_GRAY + "]";
     public static String cmdPrefix = ".";
+    public static String appID = "669916916290420736";
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
     public static ModuleManager MODULE_MANAGER = new ModuleManager();
     public static CommandHandler COMMAND_HANDLER = new CommandHandler();
@@ -47,6 +48,7 @@ public class ToastClient implements ModInitializer {
         MODULE_MANAGER.loadModules();
         COMMAND_HANDLER.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
+        DiscordRpc.main(appID);
     }
 }
 
