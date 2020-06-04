@@ -1,6 +1,7 @@
 package toast.client.commands.cmds;
 
 import org.lwjgl.glfw.GLFW;
+import toast.client.ToastClient;
 import toast.client.commands.Command;
 import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
@@ -14,7 +15,7 @@ import static toast.client.modules.ModuleManager.modules;
 public class Bind extends Command {
 
     public Bind(){
-        super("bind [all, module] [key]", "Bind module to key", false, "bind");
+        super("Bind", ToastClient.cmdPrefix + "bind [all, module] [key]", "Bind module to key", false, "bind");
     }
 
     @Override
@@ -26,7 +27,7 @@ public class Bind extends Command {
 
                     for (int i = 0; true; i++) {
                         modules.get(i).key = GLFW.GLFW_KEY_UNKNOWN;
-                        Logger.message(modules.get(i).name + " keybind set to NONE", Logger.SUCC);
+                        Logger.message(modules.get(i).name + " keybind set to NONE", Logger.SUCC, true);
 //                        System.out.println();
                         if(i == modules.size()){
                             CONFIG_MANAGER.writeKeyBinds();

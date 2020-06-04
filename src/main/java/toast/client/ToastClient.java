@@ -23,7 +23,7 @@ public class ToastClient implements ModInitializer {
 
     public static String version = "b1.0";
     public static String cleanPrefix = "ToastClient";
-    public static String chatPrefix = Formatting.DARK_GRAY + "[" + Formatting.LIGHT_PURPLE + "ToastClient" + Formatting.DARK_GRAY + "]";
+    public static String chatPrefix = Formatting.RED + "[ToastClient]";
     public static String cmdPrefix = ".";
     public static String appID = "669916916290420736";
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");

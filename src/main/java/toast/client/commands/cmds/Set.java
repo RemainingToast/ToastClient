@@ -1,6 +1,7 @@
 package toast.client.commands.cmds;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import toast.client.ToastClient;
 import toast.client.commands.Command;
 import toast.client.modules.Module;
 import toast.client.modules.config.Setting;
@@ -13,7 +14,7 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class Set extends Command {
     public Set() {
-        super("set <module> [setting] [newvalue]", "Changes module settings", false, "set", "config", "settings");
+        super("Set", ToastClient.cmdPrefix + "set <module> [setting] [newvalue]", "Changes module settings", false, "set", "config", "settings");
     }
 
     public void displaySetting(String name, Setting setting, Module module) {
@@ -23,13 +24,13 @@ public class Set extends Command {
                 modes.append(mode).append(", ");
             }
             modes = new StringBuilder((String) modes.subSequence(0, modes.length() - 3));
-            Logger.message(" Mode: " + name + ", current: " + setting.getMode() + " available: " + modes, Logger.EMPTY);
+            Logger.message(" Mode: " + name + ", current: " + setting.getMode() + " available: " + modes, Logger.EMPTY, false);
         } else if (setting.getType() == 1) {
-            Logger.message(" Value: " + name + ", current: " + setting.getValue() + " minimum: " + module.getSettings().getSettingDef(name).getMinValue() + " maximum: " + module.getSettings().getSettingDef(name).getMaxValue(), Logger.EMPTY);
+            Logger.message(" Value: " + name + ", current: " + setting.getValue() + " minimum: " + module.getSettings().getSettingDef(name).getMinValue() + " maximum: " + module.getSettings().getSettingDef(name).getMaxValue(), Logger.EMPTY, false);
         } else if (setting.getType() == 2) {
-            Logger.message(" Toggle: " + name + ", state: " + (setting.isEnabled() ? "enabled" : "disabled"), Logger.EMPTY);
+            Logger.message(" Toggle: " + name + ", state: " + (setting.isEnabled() ? "enabled" : "disabled"), Logger.EMPTY, false);
         } else {
-            Logger.message("Invalid setting", Logger.ERR);
+            Logger.message("Invalid setting", Logger.ERR, false);
         }
     }
 
@@ -48,9 +49,9 @@ public class Set extends Command {
                             if (setting.getType() == 0) {
                                 if (settingDef.getModes().contains(args[2])) {
                                     setting.setMode(args[2]);
-                                    Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO);
+                                    Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO, false);
                                 } else {
-                                    Logger.message(args[2] + " is an invalid value for this setting.", Logger.WARN);
+                                    Logger.message(args[2] + " is an invalid value for this setting.", Logger.WARN, false);
                                 }
                             } else if (setting.getType() == 1) {
                                 if (NumberUtils.isParsable(args[2])) {
@@ -58,41 +59,41 @@ public class Set extends Command {
                                     if (newNum <= settingDef.getMaxValue()) {
                                         if (newNum >= settingDef.getMinValue()) {
                                             setting.setValue(newNum);
-                                            Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO);
+                                            Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO, false);
                                         } else {
-                                            Logger.message(newNum + " is too small, the minimum value is: " + settingDef.getMinValue(), Logger.WARN);
+                                            Logger.message(newNum + " is too small, the minimum value is: " + settingDef.getMinValue(), Logger.WARN, false);
                                         }
                                     } else {
-                                        Logger.message(newNum + " is too big, the maximum value is: " + settingDef.getMaxValue(), Logger.WARN);
+                                        Logger.message(newNum + " is too big, the maximum value is: " + settingDef.getMaxValue(), Logger.WARN, false);
                                     }
                                 } else {
-                                    Logger.message(args[2] + " is an invalid value for this setting, please give a number.", Logger.WARN);
+                                    Logger.message(args[2] + " is an invalid value for this setting, please give a number.", Logger.WARN,false);
                                 }
                             } else if (setting.getType() == 2) {
                                 if (args[2].equals("true") || args[2].equals("false")) {
                                     setting.setEnabled(Boolean.parseBoolean(args[2]));
-                                    Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO);
+                                    Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO,false);
                                 } else {
-                                    Logger.message(args[2] + " is an invalid value for this setting, please give a boolean (true/false).", Logger.WARN);
+                                    Logger.message(args[2] + " is an invalid value for this setting, please give a boolean (true/false).", Logger.WARN,false);
                                 }
                             } else {
-                                Logger.message("Internal programming error.", Logger.WARN);
+                                Logger.message("Internal programming error.", Logger.WARN,false);
                             }
                         }
                     } else {
-                        Logger.message(args[1] + " is not a setting.", Logger.WARN);
+                        Logger.message(args[1] + " is not a setting.", Logger.WARN, false);
                     }
                 } else {
-                    Logger.message("Setting(s) for module " + module.getName() + ": ", Logger.INFO);
+                    Logger.message("Setting(s) for module " + module.getName() + ": ", Logger.INFO, false);
                     for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
                         displaySetting(settingEntry.getKey(), settingEntry.getValue(), module);
                     }
                 }
             } else {
-                Logger.message(args[0] + " is not a module.", Logger.WARN);
+                Logger.message(args[0] + " is not a module.", Logger.WARN, false);
             }
         } else {
-            Logger.message("Invalid arguments.", Logger.WARN);
+            Logger.message("Invalid arguments.", Logger.WARN,false);
         }
     }
 }

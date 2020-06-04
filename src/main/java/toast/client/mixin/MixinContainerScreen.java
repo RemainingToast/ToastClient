@@ -35,7 +35,7 @@ public class MixinContainerScreen {
                     int sy = slot.yPosition + (mc.getWindow().getWidth() / 2) - (mc.currentScreen.height / 2) - 100;
                     if (isMouseOverRect(mc.mouse.getX(), mc.mouse.getY(), sx, sy, 16, 16)) {
                         if (isShulkerBox(slot.getStack())) {
-                            Logger.message("Over a shulker", Logger.INFO);
+                            Logger.message("Over a shulker", Logger.INFO, true);
                             int x = (int) Math.round(mc.mouse.getX());
                             int y = (int) Math.round(mc.mouse.getY());
                             drawHollowRect(x, y, 153, 51, 1, new Color(68, 0, 175).getRGB());

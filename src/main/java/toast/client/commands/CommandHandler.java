@@ -26,13 +26,13 @@ public class CommandHandler {
                         command.run(args);
                     } catch (Exception err) {
                         err.printStackTrace();
-                        Logger.message("Sorry but something went wrong", Logger.ERR);
+                        Logger.message("Sorry but something went wrong", Logger.ERR, true);
                     }
                 }
             }
         }
         if (notfound) {
-            Logger.message("Cannot find command " + ToastClient.cmdPrefix + name, Logger.ERR);
+            Logger.message("Cannot find command " + ToastClient.cmdPrefix + name, Logger.ERR, true);
         }
     }
 

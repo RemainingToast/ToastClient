@@ -7,13 +7,15 @@ import net.minecraft.client.MinecraftClient;
 @Environment(EnvType.CLIENT)
 public abstract class Command {
     public String[] aliases;
+    public String name;
     public String usage;
     public String desc;
     public boolean dev;
     protected MinecraftClient mc = MinecraftClient.getInstance();
 
-    public Command(String usage, String desc, boolean dev, String... aliases) {
+    public Command(String name,String usage, String desc, boolean dev, String... aliases) {
         this.usage = usage;
+        this.name = name;
         this.dev = dev;
         this.aliases = aliases;
         this.desc = desc;
@@ -21,6 +23,10 @@ public abstract class Command {
 
     public String[] getAliases() {
         return aliases;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getUsage() {

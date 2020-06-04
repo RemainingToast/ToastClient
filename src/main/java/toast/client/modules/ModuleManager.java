@@ -80,7 +80,7 @@ public class ModuleManager {
         modules.add(new CustomChat());
         modules.add(new ClickGui());
         modules.add(new FastStop());
-        modules.add(new Fly());
+        modules.add(new Flight());
         modules.add(new Fullbright());
         //modules.add(new HoleESP());
         modules.add(new HUD());
@@ -91,6 +91,7 @@ public class ModuleManager {
         modules.add(new PortalChat());
         //modules.add(new ShulkerPreview());
         modules.add(new Spammer());
+        modules.add(new Sprint());
         //modules.add(new StorageESP());
         modules.add(new Surround());
         modules.add(new Velocity());

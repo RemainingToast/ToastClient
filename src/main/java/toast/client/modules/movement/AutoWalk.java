@@ -24,7 +24,7 @@ public class AutoWalk extends Module {
                     mc.options.keyForward.setPressed(true);
                 }
             }else if (this.settings.getMode("Mode").equals("Baritone")){
-                Logger.message("Ree baritone integrated yet", Logger.ERR);
+                Logger.message("Ree baritone integrated yet", Logger.ERR, false);
 
                 mc.options.keyForward.setPressed(false);
             }

@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import toast.client.modules.misc.Panic;
+import toast.client.utils.RandomMOTD;
 
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {
@@ -26,7 +27,7 @@ public class MixinMinecraftClient {
     private void getWindowTitle(CallbackInfoReturnable cir) {
         if(Panic.IsPanicking()) {
         } else {
-            cir.setReturnValue(ToastClient.cleanPrefix+" "+ToastClient.version);
+            cir.setReturnValue(ToastClient.cleanPrefix+" "+ToastClient.version+" | "+ RandomMOTD.randomMOTD());
         }
     }
 

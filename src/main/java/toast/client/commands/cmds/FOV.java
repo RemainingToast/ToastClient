@@ -1,5 +1,6 @@
 package toast.client.commands.cmds;
 
+import toast.client.ToastClient;
 import toast.client.commands.Command;
 import toast.client.utils.KeyUtil;
 import toast.client.utils.Logger;
@@ -9,7 +10,7 @@ public class FOV extends Command {
 //    Integer fov;
 
     public FOV() {
-        super("fov [fovnumber]", "change fov", false, "fov");
+        super("FOV", ToastClient.cmdPrefix + "fov [fov]", "change fov", false, "fov");
     }
 
     @Override
@@ -17,15 +18,15 @@ public class FOV extends Command {
         if(args.length > 0){
             if(KeyUtil.isNumeric(args[0])){
                 if((Integer.parseInt(args[0]) >= 150)){
+                    Logger.message("Max 150, FOV Set to 150", Logger.EMPTY, false);
                     mc.options.fov = 150;
-                    Logger.message("Max 150", Logger.ERR);
                 }
                 else if((Integer.parseInt(args[0]) < 10)){
+                    Logger.message("Min 10, FOV Set to 10", Logger.EMPTY, false);
                     mc.options.fov = 10;
-                    Logger.message("Min 10", Logger.ERR);
                 }else {
                     mc.options.fov = Integer.parseInt(args[0]);
-                    Logger.message("Set Fov To " + mc.options.fov, Logger.SUCC);
+                    Logger.message("Successfully set FOV to: " + mc.options.fov, Logger.SUCC, false);
                 }
             }
         }

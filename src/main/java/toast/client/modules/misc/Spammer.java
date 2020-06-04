@@ -27,7 +27,7 @@ public class Spammer extends Module {
         timer.reset();
         lines = FileManager.readFile(FileManager.createFile("spammer.txt"));
         if (lines == null || lines.size() < 1) {
-            Logger.message("spammer.txt was empty!", Logger.WARN);
+            Logger.message("spammer.txt was empty!", Logger.WARN, false);
             this.setEnabled(false);
         }
     }

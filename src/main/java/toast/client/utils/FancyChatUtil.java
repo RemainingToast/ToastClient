@@ -75,7 +75,7 @@ public class FancyChatUtil {
     public static String customSuffix(String text, String separator, String suffix, String separator2, Boolean surround) {
         String output = "null"; //Should never happen
         if (suffix.isEmpty()) {
-            Logger.message("No custom suffix, using default!", Logger.ERR);
+            Logger.message("No custom suffix, using default!", Logger.ERR,true);
             output = text + CustomChat.suffix;
         }
         if (surround && !suffix.isEmpty()) {

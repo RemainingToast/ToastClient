@@ -5,9 +5,9 @@ import toast.client.event.EventImpl;
 import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.Module;
 
-public class Fly extends Module {
+public class Flight extends Module {
 
-    public Fly() {
+    public Flight() {
         super("Fly", "Lets you fly.", Category.MOVEMENT, GLFW.GLFW_KEY_G);
         this.settings.addMode("Mode", "Vanilla", "Vanilla");
         this.settings.addSlider("Speed", 0, 2, 10);

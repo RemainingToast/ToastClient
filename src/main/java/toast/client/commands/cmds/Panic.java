@@ -15,7 +15,7 @@ public class Panic extends Command {
     private List<Module> wasEnabled = new ArrayList<>();
 
     public Panic() {
-        super("panic", "shutdowns client", false, "shutdown", "panic");
+        super("Panic", ToastClient.cmdPrefix + "panic", "shutdowns client", false, "shutdown", "panic");
     }
 
     @Override

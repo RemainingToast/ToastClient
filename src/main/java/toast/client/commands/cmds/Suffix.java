@@ -1,5 +1,6 @@
 package toast.client.commands.cmds;
 
+import toast.client.ToastClient;
 import toast.client.commands.Command;
 import toast.client.modules.misc.CustomChat;
 import toast.client.utils.FancyChatUtil;
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class Suffix extends Command {
     public Suffix() {
-        super("suffix [suffix]", "Set custom chat ending", false, "suffix", "sufx");
+        super("Suffix", ToastClient.cmdPrefix + "suffix [suffix]", "Set custom chat ending", false, "suffix", "sufx");
     }
 
     Pattern withinQuotes = Pattern.compile("([\"'])(?:(?=(\\\\?))\\2.)*?\\1");
@@ -28,9 +29,9 @@ public class Suffix extends Command {
                     message.append(args[i]);
                     out = message.toString();
                 }
-                Logger.message("Set suffix to " + out, Logger.INFO);
+                Logger.message("Set suffix to " + out, Logger.INFO, false);
                 CustomChat.suffix = out;
             }
-        }else { Logger.message("Specify suffix!", Logger.ERR); }
+        }else { Logger.message("Specify suffix!", Logger.ERR, false); }
     }
 }
