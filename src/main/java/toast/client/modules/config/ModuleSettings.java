@@ -1,15 +1,12 @@
 package toast.client.modules.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static toast.client.ToastClient.CONFIG_MANAGER;
 
 public class ModuleSettings {
-    private Map<String, Setting> settings = new HashMap<>();
-    private Map<String, SettingDef> settingsDef = new HashMap<>();
+    private Map<String, Setting> settings = new TreeMap<>();
+    private Map<String, SettingDef> settingsDef = new TreeMap<>();
 
     public void addBoolean(String name, boolean defaultValue) {
         settings.put(name, new Setting(defaultValue));

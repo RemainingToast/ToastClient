@@ -8,7 +8,7 @@ import toast.client.modules.config.Setting;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Map;
 
 import static toast.client.ToastClient.MODULE_MANAGER;
@@ -23,7 +23,7 @@ public class Config {
 
     public void writeConfig() {
         if (canWrite) {
-            Map<String, Map<String, Setting>> config = new HashMap<>();
+            Map<String, Map<String, Setting>> config = new TreeMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 config.put(module.getName(), module.getSettings().getSettings());
             }
@@ -58,7 +58,7 @@ public class Config {
     public void writeKeyBinds() {
         Map<String, Integer> keybinds;
         if (canWrite) {
-            keybinds = new HashMap<>();
+            keybinds = new TreeMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 keybinds.put(module.getName(), module.getKey());
             }
@@ -90,7 +90,7 @@ public class Config {
 
     public void writeModules() {
         if (canWrite) {
-            Map<String, Boolean> modules = new HashMap<>();
+            Map<String, Boolean> modules = new TreeMap<>();
             for (Module module : MODULE_MANAGER.getModules()) {
                 modules.put(module.getName(), module.isEnabled());
             }

@@ -11,8 +11,8 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import static toast.client.ToastClient.clickGui;
 
@@ -27,7 +27,7 @@ public class ClickGuiSettings {
     public static final int defaultPrefixColor = new Color(8, 189, 8, 255).getRGB();
     public static final int defaultClickColor = new Color(121, 205, 255, 128).getRGB();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public static Map<String, CategorySetting> categoryPositions = new HashMap<>();
+    public static Map<String, CategorySetting> categoryPositions = new TreeMap<>();
     public Colors colors = new Colors();
 
     public CategorySetting getPositions(String category) {
@@ -38,7 +38,7 @@ public class ClickGuiSettings {
     }
 
     public void initCategoryPositions() {
-        categoryPositions = new HashMap<>();
+        categoryPositions = new TreeMap<>();
         int i = 0;
         int y = 5;
         System.out.println(MinecraftClient.getInstance().getWindow().getWidth());
