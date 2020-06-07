@@ -15,8 +15,8 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 @Mixin(Keyboard.class)
 public class MixinKeyboard {
     @Inject(at = @At(value = "RETURN"), method = "onKey")
-    public void onKey(long window, int key, int scancode, int i, int j, CallbackInfo ci) {
-        MODULE_MANAGER.onKey(key, i);
-        CONFIG_MANAGER.checkForMacro(key, i);
+    public void onKey(long window, int key, int scancode, int action, int j, CallbackInfo ci) {
+        MODULE_MANAGER.onKey(key, action);
+        CONFIG_MANAGER.checkForMacro(key, action);
     }
 }

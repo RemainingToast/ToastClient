@@ -124,9 +124,12 @@ public class ClickGuiScreen extends Screen {
         if (button == 0) {
             for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
                 CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
-                categoryRenderer.updatePosition(deltaX, deltaY);
+                if (categoryRenderer.updatePosition(deltaX, deltaY)) {
+                    return false;
+                }
             }
-        } return false;
+        }
+        return false;
     }
 
 

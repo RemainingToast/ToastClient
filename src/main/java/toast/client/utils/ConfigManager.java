@@ -18,7 +18,7 @@ import java.util.Map;
 import static toast.client.ToastClient.MODULE_MANAGER;
 
 @Environment(EnvType.CLIENT)
-public class Config {
+public class ConfigManager {
     public static final String configFile = "config.json";
     public static final String modulesFile = "modules.json";
     public static final String keybindsFile = "keybinds.json";
@@ -115,11 +115,13 @@ public class Config {
     public void checkForMacro(int key, int action) {
         loadMacros();
         if (action == GLFW.GLFW_PRESS) {
-            macros.forEach((command, _key) -> {
+            for (Map.Entry<String, Integer> entry : macros.entrySet()) {
+                String command = entry.getKey();
+                Integer _key = entry.getValue();
                 if (key == _key) {
                     MinecraftClient.getInstance().player.sendChatMessage(command);
                 }
-            });
+            }
         }
     }
 

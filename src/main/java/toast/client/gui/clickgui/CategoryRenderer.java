@@ -217,11 +217,12 @@ public class CategoryRenderer {
         this.mouseY = mouseY;
     }
 
-    public void updatePosition(double dragX, double dragY) {
+    public boolean updatePosition(double dragX, double dragY) {
         if (this.isMouseOverCat() && isCategory) {
             this.setX(getX() + dragX);
             this.setY(getY() + dragY);
             settings.savePositions();
+            return true;
         } else {
             if (sliders.size() > 0) {
                 for (Slider slider : sliders) {
@@ -231,10 +232,12 @@ public class CategoryRenderer {
                             slider.sliderKnobX = newSliderKnobX;
                             slider.setting.setValue((((mouseX - slider.sliderPosX) / slider.sliderBarLength) * slider.module.getSettings().getSettingDef(slider.settingName).getMaxValue()));
                         }
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     public static class Slider {

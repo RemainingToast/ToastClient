@@ -4,19 +4,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Formatting;
-import org.lwjgl.glfw.GLFW;
 import toast.client.commands.CommandHandler;
 import toast.client.gui.clickgui.ClickGuiScreen;
-import toast.client.modules.Module;
 import toast.client.modules.ModuleManager;
 import toast.client.utils.*;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import static toast.client.modules.ModuleManager.modules;
 
 @Environment(EnvType.CLIENT)
 public class ToastClient implements ModInitializer {
@@ -29,7 +23,7 @@ public class ToastClient implements ModInitializer {
     public static List<String> devs = Collections.singletonList("MorganAnkan, RemainingToast, Qther, Fleebs, wnuke");
     public static ModuleManager MODULE_MANAGER = new ModuleManager();
     public static CommandHandler COMMAND_HANDLER = new CommandHandler();
-    public static Config CONFIG_MANAGER = new Config();
+    public static ConfigManager CONFIG_MANAGER = new ConfigManager();
     public static ClickGuiScreen clickGui;
     public static Boolean clickGuiHasOpened;
 
