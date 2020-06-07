@@ -99,5 +99,6 @@ public class ModuleManager {
         CONFIG_MANAGER.loadConfig();
         CONFIG_MANAGER.loadKeyBinds();
         CONFIG_MANAGER.loadModules();
+        CONFIG_MANAGER.loadMacros();
     }
 }

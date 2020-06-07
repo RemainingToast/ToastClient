@@ -3,6 +3,10 @@ package toast.client.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
+import org.lwjgl.glfw.GLFW;
 import toast.client.modules.Module;
 import toast.client.modules.config.Setting;
 
@@ -13,10 +17,13 @@ import java.util.Map;
 
 import static toast.client.ToastClient.MODULE_MANAGER;
 
+@Environment(EnvType.CLIENT)
 public class Config {
     public static final String configFile = "config.json";
     public static final String modulesFile = "modules.json";
     public static final String keybindsFile = "keybinds.json";
+    public static final String macrosFile = "keybinds.json";
+    public static Map<String, Integer> macros;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String disabledOnStart = "Panic, ClickGui";
     private boolean canWrite = false;
@@ -85,6 +92,34 @@ public class Config {
                     module.setKey(keybinds.get(module.getName()));
                 }
             }
+        }
+    }
+
+    public void writeMacros(String command, int key) {
+        if (canWrite) {
+            macros = new TreeMap<>();
+            macros.put(command, key);
+            FileManager.writeFile(macrosFile, gson.toJson(macros));
+        }
+    }
+
+    public void loadMacros() {
+        try {
+            macros = gson.fromJson(new FileReader(FileManager.createFile(macrosFile)), new TypeToken<Map<String, Integer>>() {
+            }.getType());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void checkForMacro(int key, int action) {
+        loadMacros();
+        if (action == GLFW.GLFW_PRESS) {
+            macros.forEach((command, _key) -> {
+                if (key == _key) {
+                    MinecraftClient.getInstance().player.sendChatMessage(command);
+                }
+            });
         }
     }
 
