@@ -113,13 +113,15 @@ public class ConfigManager {
     }
 
     public void checkForMacro(int key, int action) {
-        loadMacros();
-        if (action == GLFW.GLFW_PRESS) {
-            for (Map.Entry<String, Integer> entry : macros.entrySet()) {
-                String command = entry.getKey();
-                Integer _key = entry.getValue();
-                if (key == _key) {
-                    MinecraftClient.getInstance().player.sendChatMessage(command);
+        if (MinecraftClient.getInstance().player != null) {
+            loadMacros();
+            if (action == GLFW.GLFW_PRESS) {
+                for (Map.Entry<String, Integer> entry : macros.entrySet()) {
+                    String command = entry.getKey();
+                    Integer _key = entry.getValue();
+                    if (key == _key) {
+                        MinecraftClient.getInstance().player.sendChatMessage(command);
+                    }
                 }
             }
         }
