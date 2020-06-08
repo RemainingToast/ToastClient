@@ -95,10 +95,8 @@ public class ConfigManager {
         }
     }
 
-    public void writeMacros(String command, int key) {
+    public void writeMacros() {
         if (canWrite) {
-            macros = new TreeMap<>();
-            macros.put(command, key);
             FileManager.writeFile(macrosFile, gson.toJson(macros));
         }
     }
