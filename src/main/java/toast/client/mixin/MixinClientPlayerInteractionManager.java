@@ -10,8 +10,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import toast.client.event.EventManager;
-import toast.client.event.events.player.EventAttack;
+import toast.client.events.player.EventAttack;
+
+import static toast.client.ToastClient.eventBus;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public class MixinClientPlayerInteractionManager {
@@ -20,7 +21,7 @@ public class MixinClientPlayerInteractionManager {
     public void attackEntity(PlayerEntity playerEntity_1, Entity entity_1, CallbackInfo ci) {
         try {
             EventAttack event = new EventAttack(entity_1);
-            EventManager.call(event);
+            eventBus.post(event);
             if (event.isCancelled()) ci.cancel();
         } catch (NullPointerException null_is_annoying) {
         }
@@ -29,7 +30,7 @@ public class MixinClientPlayerInteractionManager {
     @Inject(method = "attackBlock", at = @At("RETURN"))
     public void attackBlock(BlockPos blockPos_1, Direction direction_1, CallbackInfoReturnable info) {
         EventAttack event = new EventAttack(blockPos_1);
-        EventManager.call(event);
+        eventBus.post(event);
         if (event.isCancelled()) info.setReturnValue(true);
     }
 }

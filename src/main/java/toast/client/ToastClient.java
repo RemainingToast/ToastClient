@@ -1,5 +1,6 @@
 package toast.client;
 
+import com.google.common.eventbus.EventBus;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
@@ -25,6 +26,7 @@ public class ToastClient implements ModInitializer {
     public static ConfigManager CONFIG_MANAGER = new ConfigManager();
     public static ClickGuiScreen clickGui;
     public static Boolean clickGuiHasOpened;
+    public static EventBus eventBus = new EventBus();
 
 
     @Override

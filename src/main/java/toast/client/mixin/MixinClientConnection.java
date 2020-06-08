@@ -12,15 +12,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import toast.client.ToastClient;
-import toast.client.event.EventManager;
-import toast.client.event.events.network.EventPacketReceived;
-import toast.client.event.events.network.EventPacketSent;
+import toast.client.events.network.EventPacketReceived;
+import toast.client.events.network.EventPacketSent;
 import toast.client.modules.misc.Panic;
 
 import java.util.Arrays;
 import java.util.concurrent.Future;
 
 import static toast.client.ToastClient.COMMAND_HANDLER;
+import static toast.client.ToastClient.eventBus;
 
 @Mixin(ClientConnection.class)
 public class MixinClientConnection {
@@ -31,7 +31,7 @@ public class MixinClientConnection {
     @Inject(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
     public void send(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
         EventPacketSent ep = new EventPacketSent(packet);
-        EventManager.call(ep);
+        eventBus.post(ep);
         if (ep.isCancelled()) ci.cancel();
         if (packet instanceof ChatMessageC2SPacket) {
             ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
@@ -56,7 +56,7 @@ public class MixinClientConnection {
         if (this.channel.isOpen()) {
             try {
                 EventPacketReceived ep = new EventPacketReceived(packet);
-                EventManager.call(ep);
+                eventBus.post(ep);
                 if (ep.isCancelled()) ci.cancel();
             } catch (Exception ignored) {
             }

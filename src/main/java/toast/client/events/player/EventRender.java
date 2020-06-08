@@ -1,6 +1,6 @@
-package toast.client.event.events.player;
+package toast.client.events.player;
 
-import toast.client.event.events.AbstractSkippableEvent;
+import toast.client.events.AbstractSkippableEvent;
 
 public class EventRender extends AbstractSkippableEvent {
     private final int partialTicks;

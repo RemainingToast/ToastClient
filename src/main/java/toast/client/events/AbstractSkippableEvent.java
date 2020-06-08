@@ -1,8 +1,6 @@
-package toast.client.event.events;
+package toast.client.events;
 
-import toast.client.event.IEvent;
-
-public abstract class AbstractSkippableEvent implements IEvent {
+public abstract class AbstractSkippableEvent {
 
     private boolean isSkipped;
 

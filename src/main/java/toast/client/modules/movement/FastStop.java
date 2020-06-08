@@ -1,7 +1,7 @@
 package toast.client.modules.movement;
 
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import com.google.common.eventbus.Subscribe;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 public class FastStop extends Module {
@@ -10,7 +10,7 @@ public class FastStop extends Module {
         this.settings.addBoolean("Air Stop", false);
     }
 
-    @EventImpl
+    @Subscribe
     public void onUpdate(EventUpdate event) {
         if (mc.player == null) return;
         if (!mc.options.keyForward.isPressed() && !mc.options.keyBack.isPressed() && !mc.options.keyLeft.isPressed() && !mc.options.keyRight.isPressed()) {

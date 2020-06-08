@@ -1,9 +1,9 @@
 package toast.client.modules.render;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class Fullbright extends Module {
         this.settings.addMode("Mode", "Gamma", "Potion", "Gamma");
     }
 
-    @EventImpl
+    @Subscribe
     public void onTick(EventUpdate event) {
         if (mc.player == null) return; // avoid excessive logs and client crashing
         if (this.isMode("Gamma") && !increasedGamma) {

@@ -1,8 +1,8 @@
-package toast.client.event.events.player;
+package toast.client.events.player;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
-import toast.client.event.events.AbstractSkippableEvent;
+import toast.client.events.AbstractSkippableEvent;
 
 public class EventAttack extends AbstractSkippableEvent {
     public Entity entity = null;

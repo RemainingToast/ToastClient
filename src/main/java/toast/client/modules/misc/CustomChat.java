@@ -1,9 +1,9 @@
 package toast.client.modules.misc;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import toast.client.ToastClient;
-import toast.client.event.EventImpl;
-import toast.client.event.events.network.EventPacketSent;
+import toast.client.events.network.EventPacketSent;
 import toast.client.modules.Module;
 import toast.client.utils.FancyChatUtil;
 
@@ -25,7 +25,7 @@ public class CustomChat extends Module {
         isMadeByCustomChat = true;
     }
 
-    @EventImpl
+    @Subscribe
     public void onEvent(EventPacketSent e) {
         if (mc.player == null) return;
         if (e.getPacket() instanceof ChatMessageC2SPacket) {

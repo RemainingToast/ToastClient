@@ -7,10 +7,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import toast.client.ToastClient;
-import toast.client.event.EventManager;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.misc.Panic;
 import toast.client.utils.RandomMOTD;
+
+import static toast.client.ToastClient.eventBus;
 
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {
@@ -18,7 +19,7 @@ public class MixinMinecraftClient {
     @Inject(method = "tick", at = @At(value = "HEAD"))
     public void tick(CallbackInfo ci) {
         EventUpdate event = new EventUpdate();
-        EventManager.call(event);
+        eventBus.post(event);
         if (event.isCancelled()) ci.cancel();
     }
 

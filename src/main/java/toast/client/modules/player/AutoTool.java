@@ -1,13 +1,13 @@
 package toast.client.modules.player;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.util.math.BlockPos;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventAttack;
+import toast.client.events.player.EventAttack;
 import toast.client.modules.Module;
 
 public class AutoTool extends Module {
@@ -68,9 +68,8 @@ public class AutoTool extends Module {
         mc.player.inventory.selectedSlot = lastSlot;
     }
 
-    @EventImpl
+    @Subscribe
     public void onEvent(EventAttack event) {
-        //System.out.println("attack event: entity: "+event.isAttackingEntity()+" block: "+event.isAttackingBlock());
         if (event.isAttackingBlock()) {
             setSlot(event.getBlock());
         } else if (event.isAttackingEntity()) {

@@ -1,6 +1,6 @@
-package toast.client.event.events.network;
+package toast.client.events.network;
 
-import toast.client.event.events.AbstractSkippableEvent;
+import toast.client.events.AbstractSkippableEvent;
 
 public class EventSyncedUpdate extends AbstractSkippableEvent {
     public EventSyncedUpdate() {

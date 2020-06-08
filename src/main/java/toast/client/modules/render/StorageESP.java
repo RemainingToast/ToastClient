@@ -1,9 +1,9 @@
 package toast.client.modules.render;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 import toast.client.utils.WorldUtil;
 
@@ -21,7 +21,7 @@ public class StorageESP extends Module {
         this.settings.addBoolean("Droppers", true);
     }
 
-    @EventImpl
+    @Subscribe
     public void onUpdate(EventUpdate event) {
         if (mc.world == null) return;
         WorldUtil.getTileEntitiesInWorld(mc.world).forEach((pos, type) -> {

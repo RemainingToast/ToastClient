@@ -3,13 +3,13 @@ package toast.client.modules;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import toast.client.event.EventManager;
 import toast.client.modules.config.ModuleSettings;
 import toast.client.modules.config.Setting;
 
 import java.util.Map;
 
 import static toast.client.ToastClient.CONFIG_MANAGER;
+import static toast.client.ToastClient.eventBus;
 
 @Environment(EnvType.CLIENT)
 public class Module {
@@ -43,10 +43,16 @@ public class Module {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         if (isEnabled()) {
-            EventManager.register(this);
+            try {
+                eventBus.register(this);
+            } catch (IllegalArgumentException ignored) {
+            }
             onEnable();
         } else {
-            EventManager.unregister(this);
+            try {
+                eventBus.unregister(this);
+            } catch (IllegalArgumentException ignored) {
+            }
             onDisable();
         }
         CONFIG_MANAGER.writeModules();

@@ -1,11 +1,11 @@
 package toast.client.modules.render;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventRender;
+import toast.client.events.player.EventRender;
 import toast.client.modules.Module;
 import toast.client.utils.RenderUtil;
 import toast.client.utils.WorldInteractionUtil;
@@ -38,7 +38,7 @@ public class HoleESP extends Module {
         this.settings.addMode("Mode", "Flat", "Flat", "Box");
     }
 
-    @EventImpl
+    @Subscribe
     public void onRender(EventRender event) {
         if (mc.player == null || mc.world == null || awaiting) return;
         awaiting = true;

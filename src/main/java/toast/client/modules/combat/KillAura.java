@@ -1,5 +1,6 @@
 package toast.client.modules.combat;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -7,8 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.Hand;
 import org.lwjgl.glfw.GLFW;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 import toast.client.utils.MovementUtil;
 import toast.client.utils.TimerUtil;
@@ -36,7 +36,7 @@ public class KillAura extends Module {
         timer.reset();
     }
 
-    @EventImpl
+    @Subscribe
     public void onEvent(EventUpdate event) {
         if (mc.player == null || mc.world == null || mc.getNetworkHandler() == null) return;
         if (mc.player.isSpectator()) return;

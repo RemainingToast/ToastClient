@@ -1,9 +1,9 @@
 package toast.client.modules.combat;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.item.BowItem;
 import net.minecraft.util.Identifier;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 public class BowSpam extends Module {
@@ -15,7 +15,7 @@ public class BowSpam extends Module {
         this.settings.addMode("Mode", "No Charge", "No Charge", "Medium Charge", "Full Charge");
     }
 
-    @EventImpl
+    @Subscribe
     public void onUpdate(EventUpdate event) {
         if (mc.player == null || mc.world == null || !(mc.player.getMainHandStack().getItem() instanceof BowItem) || mc.player.getMainHandStack().getItem().getPropertyGetter(new Identifier("pulling")).call(mc.player.getMainHandStack(), mc.world, mc.player) == 0.0F) {
             ticksLeft = -1;

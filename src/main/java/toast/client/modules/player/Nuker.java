@@ -1,13 +1,13 @@
 package toast.client.modules.player;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class Nuker extends Module {
         return list;
     }
 
-    @EventImpl
+    @Subscribe
     public void onEvent(EventUpdate event) {
         if (mc.interactionManager == null || mc.player == null) return;
         for (BlockPos block : getBlocks()) {

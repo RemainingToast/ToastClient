@@ -1,7 +1,7 @@
 package toast.client.modules.movement;
 
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import com.google.common.eventbus.Subscribe;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 public class Sprint extends Module {
@@ -11,7 +11,7 @@ public class Sprint extends Module {
         super("Sprint", "Automatically sprint", Category.MOVEMENT, -1);
     }
 
-    @EventImpl
+    @Subscribe
     public void onTick(EventUpdate event) {
         if (mc.player == null) return;
         if (!isEnabled()) return;

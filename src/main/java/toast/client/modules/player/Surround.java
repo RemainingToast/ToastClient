@@ -1,5 +1,6 @@
 package toast.client.modules.player;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -8,8 +9,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventRender;
+import toast.client.events.player.EventRender;
 import toast.client.modules.Module;
 import toast.client.utils.WorldInteractionUtil;
 
@@ -27,7 +27,7 @@ public class Surround extends Module {
         this.settings.addSlider("Blocks/Tick", 1, 2, 8);
     }
 
-    @EventImpl
+    @Subscribe
     public void onUpdate(EventRender event) {
         if (mc.player == null) return;
         int lastSlot = mc.player.inventory.selectedSlot;
@@ -188,7 +188,7 @@ public class Surround extends Module {
             }
         }
 
-        /*final Vec3d vec = interpolateEntity(mc.player, event.getPartialTicks());
+        /*final Vec3d vec = interpolateEntity(mc.player, events.getPartialTicks());
         final BlockPos playerPos = new BlockPos(vec.x, vec.y, vec.z);
 
         final BlockPos[] positions = {playerPos.north(), playerPos.south(), playerPos.east(), playerPos.west()};

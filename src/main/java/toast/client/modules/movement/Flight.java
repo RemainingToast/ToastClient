@@ -1,8 +1,8 @@
 package toast.client.modules.movement;
 
+import com.google.common.eventbus.Subscribe;
 import org.lwjgl.glfw.GLFW;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 public class Flight extends Module {
@@ -13,7 +13,7 @@ public class Flight extends Module {
         this.settings.addSlider("Speed", 0, 2, 10);
     }
 
-    @EventImpl
+    @Subscribe
     public void onUpdate(EventUpdate event) {
         if (mc.player == null) return;
         if ((mc.player.onGround || mc.player.fallDistance <= 0) && this.isEnabled()) {

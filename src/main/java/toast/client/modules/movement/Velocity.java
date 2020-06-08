@@ -1,9 +1,9 @@
 package toast.client.modules.movement;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
-import toast.client.event.EventImpl;
-import toast.client.event.events.network.EventPacketReceived;
+import toast.client.events.network.EventPacketReceived;
 import toast.client.modules.Module;
 
 public class Velocity extends Module {
@@ -34,7 +34,7 @@ public class Velocity extends Module {
     }
 
 
-    @EventImpl
+    @Subscribe
     public void onPacket(EventPacketReceived e) {
         if (this.isEnabled()) {
             if (mc.player == null) return;

@@ -1,10 +1,10 @@
 package toast.client.modules.render;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.block.Block;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.util.math.BlockPos;
-import toast.client.event.EventImpl;
-import toast.client.event.events.network.EventPacketReceived;
+import toast.client.events.network.EventPacketReceived;
 import toast.client.modules.Module;
 import toast.client.utils.WorldUtil;
 
@@ -20,7 +20,7 @@ public class BlockESP extends Module {
         super("BlockESP", "Highlights blocks in the world.", Category.RENDER, -1);
     }
 
-    @EventImpl
+    @Subscribe
     public void onPacketReceived(EventPacketReceived event) {
         if (mc.world == null) return;
         if (event.getPacket() instanceof ChunkDataS2CPacket) {

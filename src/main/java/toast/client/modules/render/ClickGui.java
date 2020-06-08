@@ -1,8 +1,8 @@
 package toast.client.modules.render;
 
+import com.google.common.eventbus.Subscribe;
 import org.lwjgl.glfw.GLFW;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.gui.clickgui.ClickGuiScreen;
 import toast.client.modules.Module;
 
@@ -40,7 +40,7 @@ public class ClickGui extends Module {
         }
     }
 
-    @EventImpl
+    @Subscribe
     public void onUpdate(EventUpdate e) {
         ClickGuiScreen.descriptions = this.settings.getBoolean("Descriptions");
     }

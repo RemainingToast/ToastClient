@@ -1,9 +1,9 @@
 package toast.client.modules.movement;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
-import toast.client.event.EventImpl;
-import toast.client.event.events.network.EventPacketSent;
+import toast.client.events.network.EventPacketSent;
 import toast.client.modules.Module;
 import toast.client.utils.Logger;
 
@@ -14,7 +14,7 @@ public class AutoWalk extends Module {
         this.settings.addMode("Mode", "Simple", "Simple", "Baritone");
     }
 
-    @EventImpl
+    @Subscribe
     public void onEvent(EventPacketSent e) {
         {
             if (mc.player == null) return;

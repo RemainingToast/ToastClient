@@ -1,15 +1,14 @@
 package toast.client.modules.combat;
 
+import com.google.common.eventbus.Subscribe;
 import net.minecraft.container.SlotActionType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 
 public class AutoTotem extends Module {
     int totems = 0;
-    String totemCount;
     int totemsTotal;
     boolean moving;
     boolean returning;
@@ -20,13 +19,12 @@ public class AutoTotem extends Module {
 
     }
 
-    @EventImpl
+    @Subscribe
     public void onUpdate(EventUpdate event) {
         if (mc.player == null || mc.interactionManager == null) return;
         totems = mc.player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
         totemsTotal = totems + mc.player.inventory.offHand.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
         this.name = "AutoTotem: " + totemsTotal;
-//        MinecraftClient.getInstance().inGameHud.setOverlayMessage("Totems: "+totemsTotal, true);
         if (mc.player.getOffHandStack().getItem() == Items.TOTEM_OF_UNDYING) totems++;
         else {
             if (!mc.player.inventory.offHand.isEmpty() && mc.player.inventory.offHand.get(0).getItem() != Items.TOTEM_OF_UNDYING && !settings.getBoolean("Force Totem"))

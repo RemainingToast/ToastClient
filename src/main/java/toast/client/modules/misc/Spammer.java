@@ -1,8 +1,8 @@
 package toast.client.modules.misc;
 
+import com.google.common.eventbus.Subscribe;
 import org.apache.commons.lang3.RandomStringUtils;
-import toast.client.event.EventImpl;
-import toast.client.event.events.player.EventUpdate;
+import toast.client.events.player.EventUpdate;
 import toast.client.modules.Module;
 import toast.client.utils.FileManager;
 import toast.client.utils.Logger;
@@ -36,7 +36,7 @@ public class Spammer extends Module {
         timer.reset();
     }
 
-    @EventImpl
+    @Subscribe
     public void onTick(EventUpdate event) {
         if (lines.isEmpty() || mc.player == null) return;
         if (this.timer.isDelayComplete((long) (this.getDouble("Delay") * 1000L))) {
