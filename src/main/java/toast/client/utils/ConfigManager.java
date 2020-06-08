@@ -22,10 +22,10 @@ public class ConfigManager {
     public static final String configFile = "config.json";
     public static final String modulesFile = "modules.json";
     public static final String keybindsFile = "keybinds.json";
-    public static final String macrosFile = "keybinds.json";
-    public static Map<String, Integer> macros;
+    public static final String macrosFile = "macros.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String disabledOnStart = "Panic, ClickGui";
+    public Map<String, Integer> macros;
     private boolean canWrite = false;
 
     public void writeConfig() {
@@ -105,8 +105,8 @@ public class ConfigManager {
 
     public void loadMacros() {
         try {
-            macros = gson.fromJson(new FileReader(FileManager.createFile(macrosFile)), new TypeToken<Map<String, Integer>>() {
-            }.getType());
+            macros = gson.fromJson(new FileReader(FileManager.createFile(macrosFile)), new TypeToken<Map<String, Integer>>() {}.getType());
+            if (macros == null) macros = new TreeMap<>();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

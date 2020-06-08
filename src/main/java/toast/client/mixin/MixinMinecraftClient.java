@@ -1,6 +1,5 @@
 package toast.client.mixin;
 
-import net.minecraft.SharedConstants;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import toast.client.ToastClient;
 import toast.client.event.EventManager;
@@ -25,8 +24,7 @@ public class MixinMinecraftClient {
 
     @Inject(method = "getWindowTitle", at = @At(value = "RETURN"), cancellable = true)
     private void getWindowTitle(CallbackInfoReturnable cir) {
-        if(Panic.IsPanicking()) {
-        } else {
+        if(!Panic.IsPanicking()) {
             cir.setReturnValue(ToastClient.cleanPrefix+" "+ToastClient.version+" | "+ RandomMOTD.randomMOTD());
         }
     }

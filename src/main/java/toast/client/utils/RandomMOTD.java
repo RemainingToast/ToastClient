@@ -4,27 +4,28 @@ import java.util.ArrayList;
 
 public class RandomMOTD {
 
-    public static ArrayList<String> MOTDS = new ArrayList<String>() {};
+    public static ArrayList<String> MOTDList = new ArrayList<String>() {
+    };
     static int size;
 
-    public static void addMOTDS(){
+    public static void addMOTDS() {
 
-        MOTDS.add("RemainingToast on Top");
-        MOTDS.add("Wnuke nuked the client");
-        MOTDS.add("Meteor who?");
-        MOTDS.add("Toast > Meteor");
-        MOTDS.add("Backdoored, your coordinates are 21412 73 42142");
-        MOTDS.add("Fleebs did math again");
-        MOTDS.add("Qther is probably out of bounds");
-        MOTDS.add("Dewy doing dewy stuff");
-        MOTDS.add("RemainingToast actually does code");
-        MOTDS.add("Axo is the anime cum god");
+        MOTDList.add("RemainingToast on Top");
+        MOTDList.add("Wnuke nuked the client");
+        MOTDList.add("Meteor who?");
+        MOTDList.add("Toast > Meteor");
+        MOTDList.add("Backdoored, your coordinates are 21412 73 42142");
+        MOTDList.add("Fleebs did math again");
+        MOTDList.add("Qther is probably out of bounds");
+        MOTDList.add("Dewy doing dewy stuff");
+        MOTDList.add("RemainingToast actually does code");
+        MOTDList.add("Axo is the anime cum god");
 
-        size = MOTDS.size();
+        size = MOTDList.size();
     }
 
-    public static String randomMOTD(){
-        int Random = (int)(Math.random()*size);
-        return MOTDS.get(Random);
+    public static String randomMOTD() {
+        int Random = (int) (Math.random() * size);
+        return MOTDList.get(Random);
     }
 }

@@ -6,7 +6,7 @@ import toast.client.utils.Logger;
 
 public class Prefix extends Command {
     public Prefix() {
-        super("Preifx", ToastClient.cmdPrefix + "prefix [prefix]", "Rebind command prefix", false, "prefix");
+        super("Prefix", ToastClient.cmdPrefix + "prefix [prefix]", "Rebind command prefix", false, "prefix");
     }
 
     @Override

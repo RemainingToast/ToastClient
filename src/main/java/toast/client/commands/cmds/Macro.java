@@ -9,26 +9,22 @@ import static toast.client.ToastClient.CONFIG_MANAGER;
 
 public class Macro extends Command {
     public Macro() {
-        super("Macro", ToastClient.cmdPrefix + "macro [add/remove/list] <key> <command/message>", "Allows you to bind a message to a key", false, "macros");
+        super("Macro", ToastClient.cmdPrefix + "macro [add/remove/list] <key> <command/message>", "Allows you to bind a message to a key", false, "macros", "macro");
     }
 
     public void run(String[] args) {
-        if (args[0] == null) {
+        if (args.length == 0) {
             Logger.message("Missing arguments!", Logger.ERR, false);
             return;
         }
         switch (args[0]) {
             case "add":
                 if (args.length >= 3) {
-                    if(KeyUtil.isNumeric(args[1])){
-                        try
-                        {
+                    if (KeyUtil.isNumeric(args[1])) {
+                        try {
                             System.out.println(Integer.parseInt(args[1]));
                             CONFIG_MANAGER.writeMacros(args[2], Integer.parseInt(args[1]));
-
-                        }
-                        catch(NumberFormatException nfe)
-                        {
+                        } catch (NumberFormatException nfe) {
                             Logger.message("Failed to add macro.", Logger.ERR, false);
                             System.out.println("Failed");
                         }
@@ -41,9 +37,8 @@ public class Macro extends Command {
                     Logger.message("Missing arguments!", Logger.ERR, false);
                     return;
                 }
-                if(KeyUtil.isNumeric(args[1])){
-                    try
-                    {
+                if (KeyUtil.isNumeric(args[1])) {
+                    try {
                         System.out.println(Integer.parseInt(args[1]));
                         CONFIG_MANAGER.macros.forEach((command, key) -> {
                             if (key == Integer.parseInt(args[1])) {
@@ -52,19 +47,15 @@ public class Macro extends Command {
                             }
                         });
 
-                    }
-                    catch(NumberFormatException nfe)
-                    {
+                    } catch (NumberFormatException nfe) {
                         Logger.message("Failed to remove macro.", Logger.ERR, false);
                         System.out.println("Failed");
                     }
                 }
             case "list":
-                String message = "Key | Message\n";
-                CONFIG_MANAGER.macros.forEach((command, key) -> {
-                    message.concat(key + " | " + command);
-                });
-                Logger.message(message, Logger.INFO, false);
+                final String[] message = {"Key | Message\n"};
+                CONFIG_MANAGER.macros.forEach((command, key) -> message[0] += (key + " | " + command));
+                Logger.message(message[0], Logger.INFO, false);
             default:
                 Logger.message("Could not parse command.", Logger.ERR, false);
         }

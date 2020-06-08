@@ -4,7 +4,6 @@ import net.minecraft.client.MinecraftClient;
 import toast.client.ToastClient;
 import toast.client.commands.cmds.*;
 import toast.client.utils.Logger;
-import toast.client.utils.RandomMOTD;
 
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -64,6 +63,7 @@ public class CommandHandler {
         commands.add(new GuiReset());
         commands.add(new Help());
         commands.add(new ListModules());
+        commands.add(new Macro());
         commands.add(new Panic());
         commands.add(new Prefix());
         commands.add(new Reload());
