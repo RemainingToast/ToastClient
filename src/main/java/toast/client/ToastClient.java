@@ -40,7 +40,7 @@ public class ToastClient implements ModInitializer {
         COMMAND_HANDLER.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
         System.out.println("Special thanks to all contributors of this project: ");
-        System.out.println(("" + devs.toString().replaceAll("[\\[\\](){}]","")));
+        System.out.println(("" + devs.toString().replaceAll("[\\[\\](){}]", "")));
         System.out.println("_________________________________________________________");
     }
 }

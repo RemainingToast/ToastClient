@@ -11,7 +11,7 @@ import net.minecraft.util.Formatting;
 import toast.client.modules.Module;
 
 public class NameTags extends Module {
-    private static MinecraftClient mc = MinecraftClient.getInstance();
+    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
     public NameTags() {
         super("NameTags", "Displays a nametag above other players", Category.RENDER, -1);

@@ -3,10 +3,10 @@ package toast.client.modules.config;
 import java.util.ArrayList;
 
 public class SettingDef {
-    private ArrayList<String> modes;
-    private boolean isBool;
-    private Double maxvalue;
-    private Double minvalue;
+    private final ArrayList<String> modes;
+    private final boolean isBool;
+    private final Double maxvalue;
+    private final Double minvalue;
 
     public SettingDef(ArrayList<String> modes) {
         this.modes = modes;

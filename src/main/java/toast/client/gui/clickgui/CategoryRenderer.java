@@ -16,7 +16,8 @@ import java.util.Map;
 import static toast.client.ToastClient.CONFIG_MANAGER;
 import static toast.client.ToastClient.MODULE_MANAGER;
 import static toast.client.gui.clickgui.ClickGuiScreen.keybindPressedCategory;
-import static toast.client.utils.TwoDRenderUtils.*;
+import static toast.client.utils.TwoDRenderUtils.drawTextBox;
+import static toast.client.utils.TwoDRenderUtils.isMouseOverRect;
 
 public class CategoryRenderer {
     private static final ArrayList<Slider> sliders = new ArrayList<>();

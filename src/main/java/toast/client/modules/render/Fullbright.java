@@ -42,7 +42,7 @@ public class Fullbright extends Module {
     }
 
     public void onDisable() {
-        if(mc.player == null) return;
+        if (mc.player == null) return;
         mc.options.gamma = previousGamma;
         increasedGamma = false;
         if (mc.player.hasStatusEffect(StatusEffects.NIGHT_VISION)) {

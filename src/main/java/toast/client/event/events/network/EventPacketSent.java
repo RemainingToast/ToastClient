@@ -1,7 +1,7 @@
 package toast.client.event.events.network;
 
-import toast.client.event.events.AbstractSkippableEvent;
 import net.minecraft.network.Packet;
+import toast.client.event.events.AbstractSkippableEvent;
 
 public class EventPacketSent extends AbstractSkippableEvent {
     public Packet packet;

@@ -13,7 +13,7 @@ public class Sprint extends Module {
 
     @EventImpl
     public void onTick(EventUpdate event) {
-        if(mc.player == null) return;
+        if (mc.player == null) return;
         if (!isEnabled()) return;
         mc.player.setSprinting(mc.player.input.movementForward > 0 && mc.player.input.movementSideways != 0 ||
                 mc.player.input.movementForward > 0 && !mc.player.isSneaking());

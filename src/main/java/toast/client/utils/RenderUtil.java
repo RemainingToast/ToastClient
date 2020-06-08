@@ -2,25 +2,21 @@ package toast.client.utils;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EnderCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
-
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 /**
  * Courtesy of BleachDrinker420/Bleach, maker of BleachHack
+ *
  * @url {https://imgur.com/a/jNGeGBg}
  */
 
@@ -30,7 +26,7 @@ public class RenderUtil {
     public static void drawFilledBox(BlockPos blockPos, float r, float g, float b, float a) {
         drawFilledBox(new Box(
                 blockPos.getX(), blockPos.getY(), blockPos.getZ(),
-                blockPos.getX()+1, blockPos.getY()+1, blockPos.getZ()+1), r, g, b, a);
+                blockPos.getX() + 1, blockPos.getY() + 1, blockPos.getZ() + 1), r, g, b, a);
     }
 
     public static void drawFilledBox(Box box, float r, float g, float b, float a) {
@@ -42,33 +38,33 @@ public class RenderUtil {
         buffer.begin(5, VertexFormats.POSITION_COLOR);
         WorldRenderer.drawBox(buffer,
                 box.x1, box.y1, box.z1,
-                box.x2, box.y2, box.z2, r, g, b, a/2f);
+                box.x2, box.y2, box.z2, r, g, b, a / 2f);
         tessellator.draw();
 
         // Outline
         buffer.begin(3, VertexFormats.POSITION_COLOR);
-        buffer.vertex(box.x1, box.y1, box.z1).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x1, box.y1, box.z2).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x2, box.y1, box.z2).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x2, box.y1, box.z1).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x1, box.y1, box.z1).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x1, box.y2, box.z1).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x2, box.y2, box.z1).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x2, box.y2, box.z2).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x1, box.y2, box.z2).color(r, b, b, a/2f).next();
-        buffer.vertex(box.x1, box.y2, box.z1).color(r, b, b, a/2f).next();
+        buffer.vertex(box.x1, box.y1, box.z1).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x1, box.y1, box.z2).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x2, box.y1, box.z2).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x2, box.y1, box.z1).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x1, box.y1, box.z1).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x1, box.y2, box.z1).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x2, box.y2, box.z1).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x2, box.y2, box.z2).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x1, box.y2, box.z2).color(r, b, b, a / 2f).next();
+        buffer.vertex(box.x1, box.y2, box.z1).color(r, b, b, a / 2f).next();
         buffer.vertex(box.x1, box.y1, box.z2).color(r, b, b, 0f).next();
-        buffer.vertex(box.x1, box.y2, box.z2).color(r, b, b, a/2f).next();
+        buffer.vertex(box.x1, box.y2, box.z2).color(r, b, b, a / 2f).next();
         buffer.vertex(box.x2, box.y1, box.z2).color(r, b, b, 0f).next();
-        buffer.vertex(box.x2, box.y2, box.z2).color(r, b, b, a/2f).next();
+        buffer.vertex(box.x2, box.y2, box.z2).color(r, b, b, a / 2f).next();
         buffer.vertex(box.x2, box.y1, box.z1).color(r, b, b, 0f).next();
-        buffer.vertex(box.x2, box.y2, box.z1).color(r, b, b, a/2f).next();
+        buffer.vertex(box.x2, box.y2, box.z1).color(r, b, b, a / 2f).next();
         tessellator.draw();
 
         gl11Cleanup();
     }
 
-    public static void drawLine(double x1,double y1,double z1,double x2,double y2,double z2, float r, float g, float b, float t) {
+    public static void drawLine(double x1, double y1, double z1, double x2, double y2, double z2, float r, float g, float b, float t) {
         gl11Setup();
         GL11.glLineWidth(t);
 
@@ -91,12 +87,25 @@ public class RenderUtil {
         float b = 0;
         double additionalY;
 
-        if (entity instanceof PlayerEntity) { r = 1; g = 1; }
-        else if (entity instanceof EnderCrystalEntity) { r = 1; b = 1; }
-        else if (EntityUtils.isAnimal(entity)) { g = 1; }
-        else if (EntityUtils.isNeutral(entity)) { r = 1; g = 1; b = 1; }
-        else if (EntityUtils.isHostile(entity)) { r = 1; }
-        else { r = 1; b = 1; g = 1; }
+        if (entity instanceof PlayerEntity) {
+            r = 1;
+            g = 1;
+        } else if (entity instanceof EnderCrystalEntity) {
+            r = 1;
+            b = 1;
+        } else if (EntityUtils.isAnimal(entity)) {
+            g = 1;
+        } else if (EntityUtils.isNeutral(entity)) {
+            r = 1;
+            g = 1;
+            b = 1;
+        } else if (EntityUtils.isHostile(entity)) {
+            r = 1;
+        } else {
+            r = 1;
+            b = 1;
+            g = 1;
+        }
 
         if (location == 1) {
             additionalY = entity.getHeight() / 2;

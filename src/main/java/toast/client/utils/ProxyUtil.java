@@ -11,7 +11,7 @@ public class ProxyUtil {
         MinecraftClient mc = MinecraftClient.getInstance();
         Field newField = null;
         for (Field field : mc.getClass().getDeclaredFields()) {
-            if(field.getName().equalsIgnoreCase("netProxy")) {
+            if (field.getName().equalsIgnoreCase("netProxy")) {
                 newField = field;
             }
         }

@@ -18,16 +18,16 @@ import static toast.client.ToastClient.clickGui;
 import static toast.client.utils.TwoDRenderUtils.drawTextBox;
 
 public class ClickGuiScreen extends Screen {
+    private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
     public static ClickGuiSettings settings = new ClickGuiSettings();
     public static Map<Module.Category, CategoryRenderer> categoryRenderers = new HashMap<>();
     public static int width = 50;
     public static int height = 10;
-    private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    public static boolean descriptions = true;
+    protected static CategoryRenderer keybindPressedCategory = null;
     private boolean mouseIsClickedL = false;
     private boolean mouseIsClickedR = false;
     private boolean clickedOnce = false;
-    public static boolean descriptions = true;
-
 
     public ClickGuiScreen() {
         super(new LiteralText("ClickGuiScreen"));
@@ -63,8 +63,6 @@ public class ClickGuiScreen extends Screen {
         }
     }
 
-    protected static CategoryRenderer keybindPressedCategory = null;
-
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100) + 3;
@@ -76,7 +74,7 @@ public class ClickGuiScreen extends Screen {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
         }
-        if(descriptions) {
+        if (descriptions) {
             for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
                 CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
                 if (categoryRenderer.keybindPressed) {

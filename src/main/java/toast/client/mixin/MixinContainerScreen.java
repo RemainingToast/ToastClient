@@ -17,11 +17,11 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 import static toast.client.utils.ShulkerBoxUtils.getItemsInShulker;
 import static toast.client.utils.ShulkerBoxUtils.isShulkerBox;
 import static toast.client.utils.TwoDRenderUtils.*;
-import static toast.client.utils.TwoDRenderUtils.renderNineWideInvItems;
 
 @Mixin(ContainerScreen.class)
 public class MixinContainerScreen {
-    private MinecraftClient mc = MinecraftClient.getInstance();
+    private final MinecraftClient mc = MinecraftClient.getInstance();
+
     @Inject(method = "render", at = @At("RETURN"))
     public void onRender(CallbackInfo ci) {
         if (mc.player != null && mc.currentScreen instanceof ContainerScreen && MODULE_MANAGER.getModule(ShulkerPreview.class).isEnabled()) {

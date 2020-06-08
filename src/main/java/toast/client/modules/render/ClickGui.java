@@ -41,7 +41,7 @@ public class ClickGui extends Module {
     }
 
     @EventImpl
-    public void onUpdate(EventUpdate e){
-        if(this.settings.getBoolean("Descriptions")) { ClickGuiScreen.descriptions = true; } else { ClickGuiScreen.descriptions = false; }
+    public void onUpdate(EventUpdate e) {
+        ClickGuiScreen.descriptions = this.settings.getBoolean("Descriptions");
     }
 }

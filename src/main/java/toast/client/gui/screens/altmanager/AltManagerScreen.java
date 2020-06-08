@@ -32,7 +32,7 @@ public class AltManagerScreen extends Screen {
         }));
 
         directButt = this.addButton(new ButtonWidget(this.width / 2 + 4, this.height - 52, 70, 20, ("Direct"), (buttonWidget) -> {
-            minecraft.openScreen(new DirectLoginScreen(this,this::addAlt));
+            minecraft.openScreen(new DirectLoginScreen(this, this::addAlt));
         }));
 
         randomButt = this.addButton(new ButtonWidget(this.width / 2 - 154, this.height - 28, 75, 20, ("Random"), (buttonWidget) -> {
@@ -70,7 +70,7 @@ public class AltManagerScreen extends Screen {
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-            return false;
+        return false;
     }
 
     public void render(int mouseX, int mouseY, float delta) {

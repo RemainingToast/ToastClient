@@ -8,7 +8,7 @@ import toast.client.utils.TimerUtil;
 
 public class AutoRespawn extends Module {
 
-    private TimerUtil timer = new TimerUtil();
+    private final TimerUtil timer = new TimerUtil();
 
     public AutoRespawn() {
         super("AutoRespawn", "Automatically presses the respawn button for you.", Category.COMBAT, -1);

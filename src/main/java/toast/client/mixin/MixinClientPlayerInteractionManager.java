@@ -2,7 +2,6 @@ package toast.client.mixin;
 
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -31,6 +30,6 @@ public class MixinClientPlayerInteractionManager {
     public void attackBlock(BlockPos blockPos_1, Direction direction_1, CallbackInfoReturnable info) {
         EventAttack event = new EventAttack(blockPos_1);
         EventManager.call(event);
-        if(event.isCancelled()) info.setReturnValue(true);
+        if (event.isCancelled()) info.setReturnValue(true);
     }
 }

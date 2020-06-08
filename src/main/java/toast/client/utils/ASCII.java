@@ -6,7 +6,7 @@ public class ASCII {
     Added by RemainingToast - 1/06/20
      */
 
-    public static void printFancyConsoleMSG(){
+    public static void printFancyConsoleMSG() {
         System.out.println("_________________________________________________________");
         System.out.println("     _________ _______  _______  _______ _________           ");
         System.out.println("     \\__   __/(  ___  )(  ___  )(  ____ \\\\__   __/        ");

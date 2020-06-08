@@ -11,7 +11,7 @@ public class Prefix extends Command {
 
     @Override
     public void run(String[] args) {
-        if(!(ToastClient.cmdPrefix == null)){
+        if (!(ToastClient.cmdPrefix == null)) {
             ToastClient.cmdPrefix = args[0];
             Logger.message("Command prefix set to: " + ToastClient.cmdPrefix, Logger.INFO, true);
         }

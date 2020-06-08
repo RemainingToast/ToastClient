@@ -1,14 +1,10 @@
 package toast.client.utils;
 
 public class KeyUtil {
-    public static boolean isNumeric(String str)
-    {
-        try
-        {
+    public static boolean isNumeric(String str) {
+        try {
             int i = Integer.parseInt(str);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;

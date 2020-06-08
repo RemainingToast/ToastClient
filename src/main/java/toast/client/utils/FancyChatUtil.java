@@ -30,10 +30,10 @@ public class FancyChatUtil {
         StringBuilder result = new StringBuilder();
         boolean upperCase = true;
         for (String letter : text.split("")) {
-            if(letter.equals(" ")) {
+            if (letter.equals(" ")) {
                 result.append(" ");
             } else {
-                if(upperCase) {
+                if (upperCase) {
                     result.append(letter.toUpperCase());
                     upperCase = false;
                 } else {
@@ -49,11 +49,11 @@ public class FancyChatUtil {
         Map<String, String> letters = getClassicLetters();
         StringBuilder finalString = new StringBuilder();
         for (String letter : text.split("")) {
-            if(letter.equals(" ")) {
+            if (letter.equals(" ")) {
                 finalString.append(" ");
             } else {
                 String key = getValueFromKey(letters, letter, true);
-                if(key == null) {
+                if (key == null) {
                     finalString.append(letter);
                 } else {
                     finalString.append(key);
@@ -75,7 +75,7 @@ public class FancyChatUtil {
     public static String customSuffix(String text, String separator, String suffix, String separator2, Boolean surround) {
         String output = "null"; //Should never happen
         if (suffix.isEmpty()) {
-            Logger.message("No custom suffix, using default!", Logger.ERR,true);
+            Logger.message("No custom suffix, using default!", Logger.ERR, true);
             output = text + CustomChat.suffix;
         }
         if (surround && !suffix.isEmpty()) {
@@ -211,15 +211,15 @@ public class FancyChatUtil {
     public static String antiFancyChat(String s) {
         /* I heard you like lambdas */
         return s.chars()
-            .mapToObj(x -> {
-                if (x > 0xFF00 && x < 0xFF60) {
-                    // https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
-                    return String.valueOf((char)(x - 0xFEE0));
-                } else {
-                    // later? https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
-                    return String.valueOf((char)(x));
-                }
-            })
-            .collect(java.util.stream.Collectors.joining());
-    } 
+                .mapToObj(x -> {
+                    if (x > 0xFF00 && x < 0xFF60) {
+                        // https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
+                        return String.valueOf((char) (x - 0xFEE0));
+                    } else {
+                        // later? https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
+                        return String.valueOf((char) (x));
+                    }
+                })
+                .collect(java.util.stream.Collectors.joining());
+    }
 }

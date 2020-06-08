@@ -14,7 +14,7 @@ import java.util.List;
 public class Spammer extends Module {
     private List<String> lines = new ArrayList<>();
     private int currentLine = 0;
-    private TimerUtil timer = new TimerUtil();
+    private final TimerUtil timer = new TimerUtil();
 
     public Spammer() {
         super("Spammer", "Spams messages in chat from a file.", Category.MISC, -1);

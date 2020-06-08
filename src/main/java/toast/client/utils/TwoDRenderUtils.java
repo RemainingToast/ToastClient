@@ -10,6 +10,7 @@ import java.util.List;
 
 public class TwoDRenderUtils {
     private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
     /**
      * Draws text at the given coordinates
      *
@@ -80,12 +81,12 @@ public class TwoDRenderUtils {
     /**
      * Check if the mouse if over a box on screen
      *
-     * @param mouseX      Current X coordinate of the mouse
-     * @param mouseY      Current Y coordinate of the mouse
-     * @param x           X coordinate of the top left corner of the inside of the text box
-     * @param y           Y coordinate of the top left corner of the inside of the text box
-     * @param width       Width of the inside of the box
-     * @param height      Height of the inside of the box
+     * @param mouseX Current X coordinate of the mouse
+     * @param mouseY Current Y coordinate of the mouse
+     * @param x      X coordinate of the top left corner of the inside of the text box
+     * @param y      Y coordinate of the top left corner of the inside of the text box
+     * @param width  Width of the inside of the box
+     * @param height Height of the inside of the box
      */
     public static boolean isMouseOverRect(double mouseX, double mouseY, double x, double y, int width, int height) {
         boolean xOver = false;
@@ -102,9 +103,9 @@ public class TwoDRenderUtils {
     /**
      * Render a nine item wide grid from a list of item stacks at a coordinate
      *
-     * @param itemStacks  List of item stacks to render
-     * @param x           X coordinate of the top left corner of the top left item
-     * @param y           Y coordinate of the top left corner of the top left item
+     * @param itemStacks List of item stacks to render
+     * @param x          X coordinate of the top left corner of the top left item
+     * @param y          Y coordinate of the top left corner of the top left item
      */
     public static void renderNineWideInvItems(List<ItemStack> itemStacks, int x, int y) {
         int startX = x;

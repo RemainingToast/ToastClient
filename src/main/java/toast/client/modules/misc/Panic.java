@@ -11,7 +11,7 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class Panic extends Module {
     private static boolean isPanicking = false;
-    private List<Module> wasEnabled = new ArrayList<>();
+    private final List<Module> wasEnabled = new ArrayList<>();
 
     public Panic() {
         super("Panic", "Makes the client disappear until you relaunch the game.", Category.MISC, GLFW.GLFW_KEY_P);

@@ -1,7 +1,6 @@
 package toast.client.utils;
 
 import com.mojang.authlib.Agent;
-import com.mojang.authlib.AuthenticationService;
 import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
@@ -14,7 +13,7 @@ import java.util.UUID;
 
 public class LoginUtil {
 
-    private static MinecraftClient mc = MinecraftClient.getInstance();
+    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
 
     public static boolean setSession(Session newSession) {
@@ -23,7 +22,7 @@ public class LoginUtil {
         if (mc.getClass().getDeclaredFields() == null) return false;
         Field newField = null;
         for (Field field : mc.getClass().getDeclaredFields()) {
-            if(field.getName().equalsIgnoreCase("session") || field.getName().equalsIgnoreCase("field_1726")) {
+            if (field.getName().equalsIgnoreCase("session") || field.getName().equalsIgnoreCase("field_1726")) {
                 newField = field;
             }
         }
@@ -39,8 +38,8 @@ public class LoginUtil {
     }
 
     public static boolean loginWithPass(String mail, String pass) {
-        if(mail.isEmpty() || pass.isEmpty()) return false;
-        YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication)new YggdrasilAuthenticationService(Proxy.NO_PROXY, "").createUserAuthentication(Agent.MINECRAFT);
+        if (mail.isEmpty() || pass.isEmpty()) return false;
+        YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) new YggdrasilAuthenticationService(Proxy.NO_PROXY, "").createUserAuthentication(Agent.MINECRAFT);
         auth.setUsername(mail);
         auth.setPassword(pass);
         try {
@@ -54,7 +53,7 @@ public class LoginUtil {
     }
 
     public static boolean loginCracked(String username) {
-        if(username.isEmpty()) return false;
+        if (username.isEmpty()) return false;
         Session session = new Session(username,
                 UUID.randomUUID().toString(),
                 "0", "legacy");

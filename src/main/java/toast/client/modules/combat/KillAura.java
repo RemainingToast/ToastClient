@@ -15,7 +15,7 @@ import toast.client.utils.TimerUtil;
 
 public class KillAura extends Module {
 
-    private TimerUtil timer = new TimerUtil();
+    private final TimerUtil timer = new TimerUtil();
 
     public KillAura() {
         super("KillAura", "Automatically attacks mobs and players around you.", Category.COMBAT, GLFW.GLFW_KEY_K);

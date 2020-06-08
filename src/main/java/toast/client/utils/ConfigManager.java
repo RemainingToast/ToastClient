@@ -12,8 +12,8 @@ import toast.client.modules.config.Setting;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.TreeMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import static toast.client.ToastClient.MODULE_MANAGER;
 
@@ -105,7 +105,8 @@ public class ConfigManager {
 
     public void loadMacros() {
         try {
-            macros = gson.fromJson(new FileReader(FileManager.createFile(macrosFile)), new TypeToken<Map<String, Integer>>() {}.getType());
+            macros = gson.fromJson(new FileReader(FileManager.createFile(macrosFile)), new TypeToken<Map<String, Integer>>() {
+            }.getType());
             if (macros == null) macros = new TreeMap<>();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

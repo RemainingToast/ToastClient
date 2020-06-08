@@ -15,7 +15,7 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 @Mixin(PlayerEntity.class)
 public class MixinPlayerEntity {
     @Inject(at = @At("HEAD"), method = "jump()V", cancellable = true)
-    public void jump (CallbackInfo ci) {
+    public void jump(CallbackInfo ci) {
         Surround surround = (Surround) MODULE_MANAGER.getModule(Surround.class);
         if (surround.isEnabled() && surround.getBool("Center")) {
             ci.cancel();

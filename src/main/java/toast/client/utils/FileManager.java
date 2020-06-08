@@ -1,12 +1,12 @@
 package toast.client.utils;
 
-import toast.client.ToastClient;
 import net.minecraft.client.MinecraftClient;
+import toast.client.ToastClient;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class FileManager {
@@ -16,11 +16,11 @@ public class FileManager {
 
     public static void initFileManager() {
         hackDirectory = new File(MinecraftClient.getInstance().runDirectory, ToastClient.cleanPrefix.toLowerCase() + "/");
-        if(hackDirectory.mkdirs()) {
-            fileManagerLogger("Created "+hackDirectory.getPath());
+        if (hackDirectory.mkdirs()) {
+            fileManagerLogger("Created " + hackDirectory.getPath());
         }
         inited = true;
-        fileManagerLogger("FileManager initialized! "+hackDirectory);
+        fileManagerLogger("FileManager initialized! " + hackDirectory);
     }
 
     private static void fileManagerLogger(String m) {
@@ -28,13 +28,13 @@ public class FileManager {
     }
 
     public static File createFile(File file) {
-        if(!inited) return null;
+        if (!inited) return null;
         File newFile = new File(hackDirectory, file.getName());
         try {
-            if(newFile.createNewFile()) {
-                fileManagerLogger("File "+newFile.getName()+" has been created.");
+            if (newFile.createNewFile()) {
+                fileManagerLogger("File " + newFile.getName() + " has been created.");
             } else {
-                fileManagerLogger("File "+newFile.getName()+" already exists.");
+                fileManagerLogger("File " + newFile.getName() + " already exists.");
             }
             return newFile;
         } catch (IOException e) {
@@ -65,7 +65,7 @@ public class FileManager {
             writer.close();
             return file;
         } catch (IOException e) {
-            fileManagerLogger("Failed to write to file "+file.getName());
+            fileManagerLogger("Failed to write to file " + file.getName());
             e.printStackTrace();
             return null;
         }
@@ -84,29 +84,29 @@ public class FileManager {
     }
 
     public static File createFile(File file, String lines) {
-        if(!inited) return null;
+        if (!inited) return null;
         File newFile = new File(hackDirectory, file.getName());
         try {
             new FileWriter(newFile).write(lines);
             if (newFile.createNewFile()) {
-                fileManagerLogger("File "+newFile.getName()+" has been created with "+lines.split("\n").length+" lines.");
+                fileManagerLogger("File " + newFile.getName() + " has been created with " + lines.split("\n").length + " lines.");
             } else {
-                fileManagerLogger("File "+newFile.getName()+" already exists.");
+                fileManagerLogger("File " + newFile.getName() + " already exists.");
             }
             return newFile;
         } catch (IOException e) {
-            fileManagerLogger("Failed to create and write lines to "+newFile.getName());
+            fileManagerLogger("Failed to create and write lines to " + newFile.getName());
             return null;
         }
     }
 
     public static File appendFile(File file, String text) {
-        if(!inited) return null;
+        if (!inited) return null;
         try {
             new FileWriter(file).append(text);
             return file;
         } catch (IOException e) {
-            fileManagerLogger("Failed to append file "+file.getName());
+            fileManagerLogger("Failed to append file " + file.getName());
             e.printStackTrace();
             return file;
         }
@@ -129,11 +129,11 @@ public class FileManager {
     }
 
     public static List<String> readFile(File file) {
-        if(!file.exists() || !inited) return null;
+        if (!file.exists() || !inited) return null;
         try {
             return Files.readAllLines(file.toPath());
         } catch (IOException e) {
-            fileManagerLogger("Failed to read file "+file.getName());
+            fileManagerLogger("Failed to read file " + file.getName());
             e.printStackTrace();
             return null;
         }
@@ -141,10 +141,10 @@ public class FileManager {
 
     public static File setLine(File file, String newLine, int index) {
         List<String> lines = readFile(file);
-        if(lines == null || lines.size() < 1) return null;
-        if(index > lines.size()) {
+        if (lines == null || lines.size() < 1) return null;
+        if (index > lines.size()) {
             for (int i = lines.size(); i <= index; i++) {
-                if(i == index) lines.add(newLine);
+                if (i == index) lines.add(newLine);
                 else lines.add("");
             }
         } else {
@@ -154,7 +154,7 @@ public class FileManager {
     }
 
     public static File getFile(String name) {
-        return getFile(name,false);
+        return getFile(name, false);
     }
 
     public static File getFile(String name, boolean cases) {
@@ -164,16 +164,17 @@ public class FileManager {
                     .filter(file -> cases ? file.getName().equals(name) : file.getName().equalsIgnoreCase(name))
                     .forEach(matches::add);
             return matches.get(0);
-        } catch(Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         return null;
     }
 
     public static List<File> getFiles() {
-        if(!inited) return null;
+        if (!inited) return null;
         try {
             return new ArrayList<>(Arrays.asList(Objects.requireNonNull(hackDirectory.listFiles())));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }

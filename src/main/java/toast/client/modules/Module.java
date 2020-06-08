@@ -3,9 +3,7 @@ package toast.client.modules;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import toast.client.event.EventImpl;
 import toast.client.event.EventManager;
-import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.config.ModuleSettings;
 import toast.client.modules.config.Setting;
 
@@ -102,9 +100,11 @@ public class Module {
         setEnabled(!isEnabled());
     }
 
-    public void onEnable() {}
+    public void onEnable() {
+    }
 
-    public void onDisable() {}
+    public void onDisable() {
+    }
 
     public enum Category {
         PLAYER,

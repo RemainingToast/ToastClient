@@ -16,7 +16,7 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 public abstract class MixinEntityRenderer<T extends Entity> {
     @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
     protected void renderLabelIfPresent(T entity_1, String string_1, MatrixStack matrixStack_1, VertexConsumerProvider vertexConsumerProvider_1, int int_1, CallbackInfo ci) {
-        if(MODULE_MANAGER.getModule(NameTags.class).isEnabled()) {
+        if (MODULE_MANAGER.getModule(NameTags.class).isEnabled()) {
             NameTags.renderNameTag(entity_1, string_1, matrixStack_1, vertexConsumerProvider_1, int_1);
             ci.cancel();
         }

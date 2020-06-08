@@ -67,17 +67,17 @@ public class Set extends Command {
                                         Logger.message(newNum + " is too big, the maximum value is: " + settingDef.getMaxValue(), Logger.WARN, false);
                                     }
                                 } else {
-                                    Logger.message(args[2] + " is an invalid value for this setting, please give a number.", Logger.WARN,false);
+                                    Logger.message(args[2] + " is an invalid value for this setting, please give a number.", Logger.WARN, false);
                                 }
                             } else if (setting.getType() == 2) {
                                 if (args[2].equals("true") || args[2].equals("false")) {
                                     setting.setEnabled(Boolean.parseBoolean(args[2]));
-                                    Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO,false);
+                                    Logger.message("Changed value of setting " + args[1] + " to " + args[2], Logger.INFO, false);
                                 } else {
-                                    Logger.message(args[2] + " is an invalid value for this setting, please give a boolean (true/false).", Logger.WARN,false);
+                                    Logger.message(args[2] + " is an invalid value for this setting, please give a boolean (true/false).", Logger.WARN, false);
                                 }
                             } else {
-                                Logger.message("Internal programming error.", Logger.WARN,false);
+                                Logger.message("Internal programming error.", Logger.WARN, false);
                             }
                         }
                     } else {
@@ -93,7 +93,7 @@ public class Set extends Command {
                 Logger.message(args[0] + " is not a module.", Logger.WARN, false);
             }
         } else {
-            Logger.message("Invalid arguments.", Logger.WARN,false);
+            Logger.message("Invalid arguments.", Logger.WARN, false);
         }
     }
 }

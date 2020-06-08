@@ -19,6 +19,6 @@ public abstract class MixinGameRenderer {
         ++this.ticks;
         EventRender event = new EventRender(this.ticks);
         EventManager.call(event);
-        if(event.isCancelled()) ci.cancel();
+        if (event.isCancelled()) ci.cancel();
     }
 }

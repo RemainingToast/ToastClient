@@ -13,7 +13,7 @@ public abstract class Command {
     public boolean dev;
     protected MinecraftClient mc = MinecraftClient.getInstance();
 
-    public Command(String name,String usage, String desc, boolean dev, String... aliases) {
+    public Command(String name, String usage, String desc, boolean dev, String... aliases) {
         this.usage = usage;
         this.name = name;
         this.dev = dev;

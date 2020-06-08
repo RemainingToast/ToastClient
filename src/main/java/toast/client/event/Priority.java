@@ -7,8 +7,8 @@ public final class Priority {
     public static final byte LOW = 3;
     public static final byte LOWEST = 4;
     public static final byte[] VALUE_ARRAY;
-    
+
     static {
-        VALUE_ARRAY = new byte[] { 0, 1, 2, 3, 4 };
+        VALUE_ARRAY = new byte[]{0, 1, 2, 3, 4};
     }
 }

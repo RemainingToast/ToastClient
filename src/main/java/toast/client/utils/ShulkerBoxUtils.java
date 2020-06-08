@@ -37,21 +37,26 @@ public class ShulkerBoxUtils {
             Blocks.BLACK_SHULKER_BOX
     );
 
-    public static boolean isShulkerBox(Item item) { return item instanceof BlockItem && isShulkerBox(((BlockItem) item).getBlock()); }
+    public static boolean isShulkerBox(Item item) {
+        return item instanceof BlockItem && isShulkerBox(((BlockItem) item).getBlock());
+    }
+
     public static boolean isShulkerBox(Block block) {
         return shulkerList.contains(block);
     }
-    public static boolean isShulkerBox(ItemStack item){ return ((BlockItem) item.getItem()).getBlock() instanceof ShulkerBoxBlock; }
+
+    public static boolean isShulkerBox(ItemStack item) {
+        return ((BlockItem) item.getItem()).getBlock() instanceof ShulkerBoxBlock;
+    }
 
 
-
-    public static List<ItemStack> getItemsInShulker(ItemStack item){
+    public static List<ItemStack> getItemsInShulker(ItemStack item) {
         List<ItemStack> items = new ArrayList<>(Collections.nCopies(27, new ItemStack(Items.AIR)));
         CompoundTag nbt = item.getTag();
 
-        if(nbt != null && nbt.contains("BlockEntityTag")){
+        if (nbt != null && nbt.contains("BlockEntityTag")) {
             CompoundTag nbtt = nbt.getCompound("BlockEntityTag");
-            if(nbtt.contains("Items")){
+            if (nbtt.contains("Items")) {
                 ListTag nbtList = (ListTag) nbtt.get("Items");
                 for (int i = 0; i < nbtList.size(); i++) {
                     items.set(nbtList.getCompound(i).getByte("Slot"), ItemStack.fromTag(nbtList.getCompound(i)));

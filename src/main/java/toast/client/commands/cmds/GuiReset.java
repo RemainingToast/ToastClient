@@ -13,11 +13,11 @@ public class GuiReset extends Command {
     }
 
     public void run(String[] args) {
-        if(clickGuiHasOpened) {
+        if (clickGuiHasOpened) {
             clickGui.getSettings().initCategoryPositions();
             clickGui.getSettings().savePositions();
             Logger.message("Re-arranged ClickGui, if you still have problems, try setting your gui scale to minimum.", Logger.INFO, true);
-        }else{
+        } else {
             Logger.message("ClickGui hasn't been opened!", Logger.ERR, true);
         }
     }

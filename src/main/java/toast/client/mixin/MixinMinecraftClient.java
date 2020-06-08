@@ -1,14 +1,14 @@
 package toast.client.mixin;
 
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import toast.client.ToastClient;
-import toast.client.event.EventManager;
-import toast.client.event.events.player.EventUpdate;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import toast.client.ToastClient;
+import toast.client.event.EventManager;
+import toast.client.event.events.player.EventUpdate;
 import toast.client.modules.misc.Panic;
 import toast.client.utils.RandomMOTD;
 
@@ -24,8 +24,8 @@ public class MixinMinecraftClient {
 
     @Inject(method = "getWindowTitle", at = @At(value = "RETURN"), cancellable = true)
     private void getWindowTitle(CallbackInfoReturnable cir) {
-        if(!Panic.IsPanicking()) {
-            cir.setReturnValue(ToastClient.cleanPrefix+" "+ToastClient.version+" | "+ RandomMOTD.randomMOTD());
+        if (!Panic.IsPanicking()) {
+            cir.setReturnValue(ToastClient.cleanPrefix + " " + ToastClient.version + " | " + RandomMOTD.randomMOTD());
         }
     }
 

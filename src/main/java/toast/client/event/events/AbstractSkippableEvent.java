@@ -4,18 +4,18 @@ import toast.client.event.IEvent;
 
 public abstract class AbstractSkippableEvent implements IEvent {
 
-	private boolean isSkipped;
+    private boolean isSkipped;
 
-	protected AbstractSkippableEvent() {
+    protected AbstractSkippableEvent() {
 
-	}
+    }
 
-	public boolean isCancelled() {
-		return this.isSkipped;
-	}
+    public boolean isCancelled() {
+        return this.isSkipped;
+    }
 
-	public void setCancelled(boolean isCancelled) {
-		this.isSkipped = isCancelled;
-	}
+    public void setCancelled(boolean isCancelled) {
+        this.isSkipped = isCancelled;
+    }
 
 }

@@ -12,7 +12,7 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 public class Panic extends Command {
 
     private static boolean isPanicking = false;
-    private List<Module> wasEnabled = new ArrayList<>();
+    private final List<Module> wasEnabled = new ArrayList<>();
 
     public Panic() {
         super("Panic", ToastClient.cmdPrefix + "panic", "shutdowns client", false, "shutdown", "panic");

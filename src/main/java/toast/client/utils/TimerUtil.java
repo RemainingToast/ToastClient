@@ -3,9 +3,13 @@ package toast.client.utils;
 public class TimerUtil {
     private long lastMS;
 
-    public TimerUtil() { setLastMS(); }
+    public TimerUtil() {
+        setLastMS();
+    }
 
-    public int convertToMS(int perSecond) { return 1000 / perSecond; }
+    public int convertToMS(int perSecond) {
+        return 1000 / perSecond;
+    }
 
     public boolean everyDelay(long delay) {
         if (System.currentTimeMillis() - this.lastMS >= delay) {
@@ -15,23 +19,35 @@ public class TimerUtil {
         return false;
     }
 
-    public long getCurrentMS() { return System.nanoTime() / 1000000L; }
-
-    public long getLastMS() { return this.lastMS; }
-
-    public boolean hasReached(float f) { return ((float)(getCurrentMS() - this.lastMS) >= f); }
-
-    public boolean isDelayComplete(long delay) {
-        if (System.currentTimeMillis() - this.lastMS >= delay)
-            return true;
-        return false;
+    public long getCurrentMS() {
+        return System.nanoTime() / 1000000L;
     }
 
-    public int pastTime() { return (int)(System.currentTimeMillis() - this.lastMS); }
+    public long getLastMS() {
+        return this.lastMS;
+    }
 
-    public void reset() { this.lastMS = getCurrentMS(); }
+    public void setLastMS(long currentMS) {
+        this.lastMS = currentMS;
+    }
 
-    public void setLastMS() { this.lastMS = System.currentTimeMillis(); }
+    public boolean hasReached(float f) {
+        return ((float) (getCurrentMS() - this.lastMS) >= f);
+    }
 
-    public void setLastMS(long currentMS) { this.lastMS = currentMS; }
+    public boolean isDelayComplete(long delay) {
+        return System.currentTimeMillis() - this.lastMS >= delay;
+    }
+
+    public int pastTime() {
+        return (int) (System.currentTimeMillis() - this.lastMS);
+    }
+
+    public void reset() {
+        this.lastMS = getCurrentMS();
+    }
+
+    public void setLastMS() {
+        this.lastMS = System.currentTimeMillis();
+    }
 }

@@ -3,7 +3,7 @@ package toast.client.event.events.player;
 import toast.client.event.events.AbstractSkippableEvent;
 
 public class EventRender extends AbstractSkippableEvent {
-    private int partialTicks;
+    private final int partialTicks;
 
     public EventRender(int partialTicks) {
         this.partialTicks = partialTicks;

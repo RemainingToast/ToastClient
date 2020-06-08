@@ -35,9 +35,9 @@ public class Save extends Command {
                     break;
                 default:
                     Logger.message("Invalid argument, valid arguments are:", Logger.WARN, true);
-                    Logger.message(Formatting.GRAY + "  modules " + Formatting.YELLOW + "saves the enabled state of modules", Logger.EMPTY,true);
-                    Logger.message(Formatting.GRAY + "  keybinds " + Formatting.YELLOW + "saves all keybinds", Logger.EMPTY,true);
-                    Logger.message(Formatting.GRAY + "  config " + Formatting.YELLOW + "saves client config (not modules)", Logger.EMPTY,true);
+                    Logger.message(Formatting.GRAY + "  modules " + Formatting.YELLOW + "saves the enabled state of modules", Logger.EMPTY, true);
+                    Logger.message(Formatting.GRAY + "  keybinds " + Formatting.YELLOW + "saves all keybinds", Logger.EMPTY, true);
+                    Logger.message(Formatting.GRAY + "  config " + Formatting.YELLOW + "saves client config (not modules)", Logger.EMPTY, true);
             }
         }
     }

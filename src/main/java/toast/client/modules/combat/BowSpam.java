@@ -12,7 +12,7 @@ public class BowSpam extends Module {
 
     public BowSpam() {
         super("BowSpam", "Makes your bow fully automatic.", Category.COMBAT, -1);
-        this.settings.addMode("Mode", "No Charge","No Charge", "Medium Charge", "Full Charge");
+        this.settings.addMode("Mode", "No Charge", "No Charge", "Medium Charge", "Full Charge");
     }
 
     @EventImpl

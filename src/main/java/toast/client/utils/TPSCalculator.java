@@ -22,7 +22,7 @@ public class TPSCalculator {
     private static Timer timer;
 
     private long lastUpdateMillis = 0;
-    private float[] ticks = new float[10];
+    private final float[] ticks = new float[10];
     private double nextPredictedTick = Double.MAX_VALUE;
     private int nextToCheck = 0;
 

@@ -11,7 +11,7 @@ import net.minecraft.entity.passive.WolfEntity;
 
 public class EntityUtils {
 
-    private static MinecraftClient mc = MinecraftClient.getInstance();
+    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
     public static boolean notSelf(Entity e) {
         return e != mc.player && e != mc.cameraEntity;

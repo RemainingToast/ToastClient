@@ -20,34 +20,34 @@ public class Reload extends Command {
             if (clickGuiHasOpened) {
                 clickGui.reloadConfig();
             }
-            Logger.message("Reloaded all configuration files.", Logger.INFO,true);
+            Logger.message("Reloaded all configuration files.", Logger.INFO, true);
         } else {
             switch (args[0]) {
                 case "config":
                     CONFIG_MANAGER.loadConfig();
-                    Logger.message("Reloaded module options.", Logger.INFO,true);
+                    Logger.message("Reloaded module options.", Logger.INFO, true);
                     break;
                 case "modules":
                     CONFIG_MANAGER.loadModules();
-                    Logger.message("Reloaded modules.", Logger.INFO,true);
+                    Logger.message("Reloaded modules.", Logger.INFO, true);
                     break;
                 case "keybinds":
                     CONFIG_MANAGER.loadKeyBinds();
-                    Logger.message("Reloaded keybinds.", Logger.INFO,true);
+                    Logger.message("Reloaded keybinds.", Logger.INFO, true);
                     break;
                 case "clickgui":
                     if (clickGuiHasOpened) {
                         clickGui.reloadConfig();
                     } else {
-                        Logger.message("ClickGUI hasn't been opened yet", Logger.ERR,true);
+                        Logger.message("ClickGUI hasn't been opened yet", Logger.ERR, true);
                     }
                     break;
                 default:
-                    Logger.message("Invalid argument, valid arguments are:", Logger.WARN,true);
-                    Logger.message(Formatting.GRAY + "  modules " + Formatting.YELLOW + "reloads the enabled state of modules", Logger.EMPTY,true);
-                    Logger.message(Formatting.GRAY + "  keybinds " + Formatting.YELLOW + "reloads all keybinds", Logger.EMPTY,true);
-                    Logger.message(Formatting.GRAY + "  clickgui " + Formatting.YELLOW + "reloads the clickgui", Logger.EMPTY,true);
-                    Logger.message(Formatting.GRAY + "  config " + Formatting.YELLOW + "reloads client config (not modules)", Logger.EMPTY,true);
+                    Logger.message("Invalid argument, valid arguments are:", Logger.WARN, true);
+                    Logger.message(Formatting.GRAY + "  modules " + Formatting.YELLOW + "reloads the enabled state of modules", Logger.EMPTY, true);
+                    Logger.message(Formatting.GRAY + "  keybinds " + Formatting.YELLOW + "reloads all keybinds", Logger.EMPTY, true);
+                    Logger.message(Formatting.GRAY + "  clickgui " + Formatting.YELLOW + "reloads the clickgui", Logger.EMPTY, true);
+                    Logger.message(Formatting.GRAY + "  config " + Formatting.YELLOW + "reloads client config (not modules)", Logger.EMPTY, true);
             }
         }
     }

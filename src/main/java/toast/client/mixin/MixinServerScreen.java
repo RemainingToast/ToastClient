@@ -1,6 +1,5 @@
 package toast.client.mixin;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -13,7 +12,6 @@ import toast.client.gui.screens.altmanager.AltManagerScreen;
 
 @Mixin(MultiplayerScreen.class)
 public class MixinServerScreen extends Screen {
-
 
 
     protected MixinServerScreen(Text text_1) {

@@ -14,40 +14,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Nuker extends Module {
+    private final List<BlockPos> pending = new ArrayList<>();
+
     public Nuker() {
         super("Nuker", "Automatically destroys blocks around you.", Category.PLAYER, -1);
         this.settings.addSlider("Range", 1, 5, 10);
     }
+
     public ArrayList<BlockPos> getBlocks() {
-        if(mc.player == null || mc.world == null) return null;
+        if (mc.player == null || mc.world == null) return null;
         ArrayList<BlockPos> list = new ArrayList<>();
-        int i = (int)this.getDouble("Range") + 1;
+        int i = (int) this.getDouble("Range") + 1;
         for (int x = -i; x <= i; x++) {
             for (int y = -i; y <= i; y++) {
                 for (int z = -i; z <= i; z++) {
                     BlockPos pos = (new BlockPos(mc.player)).add(x, y, z);
                     if (!(mc.world.getBlockState(pos).getBlock().equals(Blocks.AIR) || mc.world.getBlockState(pos).getBlock().equals(Blocks.CAVE_AIR))
                             && mc.player.squaredDistanceTo(new Vec3d(pos.getX(), pos.getY(),
-                            pos.getZ())) < ((int)this.getDouble("Range") * (int)this.getDouble("Range")))
+                            pos.getZ())) < ((int) this.getDouble("Range") * (int) this.getDouble("Range")))
                         list.add(pos);
                 }
             }
-        }  return list;
+        }
+        return list;
     }
-
-    private List<BlockPos> pending = new ArrayList<>();
 
     @EventImpl
     public void onEvent(EventUpdate event) {
-        if(mc.interactionManager == null || mc.player == null) return;
+        if (mc.interactionManager == null || mc.player == null) return;
         for (BlockPos block : getBlocks()) {
-            if(pending.contains(block)) continue;
-            if(mc.interactionManager.getCurrentGameMode() == GameMode.CREATIVE) {
+            if (pending.contains(block)) continue;
+            if (mc.interactionManager.getCurrentGameMode() == GameMode.CREATIVE) {
                 pending.add(block);
                 mc.interactionManager.attackBlock(block, Direction.UP);
                 mc.player.swingHand(Hand.MAIN_HAND);
                 pending.remove(block);
-            } else if(mc.interactionManager.getCurrentGameMode() == GameMode.SURVIVAL) {//TODO: fix this shit
+            } else if (mc.interactionManager.getCurrentGameMode() == GameMode.SURVIVAL) {//TODO: fix this shit
                 //mc.interactionManager.updateBlockBreakingProgress(block, Direction.UP);
             } else return;
 

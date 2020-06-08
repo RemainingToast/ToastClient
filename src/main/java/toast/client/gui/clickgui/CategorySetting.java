@@ -12,7 +12,7 @@ public class CategorySetting {
     @SerializedName("Expanded")
     private boolean expanded;
     @SerializedName("Expanded Modules")
-    private ArrayList<String> expandedModules;
+    private final ArrayList<String> expandedModules;
 
     public CategorySetting(double x, double y, boolean expanded, ArrayList<String> expandedModules) {
         this.posX = x;
@@ -25,20 +25,20 @@ public class CategorySetting {
         return expanded;
     }
 
-    public double getPosX() {
-        return posX;
-    }
-
-    public double getPosY() {
-        return posY;
-    }
-
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
 
+    public double getPosX() {
+        return posX;
+    }
+
     public void setPosX(double posx) {
         this.posX = posx;
+    }
+
+    public double getPosY() {
+        return posY;
     }
 
     public void setPosY(double posy) {

@@ -13,12 +13,7 @@ import java.net.IDN;
 import java.util.function.Predicate;
 
 public class AddAccountScreen extends Screen {
-    private ButtonWidget buttonAdd;
     private final BooleanConsumer callback;
-//    private final ServerInfo server;
-    private TextFieldWidget passwordField;
-    private TextFieldWidget emailField;
-    private ButtonWidget resourcePackOptionButton;
     private final Screen parent;
     private final Predicate<String> addressTextFilter = (string) -> {
         if (ChatUtil.isEmpty(string)) {
@@ -37,6 +32,11 @@ public class AddAccountScreen extends Screen {
             }
         }
     };
+    private ButtonWidget buttonAdd;
+    //    private final ServerInfo server;
+    private TextFieldWidget passwordField;
+    private TextFieldWidget emailField;
+    private ButtonWidget resourcePackOptionButton;
 
     public AddAccountScreen(Screen parent, BooleanConsumer callback) {
         super(new LiteralText("Direct Login"));
@@ -63,7 +63,7 @@ public class AddAccountScreen extends Screen {
         this.passwordField.setTextPredicate(this.addressTextFilter);
         this.passwordField.setChangedListener(this::onClose);
         this.children.add(this.passwordField);
-        this.buttonAdd = (ButtonWidget)this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 96 + 18, 200, 20, "Login", (buttonWidget) -> {
+        this.buttonAdd = this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 96 + 18, 200, 20, "Login", (buttonWidget) -> {
             this.addAndClose();
         }));
         this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 120 + 18, 200, 20, "Back", (buttonWidget) -> {
@@ -90,10 +90,10 @@ public class AddAccountScreen extends Screen {
     }
 
     private void addAndClose() {
-        if(LoginUtil.loginWithPass(emailField.getText(),passwordField.getText())){
+        if (LoginUtil.loginWithPass(emailField.getText(), passwordField.getText())) {
             System.out.println("Login Success!");
             onClose();
-        }else{
+        } else {
             System.out.println("Login Failed!");
         }
     }

@@ -21,19 +21,21 @@ import static net.minecraft.world.Heightmap.Type.WORLD_SURFACE;
 
 @Environment(EnvType.CLIENT)
 public class WorldUtil {
-    
+
     /**
      * Asynchronously get all matches of given Block(s) inside a given Chunk and collect them into a map of BlockPos and Block
      *
-     * @param world World of the chunk
-     * @param chunkX Chunk-level X value (normal X / 16.0D)
-     * @param chunkZ Chunk-level Z value (normal Z / 16.0D)
+     * @param world   World of the chunk
+     * @param chunkX  Chunk-level X value (normal X / 16.0D)
+     * @param chunkZ  Chunk-level Z value (normal Z / 16.0D)
      * @param matches List of blocks to match against blocks inside the Box
      * @return Matches inside the Box collected as a map of BlockPos and Block
      */
     public static ConcurrentHashMap<BlockPos, Block> searchChunk(World world, int chunkX, int chunkZ, List<Block> matches) throws InterruptedException {
         ConcurrentHashMap<BlockPos, Block> queue = new ConcurrentHashMap<>();
-        if (!world.isChunkLoaded(new BlockPos(chunkX * 16d, 80d, chunkZ * 16d))) { return queue; }
+        if (!world.isChunkLoaded(new BlockPos(chunkX * 16d, 80d, chunkZ * 16d))) {
+            return queue;
+        }
         CountDownLatch latch = new CountDownLatch(1);
         Chunk chunk = world.getChunk(chunkX, chunkZ);
         new Thread(() -> {
@@ -54,8 +56,8 @@ public class WorldUtil {
     /**
      * Asynchronously get all matches of given Block(s) inside a given Box and collect them into a map of BlockPos and Block
      *
-     * @param world World of the Box
-     * @param box Box to search for matches within
+     * @param world   World of the Box
+     * @param box     Box to search for matches within
      * @param matches List of blocks to match against blocks inside the Box
      * @return Matches inside the Box collected as a map of BlockPos and Block
      */
@@ -85,7 +87,7 @@ public class WorldUtil {
     /**
      * Asynchronously get all matches of given Block(s) inside a given List and collect them into a map of BlockPos and Block
      *
-     * @param world World of the Box
+     * @param world   World of the Box
      * @param toCheck List of block positions to check against matches
      * @param matches List of blocks to match against blocks inside the Box
      * @return Matches inside the List collected as a map of BlockPos and Block
@@ -110,16 +112,18 @@ public class WorldUtil {
     /**
      * Get all tile entities inside a given Chunk and collect them into a map of BlockPos and Block
      *
-     * @see Chunk#getBlockEntityPositions()
-     * @param world World of the chunk
+     * @param world  World of the chunk
      * @param chunkX Chunk-level X value (normal X / 16.0D)
      * @param chunkZ Chunk-level Z value (normal Z / 16.0D)
      * @return Tile entities inside the Chunk collected as a map of BlockPos and Block
+     * @see Chunk#getBlockEntityPositions()
      */
     public static LinkedHashMap<BlockPos, Block> getTileEntitiesInChunk(World world, int chunkX, int chunkZ) {
         LinkedHashMap<BlockPos, Block> map = new LinkedHashMap<>();
         Chunk chunk = world.getChunk(chunkX, chunkZ);
-        if (!world.isChunkLoaded(new BlockPos(chunkX * 16d, 80d, chunkZ * 16d))) { return map; }
+        if (!world.isChunkLoaded(new BlockPos(chunkX * 16d, 80d, chunkZ * 16d))) {
+            return map;
+        }
         chunk.getBlockEntityPositions().forEach(tilePos -> {
             map.put(tilePos, world.getBlockState(tilePos).getBlock());
         });
@@ -129,9 +133,9 @@ public class WorldUtil {
     /**
      * Get all tile entities inside a given world and collect them into a map of BlockPos and Block
      *
-     * @see Chunk#getBlockEntityPositions()
      * @param world World of the chunk
      * @return Tile entities inside the world which are loaded by the player collected as a map of BlockPos and Block
+     * @see Chunk#getBlockEntityPositions()
      */
     public static LinkedHashMap<BlockPos, Block> getTileEntitiesInWorld(World world) {
         LinkedHashMap<BlockPos, Block> map = new LinkedHashMap<>();
@@ -156,9 +160,9 @@ public class WorldUtil {
     /**
      * Gets vectors between two given vectors (startVec and destinationVec) every (distance between the given vectors) / steps
      *
-     * @param startVec Beginning vector
+     * @param startVec       Beginning vector
      * @param destinationVec Ending vector
-     * @param steps distance between given vectors
+     * @param steps          distance between given vectors
      * @return all vectors between startVec and destinationVec divided by steps
      */
     public static ArrayList<Vec3d> extendVec(Vec3d startVec, Vec3d destinationVec, int steps) {
@@ -177,9 +181,9 @@ public class WorldUtil {
     /**
      * Moves a vector towards a destination based on distance
      *
-     * @param startVec Starting vector
+     * @param startVec       Starting vector
      * @param destinationVec returned vector
-     * @param distance distance to move startVec by
+     * @param distance       distance to move startVec by
      * @return vector based on startVec that is moved towards destinationVec by distance
      */
     public static Vec3d advanceVec(Vec3d startVec, Vec3d destinationVec, double distance) {
