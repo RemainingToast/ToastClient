@@ -1,15 +1,16 @@
 # ToastClient
  
- - Minecraft Fabric Utility Mod, based at the Aussie Anarchy server.
+ - Minecraft Utility mod using Fabric.
  
  # Building Instructions
  
- - git clone https://github.com/RemainingToast/ToastClient
+Download the source code:
+ - `git clone https://github.com/RemainingToast/ToastClient`
 
-Import ToastClient into your IDE of choice. IntelliJ Reccomended.
-- ./gradlew setupDecompWorkspace
-- ./gradlew genIntellijRuns for intellij
-- ./gradlew eclipse for eclipse
+Import ToastClient into your IDE of choice. IntelliJ Reccomended (for windows users, remove the `./` before each command).
+- `./gradlew genSources`
+- `./gradlew idea` for IntelliJ IDEA
+- `./gradlew eclipse` for Eclipse
 
 # Thanks
 
