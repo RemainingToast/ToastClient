@@ -64,14 +64,13 @@ public class CommandHandler {
         commands.add(new Help());
         commands.add(new ListModules());
         commands.add(new Macro());
+        commands.add(new MOTD());
         commands.add(new Panic());
         commands.add(new Prefix());
         commands.add(new Reload());
-        commands.add(new MOTD());
         commands.add(new Save());
         commands.add(new Suffix());
         commands.add(new Set());
-        commands.add(new Test());
         commands.add(new Toggle());
     }
 }

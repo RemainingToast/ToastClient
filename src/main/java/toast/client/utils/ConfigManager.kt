@@ -1,6 +1,5 @@
 package toast.client.utils
 
-import com.google.common.collect.ImmutableMultimap
 import com.google.gson.GsonBuilder
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
@@ -14,7 +13,7 @@ import java.util.*
 
 class ConfigManager {
     @JvmField
-    var macros: Map<String, Int>? = null
+    var macros: MutableMap<String, Int>? = null
     private var canWrite = false
     fun writeConfig() {
         if (canWrite) {
@@ -86,7 +85,7 @@ class ConfigManager {
 
     fun loadMacros() {
         try {
-            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
+            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), object : TypeToken<MutableMap<String?, Int?>?>() {}.type)
             if (macros == null) macros = TreeMap()
         } catch (e: FileNotFoundException) {
             e.printStackTrace()

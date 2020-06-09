@@ -1,22 +1,18 @@
-package toast.client.commands.cmds;
+package toast.client.commands.cmds
 
-import toast.client.ToastClient;
-import toast.client.commands.Command;
-import toast.client.utils.Logger;
+import toast.client.ToastClient
+import toast.client.commands.Command
+import toast.client.utils.Logger
 
-public class ClearChat extends Command {
-    public ClearChat() {
-        super("ClearChat", ToastClient.cmdPrefix + "clearchat", "Clears all messages in chat", false, "clearchat");
-    }
-
-    @Override
-    public void run(String[] args) throws InterruptedException {
-        if (mc.player == null) return;
-        if (mc.inGameHud.getChatHud() != null) {
-            mc.inGameHud.getChatHud().clear(true);
-            Logger.message("Cleared chat", Logger.EMPTY, false);
+class ClearChat : Command("ClearChat", "${ToastClient.cmdPrefix}clearchat", "Clears all messages in chat", false, "clearchat") {
+    @Throws(InterruptedException::class)
+    override fun run(args: Array<String>) {
+        if (mc.player == null) return
+        if (mc.inGameHud.chatHud != null) {
+            mc.inGameHud.chatHud.clear(true)
+            Logger.message("Cleared chat", Logger.EMPTY, false)
         } else {
-            Logger.message("Fuck I don't know chat hud is null ¯\\_(ツ)_/¯", Logger.EMPTY, false);
+            Logger.message("Fuck I don't know chat hud is null ¯\\_(ツ)_/¯", Logger.EMPTY, false)
         }
     }
 }

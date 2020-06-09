@@ -1,34 +1,25 @@
-package toast.client.commands.cmds;
+package toast.client.commands.cmds
 
-import toast.client.ToastClient;
-import toast.client.commands.Command;
-import toast.client.modules.Module;
+import toast.client.ToastClient
+import toast.client.commands.Command
+import toast.client.modules.Module
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
+class Panic : Command("Panic", """${ToastClient.cmdPrefix}panic""", "shutdowns client", false, "shutdown", "panic") {
+    private val wasEnabled: MutableList<Module> = ArrayList()
 
-import static toast.client.ToastClient.MODULE_MANAGER;
-
-public class Panic extends Command {
-
-    private final List<Module> wasEnabled = new ArrayList<>();
-
-    public Panic() {
-        super("Panic", ToastClient.cmdPrefix + "panic", "shutdowns client", false, "shutdown", "panic");
-    }
-
-    @Override
-    public void run(String[] args) throws InterruptedException {
-        if (mc.currentScreen != null) return;
-        for (Module module : MODULE_MANAGER.getModules()) {
+    @Throws(InterruptedException::class)
+    override fun run(args: Array<String>) {
+        if (mc.currentScreen != null) return
+        for (module in ToastClient.MODULE_MANAGER.modules) {
             if (module.isEnabled()) {
-                module.setEnabled(false);
-                wasEnabled.add(module);
+                module.setEnabled(false)
+                wasEnabled.add(module)
             }
         }
         if (mc.inGameHud != null) {
-            mc.inGameHud.getChatHud().clear(true);
-            mc.updateWindowTitle();
+            mc.inGameHud.chatHud.clear(true)
+            mc.updateWindowTitle()
         }
     }
 }

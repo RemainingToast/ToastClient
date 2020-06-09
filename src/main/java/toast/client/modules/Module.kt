@@ -8,7 +8,7 @@ import toast.client.modules.config.ModuleSettings
 
 @Environment(EnvType.CLIENT)
 open class Module(var name: String, var description: String, var category: Category, var key: Int) {
-    var modIsEnabled = false
+    private var modIsEnabled = false
     var settings = ModuleSettings()
     var mc: MinecraftClient = MinecraftClient.getInstance()
 
