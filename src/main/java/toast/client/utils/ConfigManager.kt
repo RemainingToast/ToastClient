@@ -9,26 +9,34 @@ import toast.client.ToastClient
 import toast.client.modules.config.Setting
 import java.io.FileNotFoundException
 import java.io.FileReader
+import java.lang.reflect.Type
 import java.util.*
 
+/**
+ * Class containing methods to read and load the mod's configuration from a file and also to write said configuration to a file
+ */
 class ConfigManager {
-    @JvmField
-    var macros: MutableMap<String, Int>? = null
-    private var canWrite = false
+
+    /**
+     * Writes the module settings JSON to a file
+     */
     fun writeConfig() {
         if (canWrite) {
             val config: MutableMap<String, Map<String, Setting>> = TreeMap()
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 config[module.name] = module.settings.getSettings()
             }
-            FileManager.writeFile(configFile, gson.toJson(config, object : TypeToken<MutableMap<String, Map<String, Setting>>>() {}.type))
+            FileManager.writeFile(configFile, gson.toJson(config, configMapType))
         }
     }
 
+    /**
+     * Loads the module settings from a file containing JSON
+     */
     fun loadConfig() {
-        val config: LinkedTreeMap<String, LinkedTreeMap<String, Setting>>
-        config = try {
-            gson.fromJson<LinkedTreeMap<String, LinkedTreeMap<String, Setting>>>(FileReader(FileManager.createFile(configFile)), object : TypeToken<LinkedTreeMap<String, LinkedTreeMap<String, Setting>>>() {}.type)
+        val config: LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?
+        try {
+            config = gson.fromJson(FileReader(FileManager.createFile(configFile)), configMapType)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
@@ -39,86 +47,106 @@ class ConfigManager {
         }
         for (module in ToastClient.MODULE_MANAGER.modules) {
             if (config.containsKey(module.name)) {
-                for (Entry in config[module.name]!!) {
-                    module.settings.getSettings().replace(Entry.key, Entry.value)
+                for ((key, value) in config[module.name] ?: continue) {
+                    if (key != null && value != null) {
+                        module.settings.getSettings().replace(key, value)
+                    }
                 }
                 module.settings.getSettings()
             }
         }
     }
 
+    /**
+     * Writes the JSON containing module key-binds to a file
+     */
     fun writeKeyBinds() {
-        val keybinds: MutableMap<String, Int>
+        val keyBinds: MutableMap<String, Int>
         if (canWrite) {
-            keybinds = TreeMap()
+            keyBinds = TreeMap()
             for (module in ToastClient.MODULE_MANAGER.modules) {
-                keybinds[module.name] = module.key
+                keyBinds[module.name] = module.key
             }
-            FileManager.writeFile(keybindsFile, gson.toJson(keybinds, object : TypeToken<MutableMap<String, Int>>(){}.type))
+            FileManager.writeFile(keyBindsFile, gson.toJson(keyBinds, keyBindMapType))
         }
     }
 
+    /**
+     * Loads the modules' key-binds from a file containing JSON
+     */
     fun loadKeyBinds() {
-        val keybinds: Map<String, Int>?
-        keybinds = try {
-            gson.fromJson<Map<String, Int>>(FileReader(FileManager.createFile(keybindsFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
+        val keyBinds: Map<String, Int>?
+        try {
+            keyBinds = gson.fromJson(FileReader(FileManager.createFile(keyBindsFile)), keyBindMapType)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
         }
-        if (keybinds == null || keybinds.isEmpty()) {
+        if (keyBinds == null || keyBinds.isEmpty()) {
             writeKeyBinds()
             return
         }
         for (module in ToastClient.MODULE_MANAGER.modules) {
-            if (keybinds.contains(module.name)) {
-                module.key = keybinds.getValue(module.name)
+            if (keyBinds.contains(module.name)) {
+                module.key = keyBinds.getValue(module.name)
             }
         }
     }
 
+    /**
+     * Writes the macros to a file in the JSON format
+     */
     fun writeMacros() {
         if (canWrite) {
-            FileManager.writeFile(macrosFile, gson.toJson(macros, object : TypeToken<MutableMap<String, Int>>(){}.type))
+            FileManager.writeFile(macrosFile, gson.toJson(macros, macroMapType))
         }
     }
 
+    /**
+     * Loads macros from a file containing JSON
+     */
     fun loadMacros() {
         try {
-            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), object : TypeToken<MutableMap<String?, Int?>?>() {}.type)
-            if (macros == null) macros = TreeMap()
+            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), macroMapType)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
     }
 
+    /**
+     * Check if a key has a macro bound to it
+     */
     fun checkForMacro(key: Int, action: Int) {
-        if (MinecraftClient.getInstance().player != null) {
-            loadMacros()
-            if (action == GLFW.GLFW_PRESS) {
-                for ((command, _key) in macros!!) {
-                    if (key == _key) {
-                        MinecraftClient.getInstance().player!!.sendChatMessage(command)
-                    }
+        loadMacros()
+        if (action == GLFW.GLFW_PRESS) {
+            for ((command, _key) in macros ?: return) {
+                if (key == _key) {
+                    (MinecraftClient.getInstance().player ?: return).sendChatMessage(command)
                 }
             }
         }
     }
 
+    /**
+     * Writes JSON containing the enabled state of all modules to a file
+     */
     fun writeModules() {
         if (canWrite) {
             val modules: MutableMap<String, Boolean> = TreeMap()
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 modules[module.name] = module.isEnabled()
             }
-            FileManager.writeFile(modulesFile, gson.toJson(modules, object : TypeToken<MutableMap<String, Boolean>>(){}.type))
+            FileManager.writeFile(modulesFile, gson.toJson(modules, moduleMapType))
         }
     }
 
+    /**
+     * Gets the enabled state of all the modules from a file containing JSON data
+     */
     fun loadModules() {
         val modules: Map<String, Boolean>?
-        modules = try {
-            gson.fromJson<Map<String, Boolean>>(FileReader(FileManager.createFile(modulesFile)), object : TypeToken<Map<String?, Boolean?>?>() {}.type)
+        try {
+            modules = gson.fromJson(FileReader(FileManager.createFile(modulesFile)), moduleMapType)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
@@ -139,16 +167,74 @@ class ConfigManager {
         }
     }
 
+    /**
+     * Enables the writing of config files
+     */
     fun enableWrite() {
         canWrite = true
     }
 
+    /**
+     * Adds a macro
+     */
+    fun addMacro(command: String, key: Int) {
+        (macros ?: return).putIfAbsent(command, key)
+        writeMacros()
+    }
+
+    /**
+     * Retrieves the Map containing all macros
+     */
+    fun getMacros(): MutableMap<String?, Int?>? = macros
+
     companion object {
-        const val configFile = "config.json"
-        const val modulesFile = "modules.json"
-        const val keybindsFile = "keybinds.json"
-        const val macrosFile = "macros.json"
+        /**
+         * Name of the file where the module settings json is stored
+         */
+        const val configFile: String = "config.json"
+
+        /**
+         * Name of the file where JSON that contains the enabled state of modules is stored
+         */
+        const val modulesFile: String = "modules.json"
+
+        /**
+         * Name of the file where the JSON containing the key-binds for each module is stored
+         */
+        const val keyBindsFile: String = "keybinds.json"
+
+        /**
+         * Name of the file where the JSON containing macros is stored
+         */
+        const val macrosFile: String = "macros.json"
+
+        /**
+         * Map containing macros and the keys they are bound to
+         */
+        var macros: MutableMap<String?, Int?>? = null
+
+        /**
+         * The type token of the map containing macros mappings
+         */
+        val macroMapType: Type = object : TypeToken<Map<String?, Int?>?>() {}.type
+
+        /**
+         * The type token of the map containing module enabled states
+         */
+        val moduleMapType: Type = object : TypeToken<Map<String?, Boolean?>?>() {}.type
+
+        /**
+         * The type token of the map containing containing module settings
+         */
+        val configMapType: Type = object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type
+
+        /**
+         * The type token of the map containing module key-binds
+         */
+        val keyBindMapType: Type = object : TypeToken<Map<String?, Int?>?>() {}.type
+
         private val gson = GsonBuilder().setPrettyPrinting().create()
         private const val disabledOnStart = "Panic, ClickGui"
+        private var canWrite = false
     }
 }
