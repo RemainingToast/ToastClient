@@ -16,12 +16,17 @@ class Macro : Command("Macro", """${ToastClient.cmdPrefix}macro [add/remove/list
         when (args[0]) {
             "add" -> {
                 if (args.size >= 3) {
+                    val key : String = args[1]
                     if (KeyUtil.isNumeric(args[1])) {
                         try {
+                            var command : String = ""
+                            for (x in 2 until args.size) {
+                                command += args[x]
+                            }
                             ToastClient.CONFIG_MANAGER.loadMacros()
-                            ToastClient.CONFIG_MANAGER.macros?.put(args[2], args[1].toInt())
+                            ToastClient.CONFIG_MANAGER.macros?.put(command, args[1].toInt())
                             ToastClient.CONFIG_MANAGER.writeMacros()
-                            Logger.message("Added macro: ${args[1]} | ${args[2]}", Logger.INFO, false)
+                            Logger.message("Added macro: $key | $command", Logger.INFO, false)
                         } catch (nfe: NumberFormatException) {
                             Logger.message("Failed to add macro.", Logger.ERR, false)
                         }
