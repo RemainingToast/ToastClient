@@ -1,19 +1,15 @@
-package toast.client.modules.movement;
+package toast.client.modules.movement
 
-import com.google.common.eventbus.Subscribe;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import toast.client.events.player.EventUpdate;
-import toast.client.modules.Module;
+import com.google.common.eventbus.Subscribe
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
+import toast.client.events.player.EventUpdate
+import toast.client.modules.Module
 
-public class NoFall extends Module {
-    public NoFall() {
-        super("NoFall", "Stops the player form taking fall damage", Category.MOVEMENT, -1);
-    }
-
+class NoFall : Module("NoFall", "Stops the player form taking fall damage", Category.MOVEMENT, -1) {
     @Subscribe
-    public void onUpdate(EventUpdate event) {
-        if (mc.player == null) return;
-        if (mc.player.isFallFlying() && !(mc.player.fallDistance > 3f)) return;
-        mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket(true));
+    fun onUpdate(event: EventUpdate?) {
+        if (mc.player == null) return
+        if (mc.player!!.isFallFlying && mc.player!!.fallDistance <= 3f) return
+        mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket(true))
     }
 }

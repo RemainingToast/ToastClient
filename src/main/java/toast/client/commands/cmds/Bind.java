@@ -9,7 +9,6 @@ import toast.client.utils.Logger;
 
 import static toast.client.ToastClient.CONFIG_MANAGER;
 import static toast.client.ToastClient.MODULE_MANAGER;
-import static toast.client.modules.ModuleManager.modules;
 
 public class Bind extends Command {
 
@@ -25,9 +24,9 @@ public class Bind extends Command {
                 if (args[1].equals("none")) {
 
                     for (int i = 0; true; i++) {
-                        modules.get(i).key = GLFW.GLFW_KEY_UNKNOWN;
-                        Logger.message(modules.get(i).name + " keybind set to NONE", Logger.SUCCESS, true);
-                        if (i == modules.size()) {
+                        MODULE_MANAGER.getModules().get(i).setKey(GLFW.GLFW_KEY_UNKNOWN);
+                        Logger.message(MODULE_MANAGER.getModules().get(i).getName() + " keybind set to NONE", Logger.SUCCESS, true);
+                        if (i == MODULE_MANAGER.getModules().size()) {
                             CONFIG_MANAGER.writeKeyBinds();
                             break;
                         }

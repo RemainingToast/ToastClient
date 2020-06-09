@@ -11,7 +11,6 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 
 public class Panic extends Command {
 
-    private static boolean isPanicking = false;
     private final List<Module> wasEnabled = new ArrayList<>();
 
     public Panic() {
@@ -21,25 +20,14 @@ public class Panic extends Command {
     @Override
     public void run(String[] args) throws InterruptedException {
         if (mc.currentScreen != null) return;
-        isPanicking = true;
         for (Module module : MODULE_MANAGER.getModules()) {
-            if (module.isEnabled() && !module.getClass().equals(this.getClass())) {
+            if (module.isEnabled()) {
                 module.setEnabled(false);
                 wasEnabled.add(module);
             }
         }
         if (mc.inGameHud != null) {
-//            List<String> msgs = mc.inGameHud.getChatHud().getMessageHistory(); // doesn't work no idea why doesn't delete shit
-            mc.inGameHud.getChatHud().clear(true); //perhaps try this
-         /*   List<Integer> toDelete = new ArrayList<>();
-            for (int i = msgs.size() - 1; i >= 0; i--) {
-                if (msgs.get(i).contains(ToastClient.cleanPrefix)) {
-                    toDelete.add(i);
-                }
-            }
-            for (Integer msgid : toDelete) {
-                mc.inGameHud.getChatHud().removeMessage(msgid);
-            } */
+            mc.inGameHud.getChatHud().clear(true);
             mc.updateWindowTitle();
         }
     }

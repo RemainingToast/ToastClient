@@ -1,123 +1,58 @@
-package toast.client.modules;
+package toast.client.modules
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import toast.client.modules.config.ModuleSettings;
-import toast.client.modules.config.Setting;
-
-import java.util.Map;
-
-import static toast.client.ToastClient.CONFIG_MANAGER;
-import static toast.client.ToastClient.eventBus;
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
+import net.minecraft.client.MinecraftClient
+import toast.client.ToastClient
+import toast.client.modules.config.ModuleSettings
+import toast.client.modules.config.Setting
 
 @Environment(EnvType.CLIENT)
-public class Module {
-    public String name;
-    public String description;
-    public boolean enabled;
-    public int key;
-    public Category category;
+open class Module(var name: String, var description: String, var category: Category, var key: Int) {
+    var modIsEnabled = false
+    var settings = ModuleSettings()
+    var mc: MinecraftClient = MinecraftClient.getInstance()
 
+    fun isEnabled(): Boolean = modIsEnabled
 
-    public ModuleSettings settings = new ModuleSettings();
-
-    public MinecraftClient mc = MinecraftClient.getInstance();
-
-    public Module(String name, String description, Category category, int key) {
-        this.name = name;
-        this.description = description;
-        this.key = key;
-        this.category = category;
-        this.settings.addBoolean("Visible", true);
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    fun setEnabled(newEnabled: Boolean) {
+        modIsEnabled = newEnabled
         if (isEnabled()) {
             try {
-                eventBus.register(this);
-            } catch (IllegalArgumentException ignored) {
+                ToastClient.eventBus.register(this@Module)
+            } catch (ignored: IllegalArgumentException) {
             }
-            onEnable();
+            onEnable()
         } else {
             try {
-                eventBus.unregister(this);
-            } catch (IllegalArgumentException ignored) {
+                ToastClient.eventBus.unregister(this@Module)
+            } catch (ignored: IllegalArgumentException) {
             }
-            onDisable();
+            onDisable()
         }
-        CONFIG_MANAGER.writeModules();
+        ToastClient.CONFIG_MANAGER.writeModules()
     }
 
-    public int getKey() {
-        return key;
+    val mode: String
+        get() = settings.getMode("Mode")
+
+    fun getDouble(name: String?): Double = settings.getValue(name)
+
+    fun getBool(name: String?): Boolean = settings.getBoolean(name)
+
+    fun disable() = setEnabled(false)
+
+    fun enable() = setEnabled(true)
+
+    fun toggle() = setEnabled(!isEnabled())
+
+    open fun onEnable() {}
+    open fun onDisable() {}
+    enum class Category {
+        PLAYER, MOVEMENT, RENDER, COMBAT, MISC
     }
 
-    public void setKey(int key) {
-        this.key = key;
+    init {
+        settings.addBoolean("Visible", true)
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public ModuleSettings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(Map<String, Setting> newSettings) {
-        this.settings.setSettings(newSettings);
-    }
-
-    public boolean isMode(String mode) {
-        return this.settings.getMode("Mode").equals(mode);
-    }
-
-    public String getMode() {
-        return this.settings.getMode("Mode");
-    }
-
-    public double getDouble(String name) {
-        return this.settings.getValue(name);
-    }
-
-    public boolean getBool(String name) {
-        return this.settings.getBoolean(name);
-    }
-
-    public void disable() {
-        setEnabled(false);
-    }
-
-    public void toggle() {
-        setEnabled(!isEnabled());
-    }
-
-    public void onEnable() {
-    }
-
-    public void onDisable() {
-    }
-
-    public enum Category {
-        PLAYER,
-        MOVEMENT,
-        RENDER,
-        COMBAT,
-        MISC
-    }
-
 }

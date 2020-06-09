@@ -1,47 +1,45 @@
-package toast.client.modules.movement;
+package toast.client.modules.movement
 
-import com.google.common.eventbus.Subscribe;
-import org.lwjgl.glfw.GLFW;
-import toast.client.events.player.EventUpdate;
-import toast.client.modules.Module;
+import com.google.common.eventbus.Subscribe
+import org.lwjgl.glfw.GLFW
+import toast.client.events.player.EventUpdate
+import toast.client.modules.Module
 
-public class Flight extends Module {
-
-    public Flight() {
-        super("Fly", "Lets you fly.", Category.MOVEMENT, GLFW.GLFW_KEY_G);
-        this.settings.addMode("Mode", "Vanilla", "Vanilla");
-        this.settings.addSlider("Speed", 0, 2, 10);
-    }
-
+class Flight : Module("Fly", "Lets you fly.", Category.MOVEMENT, GLFW.GLFW_KEY_G) {
     @Subscribe
-    public void onUpdate(EventUpdate event) {
-        if (mc.player == null) return;
-        if ((mc.player.onGround || mc.player.fallDistance <= 0) && this.isEnabled()) {
-            mc.player.abilities.allowFlying = true;
-            mc.player.abilities.flying = true;
-            mc.player.abilities.setFlySpeed((float) (0.05F * this.getDouble("Speed")));
+    fun onUpdate(event: EventUpdate?) {
+        if (mc.player == null) return
+        if ((mc.player!!.onGround || mc.player!!.fallDistance <= 0) && this.isEnabled()) {
+            mc.player!!.abilities.allowFlying = true
+            mc.player!!.abilities.flying = true
+            mc.player!!.abilities.flySpeed = (0.05f * getDouble("Speed")).toFloat()
         }
     }
 
-    public void onEnable() {
-        if (mc.player == null) return;
-        mc.player.abilities.allowFlying = true;
-        mc.player.abilities.flying = true;
-        mc.player.abilities.setFlySpeed((float) (0.05F * this.getDouble("Speed")));
+    override fun onEnable() {
+        if (mc.player == null) return
+        mc.player!!.abilities.allowFlying = true
+        mc.player!!.abilities.flying = true
+        mc.player!!.abilities.flySpeed = (0.05f * getDouble("Speed")).toFloat()
     }
 
-    public void onDisable() {
-        if (mc.player == null) return;
-        if (!mc.player.abilities.creativeMode) {
-            mc.player.abilities.allowFlying = false;
+    override fun onDisable() {
+        if (mc.player == null) return
+        if (!mc.player!!.abilities.creativeMode) {
+            mc.player!!.abilities.allowFlying = false
         }
-        if (mc.player.isSpectator()) {
-            mc.player.abilities.allowFlying = true;
-            mc.player.abilities.flying = true;
-            mc.player.abilities.setFlySpeed(0.05F);
-            return;
+        if (mc.player!!.isSpectator) {
+            mc.player!!.abilities.allowFlying = true
+            mc.player!!.abilities.flying = true
+            mc.player!!.abilities.flySpeed = 0.05f
+        } else {
+            mc.player!!.abilities.flying = false
+            mc.player!!.abilities.flySpeed = 0.05f
         }
-        mc.player.abilities.flying = false;
-        mc.player.abilities.setFlySpeed(0.05F);
+    }
+
+    init {
+        settings.addMode("Mode", "Vanilla", "Vanilla")
+        settings.addSlider("Speed", 0.0, 2.0, 10.0)
     }
 }

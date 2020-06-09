@@ -1,60 +1,54 @@
-package toast.client.modules.misc;
+package toast.client.modules.misc
 
-import org.lwjgl.glfw.GLFW;
-import toast.client.ToastClient;
-import toast.client.modules.Module;
+import org.lwjgl.glfw.GLFW
+import toast.client.ToastClient
+import toast.client.modules.Module
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static toast.client.ToastClient.MODULE_MANAGER;
-
-public class Panic extends Module {
-    private static boolean isPanicking = false;
-    private final List<Module> wasEnabled = new ArrayList<>();
-
-    public Panic() {
-        super("Panic", "Makes the client disappear until you relaunch the game.", Category.MISC, GLFW.GLFW_KEY_P);
-    }
-
-    public static boolean IsPanicking() {
-        return isPanicking;
-    }
-
-    public void onEnable() {
-        if (mc.currentScreen != null) return;
-        isPanicking = true;
-        for (Module module : MODULE_MANAGER.getModules()) {
-            if (module.isEnabled() && !module.getClass().equals(this.getClass())) {
-                module.setEnabled(false);
-                wasEnabled.add(module);
+class Panic : Module("Panic", "Makes the client disappear until you relaunch the game.", Category.MISC, GLFW.GLFW_KEY_P) {
+    private val wasEnabled: MutableList<Module> = ArrayList()
+    override fun onEnable() {
+        if (mc.currentScreen != null) return
+        isPanicking = true
+        for (module in ToastClient.MODULE_MANAGER.modules) {
+            if (module.isEnabled() && module.javaClass != this.javaClass) {
+                module.disable()
+                wasEnabled.add(module)
             }
         }
         if (mc.inGameHud != null) {
-            List<String> msgs = mc.inGameHud.getChatHud().getMessageHistory(); // doesn't work no idea why doesn't delete shit
-            List<Integer> toDelete = new ArrayList<>();
-            for (int i = msgs.size() - 1; i >= 0; i--) {
-                if (msgs.get(i).contains(ToastClient.cleanPrefix)) {
-                    toDelete.add(i);
+            val msgs = mc.inGameHud.chatHud.messageHistory // doesn't work no idea why doesn't delete shit
+            val toDelete: MutableList<Int> = ArrayList()
+            for (i in msgs.indices.reversed()) {
+                if (msgs[i].contains(ToastClient.cleanPrefix)) {
+                    toDelete.add(i)
                 }
             }
-            for (Integer msgid : toDelete) {
-                mc.inGameHud.getChatHud().removeMessage(msgid);
+            for (msgid in toDelete) {
+                mc.inGameHud.chatHud.removeMessage(msgid)
             }
-            mc.updateWindowTitle();
+            mc.updateWindowTitle()
         }
     }
 
-    public void onDisable() {
-        isPanicking = false;
-        for (Module module : MODULE_MANAGER.getModules()) {
+    override fun onDisable() {
+        isPanicking = false
+        for (module in ToastClient.MODULE_MANAGER.modules) {
             if (wasEnabled.contains(module)) {
-                module.setEnabled(true);
-                wasEnabled.remove(module);
+                module.onEnable()
+                wasEnabled.remove(module)
             }
         }
         if (mc.currentScreen != null) {
-            mc.updateWindowTitle();
+            mc.updateWindowTitle()
+        }
+    }
+
+    companion object {
+        private var isPanicking = false
+        @JvmStatic
+        fun IsPanicking(): Boolean {
+            return isPanicking
         }
     }
 }

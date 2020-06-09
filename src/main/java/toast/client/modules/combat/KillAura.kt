@@ -1,74 +1,66 @@
-package toast.client.modules.combat;
+package toast.client.modules.combat
 
-import com.google.common.eventbus.Subscribe;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
-import net.minecraft.util.Hand;
-import org.lwjgl.glfw.GLFW;
-import toast.client.events.player.EventUpdate;
-import toast.client.modules.Module;
-import toast.client.utils.MovementUtil;
-import toast.client.utils.TimerUtil;
+import com.google.common.eventbus.Subscribe
+import net.minecraft.entity.mob.MobEntity
+import net.minecraft.entity.passive.AnimalEntity
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket
+import net.minecraft.util.Hand
+import org.lwjgl.glfw.GLFW
+import toast.client.events.player.EventUpdate
+import toast.client.modules.Module
+import toast.client.utils.MovementUtil
+import toast.client.utils.TimerUtil
 
-public class KillAura extends Module {
-
-    private final TimerUtil timer = new TimerUtil();
-
-    public KillAura() {
-        super("KillAura", "Automatically attacks mobs and players around you.", Category.COMBAT, GLFW.GLFW_KEY_K);
-        this.settings.addBoolean("Players", true);
-        this.settings.addBoolean("Animals", false);
-        this.settings.addBoolean("Monsters", false);
-        this.settings.addBoolean("StopOnDeath", true);
-        this.settings.addMode("LookType", "Packet", "Packet", "Client", "None");
-        this.settings.addSlider("CPS", 1, 20, 20);
-        this.settings.addSlider("Reach", 1, 4, 6);
+class KillAura : Module("KillAura", "Automatically attacks mobs and players around you.", Category.COMBAT, GLFW.GLFW_KEY_K) {
+    private val timer = TimerUtil()
+    override fun onEnable() {
+        timer.reset()
     }
 
-    public void onEnable() {
-        timer.reset();
-    }
-
-    public void onDisable() {
-        timer.reset();
+    override fun onDisable() {
+        timer.reset()
     }
 
     @Subscribe
-    public void onEvent(EventUpdate event) {
-        if (mc.player == null || mc.world == null || mc.getNetworkHandler() == null) return;
-        if (mc.player.isSpectator()) return;
-        if ((!mc.player.isAlive() || mc.player.getHealth() <= 0F) && this.getBool("StopOnDeath")) {
-            this.setEnabled(false);
+    fun onEvent(event: EventUpdate?) {
+        if (mc.player == null || mc.world == null || mc.networkHandler == null) return
+        if (mc.player!!.isSpectator) return
+        if ((!mc.player!!.isAlive || mc.player!!.health <= 0f) && getBool("StopOnDeath")) {
+            this.disable()
         }
-        double CPS = this.getDouble("CPS");
-        if (timer.hasReached((float) timer.convertToMS((int) CPS))) {
-            for (Entity entity : mc.world.getEntities()) {
-                if (!entity.isAlive()) return;
-                boolean shouldHit = false;
-                if (entity instanceof AnimalEntity && this.getBool("Animals")) {
-                    shouldHit = true;
-                } else if (entity instanceof PlayerEntity && this.getBool("Players") && entity.getEntityId() != mc.player.getEntityId()) {
-                    shouldHit = true;
-                } else if (entity instanceof MobEntity && this.getBool("Monsters")) {
-                    shouldHit = true;
+        val CPS = getDouble("CPS")
+        if (timer.hasReached(timer.convertToMS(CPS.toInt()).toFloat())) {
+            for (entity in mc.world!!.entities) {
+                if (!entity.isAlive) return
+                var shouldHit = false
+                when {
+                    entity is AnimalEntity && getBool("Animals") -> shouldHit = true
+                    entity is PlayerEntity && getBool("Players") && entity.getEntityId() != mc.player!!.entityId -> shouldHit = true
+                    entity is MobEntity && getBool("Monsters") -> shouldHit = true
                 }
                 if (shouldHit) {
-                    if (mc.player.distanceTo(entity) <= (int) this.getDouble("Reach")) {
-                        if (!this.settings.getMode("LookType").equals("None")) {
-                            MovementUtil.lookAt(entity.getPos(), this.settings.getMode("LookType").equals("Packet"));
-                        }
-                        mc.getNetworkHandler().sendPacket(new PlayerInteractEntityC2SPacket(entity));
-                        mc.player.attack(entity);
-                        mc.player.swingHand(Hand.MAIN_HAND);
-                        timer.reset();
-                        return;
+                    if (mc.player!!.distanceTo(entity) <= getDouble("Reach").toInt()) {
+                        if (settings.getMode("LookType") != "None") MovementUtil.lookAt(entity.pos, settings.getMode("LookType") == "Packet")
+                        mc.networkHandler!!.sendPacket(PlayerInteractEntityC2SPacket(entity))
+                        mc.player!!.attack(entity)
+                        mc.player!!.swingHand(Hand.MAIN_HAND)
+                        timer.reset()
+                        return
                     }
                 }
             }
-            timer.reset();
+            timer.reset()
         }
+    }
+
+    init {
+        settings.addBoolean("Players", true)
+        settings.addBoolean("Animals", false)
+        settings.addBoolean("Monsters", false)
+        settings.addBoolean("StopOnDeath", true)
+        settings.addMode("LookType", "Packet", "Packet", "Client", "None")
+        settings.addSlider("CPS", 1.0, 20.0, 20.0)
+        settings.addSlider("Reach", 1.0, 4.0, 6.0)
     }
 }

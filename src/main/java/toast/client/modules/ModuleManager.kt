@@ -1,107 +1,90 @@
-package toast.client.modules;
+package toast.client.modules
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import org.lwjgl.glfw.GLFW;
-import toast.client.modules.combat.AutoRespawn;
-import toast.client.modules.combat.AutoTotem;
-import toast.client.modules.combat.BowSpam;
-import toast.client.modules.combat.KillAura;
-import toast.client.modules.misc.CustomChat;
-import toast.client.modules.misc.Panic;
-import toast.client.modules.misc.PortalChat;
-import toast.client.modules.misc.Spammer;
-import toast.client.modules.movement.*;
-import toast.client.modules.player.AutoTool;
-import toast.client.modules.player.Surround;
-import toast.client.modules.render.ClickGui;
-import toast.client.modules.render.Fullbright;
-import toast.client.modules.render.HUD;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import static toast.client.ToastClient.CONFIG_MANAGER;
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
+import net.minecraft.client.MinecraftClient
+import org.lwjgl.glfw.GLFW
+import toast.client.ToastClient
+import toast.client.modules.combat.AutoRespawn
+import toast.client.modules.combat.AutoTotem
+import toast.client.modules.combat.BowSpam
+import toast.client.modules.combat.KillAura
+import toast.client.modules.misc.CustomChat
+import toast.client.modules.misc.Panic
+import toast.client.modules.misc.Panic.Companion.IsPanicking
+import toast.client.modules.misc.PortalChat
+import toast.client.modules.misc.Spammer
+import toast.client.modules.movement.*
+import toast.client.modules.player.AutoTool
+import toast.client.modules.player.Surround
+import toast.client.modules.render.ClickGui
+import toast.client.modules.render.Fullbright
+import toast.client.modules.render.HUD
+import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
 
 @Environment(EnvType.CLIENT)
-public class ModuleManager {
-    public static final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
-
-    public void onKey(int key, int action) {
-        for (Module module : modules) {
-            if (module.getKey() == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
-                if (MinecraftClient.getInstance().inGameHud.getChatHud().isChatFocused()) continue;
-                if (!module.getClass().equals(Panic.class) && Panic.IsPanicking()) return;
-                module.toggle();
+class ModuleManager {
+    fun onKey(key: Int, action: Int) {
+        modules.forEach { module ->
+            if (module.key == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
+                if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) return@forEach
+                if (module.javaClass != Panic::class.java && IsPanicking()) return
+                module.toggle()
             }
         }
     }
 
-    public Module getModule(Class<? extends Module> moduleClass) {
-        for (Module module : modules) {
-            if (module.getClass() == moduleClass) {
-                return module;
+    fun getModule(moduleClass: Class<out Module?>): Module? = modules.firstOrNull { it.javaClass == moduleClass }
+
+    fun getModule(name: String): Module? = modules.firstOrNull { it.name == name }
+
+    var modules: CopyOnWriteArrayList<Module> = CopyOnWriteArrayList()
+
+    fun getModulesInCategory(category: Module.Category): List<Module> {
+        val moduleList: MutableList<Module> = ArrayList()
+        modules.forEach { module ->
+            if (module.category === category) {
+                moduleList.add(module)
             }
         }
-        return null;
+        return moduleList
     }
 
-    public Module getModule(String name) {
-        for (Module module : modules) {
-            if (module.getName().equals(name)) {
-                return module;
-            }
-        }
-        return null;
-    }
-
-    public CopyOnWriteArrayList<Module> getModules() {
-        return modules;
-    }
-
-    public List<Module> getModulesInCategory(Module.Category category) {
-        List<Module> moduleList = new ArrayList<>();
-        for (Module module : modules) {
-            if (module.getCategory() == category) {
-                moduleList.add(module);
-            }
-        }
-        return moduleList;
-    }
-
-    public void loadModules() {
-        modules.clear();
+    fun loadModules() {
+        modules.clear()
         // alphabetical order please
-        modules.add(new AutoWalk());
-        modules.add(new AutoRespawn());
-        modules.add(new AutoTool());
-        modules.add(new AutoTotem());
+        modules.add(AutoWalk())
+        modules.add(AutoRespawn())
+        modules.add(AutoTool())
+        modules.add(AutoTotem())
         //modules.add(new BlockESP());
-        modules.add(new BowSpam());
-        modules.add(new CustomChat());
-        modules.add(new ClickGui());
-        modules.add(new FastStop());
-        modules.add(new Flight());
-        modules.add(new Fullbright());
+        modules.add(BowSpam())
+        modules.add(CustomChat())
+        modules.add(ClickGui())
+        modules.add(FastStop())
+        modules.add(Flight())
+        modules.add(Fullbright())
         //modules.add(new HoleESP());
-        modules.add(new HUD());
-        modules.add(new KillAura());
-        //modules.add(new NameTags());
-        modules.add(new NoFall());
-        modules.add(new Panic());
-        modules.add(new PortalChat());
+        modules.add(HUD())
+        modules.add(KillAura())
+        modules.add(NoFall())
+        modules.add(Panic())
+        modules.add(PortalChat())
         //modules.add(new ShulkerPreview());
-        modules.add(new Spammer());
-        modules.add(new Sprint());
+        modules.add(Spammer())
+        modules.add(Sprint())
         //modules.add(new StorageESP());
-        modules.add(new Surround());
-        modules.add(new Velocity());
-        CONFIG_MANAGER.enableWrite();
-        CONFIG_MANAGER.loadConfig();
-        CONFIG_MANAGER.loadKeyBinds();
-        CONFIG_MANAGER.loadModules();
-        CONFIG_MANAGER.loadMacros();
+        modules.add(Surround())
+        modules.add(Velocity())
+        ToastClient.CONFIG_MANAGER.enableWrite()
+        ToastClient.CONFIG_MANAGER.loadConfig()
+        ToastClient.CONFIG_MANAGER.loadKeyBinds()
+        ToastClient.CONFIG_MANAGER.loadModules()
+        ToastClient.CONFIG_MANAGER.loadMacros()
+    }
+
+    companion object {
+        val modules = CopyOnWriteArrayList<Module>()
     }
 }

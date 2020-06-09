@@ -1,9 +1,5 @@
-package toast.client.modules.render;
+package toast.client.modules.render
 
-import toast.client.modules.Module;
+import toast.client.modules.Module
 
-public class ShulkerPreview extends Module {
-    public ShulkerPreview() {
-        super("ShulkerPreview", "Displays contents of a shulker box when hovered over in inventory", Category.RENDER, -1);
-    }
-}
+class ShulkerPreview : Module("ShulkerPreview", "Displays contents of a shulker box when hovered over in inventory", Category.RENDER, -1) 

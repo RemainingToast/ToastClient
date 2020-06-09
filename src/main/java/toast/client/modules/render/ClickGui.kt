@@ -1,47 +1,38 @@
-package toast.client.modules.render;
+package toast.client.modules.render
 
-import com.google.common.eventbus.Subscribe;
-import org.lwjgl.glfw.GLFW;
-import toast.client.events.player.EventUpdate;
-import toast.client.gui.clickgui.ClickGuiScreen;
-import toast.client.modules.Module;
+import com.google.common.eventbus.Subscribe
+import org.lwjgl.glfw.GLFW
+import toast.client.ToastClient
+import toast.client.events.player.EventUpdate
+import toast.client.gui.clickgui.ClickGuiScreen
+import toast.client.modules.Module
 
-import static toast.client.ToastClient.clickGui;
-import static toast.client.ToastClient.clickGuiHasOpened;
-
-public class ClickGui extends Module {
-    public boolean Description;
-
-
-    public ClickGui() {
-        super("ClickGui", "The gui for managing modules.", Category.RENDER, GLFW.GLFW_KEY_RIGHT_SHIFT);
-        this.settings.addBoolean("Descriptions", true);
-
-    }
-
-    @Override
-    public void onEnable() {
+class ClickGui : Module("ClickGui", "The gui for managing modules.", Category.RENDER, GLFW.GLFW_KEY_RIGHT_SHIFT) {
+    override fun onEnable() {
         if (mc.player != null) {
-            if (clickGui == null) {
-                clickGuiHasOpened = false;
-                clickGui = new ClickGuiScreen();
+            if (ToastClient.clickGui == null) {
+                ToastClient.clickGuiHasOpened = false
+                ToastClient.clickGui = ClickGuiScreen()
             }
             if (mc.currentScreen == null) {
-                mc.openScreen(clickGui);
-                clickGuiHasOpened = true;
+                mc.openScreen(ToastClient.clickGui)
+                ToastClient.clickGuiHasOpened = true
             }
         }
     }
 
-    @Override
-    public void onDisable() {
-        if (mc.currentScreen instanceof ClickGuiScreen && mc.player != null) {
-            mc.openScreen(null);
+    override fun onDisable() {
+        if (mc.currentScreen is ClickGuiScreen && mc.player != null) {
+            mc.openScreen(null)
         }
     }
 
     @Subscribe
-    public void onUpdate(EventUpdate e) {
-        ClickGuiScreen.descriptions = this.settings.getBoolean("Descriptions");
+    fun onUpdate(e: EventUpdate?) {
+        ClickGuiScreen.descriptions = settings.getBoolean("Descriptions")
+    }
+
+    init {
+        settings.addBoolean("Descriptions", true)
     }
 }

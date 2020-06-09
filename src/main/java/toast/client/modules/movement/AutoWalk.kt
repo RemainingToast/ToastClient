@@ -1,38 +1,38 @@
-package toast.client.modules.movement;
+package toast.client.modules.movement
 
-import com.google.common.eventbus.Subscribe;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
-import toast.client.events.network.EventPacketSent;
-import toast.client.modules.Module;
-import toast.client.utils.Logger;
+import com.google.common.eventbus.Subscribe
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
+import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
+import toast.client.events.network.EventPacketSent
+import toast.client.modules.Module
+import toast.client.utils.Logger
 
-public class AutoWalk extends Module {
-
-    public AutoWalk() {
-        super("AutoWalk", "Automatically walk forwards", Category.MOVEMENT, -1);
-        this.settings.addMode("Mode", "Simple", "Simple", "Baritone");
-    }
-
+class AutoWalk : Module("AutoWalk", "Automatically walk forwards", Category.MOVEMENT, -1) {
     @Subscribe
-    public void onEvent(EventPacketSent e) {
-        {
-            if (mc.player == null) return;
-            if (this.settings.getMode("Mode").equals("Simple")) {
-                if (e.getPacket() instanceof PlayerMoveC2SPacket || e.getPacket() instanceof InventoryS2CPacket) {
-                    mc.options.sprintToggled = true;
-                    mc.options.keyForward.setPressed(true);
+    fun onEvent(e: EventPacketSent) {
+        run {
+            if (mc.player != null) {
+                when (this.settings.getMode("Mode")) {
+                    "Simple" -> {
+                        if (e.getPacket() is PlayerMoveC2SPacket || e.getPacket() is InventoryS2CPacket) {
+                            mc.options.sprintToggled = true
+                            mc.options.keyForward.isPressed = true
+                        }
+                    }
+                    "Baritone" -> {
+                        Logger.message("Ree baritone integrated yet", Logger.ERR, false)
+                        mc.options.keyForward.isPressed = false
+                    }
                 }
-            } else if (this.settings.getMode("Mode").equals("Baritone")) {
-                Logger.message("Ree baritone integrated yet", Logger.ERR, false);
-
-                mc.options.keyForward.setPressed(false);
             }
         }
     }
 
-    public void onDisable() {
-        if (mc.player == null) return;
-        mc.options.keyForward.setPressed(false);
+    override fun onDisable() {
+        if (mc.player != null) mc.options.keyForward.isPressed = false
+    }
+
+    init {
+        settings.addMode("Mode", "Simple", "Simple", "Baritone")
     }
 }

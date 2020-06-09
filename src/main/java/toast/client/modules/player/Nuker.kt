@@ -1,58 +1,57 @@
-package toast.client.modules.player;
+package toast.client.modules.player
 
-import com.google.common.eventbus.Subscribe;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameMode;
-import toast.client.events.player.EventUpdate;
-import toast.client.modules.Module;
+import com.google.common.eventbus.Subscribe
+import net.minecraft.block.Blocks
+import net.minecraft.util.Hand
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.GameMode
+import toast.client.events.player.EventUpdate
+import toast.client.modules.Module
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Nuker extends Module {
-    private final List<BlockPos> pending = new ArrayList<>();
-
-    public Nuker() {
-        super("Nuker", "Automatically destroys blocks around you.", Category.PLAYER, -1);
-        this.settings.addSlider("Range", 1, 5, 10);
-    }
-
-    public ArrayList<BlockPos> getBlocks() {
-        if (mc.player == null || mc.world == null) return null;
-        ArrayList<BlockPos> list = new ArrayList<>();
-        int i = (int) this.getDouble("Range") + 1;
-        for (int x = -i; x <= i; x++) {
-            for (int y = -i; y <= i; y++) {
-                for (int z = -i; z <= i; z++) {
-                    BlockPos pos = (new BlockPos(mc.player)).add(x, y, z);
-                    if (!(mc.world.getBlockState(pos).getBlock().equals(Blocks.AIR) || mc.world.getBlockState(pos).getBlock().equals(Blocks.CAVE_AIR))
-                            && mc.player.squaredDistanceTo(new Vec3d(pos.getX(), pos.getY(),
-                            pos.getZ())) < ((int) this.getDouble("Range") * (int) this.getDouble("Range")))
-                        list.add(pos);
+class Nuker : Module("Nuker", "Automatically destroys blocks around you.", Category.PLAYER, -1) {
+    private val pending: MutableList<BlockPos> = ArrayList()
+    val blocks: ArrayList<BlockPos>?
+        get() {
+            if (mc.player == null || mc.world == null) return null
+            val list = ArrayList<BlockPos>()
+            val i = getDouble("Range").toInt() + 1
+            for (x in -i..i) {
+                for (y in -i..i) {
+                    for (z in -i..i) {
+                        val pos = BlockPos(mc.player).add(x, y, z)
+                        if (!(mc.world!!.getBlockState(pos).block == Blocks.AIR || mc.world!!.getBlockState(pos).block == Blocks.CAVE_AIR)
+                                && mc.player!!.squaredDistanceTo(Vec3d(pos.x.toDouble(), pos.y.toDouble(),
+                                        pos.z.toDouble())) < getDouble("Range").toInt() * getDouble("Range").toInt()) list.add(pos)
+                    }
                 }
             }
+            return list
         }
-        return list;
-    }
 
     @Subscribe
-    public void onEvent(EventUpdate event) {
-        if (mc.interactionManager == null || mc.player == null) return;
-        for (BlockPos block : getBlocks()) {
-            if (pending.contains(block)) continue;
-            if (mc.interactionManager.getCurrentGameMode() == GameMode.CREATIVE) {
-                pending.add(block);
-                mc.interactionManager.attackBlock(block, Direction.UP);
-                mc.player.swingHand(Hand.MAIN_HAND);
-                pending.remove(block);
-            } else if (mc.interactionManager.getCurrentGameMode() == GameMode.SURVIVAL) {//TODO: fix this shit
-                //mc.interactionManager.updateBlockBreakingProgress(block, Direction.UP);
-            } else return;
-
+    fun onEvent(event: EventUpdate?) {
+        if (mc.interactionManager == null || mc.player == null) return
+        for (block in blocks!!) {
+            if (pending.contains(block)) continue
+            when (mc.interactionManager!!.currentGameMode) {
+                GameMode.CREATIVE -> {
+                    pending.add(block)
+                    mc.interactionManager!!.attackBlock(block, Direction.UP)
+                    mc.player!!.swingHand(Hand.MAIN_HAND)
+                    pending.remove(block)
+                }
+                GameMode.SURVIVAL -> { //TODO: fix this shit
+                    //mc.interactionManager.updateBlockBreakingProgress(block, Direction.UP);
+                }
+                else -> return
+            }
         }
+    }
+
+    init {
+        settings.addSlider("Range", 1.0, 5.0, 10.0)
     }
 }

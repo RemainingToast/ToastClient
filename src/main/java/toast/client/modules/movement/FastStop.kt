@@ -1,24 +1,20 @@
-package toast.client.modules.movement;
+package toast.client.modules.movement
 
-import com.google.common.eventbus.Subscribe;
-import toast.client.events.player.EventUpdate;
-import toast.client.modules.Module;
+import com.google.common.eventbus.Subscribe
+import toast.client.events.player.EventUpdate
+import toast.client.modules.Module
 
-public class FastStop extends Module {
-    public FastStop() {
-        super("Fast Stop", "Brings you to a stop instantly.", Category.MOVEMENT, -1);
-        this.settings.addBoolean("Air Stop", false);
+class FastStop : Module("Fast Stop", "Brings you to a stop instantly.", Category.MOVEMENT, -1) {
+    @Subscribe
+    fun onUpdate(event: EventUpdate?) {
+        if (mc.player == null) return
+        if (!mc.options.keyForward.isPressed && !mc.options.keyBack.isPressed && !mc.options.keyLeft.isPressed && !mc.options.keyRight.isPressed) when (mc.player!!.onGround) {
+            true -> mc.player!!.setVelocity(0.0, mc.player!!.velocity.y, 0.0)
+            !getBool("Air Stop") -> mc.player!!.setVelocity(0.0, mc.player!!.velocity.y, 0.0)
+        }
     }
 
-    @Subscribe
-    public void onUpdate(EventUpdate event) {
-        if (mc.player == null) return;
-        if (!mc.options.keyForward.isPressed() && !mc.options.keyBack.isPressed() && !mc.options.keyLeft.isPressed() && !mc.options.keyRight.isPressed()) {
-            if (mc.player.onGround) {
-                mc.player.setVelocity(0, mc.player.getVelocity().y, 0);
-            } else if (this.getBool("Air Stop") && !mc.player.onGround) {
-                mc.player.setVelocity(0, mc.player.getVelocity().y, 0);
-            }
-        }
+    init {
+        settings.addBoolean("Air Stop", false)
     }
 }

@@ -1,53 +1,46 @@
-package toast.client.modules.combat;
+package toast.client.modules.combat
 
-import com.google.common.eventbus.Subscribe;
-import net.minecraft.container.SlotActionType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import toast.client.events.player.EventUpdate;
-import toast.client.modules.Module;
+import com.google.common.eventbus.Subscribe
+import net.minecraft.container.SlotActionType
+import net.minecraft.item.ItemStack
+import net.minecraft.item.Items
+import toast.client.events.player.EventUpdate
+import toast.client.modules.Module
 
-public class AutoTotem extends Module {
-    int totems = 0;
-    int totemsTotal;
-    boolean moving;
-    boolean returning;
-
-    public AutoTotem() {
-        super("AutoTotem", "Automatically places totem into offhand", Category.COMBAT, -1);
-        settings.addBoolean("Force Totem", true);
-
-    }
+class AutoTotem : Module("AutoTotem", "Automatically places totem into offhand", Category.COMBAT, -1) {
+    var totems = 0
+    var totemsTotal = 0
+    var moving = false
+    var returning = false
 
     @Subscribe
-    public void onUpdate(EventUpdate event) {
-        if (mc.player == null || mc.interactionManager == null) return;
-        totems = mc.player.inventory.main.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
-        totemsTotal = totems + mc.player.inventory.offHand.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
-        this.name = "AutoTotem: " + totemsTotal;
-        if (mc.player.getOffHandStack().getItem() == Items.TOTEM_OF_UNDYING) totems++;
-        else {
-            if (!mc.player.inventory.offHand.isEmpty() && mc.player.inventory.offHand.get(0).getItem() != Items.TOTEM_OF_UNDYING && !settings.getBoolean("Force Totem"))
-                return;
-            if (moving) {
-                mc.interactionManager.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player);
-                moving = false;
-                if (!mc.player.inventory.isInvEmpty()) returning = true;
-                return;
-            }
-            if (!mc.player.inventory.isInvEmpty()) {
-                if (totems == 0) return;
-                int t = -1;
-                for (int i = 0; i < 45; i++) {
-                    if (mc.player.inventory.getInvStack(i).getItem() == Items.TOTEM_OF_UNDYING) {
-                        t = i;
-                        break;
-                    }
+    fun onUpdate(event: EventUpdate?) {
+        if (mc.player == null) return
+        totems = mc.player!!.inventory.main.stream().filter { itemStack: ItemStack -> itemStack.item === Items.TOTEM_OF_UNDYING }.mapToInt { obj: ItemStack -> obj.count }.sum()
+        totemsTotal = totems + mc.player!!.inventory.offHand.stream().filter { itemStack: ItemStack -> itemStack.item === Items.TOTEM_OF_UNDYING }.mapToInt { obj: ItemStack -> obj.count }.sum()
+        name = "AutoTotem: $totemsTotal"
+        if (mc.player!!.offHandStack.item === Items.TOTEM_OF_UNDYING) totems++ else {
+            if (!mc.player!!.inventory.offHand.isEmpty() && mc.player!!.inventory.offHand[0].item !== Items.TOTEM_OF_UNDYING && !settings.getBoolean("Force Totem")) return
+            when {
+                moving -> {
+                    mc.interactionManager!!.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player)
+                    moving = false
+                    if (!mc.player!!.inventory.isInvEmpty) returning = true
+                    return
                 }
-                if (t == -1) return;
-                mc.interactionManager.clickSlot(0, t < 9 ? t + 36 : t, 0, SlotActionType.PICKUP, mc.player);
-                moving = true;
+                !mc.player!!.inventory.isInvEmpty -> {
+                    if (totems == 0) return
+                    val t = (0..44).firstOrNull { mc.player!!.inventory.getInvStack(it).item === Items.TOTEM_OF_UNDYING }
+                            ?: -1
+                    if (t == -1) return
+                    mc.interactionManager!!.clickSlot(0, if (t < 9) t + 36 else t, 0, SlotActionType.PICKUP, mc.player)
+                    moving = true
+                }
             }
         }
+    }
+
+    init {
+        settings.addBoolean("Force Totem", true)
     }
 }
