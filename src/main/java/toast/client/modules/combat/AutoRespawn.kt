@@ -23,7 +23,7 @@ class AutoRespawn : Module(
 
     @Subscribe
     fun onEvent(event: EventUpdate?) {
-        if (mc.player == null) return
+        if (mc.player == null || mc.currentScreen == null) return
         if (timer.isDelayComplete((getDouble("Speed")?.times(1000L))?.toLong()!!)) {
             timer.setLastMS()
             if (mc.currentScreen!! is DeathScreen) {

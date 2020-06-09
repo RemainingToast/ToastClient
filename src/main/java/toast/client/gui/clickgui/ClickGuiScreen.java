@@ -104,7 +104,6 @@ public class ClickGuiScreen extends Screen {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
         }
-        System.out.println("clicked " + button);
         return false;
     }
 
@@ -114,14 +113,12 @@ public class ClickGuiScreen extends Screen {
             mouseIsClickedL = false;
             mouseIsClickedR = false;
             clickedOnce = false;
-            System.out.println("released " + button);
         }
         return false;
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        System.out.println("dragged " + button);
         if (button == 0) {
             for (Map.Entry<Module.Category, CategoryRenderer> categoryRendererEntry : categoryRenderers.entrySet()) {
                 CategoryRenderer categoryRenderer = categoryRendererEntry.getValue();
