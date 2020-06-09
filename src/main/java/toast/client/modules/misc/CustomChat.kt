@@ -8,7 +8,7 @@ import toast.client.modules.Module
 import toast.client.utils.FancyChatUtil
 
 class CustomChat : Module("CustomChat", "Custom chat messages", Category.MISC, -1) {
-    var isMadeByCustomChat = false
+    private var isMadeByCustomChat = false
     override fun onEnable() {
         isMadeByCustomChat = true
     }
@@ -42,7 +42,7 @@ class CustomChat : Module("CustomChat", "Custom chat messages", Category.MISC, -
 
     companion object {
         @JvmField
-        var suffix: String? = null
+        var suffix: String = ""
     }
 
     init {

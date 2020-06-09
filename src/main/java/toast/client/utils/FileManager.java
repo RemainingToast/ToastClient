@@ -24,7 +24,7 @@ public class FileManager {
     }
 
     private static void fileManagerLogger(String m) {
-        //System.out.println("["+ToastClient.cleanPrefix+"FileManager] "+m);
+        System.out.println("[" + ToastClient.cleanPrefix + "FileManager] " + m);
     }
 
     public static File createFile(File file) {

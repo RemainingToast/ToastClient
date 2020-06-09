@@ -6,7 +6,7 @@ import toast.client.modules.misc.CustomChat
 import toast.client.utils.Logger
 
 class Suffix : Command("Suffix", """${ToastClient.cmdPrefix}suffix [suffix]""", "Set custom chat ending", false, "suffix", "sufx") {
-    var out: String? = null
+    var out: String = ""
     override fun run(args: Array<String>) {
         if (mc.player == null) return
         if (args.isNotEmpty()) {

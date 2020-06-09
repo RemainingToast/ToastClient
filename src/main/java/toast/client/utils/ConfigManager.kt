@@ -21,7 +21,7 @@ class ConfigManager {
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 config[module.name] = module.settings.getSettings()
             }
-            FileManager.writeFile(configFile, gson.toJson(config, object : TypeToken<MutableMap<String, Map<String, Setting>>>(){}.type))
+            FileManager.writeFile(configFile, gson.toJson(config, object : TypeToken<MutableMap<String, Map<String, Setting>>>() {}.type))
         }
     }
 

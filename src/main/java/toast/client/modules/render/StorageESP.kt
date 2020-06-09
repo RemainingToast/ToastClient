@@ -15,7 +15,7 @@ class StorageESP : Module("StorageESP", "Highlights storage blocks in the world.
     @Subscribe
     fun onUpdate(event: EventUpdate?) {
         if (mc.world == null) return
-        WorldUtil.getTileEntitiesInWorld(mc.world).forEach { (pos: BlockPos?, type: Block) ->
+        WorldUtil.getTileEntitiesInWorld(mc.world!!).forEach { (pos: BlockPos?, type: Block) ->
             if (getBool("Chests") && type === Blocks.CHEST ||
                     getBool("Trapped Chests") && type === Blocks.TRAPPED_CHEST ||
                     getBool("Furnaces") && type === Blocks.FURNACE ||

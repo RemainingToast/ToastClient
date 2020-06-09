@@ -43,7 +43,7 @@ class Help : Command("Help", "${ToastClient.cmdPrefix}help [command]", "Shows al
             msg.append(Formatting.GRAY).append(" - Usage:").append(Formatting.YELLOW).append(usage.toString()).append("\n")
             msg.append(Formatting.GRAY).append(" - Description:").append(Formatting.YELLOW).append(desc.toString())
             out = msg.toString()
-            Logger.message(out, Logger.EMPTY, false)
+            Logger.message(out!!, Logger.EMPTY, false)
         }
     }
 

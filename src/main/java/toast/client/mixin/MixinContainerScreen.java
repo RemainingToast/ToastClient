@@ -30,7 +30,7 @@ public class MixinContainerScreen {
 
             for (int i = 0; i < container.slots.size(); ++i) {
                 Slot slot = container.slots.get(i);
-                if (isShulkerBox(slot.getStack().getItem())) {
+                if (isShulkerBox(slot.getStack())) {
                     int sx = (slot.xPosition + (mc.getWindow().getWidth() / 2) - (mc.currentScreen.width / 2)) * 2 - 10;
                     int sy = slot.yPosition + (mc.getWindow().getWidth() / 2) - (mc.currentScreen.height / 2) - 100;
                     if (isMouseOverRect(mc.mouse.getX(), mc.mouse.getY(), sx, sy, 16, 16)) {

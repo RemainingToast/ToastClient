@@ -6,8 +6,7 @@ import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket
 import net.minecraft.util.math.BlockPos
 import toast.client.events.network.EventPacketReceived
 import toast.client.modules.Module
-import toast.client.utils.WorldUtil
-import toast.client.utils.WorldUtil.*
+import toast.client.utils.WorldUtil.searchChunk
 
 class BlockESP : Module("BlockESP", "Highlights blocks in the world.", Category.RENDER, -1) {
     @Subscribe
@@ -16,14 +15,14 @@ class BlockESP : Module("BlockESP", "Highlights blocks in the world.", Category.
         if (event.getPacket() is ChunkDataS2CPacket) {
             val packet = event.getPacket() as ChunkDataS2CPacket
             try {
-                searchChunk(mc.world, packet.x / 16, packet.z / 16, matches).keys.addAll(found!!)
+                searchChunk(mc.world!!, packet.x / 16, packet.z / 16, matches).keys.addAll(found!!)
             } catch (ignored: InterruptedException) {
             }
         }
     }
 
     companion object {
-        var matches: List<Block>? = null
-        var found: List<BlockPos>? = null
+        var matches: List<Block> = ArrayList()
+        var found: List<BlockPos> = ArrayList()
     }
 }

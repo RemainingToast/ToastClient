@@ -13,6 +13,7 @@ import toast.client.utils.WorldUtil
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.function.Consumer
+import kotlin.math.ceil
 import kotlin.math.floor
 
 class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Category.RENDER, -1) {
@@ -33,7 +34,7 @@ class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Catego
             val positions = WorldUtil.getBlockPositionsInArea(mc.player!!.blockPos.add(-range, -range, -range), mc.player!!.blockPos.add(range, range, range))
             val airPositions: MutableList<BlockPos> = ArrayList(emptyList())
             val latch = CountDownLatch(positions.size)
-            WorldUtil.searchList(mc.world, positions, WorldInteractionUtil.AIR).keys.forEach(Consumer { pos: BlockPos ->
+            WorldUtil.searchList(mc.world!!, positions, WorldInteractionUtil.AIR).keys.forEach(Consumer { pos: BlockPos ->
                 if (Vec3d(pos.x + 0.5, pos.y + 0.5, pos.z + 0.50).distanceTo(mc.player!!.pos) <= getDouble("Range")) airPositions.add(pos)
                 latch.countDown()
             })
@@ -61,9 +62,9 @@ class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Catego
                                 else -> RenderUtil.drawFilledBox(pos, 1f, 1f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
                             }
                             "Flat" -> when {
-                                bedrock == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), Math.ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, Math.ceil(pos.z + 0.01)), 0.08f, 1f, 0.35f, (getDouble("Opacity") + 20).toFloat() / 100)
-                                obsidian == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), Math.ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, Math.ceil(pos.z + 0.01)), 1f, 0f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
-                                else -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), Math.ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, Math.ceil(pos.z + 0.01)), 1f, 1f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
+                                bedrock == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 0.08f, 1f, 0.35f, (getDouble("Opacity") + 20).toFloat() / 100)
+                                obsidian == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 1f, 0f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
+                                else -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 1f, 1f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
                             }
                         }
                     }
