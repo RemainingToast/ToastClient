@@ -38,16 +38,5 @@ class ModuleSettings {
 
     fun getMin(name: String): Double? = settingsDef[name]!!.minValue
 
-    fun getSettings(): Map<String, Setting> = settings
-
-    fun getSettingsDef(): Map<String, SettingDef> = settingsDef
-
-    fun setSettingsDef(settingsDef: MutableMap<String, SettingDef>) {
-        this.settingsDef = settingsDef
-    }
-
-    fun setSettings(settings: MutableMap<String, Setting>) {
-        this.settings = settings
-        ToastClient.CONFIG_MANAGER.writeConfig()
-    }
+    fun getSettings(): MutableMap<String, Setting> = settings
 }

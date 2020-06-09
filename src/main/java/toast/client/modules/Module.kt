@@ -47,6 +47,7 @@ open class Module(var name: String, var description: String, var category: Categ
 
     open fun onEnable() {}
     open fun onDisable() {}
+
     enum class Category {
         PLAYER, MOVEMENT, RENDER, COMBAT, MISC
     }

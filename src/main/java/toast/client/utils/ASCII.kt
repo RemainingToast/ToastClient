@@ -1,31 +1,29 @@
-package toast.client.utils;
+package toast.client.utils
 
-public class ASCII {
-
+object ASCII {
     /*
     Added by RemainingToast - 1/06/20
      */
-
-    public static void printFancyConsoleMSG() {
-        System.out.println("_________________________________________________________");
-        System.out.println("     _________ _______  _______  _______ _________           ");
-        System.out.println("     \\__   __/(  ___  )(  ___  )(  ____ \\\\__   __/        ");
-        System.out.println("        ) (   | (   ) || (   ) || (    \\/   ) (             ");
-        System.out.println("        | |   | |   | || (___) || (_____    | |              ");
-        System.out.println("        | |   | |   | ||  ___  |(_____  )   | |              ");
-        System.out.println("        | |   | |   | || (   ) |      ) |   | |              ");
-        System.out.println("        | |   | (___) || )   ( |/\\____) |   | |             ");
-        System.out.println("        )_(   (_______)|/     \\|\\_______)   )_(            ");
-        System.out.println("  _______  _       _________ _______  _       _________  ");
-        System.out.println(" (  ____ \\( \\      \\__   __/(  ____ \\( (    /|\\__   __/");
-        System.out.println(" | (    \\/| (         ) (   | (    \\/|  \\  ( |   ) (   ");
-        System.out.println(" | |      | |         | |   | (__    |   \\ | |   | |   ");
-        System.out.println(" | |      | |         | |   |  __)   | (\\ \\) |   | |   ");
-        System.out.println(" | |      | |         | |   | (      | | \\   |   | |   ");
-        System.out.println(" | (____/\\| (____/\\___) (___| (____/\\| )  \\  |   | |   ");
-        System.out.println(" (_______/(_______/\\_______/(_______/|/    )_)   )_(   ");
-        System.out.println("_________________________________________________________");
+    @JvmStatic
+    fun printFancyConsoleMSG() {
+        println("_________________________________________________________")
+        println("     _________ _______  _______  _______ _________           ")
+        println("     \\__   __/(  ___  )(  ___  )(  ____ \\\\__   __/        ")
+        println("        ) (   | (   ) || (   ) || (    \\/   ) (             ")
+        println("        | |   | |   | || (___) || (_____    | |              ")
+        println("        | |   | |   | ||  ___  |(_____  )   | |              ")
+        println("        | |   | |   | || (   ) |      ) |   | |              ")
+        println("        | |   | (___) || )   ( |/\\____) |   | |             ")
+        println("        )_(   (_______)|/     \\|\\_______)   )_(            ")
+        println("  _______  _       _________ _______  _       _________  ")
+        println(" (  ____ \\( \\      \\__   __/(  ____ \\( (    /|\\__   __/")
+        println(" | (    \\/| (         ) (   | (    \\/|  \\  ( |   ) (   ")
+        println(" | |      | |         | |   | (__    |   \\ | |   | |   ")
+        println(" | |      | |         | |   |  __)   | (\\ \\) |   | |   ")
+        println(" | |      | |         | |   | (      | | \\   |   | |   ")
+        println(" | (____/\\| (____/\\___) (___| (____/\\| )  \\  |   | |   ")
+        println(" (_______/(_______/\\_______/(_______/|/    )_)   )_(   ")
+        println("_________________________________________________________")
         // Please dont break this
     }
-
 }

@@ -1,168 +1,155 @@
-package toast.client.utils;
+package toast.client.utils
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import org.lwjgl.glfw.GLFW;
-import toast.client.modules.Module;
-import toast.client.modules.config.Setting;
+import com.google.common.collect.ImmutableMultimap
+import com.google.gson.GsonBuilder
+import com.google.gson.internal.LinkedTreeMap
+import com.google.gson.reflect.TypeToken
+import net.minecraft.client.MinecraftClient
+import org.lwjgl.glfw.GLFW
+import toast.client.ToastClient
+import toast.client.modules.config.Setting
+import java.io.FileNotFoundException
+import java.io.FileReader
+import java.util.*
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Map;
-import java.util.TreeMap;
-
-import static toast.client.ToastClient.MODULE_MANAGER;
-
-@Environment(EnvType.CLIENT)
-public class ConfigManager {
-    public static final String configFile = "config.json";
-    public static final String modulesFile = "modules.json";
-    public static final String keybindsFile = "keybinds.json";
-    public static final String macrosFile = "macros.json";
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private static final String disabledOnStart = "Panic, ClickGui";
-    public Map<String, Integer> macros;
-    private boolean canWrite = false;
-
-    public void writeConfig() {
+class ConfigManager {
+    @JvmField
+    var macros: Map<String, Int>? = null
+    private var canWrite = false
+    fun writeConfig() {
         if (canWrite) {
-            Map<String, Map<String, Setting>> config = new TreeMap<>();
-            for (Module module : MODULE_MANAGER.getModules()) {
-                config.put(module.getName(), module.getSettings().getSettings());
+            val config: MutableMap<String, Map<String, Setting>> = TreeMap()
+            for (module in ToastClient.MODULE_MANAGER.modules) {
+                config[module.name] = module.settings.getSettings()
             }
-            FileManager.writeFile(configFile, gson.toJson(config));
+            FileManager.writeFile(configFile, gson.toJson(config, object : TypeToken<MutableMap<String, Map<String, Setting>>>(){}.type))
         }
     }
 
-    public void loadConfig() {
-        Map<String, Map<String, Setting>> config;
-        try {
-            config = gson.fromJson(new FileReader(FileManager.createFile(configFile)), new TypeToken<Map<String, Map<String, Setting>>>() {
-            }.getType());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
+    fun loadConfig() {
+        val config: LinkedTreeMap<String, LinkedTreeMap<String, Setting>>
+        config = try {
+            gson.fromJson<LinkedTreeMap<String, LinkedTreeMap<String, Setting>>>(FileReader(FileManager.createFile(configFile)), object : TypeToken<LinkedTreeMap<String, LinkedTreeMap<String, Setting>>>() {}.type)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            return
         }
         if (config == null || config.isEmpty()) {
-            writeConfig();
-            return;
+            writeConfig()
+            return
         }
-        for (Module module : MODULE_MANAGER.getModules()) {
-            if (config.containsKey(module.getName())) {
-                for (Map.Entry<String, Setting> setting : config.get(module.getName()).entrySet()) {
-                    if (module.getSettings().getSettings().containsKey(setting.getKey())) {
-                        module.getSettings().getSettings().replace(setting.getKey(), setting.getValue());
-                    }
+        for (module in ToastClient.MODULE_MANAGER.modules) {
+            if (config.containsKey(module.name)) {
+                for (Entry in config[module.name]!!) {
+                    module.settings.getSettings().replace(Entry.key, Entry.value)
                 }
+                module.settings.getSettings()
             }
         }
     }
 
-    public void writeKeyBinds() {
-        Map<String, Integer> keybinds;
+    fun writeKeyBinds() {
+        val keybinds: MutableMap<String, Int>
         if (canWrite) {
-            keybinds = new TreeMap<>();
-            for (Module module : MODULE_MANAGER.getModules()) {
-                keybinds.put(module.getName(), module.getKey());
+            keybinds = TreeMap()
+            for (module in ToastClient.MODULE_MANAGER.modules) {
+                keybinds[module.name] = module.key
             }
-            FileManager.writeFile(keybindsFile, gson.toJson(keybinds));
+            FileManager.writeFile(keybindsFile, gson.toJson(keybinds, object : TypeToken<MutableMap<String, Int>>(){}.type))
         }
     }
 
-    public void loadKeyBinds() {
-        Map<String, Integer> keybinds;
-        try {
-            keybinds = gson.fromJson(new FileReader(FileManager.createFile(keybindsFile)), new TypeToken<Map<String, Integer>>() {
-            }.getType());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
+    fun loadKeyBinds() {
+        val keybinds: Map<String, Int>?
+        keybinds = try {
+            gson.fromJson<Map<String, Int>>(FileReader(FileManager.createFile(keybindsFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            return
         }
         if (keybinds == null || keybinds.isEmpty()) {
-            writeKeyBinds();
-            return;
+            writeKeyBinds()
+            return
         }
-        for (Module module : MODULE_MANAGER.getModules()) {
-            if (module != null) {
-                if (keybinds.containsKey(module.getName())) {
-                    module.setKey(keybinds.get(module.getName()));
-                }
+        for (module in ToastClient.MODULE_MANAGER.modules) {
+            if (keybinds.contains(module.name)) {
+                module.key = keybinds.getValue(module.name)
             }
         }
     }
 
-    public void writeMacros() {
+    fun writeMacros() {
         if (canWrite) {
-            FileManager.writeFile(macrosFile, gson.toJson(macros));
+            FileManager.writeFile(macrosFile, gson.toJson(macros, object : TypeToken<MutableMap<String, Int>>(){}.type))
         }
     }
 
-    public void loadMacros() {
+    fun loadMacros() {
         try {
-            macros = gson.fromJson(new FileReader(FileManager.createFile(macrosFile)), new TypeToken<Map<String, Integer>>() {
-            }.getType());
-            if (macros == null) macros = new TreeMap<>();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
+            if (macros == null) macros = TreeMap()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
         }
     }
 
-    public void checkForMacro(int key, int action) {
+    fun checkForMacro(key: Int, action: Int) {
         if (MinecraftClient.getInstance().player != null) {
-            loadMacros();
+            loadMacros()
             if (action == GLFW.GLFW_PRESS) {
-                for (Map.Entry<String, Integer> entry : macros.entrySet()) {
-                    String command = entry.getKey();
-                    Integer _key = entry.getValue();
+                for ((command, _key) in macros!!) {
                     if (key == _key) {
-                        MinecraftClient.getInstance().player.sendChatMessage(command);
+                        MinecraftClient.getInstance().player!!.sendChatMessage(command)
                     }
                 }
             }
         }
     }
 
-    public void writeModules() {
+    fun writeModules() {
         if (canWrite) {
-            Map<String, Boolean> modules = new TreeMap<>();
-            for (Module module : MODULE_MANAGER.getModules()) {
-                modules.put(module.getName(), module.isEnabled());
+            val modules: MutableMap<String, Boolean> = TreeMap()
+            for (module in ToastClient.MODULE_MANAGER.modules) {
+                modules[module.name] = module.isEnabled()
             }
-            FileManager.writeFile(modulesFile, gson.toJson(modules));
+            FileManager.writeFile(modulesFile, gson.toJson(modules, object : TypeToken<MutableMap<String, Boolean>>(){}.type))
         }
     }
 
-    public void loadModules() {
-        Map<String, Boolean> modules;
-        try {
-            modules = gson.fromJson(new FileReader(FileManager.createFile(modulesFile)), new TypeToken<Map<String, Boolean>>() {
-            }.getType());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
+    fun loadModules() {
+        val modules: Map<String, Boolean>?
+        modules = try {
+            gson.fromJson<Map<String, Boolean>>(FileReader(FileManager.createFile(modulesFile)), object : TypeToken<Map<String?, Boolean?>?>() {}.type)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            return
         }
         if (modules == null || modules.isEmpty()) {
-            writeModules();
-            return;
+            writeModules()
+            return
         }
-        for (Module module : MODULE_MANAGER.getModules()) {
-            if (module != null) {
-                if (!disabledOnStart.contains(module.getName())) {
-                    if (modules.containsKey(module.getName())) {
-                        module.setEnabled(modules.get(module.getName()));
+        for (module in ToastClient.MODULE_MANAGER.modules) {
+            if (!disabledOnStart.contains(module.name)) {
+                if (modules.contains(module.name)) {
+                    when (modules.getValue(module.name)) {
+                        true -> module.enable()
+                        false -> module.disable()
                     }
-                } else {
-                    module.setEnabled(false);
                 }
             }
         }
     }
 
-    public void enableWrite() {
-        this.canWrite = true;
+    fun enableWrite() {
+        canWrite = true
+    }
+
+    companion object {
+        const val configFile = "config.json"
+        const val modulesFile = "modules.json"
+        const val keybindsFile = "keybinds.json"
+        const val macrosFile = "macros.json"
+        private val gson = GsonBuilder().setPrettyPrinting().create()
+        private const val disabledOnStart = "Panic, ClickGui"
     }
 }
