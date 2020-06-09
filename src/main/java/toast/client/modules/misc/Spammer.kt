@@ -29,11 +29,11 @@ class Spammer : Module("Spammer", "Spams messages in chat from a file.", Categor
     @Subscribe
     fun onTick(event: EventUpdate?) {
         if (lines!!.isEmpty() || mc.player == null) return
-        if (timer.isDelayComplete((getDouble("Delay") * 1000L).toLong())) {
+        if (timer.isDelayComplete((getDouble("Delay")!! * 1000L).toLong())) {
             timer.setLastMS()
             when (getBool("AntiSpam")) {
                 false -> mc.player!!.sendChatMessage(lines!![currentLine])
-                true -> mc.player!!.sendChatMessage(lines!![currentLine] + " [" + RandomStringUtils.randomAlphanumeric(getDouble("AntiSpam length").toInt()).toLowerCase() + "]")
+                true -> mc.player!!.sendChatMessage(lines!![currentLine] + " [" + RandomStringUtils.randomAlphanumeric(getDouble("AntiSpam length")!!.toInt()).toLowerCase() + "]")
             }
             if (currentLine >= lines!!.size - 1) currentLine = 0
             else currentLine++

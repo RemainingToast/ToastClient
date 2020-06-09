@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 import toast.client.ToastClient
 import toast.client.modules.config.ModuleSettings
-import toast.client.modules.config.Setting
 
 @Environment(EnvType.CLIENT)
 open class Module(var name: String, var description: String, var category: Category, var key: Int) {
@@ -33,12 +32,12 @@ open class Module(var name: String, var description: String, var category: Categ
         ToastClient.CONFIG_MANAGER.writeModules()
     }
 
-    val mode: String
+    val mode: String?
         get() = settings.getMode("Mode")
 
-    fun getDouble(name: String?): Double = settings.getValue(name)
+    fun getDouble(name: String): Double = settings.getValue(name)!!
 
-    fun getBool(name: String?): Boolean = settings.getBoolean(name)
+    fun getBool(name: String): Boolean = settings.getBoolean(name)
 
     fun disable() = setEnabled(false)
 

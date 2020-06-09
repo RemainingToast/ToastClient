@@ -20,7 +20,7 @@ public class Set extends Command {
     public void displaySetting(String name, Setting setting, Module module) {
         if (setting.getType() == 0) {
             StringBuilder modes = new StringBuilder();
-            for (String mode : module.getSettings().getSettingDef(name).getModes()) {
+            for (String mode : module.getSettings().getModes(name)) {
                 modes.append(mode).append(", ");
             }
             modes = new StringBuilder((String) modes.subSequence(0, modes.length() - 3));

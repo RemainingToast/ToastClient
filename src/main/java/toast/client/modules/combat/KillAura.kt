@@ -30,7 +30,7 @@ class KillAura : Module("KillAura", "Automatically attacks mobs and players arou
             this.disable()
         }
         val CPS = getDouble("CPS")
-        if (timer.hasReached(timer.convertToMS(CPS.toInt()).toFloat())) {
+        if (timer.hasReached(timer.convertToMS(CPS?.toInt()!!).toFloat())) {
             for (entity in mc.world!!.entities) {
                 if (!entity.isAlive) return
                 var shouldHit = false
@@ -40,7 +40,7 @@ class KillAura : Module("KillAura", "Automatically attacks mobs and players arou
                     entity is MobEntity && getBool("Monsters") -> shouldHit = true
                 }
                 if (shouldHit) {
-                    if (mc.player!!.distanceTo(entity) <= getDouble("Reach").toInt()) {
+                    if (mc.player!!.distanceTo(entity) <= getDouble("Reach")!!.toInt()) {
                         if (settings.getMode("LookType") != "None") MovementUtil.lookAt(entity.pos, settings.getMode("LookType") == "Packet")
                         mc.networkHandler!!.sendPacket(PlayerInteractEntityC2SPacket(entity))
                         mc.player!!.attack(entity)

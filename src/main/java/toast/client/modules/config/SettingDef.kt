@@ -1,48 +1,34 @@
-package toast.client.modules.config;
+package toast.client.modules.config
 
-import java.util.ArrayList;
+import java.util.*
 
-public class SettingDef {
-    private final ArrayList<String> modes;
-    private final boolean isBool;
-    private final Double maxvalue;
-    private final Double minvalue;
+class SettingDef {
+    val modes: ArrayList<String>?
+    private val isBool: Boolean
+    val maxValue: Double?
+    val minValue: Double?
 
-    public SettingDef(ArrayList<String> modes) {
-        this.modes = modes;
-        this.isBool = false;
-        this.maxvalue = this.minvalue = null;
+    constructor(modes: ArrayList<String>) {
+        this.modes = modes
+        isBool = false
+        minValue = null
+        maxValue = minValue
     }
 
-    public SettingDef(Double minvalue, Double maxvalue) {
-        this.modes = null;
-        this.isBool = false;
-        this.minvalue = minvalue;
-        this.maxvalue = maxvalue;
+    constructor(minvalue: Double, maxvalue: Double) {
+        modes = null
+        isBool = false
+        minValue = minvalue
+        maxValue = maxvalue
     }
 
-    public SettingDef() {
-        this.modes = null;
-        this.isBool = true;
-        this.maxvalue = this.minvalue = null;
+    constructor() {
+        modes = null
+        isBool = true
+        minValue = null
+        maxValue = minValue
     }
 
-    public ArrayList<String> getModes() {
-        return modes;
-    }
-
-    public Double getMinValue() {
-        return minvalue;
-    }
-
-    public Double getMaxValue() {
-        return maxvalue;
-    }
-
-    public String getType() {
-        if (modes != null) return "mode";
-        else if (minvalue != null && maxvalue != null) return "value";
-        else if (isBool) return "boolean";
-        else return null;
-    }
+    val type: String
+        get() = (if (modes != null) "mode" else if (minValue != null && maxValue != null) "value" else if (isBool) "boolean" else null) as String
 }

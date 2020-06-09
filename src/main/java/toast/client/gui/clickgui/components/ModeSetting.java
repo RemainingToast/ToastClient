@@ -15,7 +15,7 @@ public class ModeSetting {
         if (isMouseOverRect(mouseX, mouseY, x, getYIteration(curIt), getBoxWidth(), getBoxHeight())) {
             if (clickedL) {
                 settingBgColor = colors.settingClickColor;
-                ArrayList<String> modes = module.getSettings().getSettingDef(settingName).getModes();
+                ArrayList<String> modes = module.getSettings().getModes(settingName);
                 if (modes.size() > 0) {
                     if (modes.indexOf(module.getSettings().getMode(settingName)) == modes.size() - 1) {
                         module.getSettings().getSetting(settingName).setMode(modes.get(0));

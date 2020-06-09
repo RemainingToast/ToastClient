@@ -1,66 +1,59 @@
-package toast.client.modules.config;
+package toast.client.modules.config
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import toast.client.ToastClient
 
-import static toast.client.ToastClient.CONFIG_MANAGER;
-
-public class Setting {
+class Setting {
     @SerializedName("Current Mode")
-    private String mode;
+    private var mode: String? = null
+
     @SerializedName("Enabled")
-    private Boolean enabled;
+    private var enabled: Boolean? = null
+
     @SerializedName("Current Value")
-    private Double value;
+    private var value: Double? = null
 
-    public Setting(String mode) {
-        setMode(mode);
+    constructor(mode: String) {
+        setMode(mode)
     }
 
-    public Setting(Double value) {
-        setValue(value);
+    constructor(value: Double) {
+        setValue(value)
     }
 
-    public Setting(Boolean enabled) {
-        setEnabled(enabled);
+    constructor(enabled: Boolean) {
+        setEnabled(enabled)
     }
 
-    public String getMode() {
-        return this.mode;
+    fun getMode(): String? {
+        return mode
     }
 
-    public void setMode(String newMode) {
-        this.mode = newMode;
-        this.value = null;
-        this.enabled = null;
-        CONFIG_MANAGER.writeConfig();
+    fun setMode(newMode: String) {
+        mode = newMode
+        value = null
+        enabled = null
+        ToastClient.CONFIG_MANAGER.writeConfig()
     }
 
-    public double getValue() {
-        return this.value;
+    fun getValue(): Double = value!!
+
+    fun setValue(newValue: Double) {
+        mode = null
+        value = newValue
+        enabled = null
+        ToastClient.CONFIG_MANAGER.writeConfig()
     }
 
-    public void setValue(double newValue) {
-        this.mode = null;
-        this.value = newValue;
-        this.enabled = null;
-        CONFIG_MANAGER.writeConfig();
+    fun isEnabled(): Boolean = enabled!!
+
+    fun setEnabled(enabled: Boolean) {
+        mode = null
+        value = null
+        this.enabled = enabled
+        ToastClient.CONFIG_MANAGER.writeConfig()
     }
 
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.mode = null;
-        this.value = null;
-        this.enabled = enabled;
-        CONFIG_MANAGER.writeConfig();
-    }
-
-    public int getType() {
-        if (mode != null) return 0;
-        else if (value != null) return 1;
-        else if (enabled != null) return 2;
-        else return 3;
-    }
+    val type: Int
+        get() = if (mode != null) 0 else if (value != null) 1 else if (enabled != null) 2 else 3
 }

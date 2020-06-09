@@ -50,7 +50,7 @@ public class ClickGuiScreen extends Screen {
                     width = settingWidth + 4;
                 }
                 if (settingEntry.getValue().getType() == 0) {
-                    for (String mode : module.getSettings().getSettingDef(settingEntry.getKey()).getModes()) {
+                    for (String mode : Objects.requireNonNull(Objects.requireNonNull(module.getSettings().getModes(settingEntry.getKey())))) {
                         int modeWidth = textRenderer.getStringWidth(settings.colors.settingPrefix + settingEntry.getKey() + ": " + mode);
                         if (modeWidth > width) {
                             width = modeWidth + 4;
@@ -163,7 +163,7 @@ public class ClickGuiScreen extends Screen {
             if (keyCode == GLFW.GLFW_KEY_ESCAPE) clickGui.onClose();
             if (keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT) clickGui.onClose();
             else if (keybindPressedCategory != null) keybindPressedCategory.setKeyPressed(keyCode);
-            if (keyCode == MODULE_MANAGER.getModule(ClickGui.class).getKey()) clickGui.onClose();
+            if (keyCode == Objects.requireNonNull(MODULE_MANAGER.getModule(ClickGui.class)).getKey()) clickGui.onClose();
         }
         return false;
     }
