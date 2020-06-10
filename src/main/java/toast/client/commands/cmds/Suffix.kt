@@ -5,6 +5,9 @@ import toast.client.commands.Command
 import toast.client.modules.misc.CustomChat
 import toast.client.utils.Logger
 
+/**
+ * Command to change the CustomChat suffix
+ */
 class Suffix : Command("Suffix", """${ToastClient.cmdPrefix}suffix [suffix]""", "Set custom chat ending", false, "suffix", "sufx") {
     var out: String = ""
     override fun run(args: Array<String>) {

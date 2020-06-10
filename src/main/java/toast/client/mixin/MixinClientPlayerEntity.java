@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import toast.client.modules.misc.PortalChat;
-import toast.client.modules.player.Surround;
+import toast.client.modules.combat.Surround;
 
 import static toast.client.ToastClient.MODULE_MANAGER;
 
@@ -17,7 +17,7 @@ import static toast.client.ToastClient.MODULE_MANAGER;
 public class MixinClientPlayerEntity {
     @Inject(method = "updateNausea", at = @At("HEAD"), cancellable = true)
     public void onUpdateNausea(CallbackInfo ci) {
-        if (MODULE_MANAGER.getModule(PortalChat.class).isEnabled()) {
+        if (MODULE_MANAGER.getModule(PortalChat.class).getEnabled()) {
             ci.cancel();
         }
     }
@@ -25,7 +25,7 @@ public class MixinClientPlayerEntity {
     @Inject(at = @At("HEAD"), method = "move", cancellable = true)
     public void move(CallbackInfo ci) {
         Surround surround = (Surround) MODULE_MANAGER.getModule(Surround.class);
-        if (surround.isEnabled() && surround.getBool("Center")) {
+        if (surround.getEnabled() && surround.getBool("Center")) {
             ci.cancel();
         }
     }

@@ -11,7 +11,7 @@ class Panic : Module("Panic", "Makes the client disappear until you relaunch the
         if (mc.currentScreen != null) return
         isPanicking = true
         for (module in ToastClient.MODULE_MANAGER.modules) {
-            if (module.isEnabled() && module.javaClass != this.javaClass) {
+            if (module.enabled && module.javaClass != this.javaClass) {
                 module.disable()
                 wasEnabled.add(module)
             }

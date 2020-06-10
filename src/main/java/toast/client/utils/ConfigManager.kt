@@ -9,7 +9,6 @@ import toast.client.ToastClient
 import toast.client.modules.config.Setting
 import java.io.FileNotFoundException
 import java.io.FileReader
-import java.lang.reflect.Type
 import java.util.*
 
 /**
@@ -26,7 +25,7 @@ class ConfigManager {
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 config[module.name] = module.settings.getSettings()
             }
-            FileManager.writeFile(configFile, gson.toJson(config, configMapType))
+            FileManager.writeFile(configFile, gson.toJson(config, object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type))
         }
     }
 
@@ -36,7 +35,7 @@ class ConfigManager {
     fun loadConfig() {
         val config: LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?
         try {
-            config = gson.fromJson(FileReader(FileManager.createFile(configFile)), configMapType)
+            config = gson.fromJson(FileReader(FileManager.createFile(configFile)), object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
@@ -67,7 +66,7 @@ class ConfigManager {
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 keyBinds[module.name] = module.key
             }
-            FileManager.writeFile(keyBindsFile, gson.toJson(keyBinds, keyBindMapType))
+            FileManager.writeFile(keyBindsFile, gson.toJson(keyBinds, object : TypeToken<Map<String?, Int?>?>() {}.type))
         }
     }
 
@@ -77,7 +76,7 @@ class ConfigManager {
     fun loadKeyBinds() {
         val keyBinds: Map<String, Int>?
         try {
-            keyBinds = gson.fromJson(FileReader(FileManager.createFile(keyBindsFile)), keyBindMapType)
+            keyBinds = gson.fromJson(FileReader(FileManager.createFile(keyBindsFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
@@ -98,7 +97,7 @@ class ConfigManager {
      */
     fun writeMacros() {
         if (canWrite) {
-            FileManager.writeFile(macrosFile, gson.toJson(macros, macroMapType))
+            FileManager.writeFile(macrosFile, gson.toJson(macros, object : TypeToken<Map<String?, Int?>?>() {}.type))
         }
     }
 
@@ -107,7 +106,7 @@ class ConfigManager {
      */
     fun loadMacros() {
         try {
-            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), macroMapType)
+            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
@@ -134,9 +133,9 @@ class ConfigManager {
         if (canWrite) {
             val modules: MutableMap<String, Boolean> = TreeMap()
             for (module in ToastClient.MODULE_MANAGER.modules) {
-                modules[module.name] = module.isEnabled()
+                modules[module.name] = module.enabled
             }
-            FileManager.writeFile(modulesFile, gson.toJson(modules, moduleMapType))
+            FileManager.writeFile(modulesFile, gson.toJson(modules, object : TypeToken<Map<String?, Boolean?>?>() {}.type))
         }
     }
 
@@ -146,7 +145,7 @@ class ConfigManager {
     fun loadModules() {
         val modules: Map<String, Boolean>?
         try {
-            modules = gson.fromJson(FileReader(FileManager.createFile(modulesFile)), moduleMapType)
+            modules = gson.fromJson(FileReader(FileManager.createFile(modulesFile)), object : TypeToken<Map<String?, Boolean?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
@@ -212,26 +211,6 @@ class ConfigManager {
          * Map containing macros and the keys they are bound to
          */
         var macros: MutableMap<String?, Int?>? = null
-
-        /**
-         * The type token of the map containing macros mappings
-         */
-        val macroMapType: Type = object : TypeToken<Map<String?, Int?>?>() {}.type
-
-        /**
-         * The type token of the map containing module enabled states
-         */
-        val moduleMapType: Type = object : TypeToken<Map<String?, Boolean?>?>() {}.type
-
-        /**
-         * The type token of the map containing containing module settings
-         */
-        val configMapType: Type = object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type
-
-        /**
-         * The type token of the map containing module key-binds
-         */
-        val keyBindMapType: Type = object : TypeToken<Map<String?, Int?>?>() {}.type
 
         private val gson = GsonBuilder().setPrettyPrinting().create()
         private const val disabledOnStart = "Panic, ClickGui"

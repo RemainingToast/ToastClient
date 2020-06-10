@@ -25,7 +25,7 @@ public class HUD {
         if (mc.options.debugEnabled || Panic.IsPanicking()) return;
         Module hud = MODULE_MANAGER.getModule("HUD");
         if (hud == null) return;
-        if (!hud.isEnabled()) return;
+        if (!hud.getEnabled()) return;
 
         boolean rgb = false;
         if (hud.getBool("Rainbow")) {
@@ -74,7 +74,7 @@ public class HUD {
         if (hud.getBool("SortedSet")) {
             SortedSet<String> enabledModules = new TreeSet<>(Comparator.comparing(mc.textRenderer::getStringWidth).reversed()); //TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
             for (Module module : MODULE_MANAGER.getModules()) {
-                if (module.isEnabled() && module.getBool("Visible")) {
+                if (module.getEnabled() && module.getBool("Visible")) {
                     enabledModules.add(module.getName());
                 }
             }

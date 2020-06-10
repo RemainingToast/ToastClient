@@ -5,6 +5,9 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.hud.InGameHud
 import net.minecraft.item.ItemStack
 
+/**
+ * A set of utilities for drawing things on screen on a 2D plane
+ */
 object TwoDRenderUtils {
     private val textRenderer = MinecraftClient.getInstance().textRenderer
 
@@ -73,16 +76,16 @@ object TwoDRenderUtils {
      */
     @JvmStatic
     fun drawTextBox(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        color: Int,
-        textColor: Int,
-        prefixColor: Int,
-        bgColor: Int,
-        prefix: String?,
-        text: String?
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            color: Int,
+            textColor: Int,
+            prefixColor: Int,
+            bgColor: Int,
+            prefix: String?,
+            text: String?
     ) {
         drawRect(x - 2, y - 2, width, height, bgColor)
         drawHollowRect(x - 2, y - 2, width, height, 1, color)
@@ -102,12 +105,12 @@ object TwoDRenderUtils {
      */
     @JvmStatic
     fun isMouseOverRect(
-        mouseX: Double,
-        mouseY: Double,
-        x: Double,
-        y: Double,
-        width: Int,
-        height: Int
+            mouseX: Double,
+            mouseY: Double,
+            x: Double,
+            y: Double,
+            width: Int,
+            height: Int
     ): Boolean {
         var xOver = false
         var yOver = false
@@ -136,7 +139,7 @@ object TwoDRenderUtils {
                 if (!itemStack.isEmpty) {
                     MinecraftClient.getInstance().itemRenderer.renderGuiItem(itemStack, x + 1, y + 1)
                     MinecraftClient.getInstance().itemRenderer
-                        .renderGuiItemOverlay(textRenderer, itemStack, x + 1, y + 1)
+                            .renderGuiItemOverlay(textRenderer, itemStack, x + 1, y + 1)
                 }
                 if (x == 17 * 8 + x) {
                     x = xStart

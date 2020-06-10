@@ -8,7 +8,18 @@ import toast.client.utils.Logger
 import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 
+/**
+ * Manages the loading and execution of commands
+ */
 class CommandHandler {
+    /**
+     * Array containing all of the active commands
+     */
+    var commands: CopyOnWriteArrayList<Command> = CopyOnWriteArrayList<Command>()
+
+    /**
+     * Executes the command corresponding to name with args as the argument array
+     */
     fun executeCmd(name: String, args: Array<String>) {
         var notfound = true
         for (command in commands) {
@@ -33,12 +44,16 @@ class CommandHandler {
         }
     }
 
+    /**
+     * Checks if the command is developer only and if it is checks that the current player is a developer
+     */
     fun isDevCancel(c: Command): Boolean {
         return c.isDev && !ToastClient.devs.contains(Objects.requireNonNull(MinecraftClient.getInstance().player)!!.displayName.asFormattedString())
     }
 
-    val commands: CopyOnWriteArrayList<Command> = CopyOnWriteArrayList()
-
+    /**
+     * Gets a command from it's name
+     */
     fun getCommand(cmd: String?): Command? {
         for (command in commands) {
             for (alias in command.aliases) {
@@ -50,6 +65,9 @@ class CommandHandler {
         return null
     }
 
+    /**
+     * Loads all of the commands
+     */
     fun initCommands() {
         commands.clear()
         // alphabetical order please
@@ -68,9 +86,5 @@ class CommandHandler {
         commands.add(Suffix())
         commands.add(Set())
         commands.add(Toggle())
-    }
-
-    companion object {
-        var commands = CopyOnWriteArrayList<Command>()
     }
 }

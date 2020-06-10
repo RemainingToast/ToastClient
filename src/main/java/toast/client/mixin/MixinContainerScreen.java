@@ -24,7 +24,7 @@ public class MixinContainerScreen {
 
     @Inject(method = "render", at = @At("RETURN"))
     public void onRender(CallbackInfo ci) {
-        if (mc.player != null && mc.currentScreen instanceof ContainerScreen && MODULE_MANAGER.getModule(ShulkerPreview.class).isEnabled()) {
+        if (mc.player != null && mc.currentScreen instanceof ContainerScreen && MODULE_MANAGER.getModule(ShulkerPreview.class).getEnabled()) {
             ContainerScreen containerScreen = (ContainerScreen) mc.currentScreen;
             Container container = containerScreen.getContainer();
 

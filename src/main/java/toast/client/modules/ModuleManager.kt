@@ -16,7 +16,7 @@ import toast.client.modules.misc.PortalChat
 import toast.client.modules.misc.Spammer
 import toast.client.modules.movement.*
 import toast.client.modules.player.AutoTool
-import toast.client.modules.player.Surround
+import toast.client.modules.combat.Surround
 import toast.client.modules.render.ClickGui
 import toast.client.modules.render.Fullbright
 import toast.client.modules.render.HUD

@@ -4,7 +4,10 @@ import toast.client.ToastClient
 import toast.client.commands.Command
 import toast.client.utils.Logger
 
-class GuiReset : Command("GuiReset", "${ToastClient.cmdPrefix}guireset", "Regenerates clickgui category positions according to current screen size", false, "guireset", "gr", "fixgui") {
+/**
+ * Command to regenerate ClickGui category positions according to current window resolution
+ */
+class GuiReset : Command("GuiReset", "${ToastClient.cmdPrefix}guireset", "Makes ClickGui fit on screen as much as possible", false, "guireset", "gr", "fixgui") {
     override fun run(args: Array<String>) {
         if (ToastClient.clickGuiHasOpened) {
             ToastClient.clickGui.settings.initCategoryPositions()

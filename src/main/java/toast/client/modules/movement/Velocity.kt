@@ -24,7 +24,7 @@ class Velocity : Module("Velocity", "Changes your velocity, can stop things from
 
     @Subscribe
     fun onPacket(e: EventPacketReceived) {
-        if (this.isEnabled()) {
+        if (this.enabled) {
             if (mc.player == null) return
             when (mode) {
                 "Vanilla" -> when (e.getPacket()) {

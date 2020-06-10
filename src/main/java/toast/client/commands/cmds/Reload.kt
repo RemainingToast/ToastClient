@@ -5,6 +5,9 @@ import toast.client.ToastClient
 import toast.client.commands.Command
 import toast.client.utils.Logger
 
+/**
+ * Command to reload one or all of the mod's configurations from it's file
+ */
 class Reload : Command("Reload", """${ToastClient.cmdPrefix}reload [config]""", "Reloads all or one of the configuration files", false, "reload", "rl") {
     override fun run(args: Array<String>) {
         if (args.isEmpty()) {

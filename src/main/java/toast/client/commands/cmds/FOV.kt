@@ -5,6 +5,9 @@ import toast.client.commands.Command
 import toast.client.utils.KeyUtil
 import toast.client.utils.Logger
 
+/**
+ * Command to set the player's field of view to a specific value
+ */
 class FOV : Command("FOV", "${ToastClient.cmdPrefix}fov [fov]", "change fov", false, "fov") {
     override fun run(args: Array<String>) {
         if (args.isNotEmpty()) {

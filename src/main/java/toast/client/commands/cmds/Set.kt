@@ -8,6 +8,9 @@ import toast.client.modules.config.Setting
 import toast.client.utils.Logger
 import java.util.*
 
+/**
+ * Command to list and change configuration options for modules
+ */
 class Set : Command("Set", """${ToastClient.cmdPrefix}set <module> [setting] [newvalue]""", "Changes module settings", false, "set", "config", "settings") {
     private fun displaySetting(name: String, setting: Setting, module: Module) {
         when (setting.type) {

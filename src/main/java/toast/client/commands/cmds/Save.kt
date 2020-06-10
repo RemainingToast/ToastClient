@@ -5,6 +5,9 @@ import toast.client.ToastClient
 import toast.client.commands.Command
 import toast.client.utils.Logger
 
+/**
+ * Command to save all or one of the mod's configurations to it's file
+ */
 class Save : Command("Save", """${ToastClient.cmdPrefix}save [config]""", "Saves the configuration files", false, "save") {
     override fun run(args: Array<String>) {
         if (args.isEmpty()) {

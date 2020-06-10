@@ -5,6 +5,9 @@ import toast.client.commands.Command
 import toast.client.modules.Module
 import toast.client.utils.Logger
 
+/**
+ * Command to list all of the categories or the modules in a category
+ */
 class ListModules : Command("List", """${ToastClient.cmdPrefix}list [category]""", "Lists categories or modules in a category", false, "cat", "list", "mods") {
     override fun run(args: Array<String>) {
         if (args.isEmpty()) {

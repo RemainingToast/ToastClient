@@ -9,6 +9,9 @@ import toast.client.utils.Logger
 import toast.client.utils.TimerUtil
 import java.util.*
 
+/**
+ * Module to automatically send lines of a file after every chosen delay
+ */
 class Spammer : Module("Spammer", "Spams messages in chat from a file.", Category.MISC, -1) {
     private var lines: List<String>? = ArrayList()
     private var currentLine = 0
@@ -28,14 +31,14 @@ class Spammer : Module("Spammer", "Spams messages in chat from a file.", Categor
 
     @Subscribe
     fun onTick(event: EventUpdate?) {
-        if (lines!!.isEmpty() || mc.player == null) return
-        if (timer.isDelayComplete((getDouble("Delay") * 1000L).toLong())) {
-            timer.setLastMS()
+        if (timer.isDelayComplete((getDouble("Delay") * 1000L))) {
+            timer.reset()
             when (getBool("AntiSpam")) {
-                false -> mc.player!!.sendChatMessage(lines!![currentLine])
-                true -> mc.player!!.sendChatMessage(lines!![currentLine] + " [" + RandomStringUtils.randomAlphanumeric(getDouble("AntiSpam length").toInt()).toLowerCase() + "]")
+                false -> (mc.player ?: return).sendChatMessage((lines ?: return)[currentLine])
+                true -> (mc.player ?: return).sendChatMessage((lines
+                        ?: return)[currentLine] + " [" + RandomStringUtils.randomAlphanumeric(getDouble("AntiSpam length").toInt()).toLowerCase() + "]")
             }
-            if (currentLine >= lines!!.size - 1) currentLine = 0
+            if (currentLine >= (lines ?: return).size - 1) currentLine = 0
             else currentLine++
         }
     }

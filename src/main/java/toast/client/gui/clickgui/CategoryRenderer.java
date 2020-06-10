@@ -60,7 +60,7 @@ public class CategoryRenderer {
             for (Module module : MODULE_MANAGER.getModulesInCategory(category)) {
                 int moduleTextColor;
                 int moduleBgColor;
-                if (module.isEnabled()) {
+                if (module.getEnabled()) {
                     moduleTextColor = colors.moduleOnTextColor;
                     moduleBgColor = colors.moduleOnBgColor;
                 } else {

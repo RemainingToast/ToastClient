@@ -1,4 +1,4 @@
-package toast.client.modules.player
+package toast.client.modules.combat
 
 import com.google.common.eventbus.Subscribe
 import net.minecraft.entity.player.PlayerInventory
@@ -15,7 +15,10 @@ import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class Surround : Module("Surround", "Surrounds your feet with blocks.", Category.PLAYER, -1) {
+/**
+ * Module to automatically surround the player's feet with blocks to prevent taking damage
+ */
+class Surround : Module("Surround", "Surrounds your feet with blocks.", Category.COMBAT, -1) {
     @Subscribe
     fun onUpdate(event: EventRender?) {
         if (mc.player == null) return

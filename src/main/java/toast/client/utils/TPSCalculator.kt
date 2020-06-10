@@ -12,6 +12,9 @@ import toast.client.events.network.EventSyncedUpdate
 import toast.client.events.player.EventUpdate
 import java.util.*
 
+/**
+ * Contains methods to calculate and get the current TPS (Ticks Per Second)
+ */
 @Environment(EnvType.CLIENT)
 class TPSCalculator {
     private var lastUpdateMillis: Long = 0
@@ -19,13 +22,16 @@ class TPSCalculator {
     private var nextPredictedTick = Double.MAX_VALUE
     private var nextToCheck = 0
 
+    /**
+     * Method called when client receives a packet
+     */
     @Subscribe
     fun onPacketReceived(event: EventPacketReceived) {
         if (event.getPacket() is WorldTimeUpdateS2CPacket) {
             ticks[nextToCheck] = MathHelper.clamp(
-                1000.0 / (System.currentTimeMillis() - lastUpdateMillis),
-                0.0,
-                20.0
+                    1000.0 / (System.currentTimeMillis() - lastUpdateMillis),
+                    0.0,
+                    20.0
             ).toFloat()
             lastUpdateMillis = System.currentTimeMillis()
             var totalTicks = 0.0
@@ -42,6 +48,9 @@ class TPSCalculator {
         if (nextToCheck > ticks.size - 1) nextToCheck = 0
     }
 
+    /**
+     * Method called every game tick
+     */
     @Subscribe
     fun onUpdate(event: EventUpdate?) {
         if (MinecraftClient.getInstance().world == null) {
@@ -52,8 +61,15 @@ class TPSCalculator {
     }
 
     companion object {
+        /**
+         * Current instance of the TPS calculator
+         */
         @JvmField
         var calculatorInstance: TPSCalculator? = null
+
+        /**
+         * Current TPS
+         */
         var tps: Double = 0.0
         private var timer: Timer? = null
     }

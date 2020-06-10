@@ -6,6 +6,9 @@ import toast.client.commands.Command
 import toast.client.utils.KeyUtil
 import toast.client.utils.Logger
 
+/**
+ * Command to bind a module to a key
+ */
 class Bind : Command("Bind", "${ToastClient.cmdPrefix}bind [all, module] [key]", "Bind module to key", false, "bind") {
     override fun run(args: Array<String>) {
         if (args.isNotEmpty()) {

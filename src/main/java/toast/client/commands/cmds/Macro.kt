@@ -8,7 +8,7 @@ import toast.client.utils.Logger
 import java.util.*
 
 /**
- * Command to add remove and list existing macros
+ * Command to add, remove and list existing macros
  */
 class Macro : Command("Macro", """${ToastClient.cmdPrefix}macro [add/remove/list] <key> <command/message>""", "Allows you to bind a message to a key", false, "macros", "macro") {
     override fun run(args: Array<String>) {

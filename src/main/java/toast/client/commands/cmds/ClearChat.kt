@@ -4,6 +4,9 @@ import toast.client.ToastClient
 import toast.client.commands.Command
 import toast.client.utils.Logger
 
+/**
+ * Command to wipe all messages from the in-game chat HUD
+ */
 class ClearChat : Command("ClearChat", "${ToastClient.cmdPrefix}clearchat", "Clears all messages in chat", false, "clearchat") {
     @Throws(InterruptedException::class)
     override fun run(args: Array<String>) {

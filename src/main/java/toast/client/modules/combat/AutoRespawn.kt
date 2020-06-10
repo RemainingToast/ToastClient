@@ -6,11 +6,14 @@ import toast.client.events.player.EventUpdate
 import toast.client.modules.Module
 import toast.client.utils.TimerUtil
 
+/**
+ * Module to automatically press the respawn button when the player dies
+ */
 class AutoRespawn : Module(
-    "AutoRespawn",
-    "Automatically presses the respawn button for you.",
-    Category.COMBAT,
-    -1
+        "AutoRespawn",
+        "Automatically presses the respawn button for you.",
+        Category.COMBAT,
+        -1
 ) {
     private val timer = TimerUtil()
     override fun onEnable() {
@@ -23,11 +26,10 @@ class AutoRespawn : Module(
 
     @Subscribe
     fun onEvent(event: EventUpdate?) {
-        if (mc.player == null || mc.currentScreen == null) return
-        if (timer.isDelayComplete((getDouble("Speed")?.times(1000L))?.toLong()!!)) {
-            timer.setLastMS()
-            if (mc.currentScreen!! is DeathScreen) {
-                mc.player!!.requestRespawn()
+        if (timer.isDelayComplete((getDouble("Speed").times(1000L)))) {
+            timer.reset()
+            if (mc.currentScreen ?: return is DeathScreen) {
+                (mc.player ?: return).requestRespawn()
                 mc.openScreen(null)
             }
         }
