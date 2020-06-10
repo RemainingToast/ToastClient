@@ -18,6 +18,9 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
+/**
+ * Some utilities for getting information about the world surrounding the player
+ */
 object WorldUtil {
     /**
      * Asynchronously get all matches of given Block(s) inside a given Chunk and collect them into a map of BlockPos and Block
@@ -30,13 +33,13 @@ object WorldUtil {
      */
     @Throws(InterruptedException::class)
     fun searchChunk(
-        world: World,
-        chunkX: Int,
-        chunkZ: Int,
-        matches: List<Block?>
+            world: World,
+            chunkX: Int,
+            chunkZ: Int,
+            matches: List<Block?>
     ): ConcurrentHashMap<BlockPos, Block> {
         val queue =
-            ConcurrentHashMap<BlockPos, Block>()
+                ConcurrentHashMap<BlockPos, Block>()
         if (!world.isChunkLoaded(BlockPos(chunkX * 16.0, 80.0, chunkZ * 16.0))) {
             return queue
         }
@@ -46,8 +49,8 @@ object WorldUtil {
             for (x in chunkX * 16 until chunkX * 16 + 15) {
                 for (z in chunkZ * 16 until chunkZ * 16 + 15) {
                     val block =
-                        world.getBlockState(BlockPos(x, chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE)[x, z], z))
-                            .block
+                            world.getBlockState(BlockPos(x, chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE)[x, z], z))
+                                    .block
                     if (matches.contains(block)) {
                         queue[BlockPos(x, chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE)[x, z], z)] = block
                     }
@@ -69,12 +72,12 @@ object WorldUtil {
      */
     @Throws(InterruptedException::class)
     fun searchBox(
-        world: World,
-        box: Box,
-        matches: List<Block?>
+            world: World,
+            box: Box,
+            matches: List<Block?>
     ): ConcurrentHashMap<BlockPos, Block> {
         val map =
-            ConcurrentHashMap<BlockPos, Block>()
+                ConcurrentHashMap<BlockPos, Block>()
         // I'm trusting that the chunk is loaded
         val latch = CountDownLatch(1)
         Thread(Runnable {
@@ -85,12 +88,12 @@ object WorldUtil {
             val z1 = MathHelper.floor(box.z1)
             val z2 = MathHelper.ceil(box.z2)
             BlockPos.stream(x1, y1, z1, x2 - 1, y2 - 1, z2 - 1)
-                .forEach { pos: BlockPos ->
-                    val block = world.getBlockState(pos).block
-                    if (matches.contains(block)) {
-                        map[pos] = block
+                    .forEach { pos: BlockPos ->
+                        val block = world.getBlockState(pos).block
+                        if (matches.contains(block)) {
+                            map[pos] = block
+                        }
                     }
-                }
             latch.countDown()
         }).start()
         latch.await()
@@ -107,12 +110,12 @@ object WorldUtil {
      */
     @Throws(InterruptedException::class)
     fun searchList(
-        world: World,
-        toCheck: List<BlockPos>,
-        matches: List<Block?>
+            world: World,
+            toCheck: List<BlockPos>,
+            matches: List<Block?>
     ): ConcurrentHashMap<BlockPos, Block> {
         val map =
-            ConcurrentHashMap<BlockPos, Block>()
+                ConcurrentHashMap<BlockPos, Block>()
         // I'm trusting that the chunk is loaded
         val latch = CountDownLatch(1)
         Thread(Runnable {
@@ -138,12 +141,12 @@ object WorldUtil {
      * @see Chunk.getBlockEntityPositions
      */
     fun getTileEntitiesInChunk(
-        world: World,
-        chunkX: Int,
-        chunkZ: Int
+            world: World,
+            chunkX: Int,
+            chunkZ: Int
     ): LinkedHashMap<BlockPos, Block> {
         val map =
-            LinkedHashMap<BlockPos, Block>()
+                LinkedHashMap<BlockPos, Block>()
         val chunk: Chunk = world.getChunk(chunkX, chunkZ)
         if (!world.isChunkLoaded(BlockPos(chunkX * 16.0, 80.0, chunkZ * 16.0))) {
             return map
@@ -163,7 +166,7 @@ object WorldUtil {
      */
     fun getTileEntitiesInWorld(world: World): LinkedHashMap<BlockPos, Block> {
         val map =
-            LinkedHashMap<BlockPos, Block>()
+                LinkedHashMap<BlockPos, Block>()
         world.blockEntities.forEach(Consumer { tilePos: BlockEntity ->
             val pos = tilePos.pos
             map[pos] = world.getBlockState(pos).block
@@ -180,7 +183,7 @@ object WorldUtil {
      */
     fun getDistance(vecA: Vec3d, vecB: Vec3d): Double {
         return sqrt(
-            (vecA.x - vecB.x).pow(2.0) + (vecA.y - vecB.y).pow(2.0) + (vecA.z - vecB.z).pow(2.0)
+                (vecA.x - vecB.x).pow(2.0) + (vecA.y - vecB.y).pow(2.0) + (vecA.z - vecB.z).pow(2.0)
         )
     }
 
@@ -193,12 +196,12 @@ object WorldUtil {
      * @return all vectors between startVec and destinationVec divided by steps
      */
     fun extendVec(
-        startVec: Vec3d,
-        destinationVec: Vec3d,
-        steps: Int
+            startVec: Vec3d,
+            destinationVec: Vec3d,
+            steps: Int
     ): ArrayList<Vec3d> {
         val returnList =
-            ArrayList<Vec3d>(steps + 1)
+                ArrayList<Vec3d>(steps + 1)
         val stepDistance = getDistance(startVec, destinationVec) / steps
         for (i in 0 until steps.coerceAtLeast(1) + 1) {
             returnList.add(advanceVec(startVec, destinationVec, stepDistance * i))
@@ -215,13 +218,13 @@ object WorldUtil {
      * @return vector based on startVec that is moved towards destinationVec by distance
      */
     fun advanceVec(
-        startVec: Vec3d?,
-        destinationVec: Vec3d,
-        distance: Double
+            startVec: Vec3d?,
+            destinationVec: Vec3d,
+            distance: Double
     ): Vec3d {
         val advanceDirection = destinationVec.subtract(startVec).normalize()
         return if (destinationVec.distanceTo(startVec) < distance) destinationVec else advanceDirection.multiply(
-            distance
+                distance
         )
     }
 
@@ -233,8 +236,8 @@ object WorldUtil {
      * @return rounded block positions inside a 3d area between pos1 and pos2
      */
     fun getBlockPositionsInArea(
-        pos1: Vec3d,
-        pos2: Vec3d
+            pos1: Vec3d,
+            pos2: Vec3d
     ): List<BlockPos> {
         val minX: Int = pos1.x.coerceAtMost(pos2.x).roundToInt()
         val maxX: Int = pos1.x.coerceAtLeast(pos2.x).roundToInt()

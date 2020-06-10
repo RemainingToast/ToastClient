@@ -16,12 +16,15 @@ import java.util.function.Consumer
 import kotlin.math.ceil
 import kotlin.math.floor
 
+/**
+ * Highlights holes (single air blocks) in the world to show where attacks could come from
+ */
 class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Category.RENDER, -1) {
     override fun onEnable() {
         disable()
     }
 
-    private val offsets = Arrays.asList(
+    private val offsets = listOf(
             BlockPos(0, -1, 0),
             BlockPos(1, 0, 0),
             BlockPos(-1, 0, 0),
@@ -35,11 +38,15 @@ class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Catego
         awaiting = true
         val range = getDouble("Range")
         awaiting = try {
-            val positions = WorldUtil.getBlockPositionsInArea(mc.player!!.blockPos.add(-range, -range, -range), mc.player!!.blockPos.add(range, range, range))
+            val positions = WorldUtil.getBlockPositionsInArea((mc.player
+                    ?: return).blockPos.add(-range, -range, -range), (mc.player
+                    ?: return).blockPos.add(range, range, range))
             val airPositions: MutableList<BlockPos> = ArrayList(emptyList())
             val latch = CountDownLatch(positions.size)
-            WorldUtil.searchList(mc.world!!, positions, WorldInteractionUtil.AIR).keys.forEach(Consumer { pos: BlockPos ->
-                if (Vec3d(pos.x + 0.5, pos.y + 0.5, pos.z + 0.50).distanceTo(mc.player!!.pos) <= getDouble("Range")) airPositions.add(pos)
+            WorldUtil.searchList(mc.world
+                    ?: return, positions, WorldInteractionUtil.AIR).keys.forEach(Consumer { pos: BlockPos ->
+                if (Vec3d(pos.x + 0.5, pos.y + 0.5, pos.z + 0.50).distanceTo((mc.player
+                                ?: return@Consumer).pos) <= getDouble("Range")) airPositions.add(pos)
                 latch.countDown()
             })
             latch.await()
@@ -50,15 +57,19 @@ class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Catego
                     var bedrock = 0
                     var obsidian = 0
                     for (blockPos in offsets) {
-                        if ((getBool("Bedrock (Green)") || getBool("Mixed (Yellow)")) && mc.world!!.getBlockState(pos.add(blockPos)).block === Blocks.BEDROCK) {
+                        if ((getBool("Bedrock (Green)") || getBool("Mixed (Yellow)")) && (mc.world
+                                        ?: return@Consumer).getBlockState(pos.add(blockPos)).block === Blocks.BEDROCK) {
                             bedrock++
-                        } else if ((getBool("Obsidian (Red)") || getBool("Mixed (Yellow)")) && mc.world!!.getBlockState(pos.add(blockPos)).block === Blocks.OBSIDIAN) {
+                        } else if ((getBool("Obsidian (Red)") || getBool("Mixed (Yellow)")) && (mc.world
+                                        ?: return@Consumer).getBlockState(pos.add(blockPos)).block === Blocks.OBSIDIAN) {
                             obsidian++
                         }
                     }
                     if (!(bedrock == 5 && !getBool("Bedrock (Green)") || obsidian == 5 && !getBool("Obsidian (Red)") || bedrock > 0 && obsidian > 0 && !getBool("Mixed (Yellow)")) && bedrock + obsidian == 5 &&
-                            WorldInteractionUtil.AIR.contains(mc.world!!.getBlockState(pos.add(0, 1, 0)).block) &&
-                            WorldInteractionUtil.AIR.contains(mc.world!!.getBlockState(pos.add(0, 2, 0)).block)) {
+                            WorldInteractionUtil.AIR.contains((mc.world
+                                    ?: return@Consumer).getBlockState(pos.add(0, 1, 0)).block) &&
+                            WorldInteractionUtil.AIR.contains((mc.world
+                                    ?: return@Consumer).getBlockState(pos.add(0, 2, 0)).block)) {
                         when (mode) {
                             "Box" -> when {
                                 bedrock == 5 -> RenderUtil.drawFilledBox(pos, 0.08f, 1f, 0.35f, (getDouble("Opacity") + 20).toFloat() / 100)

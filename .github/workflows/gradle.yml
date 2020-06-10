@@ -33,5 +33,5 @@ jobs:
     - name: Upload to discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      run: curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@toastclient-1.0.0.jar" $DISCORD_WEBHOOK
+      run: curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@build/libs/toastclient-1.0.0.jar" $DISCORD_WEBHOOK
     

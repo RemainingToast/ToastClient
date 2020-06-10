@@ -11,6 +11,9 @@ import toast.client.modules.Module
 import toast.client.utils.WorldUtil
 import java.util.function.Consumer
 
+/**
+ * Highlights storage TileEntities in the world
+ */
 class StorageESP : Module("StorageESP", "Highlights storage blocks in the world.", Category.RENDER, -1) {
     override fun onEnable() {
         disable()
