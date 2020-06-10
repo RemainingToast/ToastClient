@@ -5,15 +5,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import net.minecraft.client.MinecraftClient;
 import toast.client.modules.Module;
-import toast.client.utils.FileManager;
 
 import java.awt.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static toast.client.ToastClient.FILE_MANAGER;
 import static toast.client.ToastClient.clickGui;
 
 public class ClickGuiSettings {
@@ -60,7 +61,7 @@ public class ClickGuiSettings {
 
     public void loadPositions() {
         try {
-            categoryPositions = gson.fromJson(new FileReader(FileManager.createFile(clickguiPosFile)), new TypeToken<Map<String, CategorySetting>>() {
+            categoryPositions = gson.fromJson(new FileReader(FILE_MANAGER.createFile(new File(clickguiPosFile))), new TypeToken<Map<String, CategorySetting>>() {
             }.getType());
             if (categoryPositions == null && clickGui != null) {
                 initCategoryPositions();
@@ -72,11 +73,11 @@ public class ClickGuiSettings {
     }
 
     public void savePositions() {
-        FileManager.writeFile(clickguiPosFile, gson.toJson(categoryPositions));
+        FILE_MANAGER.writeFile(new File(clickguiPosFile), gson.toJson(categoryPositions));
     }
 
     public void saveColors() {
-        FileManager.writeFile(clickguiColorsFile, gson.toJson(colors));
+        FILE_MANAGER.writeFile(new File(clickguiColorsFile), gson.toJson(colors));
     }
 
     public void allDefaults() {
@@ -135,7 +136,7 @@ public class ClickGuiSettings {
 
     public void loadColors() {
         try {
-            colors = gson.fromJson(new FileReader(FileManager.createFile(clickguiColorsFile)), new TypeToken<Colors>() {
+            colors = gson.fromJson(new FileReader(FILE_MANAGER.createFile(new File(clickguiColorsFile))), new TypeToken<Colors>() {
             }.getType());
             if (colors == null) {
                 allDefaults();

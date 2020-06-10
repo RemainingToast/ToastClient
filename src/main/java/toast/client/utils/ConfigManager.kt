@@ -6,7 +6,9 @@ import com.google.gson.reflect.TypeToken
 import net.minecraft.client.MinecraftClient
 import org.lwjgl.glfw.GLFW
 import toast.client.ToastClient
+import toast.client.ToastClient.FILE_MANAGER
 import toast.client.modules.config.Setting
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileReader
 import java.util.*
@@ -25,7 +27,7 @@ class ConfigManager {
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 config[module.name] = module.settings.getSettings()
             }
-            FileManager.writeFile(configFile, gson.toJson(config, object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type))
+            FILE_MANAGER.writeFile(File(configFile), gson.toJson(config, object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type))
         }
     }
 
@@ -35,7 +37,7 @@ class ConfigManager {
     fun loadConfig() {
         val config: LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?
         try {
-            config = gson.fromJson(FileReader(FileManager.createFile(configFile)), object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type)
+            config = gson.fromJson(FileReader(FILE_MANAGER.createFile(File(configFile))), object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
@@ -66,7 +68,7 @@ class ConfigManager {
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 keyBinds[module.name] = module.key
             }
-            FileManager.writeFile(keyBindsFile, gson.toJson(keyBinds, object : TypeToken<Map<String?, Int?>?>() {}.type))
+            FILE_MANAGER.writeFile(File(keyBindsFile), gson.toJson(keyBinds, object : TypeToken<Map<String?, Int?>?>() {}.type))
         }
     }
 
@@ -76,7 +78,7 @@ class ConfigManager {
     fun loadKeyBinds() {
         val keyBinds: Map<String, Int>?
         try {
-            keyBinds = gson.fromJson(FileReader(FileManager.createFile(keyBindsFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
+            keyBinds = gson.fromJson(FileReader(FILE_MANAGER.createFile(File(keyBindsFile))), object : TypeToken<Map<String?, Int?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
@@ -97,7 +99,7 @@ class ConfigManager {
      */
     fun writeMacros() {
         if (canWrite) {
-            FileManager.writeFile(macrosFile, gson.toJson(macros, object : TypeToken<Map<String?, Int?>?>() {}.type))
+            FILE_MANAGER.writeFile(File(macrosFile), gson.toJson(macros, object : TypeToken<Map<String?, Int?>?>() {}.type))
         }
     }
 
@@ -106,7 +108,7 @@ class ConfigManager {
      */
     fun loadMacros() {
         try {
-            macros = gson.fromJson(FileReader(FileManager.createFile(macrosFile)), object : TypeToken<Map<String?, Int?>?>() {}.type)
+            macros = gson.fromJson(FileReader(FILE_MANAGER.createFile(File(macrosFile))), object : TypeToken<Map<String?, Int?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
@@ -135,7 +137,7 @@ class ConfigManager {
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 modules[module.name] = module.enabled
             }
-            FileManager.writeFile(modulesFile, gson.toJson(modules, object : TypeToken<Map<String?, Boolean?>?>() {}.type))
+            FILE_MANAGER.writeFile(File(modulesFile), gson.toJson(modules, object : TypeToken<Map<String?, Boolean?>?>() {}.type))
         }
     }
 
@@ -145,7 +147,7 @@ class ConfigManager {
     fun loadModules() {
         val modules: Map<String, Boolean>?
         try {
-            modules = gson.fromJson(FileReader(FileManager.createFile(modulesFile)), object : TypeToken<Map<String?, Boolean?>?>() {}.type)
+            modules = gson.fromJson(FileReader(FILE_MANAGER.createFile(File(modulesFile))), object : TypeToken<Map<String?, Boolean?>?>() {}.type)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             return
