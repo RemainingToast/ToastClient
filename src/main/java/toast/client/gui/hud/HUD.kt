@@ -5,10 +5,10 @@ import net.minecraft.client.gui.hud.InGameHud
 import org.lwjgl.opengl.GL11
 import toast.client.ToastClient
 import toast.client.utils.TwoDRenderUtils.drawRect
-import toast.client.utils.TwoDRenderUtils.renderNineWideInvItems
 import java.awt.Color
 import java.util.*
 import kotlin.math.ceil
+
 
 /**
  * Object containing the methods required to generate and render the HUD
@@ -39,10 +39,21 @@ object HUD {
     /**
      * Draws the current contents of the player's inventory on the screen
      */
-    private fun drawInventory(x: Int, y: Int, drawBG: Boolean) {
+    private fun drawInventory(startX: Int, startY: Int, drawBG: Boolean) {
+        var x: Int = startX
+        var y: Int = startY
         if (drawBG) drawRect(x, y, 153, 51, Color(125, 125, 125, 175).rgb)
-        if (mc.player != null) {
-            renderNineWideInvItems((mc.player ?: return).inventory.main.subList(0, 26), x, y)
+        for ((i, itemStack) in (mc.player ?: return).inventory.main.withIndex()) {
+            if (i > 8) {
+                if (!itemStack.isEmpty) {
+                    mc.itemRenderer.renderGuiItem(itemStack, x + 1, y + 1)
+                    mc.itemRenderer.renderGuiItemOverlay(mc.textRenderer, itemStack, x + 1, y + 1)
+                }
+                if (x == 17 * 8 + startX) {
+                    x = startX
+                    y += 17
+                } else x += 17
+            }
         }
     }
 
@@ -54,7 +65,9 @@ object HUD {
         if (mc.player != null) {
             for (itemStack in (mc.player ?: return).inventory.armor) {
                 if (!itemStack.isEmpty) {
-                    mc.itemRenderer.renderGuiItem(itemStack, x + 1, y + 1)
+                    var toAdd = 1
+                    if ((mc.player ?: return).isSpectator || (mc.player ?: return).isCreative) toAdd = 21
+                    mc.itemRenderer.renderGuiItem(itemStack, x + 1, y + toAdd)
                     mc.itemRenderer.renderGuiItemOverlay(mc.textRenderer, itemStack, x + 1, y + 1)
                 }
                 x -= 17
