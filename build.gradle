@@ -1,8 +1,10 @@
 plugins {
+    id 'java'
     id 'fabric-loom'
     id 'maven-publish'
     id "org.jetbrains.kotlin.jvm"
     id "com.github.johnrengelman.shadow" version "5.2.0"
+    id "io.github.manosbatsis.gradle.plugin.reflections" version "1.1"
 }
 
 archivesBaseName = project.archives_base_name
@@ -28,9 +30,11 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modCompile group: 'javassist', name: 'javassist', version: '3.12.1.GA'
 
     modCompile "net.fabricmc:fabric-language-kotlin:1.3.71+build.1"
     modCompile "org.jetbrains.kotlin:kotlin-stdlib:1.3.71"
+    modCompile "org.reflections:reflections:0.9.10"
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
@@ -50,21 +54,9 @@ processResources {
     }
 }
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
+sourceCompatibility = targetCompatibility = compileKotlin.kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 
-sourceCompatibility = targetCompatibility = '1.8'
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
-}
+
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
 // this fixes some edge cases with special characters not displaying correctly
@@ -81,13 +73,28 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
+reflections {
+    dependsOn classes
+}
+
 jar {
+    dependsOn reflections
     from "LICENSE"
 }
 
 shadowJar {
-    include "org.jetbrains.kotlin:kotlin-stdlib:1.3.71"
-    minimize()
+    dependencies {
+        include(dependency('javassist:javassist'))
+        include(dependency('org.reflections:reflections'))
+        include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+    }
+    classifier = 'shadow'
+}
+
+remapJar {
+    dependsOn shadowJar
+    mustRunAfter shadowJar
+    input = file("build/libs/${archivesBaseName}-${version}-shadow.jar")
 }
 
 // configure the maven publication

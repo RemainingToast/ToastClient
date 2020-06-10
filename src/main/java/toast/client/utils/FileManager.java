@@ -32,9 +32,7 @@ public class FileManager {
         File newFile = new File(hackDirectory, file.getName());
         try {
             if (newFile.createNewFile()) {
-                fileManagerLogger("File " + newFile.getName() + " has been created.");
-            } else {
-                fileManagerLogger("File " + newFile.getName() + " already exists.");
+                fileManagerLogger("File " + newFile.getAbsolutePath() + " has been created.");
             }
             return newFile;
         } catch (IOException e) {
@@ -65,7 +63,7 @@ public class FileManager {
             writer.close();
             return file;
         } catch (IOException e) {
-            fileManagerLogger("Failed to write to file " + file.getName());
+            fileManagerLogger("Failed to write to file " + file.getAbsolutePath());
             e.printStackTrace();
             return null;
         }
@@ -89,13 +87,13 @@ public class FileManager {
         try {
             new FileWriter(newFile).write(lines);
             if (newFile.createNewFile()) {
-                fileManagerLogger("File " + newFile.getName() + " has been created with " + lines.split("\n").length + " lines.");
+                fileManagerLogger("File " + newFile.getAbsolutePath() + " has been created with " + lines.split("\n").length + " lines.");
             } else {
-                fileManagerLogger("File " + newFile.getName() + " already exists.");
+                fileManagerLogger("File " + newFile.getAbsolutePath() + " already exists.");
             }
             return newFile;
         } catch (IOException e) {
-            fileManagerLogger("Failed to create and write lines to " + newFile.getName());
+            fileManagerLogger("Failed to create and write lines to " + newFile.getAbsolutePath());
             return null;
         }
     }
@@ -106,7 +104,7 @@ public class FileManager {
             new FileWriter(file).append(text);
             return file;
         } catch (IOException e) {
-            fileManagerLogger("Failed to append file " + file.getName());
+            fileManagerLogger("Failed to append file " + file.getAbsolutePath());
             e.printStackTrace();
             return file;
         }
@@ -133,7 +131,7 @@ public class FileManager {
         try {
             return Files.readAllLines(file.toPath());
         } catch (IOException e) {
-            fileManagerLogger("Failed to read file " + file.getName());
+            fileManagerLogger("Failed to read file " + file.getAbsolutePath());
             e.printStackTrace();
             return null;
         }
@@ -166,7 +164,6 @@ public class FileManager {
             return matches.get(0);
         } catch (Exception ignored) {
         }
-
         return null;
     }
 

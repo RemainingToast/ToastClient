@@ -3,6 +3,7 @@ package toast.client.gui.clickgui;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import org.lwjgl.glfw.GLFW;
+import toast.client.ToastClient;
 import toast.client.gui.clickgui.components.Description;
 import toast.client.gui.clickgui.components.ModeSetting;
 import toast.client.gui.clickgui.components.SliderSetting;
@@ -71,6 +72,7 @@ public class CategoryRenderer {
                     if (isClickedL()) {
                         moduleBgColor = colors.moduleClickColor;
                         module.toggle();
+                        ToastClient.CONFIG_MANAGER.writeModules();
                     } else if (isClickedR()) {
                         if (settings.getPositions(categoryString).getExpandedModules().contains(module.getName())) {
                             settings.getPositions(categoryString).getExpandedModules().remove(module.getName());

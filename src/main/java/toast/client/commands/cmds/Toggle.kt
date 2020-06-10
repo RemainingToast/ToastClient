@@ -15,6 +15,7 @@ class Toggle : Command("Toggle", """${ToastClient.cmdPrefix}toggle [module]""", 
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 if (module.name.replace(" ".toRegex(), "").toLowerCase() == args[0].toLowerCase()) {
                     module.toggle()
+                    ToastClient.CONFIG_MANAGER.writeModules()
                     if (module.enabled) {
                         Logger.message("""Enabled ${module.name}""", Logger.INFO, true)
                     } else {

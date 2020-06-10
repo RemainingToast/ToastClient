@@ -8,7 +8,8 @@ import java.util.*
 /**
  * Command to disable all modules and removes "all" traces of the client
  */
-class Panic : Command("Panic", """${ToastClient.cmdPrefix}panic""", "shut's the client down'", false, "shutdown", "panic") {
+class Panic :
+    Command("Panic", """${ToastClient.cmdPrefix}panic""", "shut's the client down'", false, "shutdown", "panic") {
     private val wasEnabled: MutableList<Module> = ArrayList()
 
     @Throws(InterruptedException::class)
@@ -16,7 +17,7 @@ class Panic : Command("Panic", """${ToastClient.cmdPrefix}panic""", "shut's the 
         if (mc.currentScreen != null) return
         for (module in ToastClient.MODULE_MANAGER.modules) {
             if (module.enabled) {
-                module.setEnabled(false)
+                module.disable()
                 wasEnabled.add(module)
             }
         }
