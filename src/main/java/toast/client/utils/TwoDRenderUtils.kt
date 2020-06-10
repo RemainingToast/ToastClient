@@ -134,18 +134,16 @@ object TwoDRenderUtils {
     fun renderNineWideInvItems(itemStacks: List<ItemStack>, xStart: Int, yStart: Int) {
         var x = xStart
         var y = yStart
-        for ((u, itemStack) in itemStacks.withIndex()) {
-            if (u > 8) {
-                if (!itemStack.isEmpty) {
-                    MinecraftClient.getInstance().itemRenderer.renderGuiItem(itemStack, x + 1, y + 1)
-                    MinecraftClient.getInstance().itemRenderer
-                            .renderGuiItemOverlay(textRenderer, itemStack, x + 1, y + 1)
-                }
-                if (x == 17 * 8 + x) {
-                    x = xStart
-                    y += 17
-                } else x += 17
+        for (itemStack in itemStacks) {
+            if (!itemStack.isEmpty) {
+                MinecraftClient.getInstance().itemRenderer.renderGuiItem(itemStack, x + 1, y + 1)
+                MinecraftClient.getInstance().itemRenderer
+                        .renderGuiItemOverlay(textRenderer, itemStack, x + 1, y + 1)
             }
+            if (x == 17 * 8 + x) {
+                x = xStart
+                y += 17
+            } else x += 17
         }
     }
 }
