@@ -17,6 +17,10 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Category.RENDER, -1) {
+    override fun onEnable() {
+        disable()
+    }
+
     private val offsets = Arrays.asList(
             BlockPos(0, -1, 0),
             BlockPos(1, 0, 0),

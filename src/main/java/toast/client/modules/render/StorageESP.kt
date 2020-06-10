@@ -12,6 +12,10 @@ import toast.client.utils.WorldUtil
 import java.util.function.Consumer
 
 class StorageESP : Module("StorageESP", "Highlights storage blocks in the world.", Category.RENDER, -1) {
+    override fun onEnable() {
+        disable()
+    }
+
     @Subscribe
     fun onUpdate(event: EventUpdate?) {
         if (mc.world == null) return

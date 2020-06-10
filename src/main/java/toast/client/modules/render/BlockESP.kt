@@ -9,13 +9,17 @@ import toast.client.modules.Module
 import toast.client.utils.WorldUtil.searchChunk
 
 class BlockESP : Module("BlockESP", "Highlights blocks in the world.", Category.RENDER, -1) {
+    override fun onEnable() {
+        disable()
+    }
+
     @Subscribe
     fun onPacketReceived(event: EventPacketReceived) {
         if (mc.world == null) return
         if (event.getPacket() is ChunkDataS2CPacket) {
             val packet = event.getPacket() as ChunkDataS2CPacket
             try {
-                searchChunk(mc.world!!, packet.x / 16, packet.z / 16, matches).keys.addAll(found!!)
+                searchChunk(mc.world!!, packet.x / 16, packet.z / 16, matches).keys.addAll(found)
             } catch (ignored: InterruptedException) {
             }
         }
