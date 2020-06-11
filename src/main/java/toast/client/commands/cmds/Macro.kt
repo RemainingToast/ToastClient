@@ -19,40 +19,45 @@ class Macro : Command("Macro", """${ToastClient.cmdPrefix}macro [add/remove/list
         when (args[0]) {
             "add" -> {
                 if (args.size >= 3) {
-                    val key: String = args[1]
-                    if (KeyUtil.isNumeric(args[1])) {
-                        try {
-                            var command = ""
-                            for (x in 2 until args.size) {
-                                command += args[x]
-                            }
-                            ToastClient.CONFIG_MANAGER.loadMacros()
-                            ToastClient.CONFIG_MANAGER.addMacro(command, args[1].toInt())
-                            Logger.message("Added macro: $key | $command", Logger.INFO, false)
-                        } catch (nfe: NumberFormatException) {
-                            Logger.message("Failed to add macro.", Logger.ERR, false)
+                    val keyCode = KeyUtil.getKeyCode(args[1])
+                    if (keyCode == -1) {
+                        Logger.message("No Key by the name of ${args[1]} was found.", Logger.ERR, false)
+                        return
+                    }
+                    try {
+                        var command = args[2]
+                        for (x in 3 until args.size) {
+                            command += " ${args[x]}"
                         }
+                        ToastClient.CONFIG_MANAGER.loadMacros()
+                        ToastClient.CONFIG_MANAGER.addMacro(command, keyCode)
+                        Logger.message("Added macro: ${args[1]} | $command", Logger.INFO, false)
+                    } catch (nfe: NumberFormatException) {
+                        Logger.message("Failed to add macro.", Logger.ERR, false)
                     }
                     return
                 }
                 Logger.message("Missing arguments!", Logger.ERR, false)
             }
             "remove" -> {
-                if (KeyUtil.isNumeric(args[1])) {
-                    try {
-                        println(args[1].toInt())
-                        for ((command, key) in ToastClient.CONFIG_MANAGER.getMacros()
-                                ?: throw NumberFormatException()) {
-                            if (key == args[1].toInt()) {
-                                ToastClient.CONFIG_MANAGER.loadMacros()
-                                (ToastClient.CONFIG_MANAGER.getMacros() ?: continue).remove(command)
-                                ToastClient.CONFIG_MANAGER.writeMacros()
-                                Logger.message("Removed macro: $key | $command", Logger.INFO, false)
-                            }
+                val keyCode = KeyUtil.getKeyCode(args[1])
+                if (keyCode == -1) {
+                    Logger.message("No Key by the name of ${args[1]} was found.", Logger.ERR, false)
+                    return
+                }
+                try {
+                    println(keyCode)
+                    for ((command, key) in ToastClient.CONFIG_MANAGER.getMacros()
+                        ?: throw NumberFormatException()) {
+                        if (key == keyCode) {
+                            ToastClient.CONFIG_MANAGER.loadMacros()
+                            (ToastClient.CONFIG_MANAGER.getMacros() ?: continue).remove(command)
+                            ToastClient.CONFIG_MANAGER.writeMacros()
+                            Logger.message("Removed macro: ${args[1]} | $command", Logger.INFO, false)
                         }
-                    } catch (nfe: NumberFormatException) {
-                        Logger.message("Failed to remove macro.", Logger.ERR, false)
                     }
+                } catch (nfe: NumberFormatException) {
+                    Logger.message("Failed to remove macro.", Logger.ERR, false)
                 }
             }
             "list" -> {

@@ -27,14 +27,22 @@ class Bind : Command("Bind", "${ToastClient.cmdPrefix}bind [all, module] [key]",
                     }
                 }
             } else if (module != null) {
-                if (KeyUtil.isNumeric(args[1])) {
-                    try {
-                        module.key = args[1].toInt()
-                        println("Module ${module.name} is now bound to ${args[1].toInt()}")
-                        ToastClient.CONFIG_MANAGER.writeKeyBinds()
-                    } catch (nfe: NumberFormatException) {
-                        println("Failed")
+                var keyCode = -1;
+                if (args[1].toLowerCase() == "none") {
+                    keyCode = -1
+                } else {
+                    keyCode = KeyUtil.getKeyCode(args[1])
+                    if (keyCode == -1) {
+                        Logger.message("No Key by the name of ${args[1]} was found.", Logger.ERR, false)
+                        return
                     }
+                }
+                try {
+                    module.key = keyCode
+                    Logger.message("Module ${module.name} is now bound to ${args[1].toUpperCase()}", Logger.INFO, false)
+                    ToastClient.CONFIG_MANAGER.writeKeyBinds()
+                } catch (nfe: NumberFormatException) {
+                    Logger.message("Failed to bind Module ${module.name} to \"${args[1].toUpperCase()}\"", Logger.ERR, false)
                 }
             } else {
                 Logger.message("${args[0]} is not a valid module", Logger.ERR, true)
