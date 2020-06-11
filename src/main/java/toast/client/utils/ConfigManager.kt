@@ -108,7 +108,7 @@ class ConfigManager {
      */
     fun loadMacros() {
         try {
-            macros = gson.fromJson(FileReader(FILE_MANAGER.createFile(File(macrosFile))), object : TypeToken<Map<String?, Int?>?>() {}.type)
+            macros = gson.fromJson(FileReader(FILE_MANAGER.createFile(File(macrosFile))), object : TypeToken<Map<String?, Int?>?>() {}.type) ?: mutableMapOf<String?, Int?>()
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
@@ -212,7 +212,7 @@ class ConfigManager {
         /**
          * Map containing macros and the keys they are bound to
          */
-        var macros: MutableMap<String?, Int?>? = null
+        var macros = mutableMapOf<String?, Int?>()
 
         private val gson = GsonBuilder().setPrettyPrinting().create()
         private const val disabledOnStart = "Panic, ClickGui"

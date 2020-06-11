@@ -26,8 +26,10 @@ class Macro : Command("Macro", """${ToastClient.cmdPrefix}macro [add/remove/list
                     }
                     try {
                         var command = args[2]
-                        for (x in 3 until args.size) {
-                            command += " ${args[x]}"
+                        if (args.size > 3) {
+                            for (x in 3 until args.size) {
+                                command += " ${args[x]}"
+                            }
                         }
                         ToastClient.CONFIG_MANAGER.loadMacros()
                         ToastClient.CONFIG_MANAGER.addMacro(command, keyCode)
