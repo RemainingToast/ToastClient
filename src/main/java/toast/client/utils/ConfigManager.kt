@@ -25,7 +25,7 @@ class ConfigManager {
         if (canWrite) {
             val config: MutableMap<String, Map<String, Setting>> = TreeMap()
             for (module in ToastClient.MODULE_MANAGER.modules) {
-                config[module.name] = module.settings.getSettings()
+                config[module.name] = module.settings.settings
             }
             FILE_MANAGER.writeFile(File(configFile), gson.toJson(config, object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type))
         }
@@ -50,10 +50,10 @@ class ConfigManager {
             if (config.containsKey(module.name)) {
                 for ((key, value) in config[module.name] ?: continue) {
                     if (key != null && value != null) {
-                        module.settings.getSettings().replace(key, value)
+                        module.settings.settings.replace(key, value)
                     }
                 }
-                module.settings.getSettings()
+                module.settings.settings
             }
         }
     }
@@ -192,22 +192,22 @@ class ConfigManager {
         /**
          * Name of the file where the module settings json is stored
          */
-        const val configFile: String = "config.json"
+        const val configFile: String = "toastclient/config.json"
 
         /**
          * Name of the file where JSON that contains the enabled state of modules is stored
          */
-        const val modulesFile: String = "modules.json"
+        const val modulesFile: String = "toastclient/modules.json"
 
         /**
          * Name of the file where the JSON containing the key-binds for each module is stored
          */
-        const val keyBindsFile: String = "keybinds.json"
+        const val keyBindsFile: String = "toastclient/keybinds.json"
 
         /**
          * Name of the file where the JSON containing macros is stored
          */
-        const val macrosFile: String = "macros.json"
+        const val macrosFile: String = "toastclient/macros.json"
 
         /**
          * Map containing macros and the keys they are bound to
