@@ -3,7 +3,6 @@ package toast.client.utils
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.hud.InGameHud
-import net.minecraft.item.ItemStack
 
 /**
  * A set of utilities for drawing things on screen on a 2D plane
@@ -121,31 +120,5 @@ object TwoDRenderUtils {
             yOver = true
         }
         return xOver && yOver
-    }
-
-    /**
-     * Render a nine item wide grid from a list of item stacks at a coordinate
-     *
-     * @param itemStacks List of item stacks to render
-     * @param xStart     X coordinate of the top left corner of the top left item
-     * @param yStart     Y coordinate of the top left corner of the top left item
-     */
-    @JvmStatic
-    fun renderNineWideInvItems(itemStacks: List<ItemStack>, xStart: Int, yStart: Int) {
-        var x = xStart
-        var y = yStart
-        for ((u, itemStack) in itemStacks.withIndex()) {
-            if (u > 8) {
-                if (!itemStack.isEmpty) {
-                    MinecraftClient.getInstance().itemRenderer.renderGuiItem(itemStack, x + 1, y + 1)
-                    MinecraftClient.getInstance().itemRenderer
-                            .renderGuiItemOverlay(textRenderer, itemStack, x + 1, y + 1)
-                }
-                if (x == 17 * 8 + x) {
-                    x = xStart
-                    y += 17
-                } else x += 17
-            }
-        }
     }
 }

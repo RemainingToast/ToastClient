@@ -24,6 +24,7 @@ public class ToastClient implements ModInitializer {
     public static ModuleManager MODULE_MANAGER = new ModuleManager();
     public static CommandHandler COMMAND_HANDLER = new CommandHandler();
     public static ConfigManager CONFIG_MANAGER = new ConfigManager();
+    public static FileManager FILE_MANAGER = new FileManager();
     public static ClickGuiScreen clickGui;
     public static Boolean clickGuiHasOpened;
     public static EventBus eventBus = new EventBus();
@@ -36,7 +37,7 @@ public class ToastClient implements ModInitializer {
         }
         RandomMOTD.addMOTDS();
         ASCII.printFancyConsoleMSG();
-        FileManager.initFileManager();
+        FILE_MANAGER.initFileManager();
         MODULE_MANAGER.loadModules();
         COMMAND_HANDLER.initCommands();
         TPSCalculator.calculatorInstance = new TPSCalculator();
