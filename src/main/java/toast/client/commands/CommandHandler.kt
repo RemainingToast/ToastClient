@@ -25,16 +25,21 @@ class CommandHandler {
      */
     fun executeCmd(name: String, args: Array<String>) {
         var notfound = true
-        for (command in commands) {
-            for (alias in command.aliases) {
-                if (alias.equals(name, ignoreCase = true)) {
+        val commandIter = commands.iterator()
+        commandIter.next()
+        while (commandIter.hasNext()) {
+            val nextCommand = commandIter.next()
+            val aliasIter = nextCommand.aliases.iterator()
+            while (aliasIter.hasNext()) {
+                val nextAlias = aliasIter.next()
+                if (nextAlias.equals(name, ignoreCase = true)) {
                     try {
-                        if (isDevCancel(command)) {
+                        if (isDevCancel(nextCommand)) {
                             notfound = true
                             continue
                         }
                         notfound = false
-                        command.run(args)
+                        nextCommand.run(args)
                     } catch (err: Exception) {
                         err.printStackTrace()
                         Logger.message("Sorry but something went wrong", Logger.ERR, true)
@@ -58,10 +63,12 @@ class CommandHandler {
      * Gets a command from it's name
      */
     fun getCommand(cmd: String?): Command? {
-        for (command in commands) {
-            for (alias in command.aliases) {
+        val commandIter = commands.iterator()
+        while (commandIter.hasNext()) {
+            val next = commandIter.next()
+            for (alias in next.aliases) {
                 if (alias.equals(cmd, ignoreCase = true)) {
-                    return command
+                    return next
                 }
             }
         }
@@ -78,8 +85,9 @@ class CommandHandler {
                 reflections.getSubTypesOf(
                         Command::class.java
                 )
-        for (commandClass in commandClasses) {
-            val command = commandClass.getConstructor().newInstance()
+        val classIter = commandClasses.iterator()
+        while (classIter.hasNext()) {
+            val command = classIter.next().getConstructor().newInstance()
             commands.add(command)
         }
     }

@@ -26,11 +26,13 @@ class ModuleManager {
      * Checks each module for a key-bind and toggles the module if the key-bind matches the key
      */
     fun onKey(key: Int, action: Int) {
-        modules.forEach { module ->
-            if (module.key == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
-                if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) return@forEach
-                if (module.javaClass != Panic::class.java && IsPanicking()) return
-                module.toggle()
+        val iter = modules.iterator()
+        while (iter.hasNext()) {
+            val next = iter.next()
+            if (next.key == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
+                if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) continue
+                if (next.javaClass != Panic::class.java && IsPanicking()) return
+                next.toggle()
             }
         }
     }
@@ -50,9 +52,11 @@ class ModuleManager {
      */
     fun getModulesInCategory(category: Module.Category): List<Module> {
         val moduleList: MutableList<Module> = ArrayList()
-        modules.forEach { module ->
-            if (module.category === category) {
-                moduleList.add(module)
+        val iter = modules.iterator()
+        while (iter.hasNext()) {
+            val next = iter.next()
+            if (next.category === category) {
+                moduleList.add(next)
             }
         }
         return moduleList
@@ -68,8 +72,9 @@ class ModuleManager {
                 reflections.getSubTypesOf(
                         Module::class.java
                 )
-        for (moduleClass in moduleClasses) {
-            val module = moduleClass.getConstructor().newInstance()
+        val iter = moduleClasses.iterator()
+        while (iter.hasNext()) {
+            val module = iter.next().getConstructor().newInstance()
             modules.add(module)
         }
         ToastClient.CONFIG_MANAGER.enableWrite()
