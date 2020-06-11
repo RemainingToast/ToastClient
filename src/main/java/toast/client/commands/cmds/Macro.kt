@@ -47,16 +47,19 @@ class Macro : Command("Macro", """${ToastClient.cmdPrefix}macro [add/remove/list
                 }
                 try {
                     println(keyCode)
-                    for ((command, key) in ToastClient.CONFIG_MANAGER.getMacros()
-                        ?: throw NumberFormatException()) {
-                        if (key == keyCode) {
+                    val macroIter = (ToastClient.CONFIG_MANAGER.getMacros() ?: return).iterator()
+                    while (macroIter.hasNext()) {
+                        val next = macroIter.next()
+                        if (next.value == keyCode) {
                             ToastClient.CONFIG_MANAGER.loadMacros()
-                            (ToastClient.CONFIG_MANAGER.getMacros() ?: continue).remove(command)
+                            (ToastClient.CONFIG_MANAGER.getMacros() ?: continue).remove(next.key)
                             ToastClient.CONFIG_MANAGER.writeMacros()
-                            Logger.message("Removed macro: ${args[1]} | $command", Logger.INFO, false)
+                            Logger.message("Removed macro: ${args[1]} | ${next.key}", Logger.INFO, false)
+                            return
                         }
                     }
-                } catch (nfe: NumberFormatException) {
+                    Logger.message("No macro bound ${args[1]} was found.", Logger.ERR, false)
+                } catch (t: Throwable) {
                     Logger.message("Failed to remove macro.", Logger.ERR, false)
                 }
             }

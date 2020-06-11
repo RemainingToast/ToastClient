@@ -25,7 +25,7 @@ class ConfigManager {
         if (canWrite) {
             val config: MutableMap<String, Map<String, Setting>> = TreeMap()
             for (module in ToastClient.MODULE_MANAGER.modules) {
-                config[module.name] = module.settings.settings
+                config[module.name] = module.settings.getSettings()
             }
             FILE_MANAGER.writeFile(File(configFile), gson.toJson(config, object : TypeToken<LinkedTreeMap<String?, LinkedTreeMap<String?, Setting?>?>?>() {}.type))
         }
@@ -50,10 +50,10 @@ class ConfigManager {
             if (config.containsKey(module.name)) {
                 for ((key, value) in config[module.name] ?: continue) {
                     if (key != null && value != null) {
-                        module.settings.settings.replace(key, value)
+                        module.settings.getSettings().replace(key, value)
                     }
                 }
-                module.settings.settings
+                module.settings.getSettings()
             }
         }
     }
