@@ -9,10 +9,9 @@ import toast.client.events.player.EventRender
 import toast.client.modules.Module
 import toast.client.utils.RenderUtil
 import toast.client.utils.WorldInteractionUtil
-import toast.client.utils.WorldUtil
+import toast.client.utils.WorldUtil.getBlockPositionsInArea
 import java.util.*
 import java.util.concurrent.CountDownLatch
-import java.util.function.Consumer
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -34,62 +33,53 @@ class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Catego
 
     @Subscribe
     fun onRender(event: EventRender?) {
-        if (mc.player == null || mc.world == null || awaiting) return
-        awaiting = true
+        if (mc.player == null || mc.world == null) return
         val range = getDouble("Range")
-        awaiting = try {
-            val positions = WorldUtil.getBlockPositionsInArea((mc.player
-                    ?: return).blockPos.add(-range, -range, -range), (mc.player
+        try {
+            val positions = (mc.player?: return).blockPos.add(-range, -range, -range).getBlockPositionsInArea((mc.player
                     ?: return).blockPos.add(range, range, range))
             val airPositions: MutableList<BlockPos> = ArrayList(emptyList())
-            val latch = CountDownLatch(positions.size)
-            WorldUtil.searchList(mc.world
-                    ?: return, positions, WorldInteractionUtil.AIR).keys.forEach(Consumer { pos: BlockPos ->
-                if (Vec3d(pos.x + 0.5, pos.y + 0.5, pos.z + 0.50).distanceTo((mc.player
-                                ?: return@Consumer).pos) <= getDouble("Range")) airPositions.add(pos)
-                latch.countDown()
-            })
-            latch.await()
-            val latch2electricboogaloo = CountDownLatch(airPositions.size)
-            Thread(Runnable {
-                airPositions.forEach(Consumer { pos: BlockPos ->
-                    latch2electricboogaloo.countDown()
-                    var bedrock = 0
-                    var obsidian = 0
-                    for (blockPos in offsets) {
-                        if ((getBool("Bedrock (Green)") || getBool("Mixed (Yellow)")) && (mc.world
-                                        ?: return@Consumer).getBlockState(pos.add(blockPos)).block === Blocks.BEDROCK) {
-                            bedrock++
-                        } else if ((getBool("Obsidian (Red)") || getBool("Mixed (Yellow)")) && (mc.world
-                                        ?: return@Consumer).getBlockState(pos.add(blockPos)).block === Blocks.OBSIDIAN) {
-                            obsidian++
+            val posIter = positions.iterator()
+            while (posIter.hasNext()) {
+                val next = posIter.next()
+                if (WorldInteractionUtil.AIR.contains(mc.world!!.getBlockState(next).block) && Vec3d(next.x.toDouble(), next.y.toDouble(), next.z.toDouble()).add(0.5, 0.5, 0.5).distanceTo(mc.player!!.posVector) <= range) {
+                    airPositions.add(next)
+                }
+            }
+            val airPosIter = airPositions.iterator()
+            while (airPosIter.hasNext()) {
+                val pos = airPosIter.next()
+                var bedrock = 0
+                var obsidian = 0
+                for (blockPos in offsets) {
+                    if ((getBool("Bedrock (Green)") || getBool("Mixed (Yellow)")) && (mc.world
+                            ?: continue).getBlockState(pos.add(blockPos)).block === Blocks.BEDROCK) {
+                        bedrock++
+                    } else if ((getBool("Obsidian (Red)") || getBool("Mixed (Yellow)")) && (mc.world
+                            ?: continue).getBlockState(pos.add(blockPos)).block === Blocks.OBSIDIAN) {
+                        obsidian++
+                    }
+                }
+                if (!(bedrock == 5 && !getBool("Bedrock (Green)") || obsidian == 5 && !getBool("Obsidian (Red)") || bedrock > 0 && obsidian > 0 && !getBool("Mixed (Yellow)")) && bedrock + obsidian == 5 &&
+                    WorldInteractionUtil.AIR.contains((mc.world
+                        ?: continue).getBlockState(pos.add(0, 1, 0)).block) &&
+                    WorldInteractionUtil.AIR.contains((mc.world
+                        ?: continue).getBlockState(pos.add(0, 2, 0)).block)) {
+                    when (mode) {
+                        "Box" -> when {
+                            bedrock == 5 -> RenderUtil.drawFilledBox(pos, 0.08f, 1f, 0.35f, (getDouble("Opacity") + 20).toFloat() / 100)
+                            obsidian == 5 -> RenderUtil.drawFilledBox(pos, 1f, 0f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
+                            else -> RenderUtil.drawFilledBox(pos, 1f, 1f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
+                        }
+                        "Flat" -> when {
+                            bedrock == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 0.08f, 1f, 0.35f, (getDouble("Opacity") + 20).toFloat() / 100)
+                            obsidian == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 1f, 0f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
+                            else -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 1f, 1f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
                         }
                     }
-                    if (!(bedrock == 5 && !getBool("Bedrock (Green)") || obsidian == 5 && !getBool("Obsidian (Red)") || bedrock > 0 && obsidian > 0 && !getBool("Mixed (Yellow)")) && bedrock + obsidian == 5 &&
-                            WorldInteractionUtil.AIR.contains((mc.world
-                                    ?: return@Consumer).getBlockState(pos.add(0, 1, 0)).block) &&
-                            WorldInteractionUtil.AIR.contains((mc.world
-                                    ?: return@Consumer).getBlockState(pos.add(0, 2, 0)).block)) {
-                        when (mode) {
-                            "Box" -> when {
-                                bedrock == 5 -> RenderUtil.drawFilledBox(pos, 0.08f, 1f, 0.35f, (getDouble("Opacity") + 20).toFloat() / 100)
-                                obsidian == 5 -> RenderUtil.drawFilledBox(pos, 1f, 0f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
-                                else -> RenderUtil.drawFilledBox(pos, 1f, 1f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
-                            }
-                            "Flat" -> when {
-                                bedrock == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 0.08f, 1f, 0.35f, (getDouble("Opacity") + 20).toFloat() / 100)
-                                obsidian == 5 -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 1f, 0f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
-                                else -> RenderUtil.drawFilledBox(Box(floor(pos.x.toDouble()), floor(pos.y.toDouble()), floor(pos.z.toDouble()), ceil(pos.x + 0.01), floor(pos.y.toDouble()) - 0.0001, ceil(pos.z + 0.01)), 1f, 1f, 0f, (getDouble("Opacity") + 20).toFloat() / 100)
-                            }
-                        }
-                    }
-                })
-            }).start()
-            latch2electricboogaloo.await()
-            false
-        } catch (ignored: InterruptedException) {
-            false
-        }
+                }
+            }
+        } catch (ignored: InterruptedException) { }
     }
 
     companion object {

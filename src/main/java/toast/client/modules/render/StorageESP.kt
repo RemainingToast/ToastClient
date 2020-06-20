@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos
 import toast.client.events.player.EventUpdate
 import toast.client.modules.Module
 import toast.client.utils.WorldUtil
+import toast.client.utils.WorldUtil.getTileEntitiesInWorld
 import java.util.function.Consumer
 
 /**
@@ -22,7 +23,7 @@ class StorageESP : Module("StorageESP", "Highlights storage blocks in the world.
     @Subscribe
     fun onUpdate(event: EventUpdate?) {
         if (mc.world == null) return
-        WorldUtil.getTileEntitiesInWorld(mc.world!!).forEach { (pos: BlockPos?, type: Block) ->
+        mc.world!!.getTileEntitiesInWorld().forEach { (pos: BlockPos?, type: Block) ->
             if (getBool("Chests") && type === Blocks.CHEST ||
                     getBool("Trapped Chests") && type === Blocks.TRAPPED_CHEST ||
                     getBool("Furnaces") && type === Blocks.FURNACE ||
