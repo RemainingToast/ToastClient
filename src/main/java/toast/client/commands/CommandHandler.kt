@@ -26,7 +26,6 @@ class CommandHandler {
     fun executeCmd(name: String, args: Array<String>) {
         var notfound = true
         val commandIter = commands.iterator()
-        commandIter.next()
         while (commandIter.hasNext()) {
             val nextCommand = commandIter.next()
             val aliasIter = nextCommand.aliases.iterator()
