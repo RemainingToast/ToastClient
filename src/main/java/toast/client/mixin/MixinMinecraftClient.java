@@ -291,8 +291,7 @@ public abstract class MixinMinecraftClient {
     }
     
     @Inject(method = "handleBlockBreaking", at = @At(value = "INVOKE"), cancellable = true)
-    public void handleBlockBreaking(CallbackInfo ci) {
-        boolean bl = this.currentScreen == null && this.options.keyAttack.isPressed() && this.mouse.isCursorLocked();
+    public void handleBlockBreaking(boolean bl, CallbackInfo ci) {
         if (!bl) {
             attackCooldown = 0;
         }
