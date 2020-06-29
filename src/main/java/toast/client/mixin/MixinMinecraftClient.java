@@ -45,6 +45,7 @@ import toast.client.events.player.EventUpdate;
 import toast.client.modules.misc.Panic;
 import toast.client.modules.misc.TPSSync;
 import toast.client.utils.RandomMOTD;
+import toast.client.utils.TPSCalculator;
 
 import javax.annotation.Nullable;
 
@@ -107,7 +108,7 @@ public abstract class MixinMinecraftClient {
     public void tick(CallbackInfo ci) {
         EventUpdate event = new EventUpdate();
         eventBus.post(event);
-        if (!Objects.requireNonNull(MODULE_MANAGER.getModule(TPSSync.class)).getEnabled()) {
+        if (!Objects.requireNonNull(MODULE_MANAGER.getModule(TPSSync.class)).getEnabled() || TPSCalculator.Companion.getTps() == 20.0) {
             EventSyncedUpdate event2 = new EventSyncedUpdate();
             eventBus.post(event2);
         }
