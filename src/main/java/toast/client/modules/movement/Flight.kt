@@ -2,12 +2,12 @@ package toast.client.modules.movement
 
 import com.google.common.eventbus.Subscribe
 import org.lwjgl.glfw.GLFW
-import toast.client.events.player.EventUpdate
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 
 class Flight : Module("Fly", "Lets you fly.", Category.MOVEMENT, GLFW.GLFW_KEY_G) {
     @Subscribe
-    fun onUpdate(event: EventUpdate?) {
+    fun onUpdate(event: EventSyncedUpdate?) {
         if (mc.player == null) return
         if ((mc.player!!.onGround || mc.player!!.fallDistance <= 0) && this.enabled) {
             mc.player!!.abilities.allowFlying = true

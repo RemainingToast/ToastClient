@@ -3,7 +3,7 @@ package toast.client.modules.render
 import com.google.common.eventbus.Subscribe
 import org.lwjgl.glfw.GLFW
 import toast.client.ToastClient
-import toast.client.events.player.EventUpdate
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.gui.clickgui.ClickGuiScreen
 import toast.client.modules.Module
 
@@ -28,7 +28,7 @@ class ClickGui : Module("ClickGui", "The gui for managing modules.", Category.RE
     }
 
     @Subscribe
-    fun onUpdate(e: EventUpdate?) {
+    fun onUpdate(e: EventSyncedUpdate?) {
         ClickGuiScreen.descriptions = settings.getBoolean("Descriptions")
     }
 

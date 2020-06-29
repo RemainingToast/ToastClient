@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe
 import net.minecraft.container.SlotActionType
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import toast.client.events.player.EventUpdate
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 
 class AutoTotem : Module("AutoTotem", "Automatically places totem into offhand", Category.COMBAT, -1) {
@@ -14,7 +14,7 @@ class AutoTotem : Module("AutoTotem", "Automatically places totem into offhand",
     var returning = false
 
     @Subscribe
-    fun onUpdate(event: EventUpdate?) {
+    fun onUpdate(event: EventSyncedUpdate?) {
         if (mc.player == null) return
         totems = mc.player!!.inventory.main.stream().filter { itemStack: ItemStack -> itemStack.item === Items.TOTEM_OF_UNDYING }.mapToInt { obj: ItemStack -> obj.count }.sum()
         totemsTotal = totems + mc.player!!.inventory.offHand.stream().filter { itemStack: ItemStack -> itemStack.item === Items.TOTEM_OF_UNDYING }.mapToInt { obj: ItemStack -> obj.count }.sum()

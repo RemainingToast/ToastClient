@@ -1,7 +1,6 @@
 package toast.client.modules.player
 
 import com.google.common.eventbus.Subscribe
-import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ToolItem
 import net.minecraft.util.math.BlockPos

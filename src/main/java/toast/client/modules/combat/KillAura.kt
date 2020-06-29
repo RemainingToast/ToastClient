@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket
 import net.minecraft.util.Hand
 import org.lwjgl.glfw.GLFW
-import toast.client.events.player.EventUpdate
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 import toast.client.utils.MovementUtil
 import toast.client.utils.TimerUtil
@@ -26,7 +26,7 @@ class KillAura : Module("KillAura", "Automatically attacks mobs and players arou
     }
 
     @Subscribe
-    fun onEvent(event: EventUpdate?) {
+    fun onEvent(event: EventSyncedUpdate?) {
         if ((mc.player ?: return).isSpectator) return
         if ((!(mc.player ?: return).isAlive || (mc.player ?: return).health <= 0f) && getBool("StopOnDeath")) {
             this.disable()

@@ -7,9 +7,13 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket
 import net.minecraft.util.math.MathHelper
 import toast.client.ToastClient
+import toast.client.ToastClient.MODULE_MANAGER
 import toast.client.events.network.EventPacketReceived
 import toast.client.events.network.EventSyncedUpdate
 import toast.client.events.player.EventUpdate
+import toast.client.modules.misc.TPSSync
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
 
 /**
@@ -17,35 +21,34 @@ import java.util.*
  */
 @Environment(EnvType.CLIENT)
 class TPSCalculator {
-    private var lastUpdateMillis: Long = 0
-    private val ticks = FloatArray(10)
+    private var lastUpdateMillis: Long = -1
+    private val delays = IntArray(5)
+    private var avgDelay : Double = -1.0
     private var nextPredictedTick = Double.MAX_VALUE
-    private var nextToCheck = 0
+    private var updatesLeft = 20
+    private var nextToSet = 0
+    private var df = DecimalFormat("0.00")
 
     /**
      * Method called when client receives a packet
      */
     @Subscribe
     fun onPacketReceived(event: EventPacketReceived) {
-        if (event.getPacket() is WorldTimeUpdateS2CPacket) {
-            ticks[nextToCheck] = MathHelper.clamp(
-                    1000.0 / (System.currentTimeMillis() - lastUpdateMillis),
-                    0.0,
-                    20.0
-            ).toFloat()
-            lastUpdateMillis = System.currentTimeMillis()
-            var totalTicks = 0.0
-            var ticksStored = 0
-            for (i in ticks) {
-                if (i > 0) {
-                    totalTicks += i.toDouble()
-                    ticksStored++
+        if (event.packet is WorldTimeUpdateS2CPacket) {
+            updatesLeft = 20
+            if (lastUpdateMillis != -1L) {
+                delays[nextToSet] = (System.currentTimeMillis() - lastUpdateMillis).toInt()
+                if (nextToSet < 4) nextToSet++ else nextToSet = 0
+                var avgDelay = 0.0
+                for (i in 0..4) {
+                    avgDelay += delays[i]
                 }
+                avgDelay /= 5
+                tps = df.format(MathHelper.clamp(20000 / avgDelay, 0.0, 20.0)).toDouble()
+                nextPredictedTick = System.currentTimeMillis() + 1000 / tps
             }
-            tps = MathHelper.clamp(totalTicks / ticksStored, 0.0, 20.0)
-            nextPredictedTick = System.currentTimeMillis() + 1000 / tps
+            lastUpdateMillis = System.currentTimeMillis()
         }
-        if (nextToCheck > ticks.size - 1) nextToCheck = 0
     }
 
     /**
@@ -54,9 +57,16 @@ class TPSCalculator {
     @Subscribe
     fun onUpdate(event: EventUpdate?) {
         if (MinecraftClient.getInstance().world == null) {
-            lastUpdateMillis = 0
+            updatesLeft = 20
+            lastUpdateMillis = -1L
+            nextPredictedTick = 0.0
             tps = 20.0
-            Arrays.fill(ticks, 0f)
+            Arrays.fill(delays, 1000)
+            return
+        }
+        if (tps == 20.0) {
+            val event = EventSyncedUpdate()
+            ToastClient.eventBus.post(event)
         }
     }
 
@@ -70,22 +80,29 @@ class TPSCalculator {
         /**
          * Current TPS
          */
-        var tps: Double = 0.0
+        var tps: Double = -1.0
         private var timer: Timer? = null
     }
 
     init {
         ToastClient.eventBus.register(this)
-        lastUpdateMillis = 0
+        df.roundingMode = RoundingMode.HALF_UP
+        lastUpdateMillis = -1L
         tps = 20.0
-        Arrays.fill(ticks, 0f)
+        avgDelay = -1.0
+        Arrays.fill(delays, 1000)
         if (timer == null) {
             timer = Timer()
             timer!!.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
-                    if (System.currentTimeMillis() >= nextPredictedTick) {
+                    if (tps != 20.0 && MODULE_MANAGER.getModule(TPSSync::class.java)!!.enabled && System.currentTimeMillis() >= nextPredictedTick && updatesLeft > 0) {
                         val event = EventSyncedUpdate()
                         ToastClient.eventBus.post(event)
+                        updatesLeft--
+                        Thread.sleep((1000 / tps).toLong())
+                        if (updatesLeft == 0) {
+                            avgDelay = 0.0
+                        }
                     }
                 }
             }, 0, 1)

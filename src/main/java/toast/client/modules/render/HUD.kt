@@ -17,5 +17,6 @@ class HUD : Module("HUD", "Heads up display, gives information about the client.
         settings.addBoolean("Right line", true)
         settings.addBoolean("Left line", true)
         settings.addBoolean("Middle line", false)
+        settings.addBoolean("TPS", true)
     }
 }

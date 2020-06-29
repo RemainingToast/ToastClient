@@ -6,9 +6,8 @@ import net.minecraft.block.Blocks
 import net.minecraft.entity.Entity
 import net.minecraft.entity.vehicle.ChestMinecartEntity
 import net.minecraft.util.math.BlockPos
-import toast.client.events.player.EventUpdate
+import toast.client.events.player.EventRender
 import toast.client.modules.Module
-import toast.client.utils.WorldUtil
 import toast.client.utils.WorldUtil.getTileEntitiesInWorld
 import java.util.function.Consumer
 
@@ -21,7 +20,7 @@ class StorageESP : Module("StorageESP", "Highlights storage blocks in the world.
     }
 
     @Subscribe
-    fun onUpdate(event: EventUpdate?) {
+    fun onUpdate(event: EventRender?) {
         if (mc.world == null) return
         mc.world!!.getTileEntitiesInWorld().forEach { (pos: BlockPos?, type: Block) ->
             if (getBool("Chests") && type === Blocks.CHEST ||

@@ -3,13 +3,13 @@ package toast.client.modules.render
 import com.google.common.eventbus.Subscribe
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
-import toast.client.events.player.EventUpdate
+import toast.client.events.player.EventRender
 import toast.client.modules.Module
 import java.util.*
 
 class Fullbright : Module("Fullbright", "Night Vision, allows you to see in the dark.", Category.RENDER, -1) {
     @Subscribe
-    fun onTick(event: EventUpdate?) {
+    fun onTick(event: EventRender?) {
         if (mc.player == null) return  // avoid excessive logs and client crashing
         when (mode) {
             "Gamma" -> {

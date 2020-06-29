@@ -3,7 +3,7 @@ package toast.client.modules.misc
 import com.google.common.eventbus.Subscribe
 import org.apache.commons.lang3.RandomStringUtils
 import toast.client.ToastClient
-import toast.client.events.player.EventUpdate
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 import toast.client.utils.Logger
 import toast.client.utils.TimerUtil
@@ -31,7 +31,7 @@ class Spammer : Module("Spammer", "Spams messages in chat from a file.", Categor
     }
 
     @Subscribe
-    fun onTick(event: EventUpdate?) {
+    fun onTick(event: EventSyncedUpdate?) {
         if (timer.isDelayComplete((getDouble("Delay") * 1000L))) {
             timer.reset()
             when (getBool("AntiSpam")) {

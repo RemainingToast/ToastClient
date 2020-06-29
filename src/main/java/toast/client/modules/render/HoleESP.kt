@@ -11,7 +11,6 @@ import toast.client.utils.RenderUtil
 import toast.client.utils.WorldInteractionUtil
 import toast.client.utils.WorldUtil.getBlockPositionsInArea
 import java.util.*
-import java.util.concurrent.CountDownLatch
 import kotlin.math.ceil
 import kotlin.math.floor
 

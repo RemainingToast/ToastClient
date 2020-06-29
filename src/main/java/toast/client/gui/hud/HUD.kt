@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.hud.InGameHud
 import org.lwjgl.opengl.GL11
 import toast.client.ToastClient
+import toast.client.utils.TPSCalculator
 import toast.client.utils.TwoDRenderUtils.drawRect
 import java.awt.Color
 import java.util.*
@@ -171,6 +172,9 @@ object HUD {
             }
             if (hud.getBool("SortedSet")) {
                 drawSortedSet()
+            }
+            if (hud.getBool("TPS")) {
+                drawRainbowText(4f, 12f, "${TPSCalculator.tps}")
             }
         }
     }

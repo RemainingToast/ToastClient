@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.GameMode
-import toast.client.events.player.EventUpdate
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 import java.util.*
 
@@ -32,7 +32,7 @@ class Nuker : Module("Nuker", "Automatically destroys blocks around you.", Categ
         }
 
     @Subscribe
-    fun onEvent(event: EventUpdate?) {
+    fun onEvent(event: EventSyncedUpdate?) {
         if (mc.interactionManager == null || mc.player == null) return
         for (block in blocks!!) {
             if (pending.contains(block)) continue

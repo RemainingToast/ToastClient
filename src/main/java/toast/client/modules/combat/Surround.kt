@@ -8,7 +8,7 @@ import net.minecraft.item.Items
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
-import toast.client.events.player.EventRender
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 import toast.client.utils.WorldInteractionUtil
 import kotlin.math.abs
@@ -20,7 +20,7 @@ import kotlin.math.floor
  */
 class Surround : Module("Surround", "Surrounds your feet with blocks.", Category.COMBAT, -1) {
     @Subscribe
-    fun onUpdate(event: EventRender?) {
+    fun onUpdate(event: EventSyncedUpdate?) {
         if (mc.player == null) return
         val lastSlot = mc.player!!.inventory.selectedSlot
         slot = mc.player!!.inventory.selectedSlot

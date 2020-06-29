@@ -2,7 +2,7 @@ package toast.client.modules.combat
 
 import com.google.common.eventbus.Subscribe
 import net.minecraft.client.gui.screen.DeathScreen
-import toast.client.events.player.EventUpdate
+import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 import toast.client.utils.TimerUtil
 
@@ -25,7 +25,7 @@ class AutoRespawn : Module(
     }
 
     @Subscribe
-    fun onEvent(event: EventUpdate?) {
+    fun onEvent(event: EventSyncedUpdate?) {
         if (timer.isDelayComplete((getDouble("Speed").times(1000L)))) {
             timer.reset()
             if (mc.currentScreen ?: return is DeathScreen) {

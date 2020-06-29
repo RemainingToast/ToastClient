@@ -40,12 +40,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import toast.client.ToastClient;
+import toast.client.events.network.EventSyncedUpdate;
 import toast.client.events.player.EventUpdate;
 import toast.client.modules.misc.Panic;
+import toast.client.modules.misc.TPSSync;
 import toast.client.utils.RandomMOTD;
 
 import javax.annotation.Nullable;
 
+import java.util.Objects;
+
+import static toast.client.ToastClient.MODULE_MANAGER;
 import static toast.client.ToastClient.eventBus;
 
 @Environment(EnvType.CLIENT)
@@ -102,6 +107,10 @@ public abstract class MixinMinecraftClient {
     public void tick(CallbackInfo ci) {
         EventUpdate event = new EventUpdate();
         eventBus.post(event);
+        if (!Objects.requireNonNull(MODULE_MANAGER.getModule(TPSSync.class)).getEnabled()) {
+            EventSyncedUpdate event2 = new EventSyncedUpdate();
+            eventBus.post(event2);
+        }
         if (event.isCancelled()) ci.cancel();
     }
 
