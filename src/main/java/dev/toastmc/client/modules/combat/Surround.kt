@@ -9,8 +9,8 @@ import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
-import toast.client.utils.WorldInteractionUtil
+import dev.toastmc.client.modules.Module
+import dev.toastmc.client.utils.WorldInteractionUtil
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor

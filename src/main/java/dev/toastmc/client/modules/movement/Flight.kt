@@ -3,7 +3,7 @@ package dev.toastmc.client.modules.movement
 import com.google.common.eventbus.Subscribe
 import org.lwjgl.glfw.GLFW
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 class Flight : Module("Fly", "Lets you fly.", Category.MOVEMENT, GLFW.GLFW_KEY_G) {
     @Subscribe

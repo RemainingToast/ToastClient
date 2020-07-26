@@ -2,7 +2,7 @@ package dev.toastmc.client.modules.misc
 
 import org.lwjgl.glfw.GLFW
 import dev.toastmc.client.ToastClient
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 import java.util.*
 
 class Panic : Module("Panic", "Makes the client disappear until you relaunch the game.", Category.MISC, GLFW.GLFW_KEY_P) {

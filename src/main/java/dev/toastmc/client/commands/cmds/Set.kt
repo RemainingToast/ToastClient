@@ -3,21 +3,23 @@ package dev.toastmc.client.commands.cmds
 import org.apache.commons.lang3.math.NumberUtils
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
-import toast.client.modules.Module
-import toast.client.modules.config.Setting
+import dev.toastmc.client.commands.CommandManifest
+import dev.toastmc.client.modules.Module
+import dev.toastmc.client.modules.config.Setting
 import dev.toastmc.client.utils.MessageUtil
 
 /**
  * Command to list and change configuration options for modules
  */
-class Set : Command("Set", """${ToastClient.cmdPrefix}set <module> [setting] [newvalue]""", "Changes module settings", false, "set", "config", "settings") {
+@CommandManifest(label = "Set", usage = "set <module> [setting] [newvalue]", description = "Changes module settings", aliases = ["set", "settings"])
+class Set : Command() {
     private fun displaySetting(name: String, setting: Setting, module: Module) {
         when (setting.type) {
             0 -> {
                 var modes = StringBuilder()
-                module.settings.getModes(name)!!.forEach { mode ->
-                    modes.append(mode).append(", ")
-                }
+//                module.settings.getModes(name)!!.forEach { mode ->
+//                    modes.append(mode).append(", ")
+//                }
                 modes = StringBuilder(modes.subSequence(0, modes.length - 3) as String)
                 MessageUtil.sendMessage(""" Mode: $name, current: ${setting.getMode()} available: $modes""", MessageUtil.Color.GRAY)
             }
@@ -49,8 +51,8 @@ class Set : Command("Set", """${ToastClient.cmdPrefix}set <module> [setting] [ne
                             1 -> {
                                 if (NumberUtils.isParsable(args[2])) {
                                     val newNum = args[2].toDouble()
-                                    if (newNum <= settingDef!!.maxValue!!) {
-                                        if (newNum >= settingDef.minValue!!) {
+                                    if (newNum == settingDef!!.maxValue!!) {
+                                        if (newNum == settingDef.minValue!!) {
                                             setting.setValue(newNum)
                                             MessageUtil.sendMessage("""Changed value of setting ${args[1]} to ${args[2]}""", MessageUtil.Color.GREEN)
                                         } else {

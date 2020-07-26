@@ -8,7 +8,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.GameMode
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 import java.util.*
 
 class Nuker : Module("Nuker", "Automatically destroys blocks around you.", Category.PLAYER, -1) {

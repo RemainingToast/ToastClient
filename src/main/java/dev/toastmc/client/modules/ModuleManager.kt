@@ -3,6 +3,7 @@ package dev.toastmc.client.modules
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.cmds.Panic
 import dev.toastmc.client.modules.misc.Panic.Companion.IsPanicking
+import dev.toastmc.client.modules.render.ClickGui
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient

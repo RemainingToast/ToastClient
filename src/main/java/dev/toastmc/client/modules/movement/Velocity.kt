@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
 import dev.toastmc.client.events.network.EventPacketReceived
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 class Velocity : Module("Velocity", "Changes your velocity, can stop things from pushing you.", Category.MOVEMENT, -1) {
     var lastx = 0.0

@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import dev.toastmc.client.events.player.EventRender
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 import java.util.*
 
 class Fullbright : Module("Fullbright", "Night Vision, allows you to see in the dark.", Category.RENDER, -1) {

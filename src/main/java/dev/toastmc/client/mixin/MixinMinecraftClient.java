@@ -2,6 +2,7 @@ package dev.toastmc.client.mixin;
 
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.events.network.EventSyncedUpdate;
+import dev.toastmc.client.events.player.EventUpdate;
 import dev.toastmc.client.modules.misc.Panic;
 import dev.toastmc.client.modules.misc.TPSSync;
 import dev.toastmc.client.utils.RandomMOTD;
@@ -45,20 +46,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.events.network.EventSyncedUpdate;
-import dev.toastmc.client.events.player.EventUpdate;
-import toast.client.modules.misc.Panic;
-import toast.client.modules.misc.TPSSync;
-import toast.client.utils.RandomMOTD;
-import toast.client.utils.TPSCalculator;
 
 import javax.annotation.Nullable;
-
 import java.util.Objects;
-
-import static dev.toastmc.client.ToastClient.MODULE_MANAGER;
-import static dev.toastmc.client.ToastClient.eventBus;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
@@ -112,24 +102,25 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
     public void tick(CallbackInfo ci) {
-        EventUpdate event = new EventUpdate();
-        ToastClient.eventBus.post(event);
-        if (!Objects.requireNonNull(ToastClient.MODULE_MANAGER.getModule(TPSSync.class)).getEnabled() || TPSCalculator.Companion.getTps() == 20.0) {
-            EventSyncedUpdate event2 = new EventSyncedUpdate();
-            ToastClient.eventBus.post(event2);
-        }
-        if (event.isCancelled()) ci.cancel();
+//        EventUpdate event = new EventUpdate();
+//        ToastClient.eventBus.post(event);
+//        if (!Objects.requireNonNull(ToastClient.MODULE_MANAGER.getModule(TPSSync.class)).getEnabled() || TPSCalculator.Companion.getTps() == 20.0) {
+//            EventSyncedUpdate event2 = new EventSyncedUpdate();
+//            ToastClient.eventBus.post(event2);
+//        }
+//        if (event.isCancelled()) ci.cancel();
     }
 
     @Inject(method = "getWindowTitle", at = @At(value = "RETURN"), cancellable = true)
     private void getWindowTitle(CallbackInfoReturnable cir) {
-        if (!Panic.IsPanicking()) {
-            cir.setReturnValue(ToastClient.cleanPrefix + " " + ToastClient.version + " | " + RandomMOTD.randomMOTD());
-        }
+//        if (!Panic.IsPanicking()) {
+//            cir.setReturnValue(ToastClient.cleanPrefix + " " + ToastClient.version + " | " + RandomMOTD.randomMOTD());
+//        }
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE"), cancellable = true)
     private void handleInputEvents(CallbackInfo ci) {
+        if(player == null) return;
         for(; options.keyTogglePerspective.wasPressed(); worldRenderer.scheduleTerrainUpdate()) {
             ++options.perspective;
             if (options.perspective > 2) {

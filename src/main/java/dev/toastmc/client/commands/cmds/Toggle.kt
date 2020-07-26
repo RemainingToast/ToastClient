@@ -3,6 +3,7 @@ package dev.toastmc.client.commands.cmds
 import net.minecraft.util.Formatting
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
+import dev.toastmc.client.commands.CommandManifest
 import dev.toastmc.client.utils.MessageUtil
 
 
@@ -11,7 +12,8 @@ import dev.toastmc.client.utils.MessageUtil
 /**
  * Command to toggle modules
  */
-class Toggle : Command("Toggle", """${ToastClient.cmdPrefix}toggle [module]""", "Toggles the specified module", false, "toggle", "t") {
+@CommandManifest(label = "Toggle", usage = "toggle [module]", description = "Toggle Module", aliases = ["t"])
+class Toggle : Command() {
     override fun run(args: Array<String>) {
         if (args.isEmpty()) {
             MessageUtil.sendMessage("Please provide a module name", MessageUtil.Color.RED)

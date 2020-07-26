@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 import dev.toastmc.client.ToastClient
-import toast.client.modules.config.ModuleSettings
+import dev.toastmc.client.modules.config.ModuleSettings
 
 /**
  * Superclass for creating modules
@@ -71,74 +71,27 @@ open class Module(
         return enabled
     }
 
-    /**
-     * The current mode of the configuration option called "Mode"
-     */
-    val mode: String?
-        get() = settings.getMode("Mode")
+    val mode: String? get() = settings.getMode("Mode")
 
-    /**
-     * Gets the current value of a configuration option of type Double
-     */
     fun getDouble(name: String): Double = settings.getValue(name)!!
 
-    /**
-     * Gets the current value of a configuration option of type Boolean
-     */
     fun getBool(name: String): Boolean = settings.getBoolean(name)
 
-    /**
-     * Disables the module
-     */
     fun disable(): Boolean = setEnabled(false)
 
-    /**
-     * Enables the module
-     */
     fun enable(): Boolean = setEnabled(true)
 
-    /**
-     * Toggles the module's enabled state
-     */
     fun toggle(): Boolean = setEnabled(!enabled)
 
-    /**
-     * Function that gets called whenever the module is enabled
-     */
     open fun onEnable() {}
 
-    /**
-     * Function that gets called whenever the module is disabled
-     */
     open fun onDisable() {}
 
-    /**
-     * Enum containing the categories available for modules
-     */
     enum class Category {
-        /**
-         * Modules that aid the player in a none movement or combat related way
-         */
         PLAYER,
-
-        /**
-         * Modules that help the player move around better
-         */
         MOVEMENT,
-
-        /**
-         * Modules that affect or add to the game's rendering
-         */
         RENDER,
-
-        /**
-         * Modules that aid the player in combat
-         */
         COMBAT,
-
-        /**
-         * Modules that don't fit into any of the other categories
-         */
         MISC
     }
 

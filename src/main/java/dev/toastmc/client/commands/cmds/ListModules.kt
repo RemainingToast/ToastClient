@@ -2,14 +2,16 @@ package dev.toastmc.client.commands.cmds
 
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
-import toast.client.modules.Module
+import dev.toastmc.client.commands.CommandManifest
+import dev.toastmc.client.modules.Module
 import dev.toastmc.client.utils.MessageUtil
 
 
 /**
  * Command to list all of the categories or the modules in a category
  */
-class ListModules : Command("List", """${ToastClient.cmdPrefix}list [category]""", "Lists categories or modules in a category", false, "cat", "list", "mods") {
+@CommandManifest(label = "List", usage = "list [category]", description = "Lists modules in a category", aliases = ["list", "mods"])
+class ListModules : Command() {
     override fun run(args: Array<String>) {
         val sb = StringBuilder()
         if (args.isEmpty()) {

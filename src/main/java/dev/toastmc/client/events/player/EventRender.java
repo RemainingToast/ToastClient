@@ -8,7 +8,6 @@ public class EventRender extends AbstractSkippableEvent {
     public EventRender(int partialTicks) {
         this.partialTicks = partialTicks;
     }
-
     public float getPartialTicks() {
         return this.partialTicks;
     }

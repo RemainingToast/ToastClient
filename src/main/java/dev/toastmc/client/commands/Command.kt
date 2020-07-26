@@ -8,37 +8,44 @@ import net.minecraft.client.MinecraftClient
  * This class is a superclass for defining commands
  */
 @Environment(EnvType.CLIENT)
-abstract class Command(
-        /**
-         * Name of the command
-         */
-        var name: String,
-        /**
-         * Syntax of the command
-         */
-        var usage: String,
-        /**
-         * Description of the command
-         */
-        var desc: String,
-        /**
-         * Whether or not it is a developper only command
-         */
-        var isDev: Boolean,
-        /**
-         * Aliases for the command
-         */
-        @JvmField vararg var aliases: String) {
-
-    /**
-     *
-     */
+abstract class Command () {
     protected var mc: MinecraftClient = MinecraftClient.getInstance()
-
+    private var label: String? = null
+    private var description: String? = null
+    private var usage: String? = null
+    private var alias: Array<String>? = null
     /**
      * Method that runs a command while passing it an array of arguments
      */
+
+    open fun Command(): Unit {
+        if (javaClass.isAnnotationPresent(CommandManifest::class.java)) {
+            val moduleManifest = javaClass.getAnnotation(CommandManifest::class.java)
+            label = moduleManifest.label
+            alias = moduleManifest.aliases
+            description = moduleManifest.description
+            usage = moduleManifest.usage
+        }
+    }
+
     @Throws(InterruptedException::class)
     abstract fun run(args: Array<String>)
 
+    open fun onRun(args: Array<String?>?) {}
+
+    open fun getLabel(): String? {
+        return label
+    }
+
+    open fun getDescription(): String? {
+        return description
+    }
+
+    open fun getAlias(): Array<String>? {
+        return alias
+    }
+
+    open fun getUsage(): String? {
+        return usage
+    }
 }

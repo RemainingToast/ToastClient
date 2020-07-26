@@ -1,6 +1,5 @@
 package dev.toastmc.client.modules.config
 
-import dev.toastmc.client.ToastClient
 import java.util.*
 
 class ModuleSettings {

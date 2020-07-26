@@ -16,7 +16,6 @@ object RandomMOTD {
         MOTDList.add("Qther is probably out of bounds")
         MOTDList.add("Dewy doing dewy stuff")
         MOTDList.add("RemainingToast actually does code")
-        MOTDList.add("Axo is the anime cum god")
         size = MOTDList.size
     }
 

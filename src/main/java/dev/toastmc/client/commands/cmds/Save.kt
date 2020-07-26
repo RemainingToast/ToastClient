@@ -3,12 +3,14 @@ package dev.toastmc.client.commands.cmds
 import net.minecraft.util.Formatting
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
+import dev.toastmc.client.commands.CommandManifest
 import dev.toastmc.client.utils.MessageUtil
 
 /**
  * Command to save all or one of the mod's configurations to it's file
  */
-class Save : Command("Save", """${ToastClient.cmdPrefix}save [config]""", "Saves the configuration files", false, "save") {
+@CommandManifest(label = "Save", usage = "save [config]", description = "Saves config.")
+class Save : Command() {
     override fun run(args: Array<String>) {
         if (args.isEmpty()) {
             ToastClient.CONFIG_MANAGER.writeConfig()

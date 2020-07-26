@@ -8,9 +8,9 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket
 import net.minecraft.util.Hand
 import org.lwjgl.glfw.GLFW
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
-import toast.client.utils.MovementUtil
-import toast.client.utils.TimerUtil
+import dev.toastmc.client.modules.Module
+import dev.toastmc.client.utils.MovementUtil
+import dev.toastmc.client.utils.TimerUtil
 
 /**
  * Module that automatically attacks selected entity types if they are close enough

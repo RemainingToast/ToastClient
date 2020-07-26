@@ -3,13 +3,15 @@ package dev.toastmc.client.commands.cmds
 import org.lwjgl.glfw.GLFW
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
-import toast.client.utils.KeyUtil
+import dev.toastmc.client.commands.CommandManifest
+import dev.toastmc.client.utils.KeyUtil
 import dev.toastmc.client.utils.MessageUtil
 
 /**
  * Command to bind a module to a key
  */
-class Bind : Command("Bind", "${ToastClient.cmdPrefix}bind [all, module] [key]", "Bind module to key", false, "bind") {
+@CommandManifest(label = "Bind", usage = "bind [all, module] [key]", description = "Bind module to key")
+class Bind : Command() {
     override fun run(args: Array<String>) {
         if (args.isNotEmpty()) {
             val module = ToastClient.MODULE_MANAGER.getModule(args[0])

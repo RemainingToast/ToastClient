@@ -6,10 +6,10 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import dev.toastmc.client.events.player.EventRender
-import toast.client.modules.Module
-import toast.client.utils.RenderUtil
-import toast.client.utils.WorldInteractionUtil
-import toast.client.utils.WorldUtil.getBlockPositionsInArea
+import dev.toastmc.client.modules.Module
+import dev.toastmc.client.utils.RenderUtil
+import dev.toastmc.client.utils.WorldInteractionUtil
+import dev.toastmc.client.utils.WorldUtil.getBlockPositionsInArea
 import java.util.*
 import kotlin.math.ceil
 import kotlin.math.floor

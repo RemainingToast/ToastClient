@@ -15,16 +15,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.events.network.EventPacketReceived;
-import dev.toastmc.client.events.network.EventPacketSent;
-import toast.client.modules.misc.Panic;
 
 import java.util.Arrays;
 import java.util.concurrent.Future;
 
-import static dev.toastmc.client.ToastClient.COMMAND_HANDLER;
-import static dev.toastmc.client.ToastClient.eventBus;
 
 @Mixin(ClientConnection.class)
 public class MixinClientConnection {

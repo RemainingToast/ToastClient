@@ -3,18 +3,14 @@ package dev.toastmc.client.modules.combat
 import com.google.common.eventbus.Subscribe
 import net.minecraft.client.gui.screen.DeathScreen
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
-import toast.client.utils.TimerUtil
+import dev.toastmc.client.modules.Module
+import dev.toastmc.client.utils.TimerUtil
+
 
 /**
  * Module to automatically press the respawn button when the player dies
  */
-class AutoRespawn : Module(
-        "AutoRespawn",
-        "Automatically presses the respawn button for you.",
-        Category.COMBAT,
-        -1
-) {
+class AutoRespawn : Module("AutoRespawn", "Automatically presses the respawn button for you.", Category.COMBAT, -1) {
     private val timer = TimerUtil()
     override fun onEnable() {
         timer.reset()

@@ -7,7 +7,7 @@ import net.minecraft.client.MinecraftClient
 import org.lwjgl.glfw.GLFW
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.ToastClient.FILE_MANAGER
-import toast.client.modules.config.Setting
+import dev.toastmc.client.modules.config.Setting
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileReader

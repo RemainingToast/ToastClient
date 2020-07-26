@@ -1,10 +1,9 @@
 package dev.toastmc.client.modules.combat
 
 import com.google.common.eventbus.Subscribe
-import net.minecraft.item.BowItem
-import net.minecraft.util.Identifier
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
+import net.minecraft.item.BowItem
 
 class BowSpam : Module("BowSpam", "Makes your bow fully automatic.", Category.COMBAT, -1) {
     var ticksLeft = -1

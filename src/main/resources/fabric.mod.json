@@ -6,11 +6,7 @@
   "name": "ToastClient",
   "description": "Like bread, but warmer.",
   "authors": [
-    "RemainingToast",
-    "fleebs",
-    "MorganAnkan",
-    "wnuke",
-    "Qther"
+    "RemainingToast", "wnuke", "Qther"
   ],
   "contact": {},
 
@@ -20,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "toast.client.ToastClient"
+      "dev.toastmc.client.ToastClient"
     ]
   },
 

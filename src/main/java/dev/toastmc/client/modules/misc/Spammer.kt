@@ -4,9 +4,9 @@ import com.google.common.eventbus.Subscribe
 import org.apache.commons.lang3.RandomStringUtils
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 import dev.toastmc.client.utils.MessageUtil
-import toast.client.utils.TimerUtil
+import dev.toastmc.client.utils.TimerUtil
 import java.io.File
 import java.util.*
 

@@ -7,8 +7,8 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.vehicle.ChestMinecartEntity
 import net.minecraft.util.math.BlockPos
 import dev.toastmc.client.events.player.EventRender
-import toast.client.modules.Module
-import toast.client.utils.WorldUtil.getTileEntitiesInWorld
+import dev.toastmc.client.modules.Module
+import dev.toastmc.client.utils.WorldUtil.getTileEntitiesInWorld
 import java.util.function.Consumer
 
 /**

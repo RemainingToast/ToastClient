@@ -11,7 +11,7 @@ import dev.toastmc.client.ToastClient.MODULE_MANAGER
 import dev.toastmc.client.events.network.EventPacketReceived
 import dev.toastmc.client.events.network.EventSyncedUpdate
 import dev.toastmc.client.events.player.EventUpdate
-import toast.client.modules.misc.TPSSync
+import dev.toastmc.client.modules.misc.TPSSync
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*

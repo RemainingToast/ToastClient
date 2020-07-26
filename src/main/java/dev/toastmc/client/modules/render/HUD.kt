@@ -1,6 +1,6 @@
 package dev.toastmc.client.modules.render
 
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 /**
  * Heads Up Display that shows information about the client (currently enabled modules) and a preview of the contents of the player's inventory

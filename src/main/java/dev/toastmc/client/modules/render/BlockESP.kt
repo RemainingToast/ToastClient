@@ -5,7 +5,7 @@ import net.minecraft.block.Block
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
 import dev.toastmc.client.events.network.EventPacketReceived
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 /**
  * Searches for and highlights blocks in the world

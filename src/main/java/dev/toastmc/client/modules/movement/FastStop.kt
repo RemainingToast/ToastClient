@@ -2,7 +2,7 @@ package dev.toastmc.client.modules.movement
 
 import com.google.common.eventbus.Subscribe
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 class FastStop : Module("Fast Stop", "Brings you to a stop instantly.", Category.MOVEMENT, -1) {
     @Subscribe

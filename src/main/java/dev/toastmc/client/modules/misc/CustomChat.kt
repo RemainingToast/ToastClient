@@ -4,8 +4,8 @@ import com.google.common.eventbus.Subscribe
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.events.network.EventPacketSent
-import toast.client.modules.Module
-import toast.client.utils.FancyChatUtil
+import dev.toastmc.client.modules.Module
+import dev.toastmc.client.utils.FancyChatUtil
 
 class CustomChat : Module("CustomChat", "Custom chat messages", Category.MISC, -1) {
     private var isMadeByCustomChat = false

@@ -10,9 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static dev.toastmc.client.ToastClient.CONFIG_MANAGER;
-import static dev.toastmc.client.ToastClient.MODULE_MANAGER;
-
 @Environment(EnvType.CLIENT)
 @Mixin(Keyboard.class)
 public class MixinKeyboard {

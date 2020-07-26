@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ToolItem
 import net.minecraft.util.math.BlockPos
 import dev.toastmc.client.events.player.EventAttack
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 class AutoTool : Module("AutoTool", "Automatically selects the ideal tool for breaking a block.", Category.PLAYER, -1) {
     private var lastSlot = 0

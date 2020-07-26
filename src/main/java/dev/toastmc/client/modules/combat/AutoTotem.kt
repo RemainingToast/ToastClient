@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.screen.slot.SlotActionType
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 class AutoTotem : Module("AutoTotem", "Automatically places totem into offhand", Category.COMBAT, -1) {
     var totems = 0

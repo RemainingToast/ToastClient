@@ -3,14 +3,16 @@ package dev.toastmc.client.commands.cmds
 import org.lwjgl.glfw.GLFW
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
-import toast.client.utils.KeyUtil
+import dev.toastmc.client.commands.CommandManifest
+import dev.toastmc.client.utils.KeyUtil
 import dev.toastmc.client.utils.MessageUtil
 import java.util.*
 
 /**
  * Command to add, remove and list existing macros
  */
-class Macro : Command("Macro", """${ToastClient.cmdPrefix}macro [add/remove/list] <key> <command/message>""", "Allows you to bind a message to a key", false, "macros", "macro") {
+@CommandManifest(label = "Macro", usage = "macro [add/remove/list] <key> <command/message>", description = "Allows you to bind a message to a key", aliases = ["mac", "macros"])
+class Macro : Command() {
     override fun run(args: Array<String>) {
         if (args.isEmpty()) {
             MessageUtil.sendMessage("Missing arguments!", MessageUtil.Color.RED)

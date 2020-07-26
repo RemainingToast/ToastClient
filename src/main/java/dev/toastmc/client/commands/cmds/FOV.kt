@@ -2,14 +2,16 @@ package dev.toastmc.client.commands.cmds
 
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
-import toast.client.utils.KeyUtil
+import dev.toastmc.client.commands.CommandManifest
+import dev.toastmc.client.utils.KeyUtil
 import dev.toastmc.client.utils.MessageUtil
 
 
 /**
  * Command to set the player's field of view to a specific value
  */
-class FOV : Command("FOV", "${ToastClient.cmdPrefix}fov [fov]", "change fov", false, "fov") {
+@CommandManifest(label = "FOV", usage = "fov [fov]")
+class FOV : Command() {
     override fun run(args: Array<String>) {
         if (args.isNotEmpty()) {
             if (KeyUtil.isNumeric(args[0])) {

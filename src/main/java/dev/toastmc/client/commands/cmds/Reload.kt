@@ -3,19 +3,21 @@ package dev.toastmc.client.commands.cmds
 import net.minecraft.util.Formatting
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.commands.Command
+import dev.toastmc.client.commands.CommandManifest
 import dev.toastmc.client.utils.MessageUtil
 
 /**
  * Command to reload one or all of the mod's configurations from it's file
  */
-class Reload : Command("Reload", """${ToastClient.cmdPrefix}reload [config]""", "Reloads all or one of the configuration files", false, "reload", "rl") {
+@CommandManifest(label = "Reload", usage = "reload [config]", description = "Reloads config", aliases = ["rl"])
+class Reload : Command() {
     override fun run(args: Array<String>) {
         if (args.isEmpty()) {
             ToastClient.CONFIG_MANAGER.loadConfig()
             ToastClient.CONFIG_MANAGER.loadKeyBinds()
             ToastClient.CONFIG_MANAGER.loadModules()
             if (ToastClient.clickGuiHasOpened) {
-                ToastClient.clickGui.reloadConfig()
+//                ToastClient.clickGui.reloadConfig()
             }
             MessageUtil.sendMessage("Reloaded all configuration files.", MessageUtil.Color.GREEN)
         } else {
@@ -33,7 +35,7 @@ class Reload : Command("Reload", """${ToastClient.cmdPrefix}reload [config]""", 
                     MessageUtil.sendMessage("Reloaded keybinds.", MessageUtil.Color.GREEN)
                 }
                 "clickgui" -> if (ToastClient.clickGuiHasOpened) {
-                    ToastClient.clickGui.reloadConfig()
+//                    ToastClient.clickGui.reloadConfig()
                 } else {
                     MessageUtil.sendMessage("ClickGUI hasn't been opened yet", MessageUtil.Color.GREEN)
                 }

@@ -1,6 +1,7 @@
 package dev.toastmc.client.mixin;
 
 import dev.toastmc.client.ToastClient;
+import dev.toastmc.client.events.player.EventAttack;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,9 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import dev.toastmc.client.events.player.EventAttack;
-
-import static dev.toastmc.client.ToastClient.eventBus;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public class MixinClientPlayerInteractionManager {

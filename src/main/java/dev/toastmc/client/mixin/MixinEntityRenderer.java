@@ -11,9 +11,5 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderer.class)
 public abstract class MixinEntityRenderer<T extends Entity> {
-    @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
-    protected void renderLabelIfPresent(T entity_1, String string_1, MatrixStack matrixStack_1, VertexConsumerProvider vertexConsumerProvider_1, int int_1, CallbackInfo ci) {
-
-    }
 
 }

@@ -1,6 +1,6 @@
 package dev.toastmc.client.utils
 
-import toast.client.modules.misc.CustomChat
+import dev.toastmc.client.modules.misc.CustomChat
 import java.util.*
 import java.util.function.Function
 import java.util.function.IntFunction

@@ -1,5 +1,8 @@
 package dev.toastmc.client.utils
 
+import dev.toastmc.client.utils.EntityUtils.isAnimal
+import dev.toastmc.client.utils.EntityUtils.isHostile
+import dev.toastmc.client.utils.EntityUtils.isNeutral
 import net.minecraft.client.render.Tessellator
 import net.minecraft.client.render.VertexFormats
 import net.minecraft.client.render.WorldRenderer
@@ -12,9 +15,6 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.MathHelper
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL14
-import toast.client.utils.EntityUtils.isAnimal
-import toast.client.utils.EntityUtils.isHostile
-import toast.client.utils.EntityUtils.isNeutral
 
 /**
  * Courtesy of BleachDrinker420/Bleach, maker of BleachHack

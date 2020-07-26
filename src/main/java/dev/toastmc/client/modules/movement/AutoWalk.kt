@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
 import dev.toastmc.client.events.network.EventPacketSent
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 import dev.toastmc.client.utils.MessageUtil
 
 class AutoWalk : Module("AutoWalk", "Automatically walk forwards", Category.MOVEMENT, -1) {

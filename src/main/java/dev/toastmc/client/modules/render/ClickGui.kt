@@ -1,39 +1,24 @@
 package dev.toastmc.client.modules.render
 
-import com.google.common.eventbus.Subscribe
+import dev.toastmc.client.gui.MyMinecraftScreen
+import dev.toastmc.client.modules.Module
+import net.minecraft.client.MinecraftClient
 import org.lwjgl.glfw.GLFW
-import dev.toastmc.client.ToastClient
-import dev.toastmc.client.events.network.EventSyncedUpdate
-import dev.toastmc.client.gui.clickgui.ClickGuiScreen
-import toast.client.modules.Module
 
 class ClickGui : Module("ClickGui", "The gui for managing modules.", Category.RENDER, GLFW.GLFW_KEY_RIGHT_SHIFT) {
+
+    var clickGuiHasOpened: Boolean? = null
+
     override fun onEnable() {
         if (mc.player != null) {
-            if (ToastClient.clickGui == null) {
-                ToastClient.clickGuiHasOpened = false
-                ToastClient.clickGui =
-                    ClickGuiScreen()
-            }
-            if (mc.currentScreen == null) {
-                mc.openScreen(ToastClient.clickGui)
-                ToastClient.clickGuiHasOpened = true
+            if(mc.world != null) {
+                MinecraftClient.getInstance().openScreen(MyMinecraftScreen())
             }
         }
     }
 
     override fun onDisable() {
-        if (mc.currentScreen is ClickGuiScreen && mc.player != null) {
-            mc.openScreen(null)
-        }
+        clickGuiHasOpened = false
     }
 
-    @Subscribe
-    fun onUpdate(e: EventSyncedUpdate?) {
-        ClickGuiScreen.descriptions = settings.getBoolean("Descriptions")
-    }
-
-    init {
-        settings.addBoolean("Descriptions", true)
-    }
 }

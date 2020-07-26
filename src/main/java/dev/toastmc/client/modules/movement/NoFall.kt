@@ -3,7 +3,7 @@ package dev.toastmc.client.modules.movement
 import com.google.common.eventbus.Subscribe
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import dev.toastmc.client.events.network.EventSyncedUpdate
-import toast.client.modules.Module
+import dev.toastmc.client.modules.Module
 
 class NoFall : Module("NoFall", "Stops the player form taking fall damage", Category.MOVEMENT, -1) {
     @Subscribe

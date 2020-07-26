@@ -12,14 +12,19 @@ version = project.mod_version
 group = project.maven_group
 
 minecraft {
+
+
 }
 
 
 repositories {
+    mavenCentral()
     maven {
         url = "http://maven.fabricmc.net/" 
         name = "Fabric"
     }
+    maven { url 'https://jitpack.io' }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
@@ -39,6 +44,15 @@ dependencies {
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
     //compile "net.jodah:typetools:0.6.2"
+
+    // Workaround for https://github.com/kotlin-graphics/imgui/issues/112
+    ["gl", "glfw", "core"].each {
+        implementation("com.github.kotlin-graphics.imgui:imgui-$it:jdk8-SNAPSHOT") {
+            exclude group: "org.lwjgl"
+        }
+    }
+    implementation("com.github.kotlin-graphics:glm:jdk8-SNAPSHOT")
+    implementation("com.github.kotlin-graphics:uno-sdk:jdk8-SNAPSHOT")
 }
 
 processResources {
@@ -87,6 +101,7 @@ shadowJar {
         include(dependency('javassist:javassist'))
         include(dependency('org.reflections:reflections'))
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+        include(dependency("com.github.kotlin-graphics:imgui"))
     }
     classifier = 'shadow'
 }
