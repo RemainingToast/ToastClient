@@ -12,8 +12,8 @@ public class SliderSetting {
     public static CategoryRenderer.Slider render(Module module, Setting setting, String settingName, ClickGuiSettings.Colors colors, double x, double mouseX, double mouseY, int curIt, boolean clickedL) {
         int settingBgColor = colors.settingOnBgColor;
         int settingKnobColor = colors.settingSliderKnobColor;
-        int minValLength = CategoryRenderer.textRenderer.getWidth(module.getSettings().getSettingDef(settingName).getMinValue().toString());
-        int maxValLength = CategoryRenderer.textRenderer.getWidth(module.getSettings().getSettingDef(settingName).getMaxValue().toString());
+        int minValLength = CategoryRenderer.textRenderer.getStringWidth(module.getSettings().getSettingDef(settingName).getMinValue().toString());
+        int maxValLength = CategoryRenderer.textRenderer.getStringWidth(module.getSettings().getSettingDef(settingName).getMaxValue().toString());
         int sliderX = (int) Math.round(x) + 5 + minValLength;
         int sliderY = (int) Math.round(getYIteration(curIt + 1)) + getBoxHeight() / 2 - 3;
         int sliderLength = getBoxWidth() - 14 - minValLength - maxValLength;

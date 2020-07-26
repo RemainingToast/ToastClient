@@ -29,10 +29,10 @@ object HUD {
         var x: Float = startX
         for (char in text.toCharArray().toList()) {
             positionArray[x] = char
-            x += mc.textRenderer.getCharWidth(char)
+            x += mc.textRenderer.getWidth(char.toString())
         }
         for ((charX: Float, char: Char) in positionArray) {
-            mc.textRenderer.drawWithShadow(char.toString(), charX, y, rainbow(positionArray.keys.indexOf(charX) * 25))
+//            mc.textRenderer.drawWithShadow(char.toString(), charX, y, rainbow(positionArray.keys.indexOf(charX) * 25))
         }
         GL11.glScaled(1.0 / size, 1.0 / size, 1.0 / size)
     }
@@ -47,7 +47,7 @@ object HUD {
         for ((i, itemStack) in (mc.player ?: return).inventory.main.withIndex()) {
             if (i > 8) {
                 if (!itemStack.isEmpty) {
-                    mc.itemRenderer.renderGuiItem(itemStack, x + 1, y + 1)
+                    mc.itemRenderer.renderGuiItemIcon(itemStack, x + 1, y + 1)
                     mc.itemRenderer.renderGuiItemOverlay(mc.textRenderer, itemStack, x + 1, y + 1)
                 }
                 if (x == 17 * 8 + startX) {
@@ -68,7 +68,7 @@ object HUD {
                 if (!itemStack.isEmpty) {
                     var toAdd = 1
                     if ((mc.player ?: return).isSpectator || (mc.player ?: return).isCreative) toAdd = 21
-                    mc.itemRenderer.renderGuiItem(itemStack, x + 1, y + toAdd)
+                    mc.itemRenderer.renderGuiItemIcon(itemStack, x + 1, y + toAdd)
                     mc.itemRenderer.renderGuiItemOverlay(mc.textRenderer, itemStack, x + 1, y + 1)
                 }
                 x -= 17
@@ -81,7 +81,7 @@ object HUD {
      */
     private fun drawSortedSet() {
         if (hud != null) {
-            val enabledModules: SortedSet<String> = TreeSet(Comparator.comparing { text: String? -> mc.textRenderer.getStringWidth(text) }.reversed()) //TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
+            val enabledModules: SortedSet<String> = TreeSet(Comparator.comparing { text: String? -> mc.textRenderer.getWidth(text) }.reversed()) //TODO: fix so this also works if there are 2 modules with the same name length rn if there are it will just include 1 in the list
             for (module in ToastClient.MODULE_MANAGER.modules) {
                 if (module.enabled && module.getBool("Visible")) {
                     enabledModules.add(module.name)
@@ -91,7 +91,7 @@ object HUD {
             for (moduleName in enabledModules) {
                 count++
                 val windowWidth = mc.window.scaledWidth
-                val moduleNameWidth = mc.textRenderer.getStringWidth(moduleName)
+                val moduleNameWidth = mc.textRenderer.getWidth(moduleName)
                 val fontHeight = mc.textRenderer.fontHeight
                 var textcolor: Int
                 var borderColor: Int
@@ -108,44 +108,21 @@ object HUD {
                 }
 
                 //background
-                InGameHud.fill(
-                        windowWidth - moduleNameWidth - 3 - extralineoffset,
-                        count * 12 - 12,
-                        windowWidth - extralineoffset,
-                        5 + fontHeight + count * 12 - 14,
-                        Color(0, 0, 0, 90).rgb)
+//                InGameHud.fill(windowWidth - moduleNameWidth - 3 - extralineoffset, count * 12 - 12, windowWidth - extralineoffset, 5 + fontHeight + count * 12 - 14, Color(0, 0, 0, 90).rgb)
 
                 //modulename
-                mc.textRenderer.draw(moduleName,
-                        windowWidth - moduleNameWidth - 1 - extralineoffset.toFloat(),
-                        count * 12 - 10.toFloat(),
-                        textcolor)
+//                mc.textRenderer.draw(moduleName, windowWidth - moduleNameWidth - 1 - extralineoffset.toFloat(), count * 12 - 10.toFloat(), textcolor)
                 if (hud.getBool("Left line")) {
                     // | <-- line
-                    InGameHud.fill(
-                            windowWidth - moduleNameWidth - 3 - extralineoffset,
-                            count * 12 - 12,
-                            windowWidth - moduleNameWidth - 4 - extralineoffset,
-                            5 + fontHeight + count * 12 - 14,
-                            borderColor)
+//                    InGameHud.fill(windowWidth - moduleNameWidth - 3 - extralineoffset, count * 12 - 12, windowWidth - moduleNameWidth - 4 - extralineoffset, 5 + fontHeight + count * 12 - 14, borderColor)
                 }
                 if (hud.getBool("Middle line")) {
                     // __ \/ line
-                    InGameHud.fill(
-                            windowWidth - moduleNameWidth - 4,
-                            5 + fontHeight + count * 12 - 14,
-                            windowWidth - extralineoffset,
-                            5 + fontHeight + count * 12 - 15,
-                            borderColor)
+//                    InGameHud.fill(windowWidth - moduleNameWidth - 4, 5 + fontHeight + count * 12 - 14, windowWidth - extralineoffset, 5 + fontHeight + count * 12 - 15, borderColor)
                 }
                 if (extralineoffset >= 1) {
                     // --> | line
-                    InGameHud.fill(
-                            windowWidth,
-                            0,
-                            windowWidth - 1,
-                            5 + fontHeight + count * 12 - 14,
-                            borderColor)
+//                    InGameHud.fill(windowWidth, 0, windowWidth - 1, 5 + fontHeight + count * 12 - 14, borderColor)
                 }
             }
         }

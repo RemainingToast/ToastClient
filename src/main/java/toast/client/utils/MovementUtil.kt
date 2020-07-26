@@ -15,7 +15,7 @@ object MovementUtil {
             LookOnly(
                 yaw.toFloat(),
                 pitch.toFloat(),
-                mc.player!!.onGround
+                mc.player!!.isOnGround
             )
         )
     }

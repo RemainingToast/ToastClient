@@ -9,7 +9,7 @@ class Flight : Module("Fly", "Lets you fly.", Category.MOVEMENT, GLFW.GLFW_KEY_G
     @Subscribe
     fun onUpdate(event: EventSyncedUpdate?) {
         if (mc.player == null) return
-        if ((mc.player!!.onGround || mc.player!!.fallDistance <= 0) && this.enabled) {
+        if ((mc.player!!.isOnGround || mc.player!!.fallDistance <= 0) && this.enabled) {
             mc.player!!.abilities.allowFlying = true
             mc.player!!.abilities.flying = true
             mc.player!!.abilities.flySpeed = (0.05f * getDouble("Speed")).toFloat()

@@ -21,7 +21,7 @@ class Nuker : Module("Nuker", "Automatically destroys blocks around you.", Categ
             for (x in -i..i) {
                 for (y in -i..i) {
                     for (z in -i..i) {
-                        val pos = BlockPos(mc.player).add(x, y, z)
+                        val pos = BlockPos(mc.player!!.blockPos).add(x, y, z)
                         if (!(mc.world!!.getBlockState(pos).block == Blocks.AIR || mc.world!!.getBlockState(pos).block == Blocks.CAVE_AIR)
                                 && mc.player!!.squaredDistanceTo(Vec3d(pos.x.toDouble(), pos.y.toDouble(),
                                         pos.z.toDouble())) < getDouble("Range").toInt() * getDouble("Range").toInt()) list.add(pos)

@@ -15,11 +15,12 @@ class BowSpam : Module("BowSpam", "Makes your bow fully automatic.", Category.CO
             ticksLeft = -1
             return
         }
-        if (mc.player!!.mainHandStack.item.getPropertyGetter(Identifier("pulling"))!!.call(mc.player!!.mainHandStack, mc.world, mc.player) == 0.0f) {
-            mc.interactionManager!!.stopUsingItem(mc.player)
-            ticksLeft = -1
-            return
-        }
+//        if (mc.player!!.mainHandStack.item.getPropertyGetter(Identifier("pulling"))!!.call(mc.player!!.mainHandStack, mc.world, mc.player) == 0.0f) {
+//            mc.interactionManager!!.stopUsingItem(mc.player)
+//
+//            ticksLeft = -1
+//            return
+//        }
 
         if (ticksLeft != -1) ticksLeft--
         else {

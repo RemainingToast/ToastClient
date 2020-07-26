@@ -8,7 +8,7 @@ class FastStop : Module("Fast Stop", "Brings you to a stop instantly.", Category
     @Subscribe
     fun onUpdate(event: EventSyncedUpdate?) {
         if (mc.player == null) return
-        if (!mc.options.keyForward.isPressed && !mc.options.keyBack.isPressed && !mc.options.keyLeft.isPressed && !mc.options.keyRight.isPressed) when (mc.player!!.onGround) {
+        if (!mc.options.keyForward.isPressed && !mc.options.keyBack.isPressed && !mc.options.keyLeft.isPressed && !mc.options.keyRight.isPressed) when (mc.player!!.isOnGround) {
             true -> mc.player!!.setVelocity(0.0, mc.player!!.velocity.y, 0.0)
             !getBool("Air Stop") -> mc.player!!.setVelocity(0.0, mc.player!!.velocity.y, 0.0)
         }

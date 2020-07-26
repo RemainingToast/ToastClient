@@ -1,9 +1,9 @@
 package toast.client.modules.combat
 
 import com.google.common.eventbus.Subscribe
-import net.minecraft.container.SlotActionType
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
+import net.minecraft.screen.slot.SlotActionType
 import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
 
@@ -25,12 +25,12 @@ class AutoTotem : Module("AutoTotem", "Automatically places totem into offhand",
                 moving -> {
                     mc.interactionManager!!.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player)
                     moving = false
-                    if (!mc.player!!.inventory.isInvEmpty) returning = true
+                    if (!mc.player!!.inventory.isEmpty) returning = true
                     return
                 }
-                !mc.player!!.inventory.isInvEmpty -> {
+                !mc.player!!.inventory.isEmpty -> {
                     if (totems == 0) return
-                    val t = (0..44).firstOrNull { mc.player!!.inventory.getInvStack(it).item === Items.TOTEM_OF_UNDYING }
+                    val t = (0..44).firstOrNull { mc.player!!.inventory.getStack(it).item === Items.TOTEM_OF_UNDYING }
                             ?: -1
                     if (t == -1) return
                     mc.interactionManager!!.clickSlot(0, if (t < 9) t + 36 else t, 0, SlotActionType.PICKUP, mc.player)

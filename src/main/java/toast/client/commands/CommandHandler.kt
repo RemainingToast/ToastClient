@@ -51,7 +51,7 @@ class CommandHandler {
      * Checks if the command is developer only and if it is checks that the current player is a developer
      */
     fun isDevCancel(c: Command): Boolean {
-        return c.isDev && !ToastClient.devs.contains(Objects.requireNonNull(MinecraftClient.getInstance().player)!!.displayName.asFormattedString())
+        return c.isDev && !ToastClient.devs.contains(Objects.requireNonNull(MinecraftClient.getInstance().player)!!.displayName.asString())
     }
 
     /**

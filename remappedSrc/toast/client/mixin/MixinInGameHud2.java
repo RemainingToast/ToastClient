@@ -1,7 +1,6 @@
 package toast.client.mixin;
 
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,8 +14,8 @@ import static toast.client.modules.misc.Panic.IsPanicking;
 
 @Mixin(InGameHud.class)
 public class MixinInGameHud2 {
-    @Inject(at = @At(value = "RETURN"), method = "render")
-    public void render(MatrixStack matrixStack, float float_1, CallbackInfo info) {
+    @Inject(at = @At(value = "RETURN"), method = "render(F)V")
+    public void render(float float_1, CallbackInfo info) {
         if (Objects.requireNonNull(MODULE_MANAGER.getModule(HUD.class)).getEnabled() && !IsPanicking())
             toast.client.gui.hud.HUD.drawHUD();
     }

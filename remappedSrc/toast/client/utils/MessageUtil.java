@@ -17,8 +17,7 @@ public class MessageUtil {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
 
     public static void sendRawMessage(String message) {
-        assert mc.player != null;
-        mc.inGameHud.addChatMessage(MessageType.CHAT, new LiteralText(message), mc.player.getUuid());
+        mc.inGameHud.addChatMessage(MessageType.CHAT, new LiteralText(message));
     }
 
     public static void sendPublicMessage(String message) {

@@ -3,6 +3,7 @@ package toast.client.utils
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.hud.InGameHud
+import net.minecraft.client.gui.hud.InGameHud.fill as fill1
 
 /**
  * A set of utilities for drawing things on screen on a 2D plane
@@ -20,9 +21,10 @@ object TwoDRenderUtils {
      */
     @JvmStatic
     fun drawText(text: String?, x: Int, y: Int, color: Int) {
-        textRenderer.drawWithShadow(text, x.toFloat(), y.toFloat(), color)
-        RenderSystem.pushMatrix()
-        RenderSystem.popMatrix()
+
+//        textRenderer.drawWithShadow(text, x.toFloat(), y.toFloat(), color)
+//        RenderSystem.pushMatrix()
+//        RenderSystem.popMatrix()
     }
 
     /**
@@ -36,9 +38,10 @@ object TwoDRenderUtils {
      */
     @JvmStatic
     fun drawRect(x: Int, y: Int, width: Int, height: Int, color: Int) {
-        InGameHud.fill(x, y, x + width, y + height, color)
-        RenderSystem.pushMatrix()
-        RenderSystem.popMatrix()
+
+//        InGameHud.fill(, x, y, x + width, y + height, color)
+//        RenderSystem.pushMatrix()
+//        RenderSystem.popMatrix()
     }
 
     /**
@@ -89,7 +92,7 @@ object TwoDRenderUtils {
         drawRect(x - 2, y - 2, width, height, bgColor)
         drawHollowRect(x - 2, y - 2, width, height, 1, color)
         drawText(prefix, x, y, prefixColor)
-        drawText(text, x + textRenderer.getStringWidth(prefix), y, textColor)
+        drawText(text, x + textRenderer.getWidth(prefix), y, textColor)
     }
 
     /**

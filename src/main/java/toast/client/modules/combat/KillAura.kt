@@ -44,7 +44,7 @@ class KillAura : Module("KillAura", "Automatically attacks mobs and players arou
                 if (shouldHit) {
                     if ((mc.player ?: return).distanceTo(entity) <= getDouble("Reach").toInt()) {
                         if (settings.getMode("LookType") != "None") MovementUtil.lookAt(entity.pos, settings.getMode("LookType") == "Packet")
-                        (mc.networkHandler ?: return).sendPacket(PlayerInteractEntityC2SPacket(entity))
+                        (mc.networkHandler ?: return).sendPacket(PlayerInteractEntityC2SPacket(entity, mc.player!!.isSneaking))
                         (mc.player ?: return).attack(entity)
                         (mc.player ?: return).swingHand(Hand.MAIN_HAND)
                         timer.reset()

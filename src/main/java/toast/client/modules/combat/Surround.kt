@@ -258,8 +258,8 @@ class Surround : Module("Surround", "Surrounds your feet with blocks.", Category
         if (mc.player == null) return false
         var found = false
         for (i in 0 until PlayerInventory.getHotbarSize()) {
-            val currentItem = mc.player!!.inventory.getInvStack(i).item
-            if (!mc.player!!.inventory.getInvStack(i).isEmpty) {
+            val currentItem = mc.player!!.inventory.getStack(i).item
+            if (!mc.player!!.inventory.getStack(i).isEmpty) {
                 if (item === currentItem) {
                     found = true
                 }
@@ -273,7 +273,7 @@ class Surround : Module("Surround", "Surrounds your feet with blocks.", Category
         var found = false
         var slotamount = 0
         for (i in 0 until PlayerInventory.getHotbarSize()) {
-            val curritem = mc.player!!.inventory.getInvStack(i)
+            val curritem = mc.player!!.inventory.getStack(i)
             if (!curritem.isEmpty) {
                 if (curritem.item is BlockItem) {
                     slotamount += curritem.count
@@ -289,8 +289,8 @@ class Surround : Module("Surround", "Surrounds your feet with blocks.", Category
             if (mc.player == null) return -1
             var found = -1
             for (i in 0 until PlayerInventory.getHotbarSize()) {
-                val currentItem = mc.player!!.inventory.getInvStack(i)
-                if (!mc.player!!.inventory.getInvStack(i).isEmpty) {
+                val currentItem = mc.player!!.inventory.getStack(i)
+                if (!mc.player!!.inventory.getStack(i).isEmpty) {
                     if (currentItem.item is BlockItem) {
                         found = i
                     }
@@ -303,8 +303,8 @@ class Surround : Module("Surround", "Surrounds your feet with blocks.", Category
         if (mc.player == null) return -1
         var slot = -1
         for (i in 0 until PlayerInventory.getHotbarSize()) {
-            val currentItem = mc.player!!.inventory.getInvStack(i).item
-            if (!mc.player!!.inventory.getInvStack(i).isEmpty) {
+            val currentItem = mc.player!!.inventory.getStack(i).item
+            if (!mc.player!!.inventory.getStack(i).isEmpty) {
                 if (item === currentItem) {
                     slot = i
                 }

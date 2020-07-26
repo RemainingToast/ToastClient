@@ -170,7 +170,7 @@ public abstract class MixinMinecraftClient {
 
         while(options.keySwapHands.wasPressed()) {
             if (!player.isSpectator()) {
-                getNetworkHandler().sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND, BlockPos.ORIGIN, Direction.DOWN));
+                getNetworkHandler().sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.SWAP_HELD_ITEMS, BlockPos.ORIGIN, Direction.DOWN));
             }
         }
 

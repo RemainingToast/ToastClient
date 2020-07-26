@@ -18,9 +18,9 @@ class AutoTool : Module("AutoTool", "Automatically selects the ideal tool for br
         if (mc.player!!.isCreative) return
         val block = mc.world!!.getBlockState(blockPos).block
         for (i in 0 until PlayerInventory.getHotbarSize()) {
-            val item = mc.player!!.inventory.getInvStack(i)
+            val item = mc.player!!.inventory.getStack(i)
             if (!item.isEmpty) {
-                val speed = item.getMiningSpeed(block.defaultState)
+                val speed = item.getMiningSpeedMultiplier(block.defaultState)
                 if (speed > bestSpeed) {
                     bestSpeed = speed
                     bestSlot = i
@@ -39,7 +39,7 @@ class AutoTool : Module("AutoTool", "Automatically selects the ideal tool for br
         var bestSlot = -1
         if (mc.player!!.isCreative) return
         for (i in 0 until PlayerInventory.getHotbarSize()) {
-            val item = mc.player!!.inventory.getInvStack(i)
+            val item = mc.player!!.inventory.getStack(i)
             if (!item.isEmpty && item.item is ToolItem) {
                 val attackValue = (item.item as ToolItem).material.attackDamage
                 if (attackValue > bestValue) {

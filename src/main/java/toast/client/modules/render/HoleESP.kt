@@ -41,7 +41,7 @@ class HoleESP : Module("HoleESP", "Highlights holes (air) in the world.", Catego
             val posIter = positions.iterator()
             while (posIter.hasNext()) {
                 val next = posIter.next()
-                if (WorldInteractionUtil.AIR.contains(mc.world!!.getBlockState(next).block) && Vec3d(next.x.toDouble(), next.y.toDouble(), next.z.toDouble()).add(0.5, 0.5, 0.5).distanceTo(mc.player!!.posVector) <= range) {
+                if (WorldInteractionUtil.AIR.contains(mc.world!!.getBlockState(next).block) && Vec3d(next.x.toDouble(), next.y.toDouble(), next.z.toDouble()).add(0.5, 0.5, 0.5).distanceTo(mc.player!!.pos) <= range) {
                     airPositions.add(next)
                 }
             }

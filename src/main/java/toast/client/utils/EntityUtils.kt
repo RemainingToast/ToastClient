@@ -20,7 +20,7 @@ object EntityUtils {
         return e is AnimalEntity ||
                 e is AmbientEntity ||
                 e is WaterCreatureEntity ||
-                e is GolemEntity && !e.isHandSwinging ||
+                e is GolemEntity && !e.handSwinging ||
                 e is VillagerEntity
     }
 
@@ -30,18 +30,17 @@ object EntityUtils {
 
     @JvmStatic
     fun isHostile(e: Entity?): Boolean {
-        return e is HostileEntity && e !is ZombiePigmanEntity && e !is EndermanEntity ||
-                e is ZombiePigmanEntity && e.isAngryAt(mc.player) ||
-                e is WolfEntity && e.isAngry && e.ownerUuid !== mc.player!!.uuid ||
+        return e is HostileEntity && e !is PiglinEntity && e !is EndermanEntity ||
+                e is HoglinEntity && e is WolfEntity && e.ownerUuid !== mc.player!!.uuid ||
                 e is EndermanEntity && e.isAngry ||
-                e is GolemEntity && e.isHandSwinging
+                e is GolemEntity && e.handSwinging
     }
 
     @JvmStatic
     fun isNeutral(e: Entity?): Boolean {
-        return e is ZombiePigmanEntity && !e.isAngryAt(mc.player) ||
-                e is WolfEntity && (!e.isAngry || e.ownerUuid === mc.player!!.uuid) ||
+        return e is PiglinEntity && !e.isAngryAt(mc.player) ||
+                e is WolfEntity && (!e.isAttacking || e.ownerUuid === mc.player!!.uuid) ||
                 e is EndermanEntity && !e.isAngry ||
-                e is GolemEntity && !e.isHandSwinging
+                e is GolemEntity && !e.handSwinging
     }
 }

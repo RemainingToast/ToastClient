@@ -5,7 +5,7 @@ import net.minecraft.client.render.VertexFormats
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.entity.Entity
-import net.minecraft.entity.decoration.EnderCrystalEntity
+import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
@@ -52,23 +52,23 @@ object RenderUtil {
         buffer.begin(5, VertexFormats.POSITION_COLOR)
         WorldRenderer.drawBox(
             buffer,
-            box.x1, box.y1, box.z1,
-            box.x2, box.y2, box.z2, r, g, b, a / 2f
+            box.xLength, box.yLength, box.yLength,
+            box.xLength, box.yLength, box.yLength, r, g, b, a / 2f
         )
         tessellator.draw()
 
         // Outline
         buffer.begin(3, VertexFormats.POSITION_COLOR)
-        buffer.vertex(box.x2, box.y1, box.z1).color(r, b, b, a / 2f).next()
-        buffer.vertex(box.x1, box.y1, box.z1).color(r, b, b, a / 2f).next()
-        buffer.vertex(box.x2, box.y2, box.z2).color(r, b, b, a / 2f).next()
-        buffer.vertex(box.x1, box.y2, box.z2).color(r, b, b, a / 2f).next()
-        buffer.vertex(box.x1, box.y1, box.z2).color(r, b, b, 0f).next()
-        buffer.vertex(box.x1, box.y2, box.z2).color(r, b, b, a / 2f).next()
-        buffer.vertex(box.x2, box.y1, box.z2).color(r, b, b, 0f).next()
-        buffer.vertex(box.x2, box.y2, box.z2).color(r, b, b, a / 2f).next()
-        buffer.vertex(box.x2, box.y1, box.z1).color(r, b, b, 0f).next()
-        buffer.vertex(box.x2, box.y2, box.z1).color(r, b, b, a / 2f).next()
+        buffer.vertex(box.xLength, box.yLength, box.zLength).color(r, b, b, a / 2f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, a / 2f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, a / 2f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, a / 2f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, 0f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, a / 2f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, 0f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, a / 2f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, 0f).next()
+        buffer.vertex(box.xLength, box.yLength, box.yLength).color(r, b, b, a / 2f).next()
         tessellator.draw()
         gl11Cleanup()
     }
@@ -113,7 +113,7 @@ object RenderUtil {
                 r = 1f
                 g = 1f
             }
-            entity is EnderCrystalEntity -> {
+            entity is EndCrystalEntity -> {
                 r = 1f
                 b = 1f
             }

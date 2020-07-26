@@ -34,24 +34,24 @@ public class ClickGuiScreen extends Screen {
         settings.loadPositions();
         settings.loadColors();
         for (Module.Category category : Module.Category.values()) {
-            int catWidth = textRenderer.getWidth(settings.colors.categoryPrefix + category.toString());
+            int catWidth = textRenderer.getStringWidth(settings.colors.categoryPrefix + category.toString());
             if (catWidth > width) {
                 width = catWidth + 4;
             }
         }
         for (Module module : MODULE_MANAGER.getModules()) {
-            int moduleWidth = textRenderer.getWidth(settings.colors.modulePrefix + module.getName());
+            int moduleWidth = textRenderer.getStringWidth(settings.colors.modulePrefix + module.getName());
             if (moduleWidth > width) {
                 width = moduleWidth + 4;
             }
             for (Map.Entry<String, Setting> settingEntry : module.getSettings().getSettings().entrySet()) {
-                int settingWidth = textRenderer.getWidth(settings.colors.settingPrefix + settingEntry.getKey());
+                int settingWidth = textRenderer.getStringWidth(settings.colors.settingPrefix + settingEntry.getKey());
                 if (settingWidth > width) {
                     width = settingWidth + 4;
                 }
                 if (settingEntry.getValue().getType() == 0) {
                     for (String mode : Objects.requireNonNull(Objects.requireNonNull(module.getSettings().getModes(settingEntry.getKey())))) {
-                        int modeWidth = textRenderer.getWidth(settings.colors.settingPrefix + settingEntry.getKey() + ": " + mode);
+                        int modeWidth = textRenderer.getStringWidth(settings.colors.settingPrefix + settingEntry.getKey() + ": " + mode);
                         if (modeWidth > width) {
                             width = modeWidth + 4;
                         }
@@ -63,6 +63,7 @@ public class ClickGuiScreen extends Screen {
         }
     }
 
+    @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         height = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100) + 3;
         categoryRenderers.clear();
@@ -80,7 +81,7 @@ public class ClickGuiScreen extends Screen {
                     keybindPressedCategory = categoryRenderer;
                 }
                 if (categoryRenderer.description != null) {
-                    drawTextBox(categoryRenderer.description.descPosX, categoryRenderer.description.descPosY, textRenderer.getWidth(settings.colors.descriptionPrefix + categoryRenderer.description.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.description.desc);
+                    drawTextBox(categoryRenderer.description.descPosX, categoryRenderer.description.descPosY, textRenderer.getStringWidth(settings.colors.descriptionPrefix + categoryRenderer.description.desc) + 4, height, settings.colors.descriptionBoxColor, settings.colors.descriptionTextColor, settings.colors.categoryPrefixColor, settings.colors.descriptionBgColor, settings.colors.descriptionPrefix, categoryRenderer.description.desc);
                     break;
                 }
             }

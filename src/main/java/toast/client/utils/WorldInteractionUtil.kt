@@ -4,6 +4,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.util.math.Vector3f
 import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket.LookOnly
@@ -152,7 +153,7 @@ object WorldInteractionUtil {
                     val dh = sqrt(dx * dx + dz * dz)
                     val yaw = Math.toDegrees(atan2(dz, dx)).toFloat() - 90
                     val pitch = (-Math.toDegrees(atan2(dy, dh))).toFloat()
-                    player.networkHandler.sendPacket(LookOnly(yaw, pitch, player.onGround))
+                    player.networkHandler.sendPacket(LookOnly(yaw, pitch, player.isOnGround))
                 }
                 if (isRightClickable(offsetBlock)) {
                     player!!.networkHandler.sendPacket(
@@ -165,9 +166,10 @@ object WorldInteractionUtil {
                 if (player!!.getStackInHand(hand).item != null && player.getStackInHand(hand)
                         .item !== Items.AIR
                 ) {
+
                     mc.interactionManager!!.interactBlock(
                         player, mc.world, hand,
-                        BlockHitResult(Vec3d(pos), direction.opposite, offsetPos, false)
+                        BlockHitResult(Vec3d((Vector3f())), direction.opposite, offsetPos, false)
                     )
                     player.swingHand(hand)
                 } else {
