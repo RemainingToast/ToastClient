@@ -1,6 +1,7 @@
 # ToastClient
  
  - Minecraft Utility mod using Fabric.
+ - Version 1.16.1
  
  # Building Instructions
  
