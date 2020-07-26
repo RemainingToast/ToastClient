@@ -5,7 +5,7 @@
  # Building Instructions
  
 Download the source code:
- - `git clone https://github.com/RemainingToast/ToastClient`
+ - `git clone https://github.com/toastmc/fabric-client`
 
 Import ToastClient into your IDE of choice. IntelliJ Reccomended (for windows users, remove the `./` before each command).
 - `./gradlew genSources`
