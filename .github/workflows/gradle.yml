@@ -23,7 +23,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew remapJar
+      run: ./gradlew build
     - name: Rename file
         run: mv build/libs/toastclient-1.0.0.jar "toastclient-1.15.2.jar"
     - name: Send message to discord
