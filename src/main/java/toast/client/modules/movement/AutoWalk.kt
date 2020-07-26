@@ -5,7 +5,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
 import toast.client.events.network.EventPacketSent
 import toast.client.modules.Module
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 
 class AutoWalk : Module("AutoWalk", "Automatically walk forwards", Category.MOVEMENT, -1) {
     @Subscribe
@@ -20,7 +20,7 @@ class AutoWalk : Module("AutoWalk", "Automatically walk forwards", Category.MOVE
                         }
                     }
                     "Baritone" -> {
-                        Logger.message("Ree baritone integrated yet", Logger.ERR, false)
+                        MessageUtil.sendMessage("Ree baritone not integrated yet", MessageUtil.Color.RED)
                         mc.options.keyForward.isPressed = false
                     }
                 }

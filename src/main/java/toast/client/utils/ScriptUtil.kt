@@ -25,7 +25,7 @@ fun runScript(script: List<String>) {
                 }
             }
         } catch (e: Throwable) {
-            Logger.message("Script failed to execute", Logger.ERR, false)
+            MessageUtil.sendMessage("Script failed to execute", MessageUtil.Color.RED)
         }
     }.start()
 }

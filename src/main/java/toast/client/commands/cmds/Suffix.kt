@@ -3,7 +3,7 @@ package toast.client.commands.cmds
 import toast.client.ToastClient
 import toast.client.commands.Command
 import toast.client.modules.misc.CustomChat
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 
 /**
  * Command to change the CustomChat suffix
@@ -19,10 +19,10 @@ class Suffix : Command("Suffix", """${ToastClient.cmdPrefix}suffix [suffix]""", 
                 message.append(args[i])
                 out = message.toString()
             }
-            Logger.message("Set suffix to $out", Logger.INFO, false)
+            MessageUtil.sendMessage("Set suffix to $out", MessageUtil.Color.GREEN)
             CustomChat.suffix = out
         } else {
-            Logger.message("Specify suffix!", Logger.ERR, false)
+            MessageUtil.sendMessage("Specify suffix!", MessageUtil.Color.RED)
         }
     }
 }

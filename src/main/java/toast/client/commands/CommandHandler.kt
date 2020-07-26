@@ -3,11 +3,7 @@ package toast.client.commands
 import net.minecraft.client.MinecraftClient
 import org.reflections.Reflections
 import toast.client.ToastClient
-import toast.client.commands.cmds.*
-import toast.client.commands.cmds.Set
-import toast.client.modules.Module
-import toast.client.modules.ModuleManager
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -41,13 +37,13 @@ class CommandHandler {
                         nextCommand.run(args)
                     } catch (err: Exception) {
                         err.printStackTrace()
-                        Logger.message("Sorry but something went wrong", Logger.ERR, true)
+                        MessageUtil.sendMessage("Sorry but something went wrong", MessageUtil.Color.RED)
                     }
                 }
             }
         }
         if (notfound) {
-            Logger.message("Cannot find command " + ToastClient.cmdPrefix + name, Logger.ERR, true)
+            MessageUtil.sendMessage("Cannot find command ${MessageUtil.CHAT_PREFIX} $name", MessageUtil.Color.RED)
         }
     }
 

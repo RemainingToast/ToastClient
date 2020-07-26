@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW
 import toast.client.ToastClient
 import toast.client.commands.Command
 import toast.client.utils.KeyUtil
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 
 /**
  * Command to bind a module to a key
@@ -18,7 +18,7 @@ class Bind : Command("Bind", "${ToastClient.cmdPrefix}bind [all, module] [key]",
                     var i = 0
                     while (true) {
                         ToastClient.MODULE_MANAGER.modules[i].key = GLFW.GLFW_KEY_UNKNOWN
-                        Logger.message("${ToastClient.MODULE_MANAGER.modules[i].name} keybind set to NONE", Logger.SUCCESS, true)
+                        MessageUtil.sendMessage("${ToastClient.MODULE_MANAGER.modules[i].name} keybind set to NONE", MessageUtil.Color.GREEN)
                         if (i == ToastClient.MODULE_MANAGER.modules.size) {
                             ToastClient.CONFIG_MANAGER.writeKeyBinds()
                             break
@@ -33,22 +33,22 @@ class Bind : Command("Bind", "${ToastClient.cmdPrefix}bind [all, module] [key]",
                 } else {
                     keyCode = KeyUtil.getKeyCode(args[1])
                     if (keyCode == -1) {
-                        Logger.message("No Key by the name of ${args[1]} was found.", Logger.ERR, false)
+                        MessageUtil.sendMessage("No Key by the name of ${args[1]} was found.", MessageUtil.Color.RED)
                         return
                     }
                 }
                 try {
                     module.key = keyCode
-                    Logger.message("Module ${module.name} is now bound to ${args[1].toUpperCase()}", Logger.INFO, false)
+                    MessageUtil.sendMessage("Module ${module.name} is now bound to ${args[1].toUpperCase()}", MessageUtil.Color.GREEN)
                     ToastClient.CONFIG_MANAGER.writeKeyBinds()
                 } catch (nfe: NumberFormatException) {
-                    Logger.message("Failed to bind Module ${module.name} to \"${args[1].toUpperCase()}\"", Logger.ERR, false)
+                    MessageUtil.sendMessage("Failed to bind Module ${module.name} to \"${args[1].toUpperCase()}\"", MessageUtil.Color.RED)
                 }
             } else {
-                Logger.message("${args[0]} is not a valid module", Logger.ERR, true)
+                MessageUtil.sendMessage("${args[0]} is not a valid module", MessageUtil.Color.RED)
             }
         } else {
-            Logger.message("Not enough arguments", Logger.ERR, true)
+            MessageUtil.sendMessage("Not enough arguments", MessageUtil.Color.RED)
         }
     }
 }

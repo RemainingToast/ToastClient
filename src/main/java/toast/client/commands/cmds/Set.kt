@@ -5,8 +5,7 @@ import toast.client.ToastClient
 import toast.client.commands.Command
 import toast.client.modules.Module
 import toast.client.modules.config.Setting
-import toast.client.utils.Logger
-import java.util.*
+import toast.client.utils.MessageUtil
 
 /**
  * Command to list and change configuration options for modules
@@ -20,11 +19,11 @@ class Set : Command("Set", """${ToastClient.cmdPrefix}set <module> [setting] [ne
                     modes.append(mode).append(", ")
                 }
                 modes = StringBuilder(modes.subSequence(0, modes.length - 3) as String)
-                Logger.message(""" Mode: $name, current: ${setting.getMode()} available: $modes""", Logger.EMPTY, false)
+                MessageUtil.sendMessage(""" Mode: $name, current: ${setting.getMode()} available: $modes""", MessageUtil.Color.GRAY)
             }
-            1 -> Logger.message(""" Value: $name, current: ${setting.getValue()} minimum: ${module.settings.getSettingDef(name)!!.minValue} maximum: ${module.settings.getSettingDef(name)!!.maxValue}""", Logger.EMPTY, false)
-            2 -> Logger.message(""" Toggle: $name, state: ${if (setting.isEnabled()) "enabled" else "disabled"}""", Logger.EMPTY, false)
-            else -> Logger.message("Invalid setting", Logger.ERR, false)
+            1 -> MessageUtil.sendMessage(""" Value: $name, current: ${setting.getValue()} minimum: ${module.settings.getSettingDef(name)!!.minValue} maximum: ${module.settings.getSettingDef(name)!!.maxValue}""", MessageUtil.Color.GRAY)
+            2 -> MessageUtil.sendMessage(""" Toggle: $name, state: ${if (setting.isEnabled()) "enabled" else "disabled"}""", MessageUtil.Color.GRAY)
+            else -> MessageUtil.sendMessage("Invalid setting", MessageUtil.Color.RED)
         }
     }
 
@@ -42,9 +41,9 @@ class Set : Command("Set", """${ToastClient.cmdPrefix}set <module> [setting] [ne
                             0 -> {
                                 if (settingDef!!.modes!!.contains(args[2])) {
                                     setting.setMode(args[2])
-                                    Logger.message("""Changed value of setting ${args[1]} to ${args[2]}""", Logger.INFO, false)
+                                    MessageUtil.sendMessage("""Changed value of setting ${args[1]} to ${args[2]}""", MessageUtil.Color.GRAY)
                                 } else {
-                                    Logger.message("""${args[2]} is an invalid value for this setting.""", Logger.WARN, false)
+                                    MessageUtil.sendMessage("""${args[2]} is an invalid value for this setting.""", MessageUtil.Color.RED)
                                 }
                             }
                             1 -> {
@@ -53,43 +52,43 @@ class Set : Command("Set", """${ToastClient.cmdPrefix}set <module> [setting] [ne
                                     if (newNum <= settingDef!!.maxValue!!) {
                                         if (newNum >= settingDef.minValue!!) {
                                             setting.setValue(newNum)
-                                            Logger.message("""Changed value of setting ${args[1]} to ${args[2]}""", Logger.INFO, false)
+                                            MessageUtil.sendMessage("""Changed value of setting ${args[1]} to ${args[2]}""", MessageUtil.Color.GREEN)
                                         } else {
-                                            Logger.message("""$newNum is too small, the minimum value is: ${settingDef.minValue}""", Logger.WARN, false)
+                                            MessageUtil.sendMessage("""$newNum is too small, the minimum value is: ${settingDef.minValue}""", MessageUtil.Color.RED)
                                         }
                                     } else {
-                                        Logger.message("""$newNum is too big, the maximum value is: ${settingDef.maxValue}""", Logger.WARN, false)
+                                        MessageUtil.sendMessage("""$newNum is too big, the maximum value is: ${settingDef.maxValue}""", MessageUtil.Color.RED)
                                     }
                                 } else {
-                                    Logger.message("""${args[2]} is an invalid value for this setting, please give a number.""", Logger.WARN, false)
+                                    MessageUtil.sendMessage("""${args[2]} is an invalid value for this setting, please give a number.""", MessageUtil.Color.RED)
                                 }
                             }
                             2 -> {
                                 if (args[2] == "true" || args[2] == "false") {
                                     setting.setEnabled(args[2].toBoolean())
-                                    Logger.message("""Changed value of setting ${args[1]} to ${args[2]}""", Logger.INFO, false)
+                                    MessageUtil.sendMessage("""Changed value of setting ${args[1]} to ${args[2]}""", MessageUtil.Color.RED)
                                 } else {
-                                    Logger.message("""${args[2]} is an invalid value for this setting, please give a boolean (true/false).""", Logger.WARN, false)
+                                    MessageUtil.sendMessage("""${args[2]} is an invalid value for this setting, please give a boolean (true/false).""", MessageUtil.Color.RED)
                                 }
                             }
                             else -> {
-                                Logger.message("Internal programming error.", Logger.WARN, false)
+                                MessageUtil.sendMessage("Internal programming error.", MessageUtil.Color.RED)
                             }
                         }
                     }
                 } else {
-                    Logger.message(args[1] + " is not a setting.", Logger.WARN, false)
+                    MessageUtil.sendMessage("${args[1]} is not a setting.", MessageUtil.Color.RED)
                 }
             } else {
-                Logger.message("Setting(s) for module " + module.name + ": ", Logger.INFO, false)
+                MessageUtil.sendMessage("Setting(s) for module " + module.name + ": ", MessageUtil.Color.GRAY)
                 for ((key, value) in module.settings.getSettings()) {
                     displaySetting(key, value, module)
                 }
             }
         } else {
-            Logger.message(args[0] + " is not a module.", Logger.WARN, false)
+            MessageUtil.sendMessage("${args[0]} is not a module.", MessageUtil.Color.RED)
         }
     } else {
-        Logger.message("Invalid arguments.", Logger.WARN, false)
+        MessageUtil.sendMessage("Invalid arguments.", MessageUtil.Color.RED)
     }
 }

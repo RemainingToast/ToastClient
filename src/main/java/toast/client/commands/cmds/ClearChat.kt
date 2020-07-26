@@ -2,7 +2,7 @@ package toast.client.commands.cmds
 
 import toast.client.ToastClient
 import toast.client.commands.Command
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 
 /**
  * Command to wipe all messages from the in-game chat HUD
@@ -13,9 +13,9 @@ class ClearChat : Command("ClearChat", "${ToastClient.cmdPrefix}clearchat", "Cle
         if (mc.player == null) return
         if (mc.inGameHud.chatHud != null) {
             mc.inGameHud.chatHud.clear(true)
-            Logger.message("Cleared chat", Logger.EMPTY, false)
+            MessageUtil.sendMessage("Cleared chat!", MessageUtil.Color.GREEN)
         } else {
-            Logger.message("Fuck I don't know chat hud is null ¯\\_(ツ)_/¯", Logger.EMPTY, false)
+            MessageUtil.sendMessage("Fuck I don't know chat hud is null ¯\\_(ツ)_/¯", MessageUtil.Color.GRAY)
         }
     }
 }

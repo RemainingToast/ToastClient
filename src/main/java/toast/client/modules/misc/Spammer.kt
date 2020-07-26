@@ -5,7 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils
 import toast.client.ToastClient
 import toast.client.events.network.EventSyncedUpdate
 import toast.client.modules.Module
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 import toast.client.utils.TimerUtil
 import java.io.File
 import java.util.*
@@ -21,7 +21,7 @@ class Spammer : Module("Spammer", "Spams messages in chat from a file.", Categor
         timer.reset()
         lines = ToastClient.FILE_MANAGER.readFile(ToastClient.FILE_MANAGER.createFile(File("spammer.txt")))
         if (lines.isEmpty()) {
-            Logger.message("spammer.txt was empty!", Logger.WARN, false)
+            MessageUtil.sendMessage("spammer.txt was empty!", MessageUtil.Color.RED)
             this.disable()
         }
     }

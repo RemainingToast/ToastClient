@@ -24,6 +24,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew remapJar
+    - name: Rename file
+        run: mv build/libs/toastclient-1.0.0.jar "toastclient-1.15.2.jar"
     - name: Send message to discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -33,5 +35,5 @@ jobs:
     - name: Upload to discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      run: curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@build/libs/toastclient-1.0.0.jar" $DISCORD_WEBHOOK
+      run: curl -H 'Content-Type:multipart/form-data' -X POST -F "file=@build/libs/toastclient-1.15.2.jar" $DISCORD_WEBHOOK
     

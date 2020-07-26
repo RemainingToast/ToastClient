@@ -72,7 +72,7 @@ object FancyChatUtil {
     fun customSuffix(text: String, separator: String, suffix: String, separator2: String, surround: Boolean): String {
         var output = "null" //Should never happen
         if (suffix.isEmpty()) {
-            Logger.message("No custom suffix, using default!", Logger.ERR, true)
+            MessageUtil.sendMessage("No custom suffix, using default!", MessageUtil.Color.GRAY)
             output = text + CustomChat.suffix
         } else if (suffix.isNotEmpty()) {
             output = if (surround) {

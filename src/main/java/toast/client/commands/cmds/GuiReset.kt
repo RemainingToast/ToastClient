@@ -2,7 +2,7 @@ package toast.client.commands.cmds
 
 import toast.client.ToastClient
 import toast.client.commands.Command
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 
 /**
  * Command to regenerate ClickGui category positions according to current window resolution
@@ -12,9 +12,9 @@ class GuiReset : Command("GuiReset", "${ToastClient.cmdPrefix}guireset", "Makes 
         if (ToastClient.clickGuiHasOpened) {
             ToastClient.clickGui.settings.initCategoryPositions()
             ToastClient.clickGui.settings.savePositions()
-            Logger.message("Re-arranged ClickGui, if you still have problems, try setting your gui scale to minimum.", Logger.INFO, true)
+            MessageUtil.sendMessage("Re-arranged ClickGui, if you still have problems, try setting your gui scale to minimum.", MessageUtil.Color.GREEN)
         } else {
-            Logger.message("ClickGui hasn't been opened!", Logger.ERR, true)
+            MessageUtil.sendMessage("ClickGui hasn't been opened!", MessageUtil.Color.RED)
         }
     }
 }

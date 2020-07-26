@@ -2,7 +2,7 @@ package toast.client.commands.cmds
 
 import toast.client.ToastClient
 import toast.client.commands.Command
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 
 /**
  * Command to change the command prefix
@@ -11,7 +11,7 @@ class Prefix : Command("Prefix", """${ToastClient.cmdPrefix}prefix [prefix]""", 
     override fun run(args: Array<String>) {
         if (ToastClient.cmdPrefix != null) {
             ToastClient.cmdPrefix = args[0]
-            Logger.message("Command prefix set to: ${ToastClient.cmdPrefix}", Logger.INFO, true)
+            MessageUtil.sendMessage("Command prefix set to: ${ToastClient.cmdPrefix}", MessageUtil.Color.GREEN)
         }
     }
 }

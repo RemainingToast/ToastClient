@@ -1,11 +1,9 @@
 package toast.client.commands.cmds
 
-import net.minecraft.client.MinecraftClient
-import net.minecraft.text.LiteralText
 import net.minecraft.util.Formatting
 import toast.client.ToastClient
 import toast.client.commands.Command
-import toast.client.utils.Logger
+import toast.client.utils.MessageUtil
 
 /**
  * Command to display a list of available commands and how to use them
@@ -33,22 +31,18 @@ class Help : Command("Help", "${ToastClient.cmdPrefix}help [command]", "Shows al
         if (mc.player == null) return
         if (args.isEmpty()) {
             sb.replace(0, sb.capacity(), "")
-            var i = 0
             for (command in ToastClient.COMMAND_HANDLER.commands) {
-                i++
                 if (ToastClient.COMMAND_HANDLER.isDevCancel(command)) continue
                 if (command.name == "Help") continue
                 sb.append(Formatting.GRAY).append(command.name).append(", ")
-                if (ToastClient.COMMAND_HANDLER.commands.size == i) {
-                    break
-                }
             }
-            MinecraftClient.getInstance().inGameHud.chatHud.addMessage(LiteralText("${ToastClient.chatPrefix}${Formatting.GRAY} Commands (${ToastClient.COMMAND_HANDLER.commands.size}): $sb"))
+            sb.replace(sb.lastIndexOf(", "), sb.lastIndexOf(", ") + 1, "")
+            MessageUtil.sendMessage("Commands (${ToastClient.COMMAND_HANDLER.commands.size}): $sb", MessageUtil.Color.GRAY)
         } else {
             val c = args[0].replaceFirst("\\.".toRegex(), "")
             val cmd = ToastClient.COMMAND_HANDLER.getCommand(c)
             if (cmd == null || ToastClient.COMMAND_HANDLER.isDevCancel(cmd)) {
-                Logger.message("Cannot find command $c", Logger.ERR, false)
+                MessageUtil.sendMessage("Cannot find command $c", MessageUtil.Color.RED)
                 return
             }
             val msg = StringBuilder()
@@ -62,7 +56,7 @@ class Help : Command("Help", "${ToastClient.cmdPrefix}help [command]", "Shows al
             msg.append(Formatting.GRAY).append(" - Usage:").append(Formatting.YELLOW).append(usage.toString()).append("\n")
             msg.append(Formatting.GRAY).append(" - Description:").append(Formatting.YELLOW).append(desc.toString())
             out = msg.toString()
-            Logger.message(out, Logger.EMPTY, false)
+            MessageUtil.sendRawMessage(out)
         }
     }
 }
