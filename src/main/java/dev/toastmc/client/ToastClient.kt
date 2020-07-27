@@ -29,11 +29,5 @@ class ToastClient : ModInitializer {
 
     override fun onInitialize() {
         COMMAND_MANAGER.initCommands()
-        EVENT_BUS.post(updateListener)
     }
-
-    @EventHandler
-    private val updateListener = Listener(EventHook<TickEvent.Client.InGame> { println("$CHAT_PREFIX Test")})
-
-
 }
