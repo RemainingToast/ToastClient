@@ -1,8 +1,9 @@
 {
   "required": true,
-  "package": "dev.toastmc.client.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
+  "package": "dev.toastmc.client.mixin.client",
+  "client": [
+      "MixinClientConnection"
   ],
   "injectors": {
     "defaultRequire": 1

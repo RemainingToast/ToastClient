@@ -1,58 +1,47 @@
 plugins {
-    id 'java'
     id 'fabric-loom'
     id 'maven-publish'
-    id "org.jetbrains.kotlin.jvm"
-    id "com.github.johnrengelman.shadow" version "5.2.0"
-    id "io.github.manosbatsis.gradle.plugin.reflections" version "1.1"
+    id 'org.jetbrains.kotlin.jvm'
 }
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+version = minecraft_version + "-" + mod_version
 group = project.maven_group
 
-minecraft {
-
-
-}
-
+minecraft { }
 
 repositories {
+    jcenter()
     mavenCentral()
     maven {
-        url = "http://maven.fabricmc.net/" 
-        name = "Fabric"
+        name = "jitpack.io"
+        url = "https://jitpack.io"
     }
-    maven { url 'https://jitpack.io' }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven {
+        name = 'impactdevelopment-repo'
+        url = 'https://impactdevelopment.github.io/maven/'
+    }
+    maven {
+        name = "modmuss50's repo"
+        url = "https://maven.modmuss50.me/"
+    }
 }
 
 dependencies {
-    //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modCompile group: 'javassist', name: 'javassist', version: '3.12.1.GA'
+    compile "me.zeroeightsix:fiber:${project.fiber_version}-SNAPSHOT"
 
-    modCompile "net.fabricmc:fabric-language-kotlin:1.3.71+build.1"
-    modCompile "org.jetbrains.kotlin:kotlin-stdlib:1.3.71"
-    modCompile "org.reflections:reflections:0.9.10"
+    compile "com.github.ZeroMemes:Alpine:1.9"
+    compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.19'
 
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
-    //compile "net.jodah:typetools:0.6.2"
-
-    // Workaround for https://github.com/kotlin-graphics/imgui/issues/112
-    ["gl", "glfw", "core"].each {
-        implementation("com.github.kotlin-graphics.imgui:imgui-$it:jdk8-SNAPSHOT") {
-            exclude group: "org.lwjgl"
-        }
-    }
-    implementation("com.github.kotlin-graphics:glm:jdk8-SNAPSHOT")
-    implementation("com.github.kotlin-graphics:uno-sdk:jdk8-SNAPSHOT")
+//    compile 'com.github.kotlin-graphics:imgui:jdk8-SNAPSHOT'
+//    compile 'com.github.kotlin-graphics:glm:jdk8-SNAPSHOT'
+//    compile 'com.github.kotlin-graphics:uno-sdk:jdk8-SNAPSHOT'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.3.61'
 }
 
 processResources {
@@ -68,67 +57,15 @@ processResources {
     }
 }
 
-sourceCompatibility = targetCompatibility = compileKotlin.kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
-
-
-
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
     from sourceSets.main.allSource
 }
 
-reflections {
-    dependsOn classes
-}
-
 jar {
-    dependsOn reflections
     from "LICENSE"
-}
-
-shadowJar {
-    dependencies {
-        include(dependency('javassist:javassist'))
-        include(dependency('org.reflections:reflections'))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
-        include(dependency("com.github.kotlin-graphics:imgui"))
-    }
-    classifier = 'shadow'
-}
-
-remapJar {
-    dependsOn shadowJar
-    mustRunAfter shadowJar
-    input = file("build/libs/${archivesBaseName}-${version}-shadow.jar")
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    // select the repositories you want to publish to
-    repositories {
-        // uncomment to publish to the local maven
-        // mavenLocal()
-    }
 }

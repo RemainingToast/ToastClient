@@ -1,12 +1,9 @@
-package dev.toastmc.client.utils;
+package dev.toastmc.client.util;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.MessageType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
-
-import java.awt.*;
 
 public class MessageUtil {
     /*
@@ -22,11 +19,11 @@ public class MessageUtil {
     }
 
     public static void sendPublicMessage(String message) {
-        if(mc.player == null) return;
+        if (mc.player == null) return;
         mc.player.sendChatMessage(message);
     }
 
-    public static void defaultErrorMessage(){
+    public static void defaultErrorMessage() {
         sendRawMessage(CHAT_PREFIX + Formatting.RED + "Computer Says No.");
     }
 
@@ -71,7 +68,8 @@ public class MessageUtil {
             case WHITE:
                 sendRawMessage(CHAT_PREFIX + Formatting.WHITE + message);
                 break;
-            default: GRAY:
+            default:
+                GRAY:
                 sendRawMessage(CHAT_PREFIX + Formatting.GRAY + message);
                 break;
             case DARK_GRAY:
