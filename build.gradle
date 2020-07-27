@@ -33,14 +33,12 @@ dependencies {
     modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
     compile "me.zeroeightsix:fiber:${project.fiber_version}-SNAPSHOT"
+    implementation "org.lwjgl:lwjgl-glfw"
 
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.19'
 
-//    compile 'com.github.kotlin-graphics:imgui:jdk8-SNAPSHOT'
-//    compile 'com.github.kotlin-graphics:glm:jdk8-SNAPSHOT'
-//    compile 'com.github.kotlin-graphics:uno-sdk:jdk8-SNAPSHOT'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.3.61'
 }
 

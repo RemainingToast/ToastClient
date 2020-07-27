@@ -12,7 +12,9 @@ public @interface ModuleManifest {
     String[] aliases() default {};
     String description() default "";
     String usage() default "";
-
+    Category category() default Category.NONE;
     boolean hidden() default false;
+    boolean persistent() default false;
+    boolean enabled() default false;
     int key() default -1;
 }
