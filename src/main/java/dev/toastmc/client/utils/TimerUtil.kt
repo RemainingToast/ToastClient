@@ -21,7 +21,7 @@ class TimerUtil {
     /**
      * Checks if and amount of time has passed since the last reset
      */
-    fun isDelayComplete(delay: Double): Boolean {
+    fun isDelayComplete(delay: Float): Boolean {
         return System.currentTimeMillis() - lastMS >= delay
     }
 
