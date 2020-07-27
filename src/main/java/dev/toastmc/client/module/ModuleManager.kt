@@ -2,7 +2,6 @@ package dev.toastmc.client.module
 
 import net.minecraft.client.MinecraftClient
 import java.util.concurrent.CopyOnWriteArrayList
-import org.lwjgl.glfw.GLFW
 
 class ModuleManager (){
     /**
@@ -17,7 +16,7 @@ class ModuleManager (){
         val iter = modules.iterator()
         while (iter.hasNext()) {
             val next = iter.next()
-            if (next.key == key && action == GLFW.GLFW_PRESS && MinecraftClient.getInstance().currentScreen == null) {
+            if (next.key == key && action == -1 && MinecraftClient.getInstance().currentScreen == null) {
                 if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) continue
                 next.toggle()
             }
