@@ -24,6 +24,7 @@ class CommandManager () {
                 }
             }
         }
+        MessageUtil.defaultErrorMessage()
     }
 
     /**

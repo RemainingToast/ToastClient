@@ -15,7 +15,7 @@ class Help : Command() {
         if (args.isEmpty()) {
             sb.replace(0, sb.capacity(), "")
             for (command in COMMAND_MANAGER.commands) {
-                if (command.getLabel() == "Help") continue
+//                if (command.getLabel() == "Help") continue
                 sb.append("${Formatting.GRAY}${command.getLabel()}, ")
             }
             sb.replace(sb.lastIndexOf(", "), sb.lastIndexOf(", ") + 1, "")
