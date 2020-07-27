@@ -3,7 +3,8 @@
   "compatibilityLevel": "JAVA_8",
   "package": "dev.toastmc.client.mixin.client",
   "client": [
-      "MixinClientConnection"
+      "MixinClientConnection",
+      "MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1
