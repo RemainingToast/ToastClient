@@ -8,23 +8,7 @@ class CommandManager () {
     var commands: CopyOnWriteArrayList<Command> = CopyOnWriteArrayList<Command>()
 
     fun executeCmd(name: String, args: Array<String>) {
-        val commandIter = commands.iterator()
-        while (commandIter.hasNext()){
-            val next = commandIter.next()
-            for(label in next.getLabel()!!){
-                if(label.equals(name)){
-                    next.run(args)
-                    return
-                }
-            }
-            for (alias in next.getAlias()!!) {
-                if (alias.equals(name, ignoreCase = true)) {
-                    next.run(args)
-                    return
-                }
-            }
-        }
-        MessageUtil.defaultErrorMessage()
+        if (getCommand(name) != null) getCommand(name)!!.run(args) else MessageUtil.defaultErrorMessage()
     }
 
     /**
@@ -34,6 +18,11 @@ class CommandManager () {
         val commandIter = commands.iterator()
         while (commandIter.hasNext()) {
             val next = commandIter.next()
+            for (label in next.getLabel()!!) {
+                if(label.toString().equals(cmd, ignoreCase = true)){
+                    return next
+                }
+            }
             for (alias in next.getAlias()!!) {
                 if (alias.equals(cmd, ignoreCase = true)) {
                     return next
