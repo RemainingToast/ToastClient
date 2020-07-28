@@ -26,7 +26,7 @@ class Toggle : Command(){
             val mod: Module? = ToastClient.MODULE_MANAGER.getModuleByName(args[0].toLowerCase())
             if(mod != null){
                 mod.toggle()
-                sendMessage("Toggled ${mod.label}${if (mod.enabled!!) Formatting.RED.toString() + " OFF" else Formatting.GREEN.toString() + " ON"}", MessageUtil.Color.GRAY)
+                sendMessage("Toggled ${mod.label}${if (!mod.enabled!!) Formatting.RED.toString() + " OFF" else Formatting.GREEN.toString() + " ON"}", MessageUtil.Color.GRAY)
                 return
             }
             sendMessage("\"${args[0]}\" wasn't found.", MessageUtil.Color.RED)
