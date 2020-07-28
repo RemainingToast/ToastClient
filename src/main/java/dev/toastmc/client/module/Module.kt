@@ -1,10 +1,12 @@
 package dev.toastmc.client.module
 
 import dev.toastmc.client.ToastClient
-import dev.toastmc.client.command.CommandManifest
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
 
-open class Module (){
+@Environment(EnvType.CLIENT)
+open class Module () {
     protected var mc: MinecraftClient = MinecraftClient.getInstance()
 
     var label: String? = null
@@ -34,17 +36,36 @@ open class Module (){
 
     private fun setEnabled(newEnabled: Boolean): Boolean {
         enabled = newEnabled
-        try {
-            ToastClient.EVENT_BUS.post(this@Module)
-        } catch (ignored: IllegalArgumentException) {
-
+        if (enabled as Boolean) {
+            try {
+                ToastClient.EVENT_BUS.post(this@Module)
+            } catch (ignored: IllegalArgumentException) {
+            }
+            onEnable()
+        } else {
+            try {
+//                ToastClient.EVENT_BUS.post(this@Module)
+            } catch (ignored: IllegalArgumentException) {
+            }
+            onDisable()
         }
-        return newEnabled
+        return enabled as Boolean
     }
 
-    fun toggle(){
-        setEnabled(!enabled!!)
-    }
+//    val mode: String? get() = settings.getMode("Mode")
 
+//    fun getDouble(name: String): Double = settings.getValue(name)!!
+
+//    fun getBool(name: String): Boolean = settings.getBoolean(name)
+
+    fun disable(): Boolean = setEnabled(false)
+
+    fun enable(): Boolean = setEnabled(true)
+
+    fun toggle(): Boolean = setEnabled(!enabled!!)
+
+    open fun onEnable() {}
+
+    open fun onDisable() {}
 
 }

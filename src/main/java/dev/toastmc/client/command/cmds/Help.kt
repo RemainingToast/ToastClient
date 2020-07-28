@@ -6,9 +6,11 @@ import dev.toastmc.client.command.CommandManifest
 import dev.toastmc.client.util.MessageUtil
 import net.minecraft.util.Formatting
 
-@CommandManifest(label = "Help", description = "Lists Commands", aliases = ["help", "commands"])
+@CommandManifest(
+        label = "Help",
+        description = "Lists Commands",
+        aliases = ["help", "commands"])
 class Help : Command() {
-
     override fun run(args: Array<String>) {
         val sb: StringBuilder = StringBuilder()
         if (mc.player == null) return

@@ -33,7 +33,6 @@ dependencies {
     modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
     compile "me.zeroeightsix:fiber:${project.fiber_version}-SNAPSHOT"
-    implementation "org.lwjgl:lwjgl-glfw"
 
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'

@@ -1,13 +1,19 @@
 package dev.toastmc.client.module
 
+import dev.toastmc.client.module.combat.AutoTotem
 import net.minecraft.client.MinecraftClient
-import java.util.concurrent.CopyOnWriteArrayList
+import java.io.Console
+import java.rmi.registry.LocateRegistry.getRegistry
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
+
 
 class ModuleManager (){
     /**
      * Array containing the instances of all the modules
      */
-    val modules: CopyOnWriteArrayList<Module> = CopyOnWriteArrayList<Module>()
+    val modules: HashSet<Module> = HashSet<Module>()
 
     /**
      * Checks each module for a key-bind and toggles the module if the key-bind matches the key
@@ -23,19 +29,33 @@ class ModuleManager (){
         }
     }
 
-    /**
-     * Gets a module from it's class
-     */
-    fun getModule(moduleClass: Class<out Module?>): Module? = modules.firstOrNull { it.javaClass == moduleClass }
+    init {
+        modules.clear()
+        register(AutoTotem())
+    }
 
-    /**
-     * Gets a module from it's name
-     */
-    fun getModule(name: String): Module? = modules.firstOrNull { it.label == name }
+    private fun register(vararg modules: Module) {
+        for (cheat in modules) {
+            this.modules.add(cheat)
+        }
+    }
 
-    /**
-     * Gets an array of the modules in a category
-     */
+
+    fun <T : Module?> getModuleByClass(clazz: Class<T>): Module? {
+        for (current in modules) {
+            if (current.javaClass == clazz) return current
+        }
+        return null
+    }
+
+    fun getModuleByName(name: String?): Module? {
+        for (current in modules) {
+            if (current.alias?.contains(name)!!) return current
+            if (current.label.equals(name, ignoreCase = true)) return current
+        }
+        return null
+    }
+
     fun getModulesInCategory(category: Category): List<Module> {
         val moduleList: MutableList<Module> = ArrayList()
         val iter = modules.iterator()
@@ -46,5 +66,18 @@ class ModuleManager (){
             }
         }
         return moduleList
+    }
+    fun getModulesInArrayList(): String? {
+        val sb: StringBuilder? = null
+        var string: String = "Yeet"
+        sb?.clear()
+        for(module in modules){
+            if(module.enabled!! && !module.hidden!! && !module.category?.equals(Category.NONE)!!){
+                sb?.append("${module.label}\n ")
+            }
+        }
+        string = sb.toString()
+        val array = string.split(" ".toRegex()).toTypedArray()
+        return array.toString()
     }
 }
