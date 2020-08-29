@@ -2,6 +2,8 @@ package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.AutoTotem
 import dev.toastmc.client.module.misc.PortalChat
+import dev.toastmc.client.module.movement.Flight
+import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
 import dev.toastmc.client.module.player.Velocity
 import dev.toastmc.client.module.render.FullBright
@@ -30,9 +32,10 @@ class ModuleManager(){
     /**
      * Register modules to function with commands and gui etc
      */
+    //TOOD: When we have config file enable modules here
     init {
         modules.clear()
-        register(AutoTotem(), SafeWalk(), PortalChat(), FullBright(), Velocity())
+        register(AutoTotem(), SafeWalk(), PortalChat(), FullBright(), Velocity(), Flight(), NoFall())
     }
 
     private fun register(vararg modules: Module) {
