@@ -1,29 +1,23 @@
 package dev.toastmc.client.command
 
-import dev.toastmc.client.ToastClient
-import dev.toastmc.client.ToastClient.Companion.CMD_PREFIX
-import dev.toastmc.client.ToastClient.Companion.COMMAND_MANAGER
+import dev.toastmc.client.command.cmds.Coords
 import dev.toastmc.client.command.cmds.Help
+import dev.toastmc.client.command.cmds.List
 import dev.toastmc.client.command.cmds.Toggle
-import dev.toastmc.client.event.events.PacketEvent
 import dev.toastmc.client.util.MessageUtil
-import me.zero.alpine.listener.EventHandler
-import me.zero.alpine.listener.EventHook
-import me.zero.alpine.listener.Listener
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
-import java.util.*
 import kotlin.collections.HashSet
 
 class CommandManager () {
     var commands: HashSet<Command> = HashSet<Command>()
 
     fun executeCmd(name: String, args: Array<String>) {
-        if (getCommand(name) != null) getCommand(name)!!.run(args) else MessageUtil.defaultErrorMessage()
+        if (getCommand(name) != null) getCommand(name)!!.run(args) else MessageUtil.sendMessage("Command not found \"$name\".", MessageUtil.Color.RED)
     }
 
     /**
      * Gets a command from it's name
      */
+    // TODO: FIX NOT WORKING WITH LABEL
     fun getCommand(cmd: String?): Command? {
         val commandIter = commands.iterator()
         while (commandIter.hasNext()) {
@@ -49,5 +43,7 @@ class CommandManager () {
         commands.clear()
         commands.add(Help())
         commands.add(Toggle())
+        commands.add(List())
+        commands.add(Coords())
     }
 }

@@ -4,7 +4,10 @@
   "package": "dev.toastmc.client.mixin.client",
   "client": [
       "MixinClientConnection",
-      "MixinMinecraftClient"
+      "MixinMinecraftClient",
+      "MixinClientPlayerEntity",
+      "MixinPlayerEntity",
+      "MixinInput"
   ],
   "injectors": {
     "defaultRequire": 1

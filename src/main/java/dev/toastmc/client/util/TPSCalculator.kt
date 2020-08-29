@@ -1,19 +1,8 @@
 package dev.toastmc.client.util
 
-import dev.toastmc.client.event.events.TickEvent
-import me.zero.alpine.listener.EventHandler
-import me.zero.alpine.listener.Listener
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
-import net.minecraft.client.MinecraftClient
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket
-import net.minecraft.screen.slot.SlotActionType
-import net.minecraft.util.math.MathHelper
-import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.util.*
 
 /**
  * Contains methods to calculate and get the current TPS (Ticks Per Second)

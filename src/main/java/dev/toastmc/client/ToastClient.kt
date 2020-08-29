@@ -1,13 +1,9 @@
 package dev.toastmc.client
 
 import dev.toastmc.client.command.CommandManager
-import dev.toastmc.client.event.events.TickEvent
 import dev.toastmc.client.module.ModuleManager
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
-import me.zero.alpine.listener.EventHandler
-import me.zero.alpine.listener.EventHook
-import me.zero.alpine.listener.Listener
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Formatting

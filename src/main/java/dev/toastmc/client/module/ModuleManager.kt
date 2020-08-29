@@ -1,15 +1,10 @@
 package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.AutoTotem
-import net.minecraft.client.MinecraftClient
-import java.io.Console
-import java.rmi.registry.LocateRegistry.getRegistry
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
+import dev.toastmc.client.module.player.SafeWalk
 
 
-class ModuleManager (){
+class ModuleManager(){
     /**
      * Array containing the instances of all the modules
      */
@@ -29,9 +24,12 @@ class ModuleManager (){
 //        }
 //    }
 
+    /**
+     * Register modules to function with commands and gui etc
+     */
     init {
         modules.clear()
-        register(AutoTotem())
+        register(AutoTotem(), SafeWalk(), AutoRespawn())
     }
 
     private fun register(vararg modules: Module) {

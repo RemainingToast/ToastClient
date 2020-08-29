@@ -2,11 +2,10 @@ package dev.toastmc.client.module.combat
 
 
 import dev.toastmc.client.ToastClient
-import dev.toastmc.client.event.events.TickEvent
+import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.MessageUtil
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
