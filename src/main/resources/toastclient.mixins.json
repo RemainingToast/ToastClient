@@ -3,11 +3,14 @@
   "compatibilityLevel": "JAVA_8",
   "package": "dev.toastmc.client.mixin.client",
   "client": [
+      "IEntityVelocityUpdateS2CPacket",
+      "IExplosionS2CPacket",
       "MixinClientConnection",
-      "MixinMinecraftClient",
       "MixinClientPlayerEntity",
-      "MixinPlayerEntity",
-      "MixinInput"
+      "MixinEntity",
+      "MixinInput",
+      "MixinMinecraftClient",
+      "MixinPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1
