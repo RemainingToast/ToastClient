@@ -18,16 +18,16 @@ class ModuleManager (){
     /**
      * Checks each module for a key-bind and toggles the module if the key-bind matches the key
      */
-    fun onKey(key: Int, action: Int) {
-        val iter = modules.iterator()
-        while (iter.hasNext()) {
-            val next = iter.next()
-            if (next.key == key && action == -1 && MinecraftClient.getInstance().currentScreen == null) {
-                if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) continue
-                next.toggle()
-            }
-        }
-    }
+//    fun onKey(key: Int, action: Int) {
+//        val iter = modules.iterator()
+//        while (iter.hasNext()) {
+//            val next = iter.next()
+//            if (next.key == key && action == -1 && MinecraftClient.getInstance().currentScreen == null) {
+//                if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) continue
+//                next.toggle()
+//            }
+//        }
+//    }
 
     init {
         modules.clear()
