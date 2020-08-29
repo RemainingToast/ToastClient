@@ -26,10 +26,10 @@ import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
 class Velocity : Module() {
 
     @Setting(name = "Horizontal")
-    private val horizontal = 0f
+    public var horizontal = 0f
 
     @Setting(name = "Vertical")
-    private val vertical = 0f
+    var vertical = 0f
 
     override fun onEnable() {
         super.onEnable()

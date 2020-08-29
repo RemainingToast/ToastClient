@@ -10,13 +10,17 @@ import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
 import dev.toastmc.client.module.player.Velocity
 import dev.toastmc.client.module.render.FullBright
+import dev.toastmc.client.util.SettingSaveUtil
+import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
+import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree
+import kotlin.reflect.KClass
 
 
-class ModuleManager(){
+class ModuleManager {
     /**
      * Array containing the instances of all the modules
      */
-    val modules: HashSet<Module> = HashSet<Module>()
+    val modules: HashSet<Module> = HashSet()
 
     /**
      * Checks each module for a key-bind and toggles the module if the key-bind matches the key
@@ -48,7 +52,12 @@ class ModuleManager(){
     }
 
 
-    fun <T : Module?> getModuleByClass(clazz: Class<T>): Module? {
+
+    fun <T : Module> getModuleByClass(clazz: KClass<T>): Module? {
+        return getModuleByClass(clazz.java)
+    }
+
+    fun <T : Module> getModuleByClass(clazz: Class<T>): Module? {
         for (current in modules) {
             if (current.javaClass == clazz) return current
         }
@@ -76,7 +85,7 @@ class ModuleManager(){
     }
     fun getModulesInArrayList(): String? {
         val sb: StringBuilder? = null
-        var string: String = "Yeet"
+        val string: String
         sb?.clear()
         for(module in modules){
             if(module.enabled!! && !module.hidden!! && !module.category?.equals(Category.NONE)!!){

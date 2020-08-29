@@ -1,13 +1,9 @@
 package dev.toastmc.client.util
 
-import dev.toastmc.client.ToastClient.Companion.MINECRAFT
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.Session
-import sun.management.Agent
 import java.lang.reflect.Field
-import java.net.Proxy
 import java.util.*
-import javax.naming.AuthenticationException
 
 object LoginUtil {
     private val mc = MinecraftClient.getInstance()
