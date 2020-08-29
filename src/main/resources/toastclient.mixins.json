@@ -3,6 +3,7 @@
   "compatibilityLevel": "JAVA_8",
   "package": "dev.toastmc.client.mixin.client",
   "client": [
+      "IClientPlayerInteractionManager",
       "IEntityVelocityUpdateS2CPacket",
       "IExplosionS2CPacket",
       "MixinClientConnection",
