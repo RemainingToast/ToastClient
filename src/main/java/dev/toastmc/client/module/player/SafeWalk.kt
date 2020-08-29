@@ -10,10 +10,10 @@ import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 
 @ModuleManifest(
-    label = "SafeWalk",
-    description = "Prevent walking off ledges",
-    category = Category.PLAYER,
-    aliases = ["antiledge"]
+        label = "SafeWalk",
+        description = "Prevent walking off ledges",
+        category = Category.PLAYER,
+        aliases = ["antiledge"]
 )
 class SafeWalk : Module() {
 

@@ -1,6 +1,7 @@
 package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.AutoTotem
+import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.player.SafeWalk
 
 
@@ -29,7 +30,7 @@ class ModuleManager(){
      */
     init {
         modules.clear()
-        register(AutoTotem(), SafeWalk(), AutoRespawn())
+        register(AutoTotem(), SafeWalk(), PortalChat())
     }
 
     private fun register(vararg modules: Module) {
