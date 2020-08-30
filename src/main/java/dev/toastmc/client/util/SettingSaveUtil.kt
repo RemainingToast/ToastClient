@@ -7,12 +7,29 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class SettingSaveUtil {
-    private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
+    private var directory: File? = null
+    private var module: File? = null
+    private var initialized = false
 
+    private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
     private val configTree: ConfigBranch
+
+    fun initSettingUtil() {
+        directory = ToastClient.MOD_DIRECTORY
+        module = File(directory, "modules.json")
+        if(!ToastClient.FILE_MANAGER.fileExists(module!!)){ // Prevents crash when loading client for the first time.
+            ToastClient.FILE_MANAGER.createFile(module!!)   //
+            save()                                          //
+        }
+        load()
+        save()
+        initialized = true
+    }
 
     init {
         var configTreeBuilder = ConfigTreeBuilder(null, "config")
@@ -23,14 +40,14 @@ class SettingSaveUtil {
     }
 
     fun save() {
-        val fos = FileOutputStream(File(ToastClient.CONFIG_FILE))
+        val fos = FileOutputStream(module!!)
         FiberSerialization.serialize(configTree, fos, serializer)
         fos.flush()
         fos.close()
     }
 
     fun load() {
-        val fis = FileInputStream(File(ToastClient.CONFIG_FILE))
+        val fis = FileInputStream(module!!)
         FiberSerialization.deserialize(configTree, fis, serializer)
         fis.close()
     }

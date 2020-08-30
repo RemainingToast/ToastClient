@@ -18,16 +18,15 @@ class FileManager {
      * Initializes the file manager
      */
     fun initFileManager() {
-        modDirectory = File(MinecraftClient.getInstance().runDirectory, ToastClient.MODNAME.toLowerCase() + "/")
+        modDirectory = ToastClient.MOD_DIRECTORY
         if ((modDirectory ?: return).mkdirs()) {
-            fileManagerLogger("Created " + (modDirectory ?: return).path)
+            fileManagerLogger("Created Mod Directory! " + (modDirectory ?: return).path)
         }
         initialized = true
-        fileManagerLogger("FileManager initialized! $modDirectory")
     }
 
     private fun fileManagerLogger(m: String) {
-        println("[" + ToastClient.MODNAME.replace(" ", "") + "FileManager] " + m)
+        println("[" + ToastClient.MODNAME.replace(" ", "") + "] " + m)
     }
 
     /**
@@ -46,6 +45,11 @@ class FileManager {
             file
         }
     }
+
+    fun fileExists(file: File): Boolean {
+        return file.exists()
+    }
+
 
     /**
      * Writes a String to a File

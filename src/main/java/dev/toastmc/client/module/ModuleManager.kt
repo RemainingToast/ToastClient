@@ -10,9 +10,6 @@ import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
 import dev.toastmc.client.module.player.Velocity
 import dev.toastmc.client.module.render.FullBright
-import dev.toastmc.client.util.SettingSaveUtil
-import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
-import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree
 import kotlin.reflect.KClass
 
 
@@ -50,8 +47,6 @@ class ModuleManager {
             this.modules.add(cheat)
         }
     }
-
-
 
     fun <T : Module> getModuleByClass(clazz: KClass<T>): Module? {
         return getModuleByClass(clazz.java)
