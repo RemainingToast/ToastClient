@@ -16,7 +16,8 @@
       "MixinInGameOverlayRenderer",
       "MixinInput",
       "MixinMinecraftClient",
-      "MixinPlayerEntity"
+      "MixinPlayerEntity",
+      "MixinServerScreen"
   ],
   "injectors": {
     "defaultRequire": 1
