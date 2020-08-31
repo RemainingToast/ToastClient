@@ -2,6 +2,7 @@ package dev.toastmc.client.util
 
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
+import dev.toastmc.client.module.Module
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization
@@ -19,6 +20,7 @@ class SettingSaveUtil {
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
     private val configTree: ConfigBranch
 
+
     fun initSettingUtil() {
         directory = ToastClient.MOD_DIRECTORY
         module = File(directory, "modules.json")
@@ -33,8 +35,9 @@ class SettingSaveUtil {
 
     init {
         var configTreeBuilder = ConfigTreeBuilder(null, "config")
+        val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().build()
         for (module in MODULE_MANAGER.modules) {
-            configTreeBuilder = configTreeBuilder.fork(module.label).applyFromPojo(module, AnnotatedSettings.builder().collectOnlyAnnotatedMembers().build()).finishBranch()
+            configTreeBuilder = configTreeBuilder.fork(module.label).applyFromPojo(module, annotationSetting).finishBranch()
         }
         configTree = configTreeBuilder.build()
     }

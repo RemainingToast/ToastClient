@@ -14,7 +14,7 @@ open class Module {
     var description: String = ""
     var usage: String = ""
     var alias: Array<String> = arrayOf("")
-    var hidden: Boolean = false
+
     var persistent: Boolean = false
     var category: Category = Category.NONE
 
@@ -23,6 +23,9 @@ open class Module {
 
     @Setting(name = "Enabled")
     var enabled: Boolean = false
+
+    @Setting(name = "Hidden")
+    var hidden: Boolean = false
 
     init {
         if (javaClass.isAnnotationPresent(ModuleManifest::class.java)) {
