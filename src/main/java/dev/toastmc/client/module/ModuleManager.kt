@@ -10,6 +10,7 @@ import dev.toastmc.client.module.player.AutoTool
 import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
 import dev.toastmc.client.module.player.Velocity
+import dev.toastmc.client.module.render.DarkFinder
 import dev.toastmc.client.module.render.FullBright
 import dev.toastmc.client.module.render.NoRender
 import kotlin.reflect.KClass
@@ -41,7 +42,21 @@ class ModuleManager {
     //TOOD: When we have config file enable modules here
     init {
         modules.clear()
-        register(AutoTotem(), SafeWalk(), PortalChat(), FullBright(), Velocity(), Flight(), NoFall(), AutoWalk(), Sprint(), AutoTool(), NoRender(), AutoArmour())
+        register(
+            AutoArmour(),
+            AutoTotem(),
+            AutoTool(),
+            AutoWalk(),
+            DarkFinder(),
+            Flight(),
+            FullBright(),
+            NoFall(),
+            NoRender(),
+            PortalChat(),
+            SafeWalk(),
+            Sprint(),
+            Velocity()
+        )
     }
 
     private fun register(vararg modules: Module) {

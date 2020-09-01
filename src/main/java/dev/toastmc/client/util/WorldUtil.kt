@@ -149,6 +149,27 @@ object WorldUtil {
     }
 
     /**
+     * Get all positions of block matches below the surface of an area
+     *
+     * @param startX
+     * @param startZ
+     * @param endX
+     * @param endZ
+     * @return block positions inside a 3d area between pos1 and pos2
+     */
+    fun getBlockMatchesBelowSurface(match: Block, startX: Int, startZ: Int, endX: Int, endZ: Int): List<BlockPos> {
+        val returnList = mutableListOf<BlockPos>()
+        for (x in startX..endX) {
+            for (z in startZ..endZ) {
+                for (y in 0..getHighestYAtXZ(x, z)) {
+                    if (ToastClient.MINECRAFT.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(BlockPos(x, y, z))
+                }
+            }
+        }
+        return returnList
+    }
+
+    /**
      * Gets the Y coordinate of the highest non-air block in the column of x, z
      *
      * @param x X coordinate of the column
@@ -156,6 +177,6 @@ object WorldUtil {
      * @return Y coordinate of the highest non-air block in the column
      */
     fun getHighestYAtXZ(x: Int, z: Int): Int {
-        return if (ToastClient.MINECRAFT.world != null) ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z) else -1
+        return ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
     }
 }
