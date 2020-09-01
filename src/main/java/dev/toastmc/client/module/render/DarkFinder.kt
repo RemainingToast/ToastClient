@@ -29,7 +29,7 @@ class DarkFinder : Module() {
     var threshold: Int = 3
 
     @EventHandler
-    private val onChunkLoadEvent = Listener(EventHook<ChunkEvent.Load> {
+    private val onChunkUnloadEvent = Listener(EventHook<ChunkEvent.Unload> {
         if (it.chunk == null || matches.isEmpty()) return@EventHook
         val x = (it.chunk.pos.x shl 4)
         val z = (it.chunk.pos.z shl 4)
@@ -42,7 +42,7 @@ class DarkFinder : Module() {
     })
 
     @EventHandler
-    private val onChunkUnloadEvent = Listener(EventHook<ChunkEvent.Unload> {
+    private val onChunkLoadEvent = Listener(EventHook<ChunkEvent.Load> {
         if (it.chunk == null) return@EventHook
         val x = (it.chunk.pos.x shl 4)
         val z = (it.chunk.pos.z shl 4)
