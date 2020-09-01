@@ -1,9 +1,7 @@
 package dev.toastmc.client.command
 
-import dev.toastmc.client.command.cmds.Coords
-import dev.toastmc.client.command.cmds.Help
+import dev.toastmc.client.command.cmds.*
 import dev.toastmc.client.command.cmds.List
-import dev.toastmc.client.command.cmds.Toggle
 import dev.toastmc.client.util.MessageUtil
 import kotlin.collections.HashSet
 
@@ -22,10 +20,8 @@ class CommandManager () {
         val commandIter = commands.iterator()
         while (commandIter.hasNext()) {
             val next = commandIter.next()
-            for (label in next.getLabel()!!) {
-                if(label.toString().equals(cmd, ignoreCase = true)){
-                    return next
-                }
+            if((next.getLabel()?:"").toString().equals(cmd, ignoreCase = true)){
+                return next
             }
             for (alias in next.getAlias()!!) {
                 if (alias.equals(cmd, ignoreCase = true)) {
@@ -45,5 +41,6 @@ class CommandManager () {
         commands.add(Toggle())
         commands.add(List())
         commands.add(Coords())
+        commands.add(Highest())
     }
 }

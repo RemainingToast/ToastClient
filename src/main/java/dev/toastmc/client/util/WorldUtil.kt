@@ -1,9 +1,11 @@
 package dev.toastmc.client.util
 
+import dev.toastmc.client.ToastClient
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
+import net.minecraft.world.Heightmap
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
 import java.util.*
@@ -144,5 +146,16 @@ object WorldUtil {
         val minZ: Int = this.z.coerceAtMost(end.z)
         val maxZ: Int = this.z.coerceAtLeast(end.z)
         return BlockPos.stream(minX, minY, minZ, maxX, maxY, maxZ).collect(Collectors.toList())
+    }
+
+    /**
+     * Gets the Y coordinate of the highest non-air block in the column of x, z
+     *
+     * @param x X coordinate of the column
+     * @param z Z coordinate of the column
+     * @return Y coordinate of the highest non-air block in the column
+     */
+    fun getHighestYAtXZ(x: Int, z: Int): Int {
+        return if (ToastClient.MINECRAFT.world != null) ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z) else -1
     }
 }
