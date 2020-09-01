@@ -3,6 +3,7 @@ package dev.toastmc.client
 import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
 import dev.toastmc.client.util.FileManager
+import dev.toastmc.client.util.RenderBuilder
 import dev.toastmc.client.util.SettingSaveUtil
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
@@ -21,6 +22,8 @@ class ToastClient : ModInitializer {
         var MINECRAFT: MinecraftClient = MinecraftClient.getInstance()
         val COMMAND_MANAGER: CommandManager = CommandManager()
         val MODULE_MANAGER: ModuleManager = ModuleManager()
+
+        val RENDER_BUILDER: RenderBuilder = RenderBuilder()
 
         val FILE_MANAGER: FileManager = FileManager()
         val CONFIG: SettingSaveUtil = SettingSaveUtil()
