@@ -5,7 +5,7 @@ plugins {
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-version = minecraft_version + "-" + mod_version
+version = mod_version
 group = project.maven_group
 
 minecraft { }
