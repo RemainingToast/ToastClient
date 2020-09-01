@@ -15,6 +15,7 @@
       "MixinIngameHud",
       "MixinInGameOverlayRenderer",
       "MixinInput",
+      "MixinKeyboard",
       "MixinMinecraftClient",
       "MixinPlayerEntity",
       "MixinServerScreen"

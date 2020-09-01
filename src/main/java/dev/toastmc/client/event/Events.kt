@@ -167,3 +167,11 @@ class UpdateLookEvent(
     val deltaX: Double,
     val deltaY: Double
 ) : ToastEvent()
+
+class KeyPressEvent(
+    val window: Long,
+    val key: Int,
+    val scancode: Int,
+    val action: Int,
+    val j: Int
+) : ToastEvent()
