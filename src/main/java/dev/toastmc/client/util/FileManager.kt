@@ -25,6 +25,16 @@ class FileManager {
         initialized = true
     }
 
+    fun initReadMe() {
+        writeFile(File(ToastClient.MOD_DIRECTORY, "README.txt"), "${ToastClient.MODNAME} ${ToastClient.MODVER} is WORK IN PROGRESS, bugs are very probable.\n"
+                + "Please REPORT BUGS or SUGGEST FEATURES in the official discord: https://discord.gg/gxyWEdG\n"
+                + "\nNOTE: THIS BUILD OF TOAST CLIENT DOES NOT HAVE A CLICKGUI, YOU MUST TOGGLE MODULES USING COMMANDS.\n\n"
+                + "Do .help to get a list of all the commands.\n" +
+                "Do .toggle <module> to toggle a module.\n" +
+                "Do .modules for a list of modules\n\n" +
+                "Thanks for using Toast Client :)")
+    }
+
     private fun fileManagerLogger(m: String) {
         println("[" + ToastClient.MODNAME.replace(" ", "") + "] " + m)
     }

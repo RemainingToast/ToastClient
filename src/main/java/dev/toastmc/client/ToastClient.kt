@@ -45,13 +45,7 @@ class ToastClient : ModInitializer {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
         CONFIG.initSettingUtil()
-        FILE_MANAGER.writeFile(File(MOD_DIRECTORY, "README.txt"), "${MODNAME} ${MODVER} is WORK IN PROGRESS, bugs are very probable.\n"
-                + "Please REPORT BUGS or SUGGEST FEATURES in the official discord: https://discord.gg/gxyWEdG\n"
-                + "\nNOTE: THIS BUILD OF TOAST CLIENT DOES NOT HAVE A CLICKGUI, YOU MUST TOGGLE MODULES USING COMMANDS.\n\n"
-                + "Do .help to get a list of all the commands.\n" +
-                "Do .toggle <module> to toggle a module.\n" +
-                "Do .modules for a list of modules\n\n" +
-                "Thanks for using Toast Client :)")
+        FILE_MANAGER.initReadMe()
         GlobalScope.launch {
             while (true) {
                 if (MINECRAFT.world == null) {
