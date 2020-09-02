@@ -35,7 +35,7 @@ class SettingSaveUtil {
 
     init {
         var configTreeBuilder = ConfigTreeBuilder(null, "config")
-        val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().build()
+        val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
         for (module in MODULE_MANAGER.modules) {
             configTreeBuilder = configTreeBuilder.fork(module.label).applyFromPojo(module, annotationSetting).finishBranch()
         }

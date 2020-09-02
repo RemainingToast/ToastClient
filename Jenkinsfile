@@ -17,7 +17,8 @@ pipeline {
       archiveArtifacts artifacts: "toastclient-fabric-${env.BUILD_NUMBER}.jar", fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
       script {
         def artifactUrl = env.BUILD_URL + "artifact/"
-        def msg = "**Status:** " + currentBuild.currentResult.toLowerCase() + "\n"
+	def msg = "**Branch:** " + env.BRANCH_NAME + "\n"
+        msg += "**Status:** " + currentBuild.currentResult.toLowerCase() + "\n"
         msg += "**Changes:** \n"
         if (!currentBuild.changeSets.isEmpty()) {
             currentBuild.changeSets.first().getLogs().each {
