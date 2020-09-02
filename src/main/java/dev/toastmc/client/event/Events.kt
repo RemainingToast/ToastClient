@@ -175,3 +175,7 @@ class KeyPressEvent(
     val action: Int,
     val j: Int
 ) : ToastEvent()
+
+class OverlayEvent(
+    val matrix: MatrixStack
+) : ToastEvent()

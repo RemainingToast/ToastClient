@@ -1,6 +1,5 @@
 package dev.toastmc.client.module.render
 
-import dev.toastmc.client.ToastClient
 import dev.toastmc.client.event.ChunkEvent
 import dev.toastmc.client.event.PacketEvent
 import dev.toastmc.client.event.RenderEvent
@@ -16,8 +15,6 @@ import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 import net.minecraft.network.packet.s2c.play.LightUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
-import org.lwjgl.opengl.GL11.GL_LINE_LOOP
 
 @ModuleManifest(
     label = "DarkFinder",

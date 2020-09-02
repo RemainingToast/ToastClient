@@ -13,6 +13,7 @@ import dev.toastmc.client.module.player.Velocity
 import dev.toastmc.client.module.render.DarkFinder
 import dev.toastmc.client.module.render.ESP
 import dev.toastmc.client.module.render.FullBright
+import dev.toastmc.client.module.render.HUD
 import dev.toastmc.client.module.render.NoRender
 import kotlin.reflect.KClass
 
@@ -26,6 +27,7 @@ class ModuleManager {
     /**
      * Checks each module for a key-bind and toggles the module if the key-bind matches the key
      */
+    //TODO: fun onKey
 //    fun onKey(key: Int, action: Int) {
 //        val iter = modules.iterator()
 //        while (iter.hasNext()) {
@@ -57,7 +59,8 @@ class ModuleManager {
             PortalChat(),
             SafeWalk(),
             Sprint(),
-            Velocity()
+            Velocity(),
+            HUD()
         )
     }
 
