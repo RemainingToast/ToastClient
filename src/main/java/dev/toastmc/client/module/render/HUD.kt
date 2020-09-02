@@ -19,12 +19,8 @@ import kotlin.math.ceil
     category = Category.RENDER
 )
 class HUD : Module() {
-
-    @Setting(name = "Arraylist")
-    var arraylist = true
-
-    @Setting(name = "Watermark")
-    var watermark = true
+    @Setting(name = "Arraylist") var arraylist = true
+    @Setting(name = "Watermark") var watermark = true
 
     var infoList: List<String> = ArrayList()
 

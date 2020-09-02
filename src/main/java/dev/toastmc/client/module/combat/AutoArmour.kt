@@ -23,12 +23,8 @@ import java.util.*
         category = Category.COMBAT
 )
 class AutoArmour : Module() {
-
-    @Setting(name = "Elytra")
-    var elytra = true
-
-    @Setting(name = "PreventBreak")
-    var preventbreak = true
+    @Setting(name = "Elytra") var elytra = true
+    @Setting(name = "PreventBreak") var preventbreak = true
 
     override fun onEnable() {
         super.onEnable()

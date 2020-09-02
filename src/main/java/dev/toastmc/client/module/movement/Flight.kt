@@ -18,8 +18,7 @@ import me.zero.alpine.listener.Listener
 )
 class Flight : Module() {
 
-    @Setting(name = "Speed")
-    var speed = 5f
+    @Setting(name = "Speed") var speed = 5f
 
     override fun onEnable() {
         if (mc.player == null) return

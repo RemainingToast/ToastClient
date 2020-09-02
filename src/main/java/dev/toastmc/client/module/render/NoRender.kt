@@ -16,39 +16,17 @@ import net.minecraft.network.packet.s2c.play.*
     category = Category.RENDER
 )
 class NoRender : Module() {
-
-    @Setting(name = "Explosion")
-    var explosion = true
-
-    @Setting(name = "Totem")
-    var totem = true
-
-    @Setting(name = "Fire")
-    var fire = true
-
-    @Setting(name = "Underwater")
-    var underwater = true
-
-    @Setting(name = "Nausea")
-    var nausea = true
-
-    @Setting(name = "XP")
-    var xp = true
-
-    @Setting(name = "BossBar")
-    var bossbar = true
-
-    @Setting(name = "Pumpkin")
-    var pumpkin = true
-
-    @Setting(name = "Blindness")
-    var blindness = true
-
-    @Setting(name = "Hurtcam")
-    var hurtcam = true
-
-    @Setting(name = "Skylight")
-    var skylight = true
+    @Setting(name = "Explosion") var explosion = true
+    @Setting(name = "Totem") var totem = true
+    @Setting(name = "Fire") var fire = true
+    @Setting(name = "Underwater") var underwater = true
+    @Setting(name = "Nausea") var nausea = true
+    @Setting(name = "XP") var xp = true
+    @Setting(name = "BossBar") var bossbar = true
+    @Setting(name = "Pumpkin") var pumpkin = true
+    @Setting(name = "Blindness") var blindness = true
+    @Setting(name = "Hurtcam") var hurtcam = true
+    @Setting(name = "Skylight") var skylight = true
 
     override fun onEnable() {
         super.onEnable()

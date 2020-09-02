@@ -22,11 +22,10 @@ import net.minecraft.util.math.BlockPos
     category = Category.RENDER
 )
 class DarkFinder : Module() {
+    @Setting(name = "Threshold (<=)") var threshold: Int = 3
+
     private var matches = mutableListOf<BlockPos>()
     private var checked = mutableListOf<BlockPos>()
-
-    @Setting(name = "Threshold (<=)")
-    var threshold: Int = 3
 
     @EventHandler
     private val onChunkUnloadEvent = Listener(EventHook<ChunkEvent.Unload> {

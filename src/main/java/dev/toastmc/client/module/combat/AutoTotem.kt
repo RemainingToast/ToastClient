@@ -21,8 +21,6 @@ import net.minecraft.screen.slot.SlotActionType
 )
 class AutoTotem : Module(){
 
-
-
     var totems = 0
     var totemsTotal = 0
     var moving = false

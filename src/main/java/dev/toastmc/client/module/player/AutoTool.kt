@@ -24,6 +24,7 @@ import kotlin.math.pow
         category = Category.PLAYER
 )
 class AutoTool : Module(){
+
     private var lastSlot = 0
 
     private fun equipBestTool(blockState: BlockState) {

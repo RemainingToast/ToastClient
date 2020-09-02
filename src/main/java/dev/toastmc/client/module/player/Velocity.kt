@@ -24,12 +24,8 @@ import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
         aliases = ["antiknockback"]
 )
 class Velocity : Module() {
-
-    @Setting(name = "Horizontal")
-    public var horizontal = 0f
-
-    @Setting(name = "Vertical")
-    var vertical = 0f
+    @Setting(name = "Horizontal") var horizontal = 0f
+    @Setting(name = "Vertical") var vertical = 0f
 
     override fun onEnable() {
         super.onEnable()
