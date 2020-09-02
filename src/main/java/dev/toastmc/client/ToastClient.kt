@@ -53,10 +53,12 @@ class ToastClient : ModInitializer {
                 "Do .modules for a list of modules\n\n" +
                 "Thanks for using Toast Client :)")
         GlobalScope.launch {
-            if (MINECRAFT.world == null) {
-                WorldUtil.loadedChunks.clear()
+            while (true) {
+                if (MINECRAFT.world == null) {
+                    WorldUtil.loadedChunks.clear()
+                }
+                delay(500)
             }
-            delay(500)
-        }.start()
+        }
     }
 }
