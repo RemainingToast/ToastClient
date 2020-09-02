@@ -37,28 +37,27 @@ class HUD : Module() {
     @Setting(name = "LagNotifier") var lagNotifier = true
     @Setting(name = "Armour") var armour = true
 
-    var infoList: List<String> = ArrayList()
-    var lastPacket: Long = 0
+    var infoList: MutableList<String> = ArrayList()
+    var lines: MutableList<String> = ArrayList()
+    var lastPacket = 0L
     var tpsNum = 20.0
     var prevTime = 0
 
     @EventHandler
     private val onOverlayEvent = Listener(EventHook<OverlayEvent> {
-        var arrayCount: Int = 0
-        if (watermark && arraylist && !mc.options.debugEnabled) {
-            val lines: MutableList<String> = ArrayList()
-            lines.clear()
-            if (watermark) lines.add(0, "Toast Client " + ToastClient.MODVER)
-            if (arraylist) {
-                for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled) lines.add(m.label)
-                lines.sortWith(Comparator { a: String?, b: String? ->
-                    mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
-                })
-                val color: Int = getRainbow(1f, 1f, 10.0, 0)
-                for (s in lines) {
-                    TwoDRenderUtils.drawText(it.matrix, s, 2, 1 + (arrayCount * 10), color)
-                    arrayCount++
-                }
+        infoList.clear()
+        lines.clear()
+        var arrayCount = 0
+        if (watermark  && !mc.options.debugEnabled) lines.add(0, "Toast Client " + ToastClient.MODVER)
+        if (arraylist && !mc.options.debugEnabled) {
+            for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled) lines.add(m.label)
+            lines.sortWith(Comparator { a: String?, b: String? ->
+                mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
+            })
+            val color: Int = getRainbow(1f, 1f, 10.0, 0)
+            for (s in lines) {
+                TwoDRenderUtils.drawText(it.matrix, s, 2, 1 + (arrayCount * 10), color)
+                arrayCount++
             }
         }
         if (coords) {
@@ -70,21 +69,21 @@ class HUD : Module() {
                 vec.getY(),
                 vec.getZ() / 8
             )
-            infoList.plus("XYZ: " + (if (nether) "\u00a74" else "\u00a7b") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7b" else "\u00a74") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
+            infoList.add("XYZ: " + (if (nether) "\u00a74" else "\u00a7b") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7b" else "\u00a74") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
         }
         if (tps) {
             var suffix = "\u00a77"
             if (lastPacket + 7500 < System.currentTimeMillis()) suffix += "...." else if (lastPacket + 5000 < System.currentTimeMillis()) suffix += "..." else if (lastPacket + 2500 < System.currentTimeMillis()) suffix += ".." else if (lastPacket + 1200 < System.currentTimeMillis()) suffix += "."
-            infoList.plus("TPS: " + getColorString(tpsNum.toInt(), 18, 15, 12, 8, 4, false) + tpsNum.toInt() + suffix)
+            infoList.add("TPS: " + getColorString(tpsNum.toInt(), 18, 15, 12, 8, 4, false) + tpsNum.toInt() + suffix)
         }
         if (fps) {
             val fps = FabricReflect.getFieldValue(MinecraftClient.getInstance(), "field_1738", "currentFps") as Int
-            infoList.plus("FPS: " + getColorString(fps, 120, 60, 30, 15, 10, false) + fps)
+            infoList.add("FPS: " + getColorString(fps, 120, 60, 30, 15, 10, false) + fps)
         }
         if (ping) {
             val playerEntry = mc.player!!.networkHandler.getPlayerListEntry(mc.player!!.gameProfile.id)
             val ping = playerEntry?.latency ?: 0
-            infoList.plus("Ping: " + getColorString(ping, 75, 180, 300, 500, 1000, true) + ping)
+            infoList.add("Ping: " + getColorString(ping, 75, 180, 300, 500, 1000, true) + ping)
         }
         if (lagNotifier) {
             val time = System.currentTimeMillis()
@@ -102,7 +101,8 @@ class HUD : Module() {
             GL11.glPushMatrix()
             var count = 0
             val x1 = mc.window.scaledWidth / 2
-            val y = mc.window.scaledHeight - if (mc.player!!.isSubmergedInWater || mc.player!!.air < mc.player!!.maxAir) 64 else 55
+            val y =
+                mc.window.scaledHeight - if (mc.player!!.isSubmergedInWater || mc.player!!.air < mc.player!!.maxAir) 64 else 55
             for (`is` in mc.player!!.inventory.armor) {
                 count++
                 if (`is`.isEmpty) continue
@@ -119,8 +119,8 @@ class HUD : Module() {
             GL11.glEnable(GL11.GL_DEPTH_TEST)
             GL11.glPopMatrix()
         }
-        for (s in infoList) {
-            TwoDRenderUtils.drawText(it.matrix, s, 2, 2, 0xa0a0a0)
+        for ((i, s) in infoList.withIndex()) {
+            TwoDRenderUtils.drawText(it.matrix, s, mc.window.scaledWidth - mc.textRenderer.getWidth(s) - 2, mc.window.scaledHeight - 9 - (i * 10), 0xa0a0a0)
         }
     })
 

@@ -13,9 +13,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 //Credit: https://github.com/zeroeightysix/KAMI/blob/fabric/src/main/java/me/zeroeightsix/kami/mixin/client/MixinMinecraftClient.java
 @Mixin(MinecraftClient.class)
-public class MixinMinecraftClient {
+public abstract class MixinMinecraftClient {
 
     @Shadow
     public ClientWorld world;
