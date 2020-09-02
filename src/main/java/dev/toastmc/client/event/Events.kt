@@ -103,7 +103,7 @@ open class RenderEvent private constructor(private val stage: Stage) : ToastEven
     class World(
         val tickDelta: Float,
         val matrixStack: MatrixStack,
-        val projection: Matrix4f
+        val camera: Camera
     ) :
         RenderEvent(Stage.WORLD) {
 

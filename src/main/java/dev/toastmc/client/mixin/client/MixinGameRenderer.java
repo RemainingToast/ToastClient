@@ -1,8 +1,10 @@
 package dev.toastmc.client.mixin.client;
 
 import dev.toastmc.client.ToastClient;
+import dev.toastmc.client.event.RenderEvent;
 import dev.toastmc.client.module.ModuleManager;
 import dev.toastmc.client.module.render.NoRender;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -37,4 +39,12 @@ public class MixinGameRenderer {
             return MathHelper.lerp(delta, first, second);
         return 0;
     }
+
+    @Inject(at = @At("HEAD"), method = "renderHand", cancellable = true)
+    private void renderHand(MatrixStack matrices, Camera camera, float tickDelta, CallbackInfo ci) {
+        RenderEvent.World event = new RenderEvent.World(tickDelta, matrices, camera);
+        ToastClient.EVENT_BUS.post(event);
+        if (event.isCancelled()) ci.cancel();
+    }
+
 }

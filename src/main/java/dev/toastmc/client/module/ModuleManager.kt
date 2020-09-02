@@ -11,6 +11,7 @@ import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
 import dev.toastmc.client.module.player.Velocity
 import dev.toastmc.client.module.render.DarkFinder
+import dev.toastmc.client.module.render.ESP
 import dev.toastmc.client.module.render.FullBright
 import dev.toastmc.client.module.render.NoRender
 import kotlin.reflect.KClass
@@ -47,7 +48,8 @@ class ModuleManager {
             AutoTotem(),
             AutoTool(),
             AutoWalk(),
-            DarkFinder(),
+            //DarkFinder(),
+            ESP(),
             Flight(),
             FullBright(),
             NoFall(),

@@ -5,6 +5,10 @@ import dev.toastmc.client.module.ModuleManager
 import dev.toastmc.client.util.FileManager
 import dev.toastmc.client.util.RenderBuilder
 import dev.toastmc.client.util.SettingSaveUtil
+import dev.toastmc.client.util.WorldUtil
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
@@ -22,8 +26,6 @@ class ToastClient : ModInitializer {
         var MINECRAFT: MinecraftClient = MinecraftClient.getInstance()
         val COMMAND_MANAGER: CommandManager = CommandManager()
         val MODULE_MANAGER: ModuleManager = ModuleManager()
-
-        val RENDER_BUILDER: RenderBuilder = RenderBuilder()
 
         val FILE_MANAGER: FileManager = FileManager()
         val CONFIG: SettingSaveUtil = SettingSaveUtil()
@@ -50,5 +52,11 @@ class ToastClient : ModInitializer {
                 "Do .toggle <module> to toggle a module.\n" +
                 "Do .modules for a list of modules\n\n" +
                 "Thanks for using Toast Client :)")
+        GlobalScope.launch {
+            if (MINECRAFT.world == null) {
+                WorldUtil.loadedChunks.clear()
+            }
+            delay(500)
+        }.start()
     }
 }

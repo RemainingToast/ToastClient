@@ -1,8 +1,14 @@
 package dev.toastmc.client.util
 
 import dev.toastmc.client.ToastClient
+import dev.toastmc.client.event.ChunkEvent
+import io.netty.util.internal.ConcurrentSet
+import me.zero.alpine.listener.EventHandler
+import me.zero.alpine.listener.EventHook
+import me.zero.alpine.listener.Listener
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.client.toast.Toast
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Heightmap
@@ -19,6 +25,8 @@ import kotlin.math.sqrt
  * Some utilities for getting information about the world surrounding the player
  */
 object WorldUtil {
+    var loadedChunks: ConcurrentSet<Chunk> = ConcurrentSet()
+
     /**
      * Get all tile entities inside a given Chunk and collect them into a map of BlockPos and Block
      *
@@ -178,5 +186,17 @@ object WorldUtil {
      */
     fun getHighestYAtXZ(x: Int, z: Int): Int {
         return ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
+    }
+
+    @EventHandler
+    val onChunkEvent = Listener(EventHook<ChunkEvent> {
+        if (ToastClient.MINECRAFT.world!!.isChunkLoaded(it.chunk!!.pos.startX, it.chunk.pos.startZ))
+            loadedChunks.add(it.chunk)
+        else
+            loadedChunks.remove(it.chunk)
+    })
+
+    init {
+        ToastClient.EVENT_BUS.subscribe(onChunkEvent)
     }
 }
