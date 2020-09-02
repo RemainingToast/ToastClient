@@ -45,7 +45,6 @@ class ToastClient : ModInitializer {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
         CONFIG.initSettingUtil()
-        FILE_MANAGER.initReadMe()
         GlobalScope.launch {
             while (true) {
                 if (MINECRAFT.world == null) {

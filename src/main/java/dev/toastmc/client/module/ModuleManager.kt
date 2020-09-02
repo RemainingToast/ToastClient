@@ -43,6 +43,7 @@ class ModuleManager {
      * Register modules to function with commands and gui etc
      */
     //TOOD: When we have config file enable modules here
+
     init {
         modules.clear()
         register(

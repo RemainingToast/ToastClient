@@ -22,7 +22,7 @@ public abstract class MixinServerScreen extends Screen {
     @Shadow protected MultiplayerServerListWidget serverListWidget;
     @Shadow private ServerList serverList;
 
-    private final ServerInfo server = new ServerInfo(" ToastMC", "toastmc.dev", false);
+    private final ServerInfo server = new ServerInfo(" TOASTMC.DEV", "toastmc.dev", false);
     private Boolean serverExists = false;
 
     protected MixinServerScreen(Text text_1) {
@@ -31,7 +31,7 @@ public abstract class MixinServerScreen extends Screen {
 
     @Inject(at = @At("HEAD"), method = "init()V")
     private void init(CallbackInfo info) {
-        addButton(new ButtonWidget(7, 7, 75, 20, new LiteralText("Add ToastMC"), button -> {
+        addButton(new ButtonWidget(7, 7, 100, 20, new LiteralText("PLAY TOASTMC.DEV"), button -> {
             if(!serverExists){
                 serverList.loadFile();
                 serverList.add(server);

@@ -31,9 +31,9 @@ class HUD : Module() {
     @Setting(name = "Arraylist") var arraylist = true
     @Setting(name = "Watermark") var watermark = true
     @Setting(name = "Coords") var coords = true
-    @Setting(name = "TPS") var tps = true
-    @Setting(name = "FPS") var fps = true
-    @Setting(name = "Ping") var ping = true
+    @Setting(name = "TPS") var tps = false
+    @Setting(name = "FPS") var fps = false
+    @Setting(name = "Ping") var ping = false
     @Setting(name = "LagNotifier") var lagNotifier = true
     @Setting(name = "Armour") var armour = true
 
@@ -50,7 +50,7 @@ class HUD : Module() {
         var arrayCount = 0
         if (watermark  && !mc.options.debugEnabled) lines.add(0, "Toast Client " + ToastClient.MODVER)
         if (arraylist && !mc.options.debugEnabled) {
-            for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled) lines.add(m.label)
+            for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
             lines.sortWith(Comparator { a: String?, b: String? ->
                 mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
             })
@@ -64,12 +64,8 @@ class HUD : Module() {
             val nether = mc.world!!.registryKey.value.path.contains("nether")
             val pos = mc.player!!.blockPos
             val vec: Vec3d = mc.player!!.pos
-            val pos2: BlockPos = if (nether) BlockPos(vec.getX() * 8, vec.getY(), vec.getZ() * 8) else BlockPos(
-                vec.getX() / 8,
-                vec.getY(),
-                vec.getZ() / 8
-            )
-            infoList.add("XYZ: " + (if (nether) "\u00a74" else "\u00a7b") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7b" else "\u00a74") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
+            val pos2: BlockPos = if (nether) BlockPos(vec.getX() * 8, vec.getY(), vec.getZ() * 8) else BlockPos(vec.getX() / 8, vec.getY(), vec.getZ() / 8)
+            infoList.add("XYZ: " + (if (nether) "\u00a7c" else "\u00a7a") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7a" else "\u00a7c") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
         }
         if (tps) {
             var suffix = "\u00a77"
@@ -83,7 +79,7 @@ class HUD : Module() {
         if (ping) {
             val playerEntry = mc.player!!.networkHandler.getPlayerListEntry(mc.player!!.gameProfile.id)
             val ping = playerEntry?.latency ?: 0
-            infoList.add("Ping: " + getColorString(ping, 75, 180, 300, 500, 1000, true) + ping)
+            infoList.add("Ping: " + getColorString(ping, 10, 50, 100, 300, 600, true) + ping)
         }
         if (lagNotifier) {
             val time = System.currentTimeMillis()
@@ -120,7 +116,7 @@ class HUD : Module() {
             GL11.glPopMatrix()
         }
         for ((i, s) in infoList.withIndex()) {
-            TwoDRenderUtils.drawText(it.matrix, s, mc.window.scaledWidth - mc.textRenderer.getWidth(s) - 2, mc.window.scaledHeight - 9 - (i * 10), 0xa0a0a0)
+            TwoDRenderUtils.drawText(it.matrix, s, 2, mc.window.scaledHeight - 9 - (i * 10), 0xa0a0a0)
         }
     })
 

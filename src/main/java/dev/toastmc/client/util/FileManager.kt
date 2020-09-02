@@ -23,6 +23,7 @@ class FileManager {
             fileManagerLogger("Created Mod Directory! " + (modDirectory ?: return).path)
         }
         initialized = true
+        initReadMe()
     }
 
     fun initReadMe() {

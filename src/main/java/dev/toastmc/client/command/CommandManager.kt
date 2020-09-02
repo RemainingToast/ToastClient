@@ -42,5 +42,6 @@ class CommandManager () {
         commands.add(List())
         commands.add(Coords())
         commands.add(Highest())
+        commands.add(Hide())
     }
 }

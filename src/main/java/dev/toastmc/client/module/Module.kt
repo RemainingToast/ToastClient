@@ -60,6 +60,11 @@ open class Module {
         return enabled
     }
 
+    fun setHidden(newHidden: Boolean): Boolean {
+        hidden = newHidden
+        return hidden
+    }
+
 //    val mode: String? get() = settings.getMode("Mode")
 
 //    fun getDouble(name: String): Double = settings.getValue(name)!!
@@ -72,8 +77,12 @@ open class Module {
 
     fun toggle(): Boolean = setEnabled(!enabled)
 
-    open fun onEnable() {}
+    open fun onEnable() {
 
-    open fun onDisable() {}
+    }
+
+    open fun onDisable() {
+
+    }
 
 }
