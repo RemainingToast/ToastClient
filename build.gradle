@@ -2,6 +2,7 @@ plugins {
     id 'fabric-loom'
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -73,4 +74,21 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 jar {
     from "LICENSE"
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('com.github.zeroeightsix:fiber'))
+        include(dependency('net.jodah:typetools'))
+        include(dependency('org.yaml:snakeyaml'))
+        include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
+        include(dependency('org.jetbrains.kotlinx:kotlinx-coroutines-core'))
+    }
+    classifier = 'shadow'
+}
+
+remapJar {
+    dependsOn shadowJar
+    mustRunAfter shadowJar
+    input = file("build/libs/${archivesBaseName}-${version}-shadow.jar")
 }
