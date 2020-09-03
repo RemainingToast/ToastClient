@@ -57,11 +57,13 @@ open class Module {
             }
             onDisable()
         }
+        ToastClient.CONFIG.save()
         return enabled
     }
 
     fun setHidden(newHidden: Boolean): Boolean {
         hidden = newHidden
+        ToastClient.CONFIG.save()
         return hidden
     }
 

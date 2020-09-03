@@ -13,20 +13,14 @@ public class FabricReflect {
 
         Field field = null;
         for (Class<?> cls1 = cls; cls1 != null; cls1 = cls1.getSuperclass()) {
-            try {
-                field = cls1.getDeclaredField(obfName);
-            } catch (Exception e) {
-                try {
-                    field = cls1.getDeclaredField(deobfName);
-                } catch (Exception e1) {
+            try { field = cls1.getDeclaredField(obfName); } catch (Exception e) {
+                try { field = cls1.getDeclaredField(deobfName); } catch (Exception e1) {
                     continue;
                 }
             }
-
             if (!field.isAccessible()) {
                 field.setAccessible(true);
             }
-
             return field;
         }
 
