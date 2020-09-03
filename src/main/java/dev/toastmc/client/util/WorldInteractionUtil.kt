@@ -3,6 +3,7 @@ package dev.toastmc.client.util
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
+import net.minecraft.block.Material
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket
@@ -125,8 +126,9 @@ object WorldInteractionUtil {
         return RIGHTCLICKABLE_NOSPECIALITEM.contains(b)
     }
 
-    fun isFluid(b: Block): Boolean {
-        return b === Blocks.WATER || b === Blocks.LAVA
+    fun isFluid(pos: BlockPos): Boolean {
+        val fluids: List<Material> = Arrays.asList(Material.WATER, Material.LAVA, Material.UNDERWATER_PLANT)
+        return fluids.contains(MinecraftClient.getInstance().world!!.getBlockState(pos).material)
     }
 
     fun isRightClickable(b: BlockState): Boolean {
@@ -167,7 +169,12 @@ object WorldInteractionUtil {
                 ) {
                     mc.interactionManager!!.interactBlock(
                         player, mc.world, hand,
-                        BlockHitResult(Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), direction.opposite, offsetPos, false)
+                        BlockHitResult(
+                            Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()),
+                            direction.opposite,
+                            offsetPos,
+                            false
+                        )
                     )
                     player.swingHand(hand)
                 } else {
