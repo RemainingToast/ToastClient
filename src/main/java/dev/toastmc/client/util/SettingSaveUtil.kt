@@ -2,7 +2,6 @@ package dev.toastmc.client.util
 
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
-import dev.toastmc.client.module.Module
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization
@@ -18,8 +17,7 @@ class SettingSaveUtil {
     private var initialized = false
 
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
-    private val configTree: ConfigBranch
-
+    var configTree: ConfigBranch
 
     fun initSettingUtil() {
         directory = ToastClient.MOD_DIRECTORY

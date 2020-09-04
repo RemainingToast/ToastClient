@@ -18,14 +18,14 @@ open class Module {
     var persistent: Boolean = false
     var category: Category = Category.NONE
 
-    @Setting(name = "KeyBind")
-    var key: Int = -1
-
     @Setting(name = "Enabled")
     var enabled: Boolean = false
 
     @Setting(name = "Hidden")
     var hidden: Boolean = false
+
+    @Setting(name = "KeyBind")
+    var key: Int = -1
 
     init {
         if (javaClass.isAnnotationPresent(ModuleManifest::class.java)) {
@@ -39,6 +39,7 @@ open class Module {
             persistent = moduleManifest.persistent
             key = moduleManifest.key
             category = moduleManifest.category
+
         }
     }
 
@@ -86,5 +87,4 @@ open class Module {
     open fun onDisable() {
 
     }
-
 }
