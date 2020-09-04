@@ -11,15 +11,14 @@
   "contact": {},
 
   "license": "CC BY-NC-ND 4.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/toastclient/icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "main": [
       "dev.toastmc.client.ToastClient"
     ]
   },
-
   "mixins": [
     "toastclient.mixins.json"
   ],
