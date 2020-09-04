@@ -6,7 +6,6 @@ import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.module.render.FullBright
 import dev.toastmc.client.util.EntityUtils
 import dev.toastmc.client.util.WorldUtil
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
@@ -82,15 +81,21 @@ class AutoCrystal : Module() {
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         damageCache.clear()
-        var crystal: EndCrystalEntity = Streams.stream(mc.world!!.entities).filter { entityx: Entity? -> entityx is EndCrystalEntity }
-            .map { entityx: Entity ->
-                    val p = entityx.blockPos.down()
-                    if (blackList.containsKey(p)) {
-                        if (blackList[p]!! > 0) blackList.replace(p, blackList[p]!! - 1) else blackList.remove(p)
-                    }
-                    entityx as EndCrystalEntity
-                }.min(Comparator.comparing { c: EndCrystalEntity? -> mc.player!!.distanceTo(c) }).orElse(null)
-
+        var shortestDistance: Double? = null
+        var crystal: EndCrystalEntity? = null
+        for (entity in mc.world!!.entities) {
+            if (entity == null || entity.removed || entity !is EndCrystalEntity) continue
+            val p = entity.blockPos.down()
+            if (blackList.containsKey(p)) {
+                if (blackList[p]!! > 0) blackList.replace(p, blackList[p]!! - 1) else blackList.remove(p)
+            }
+            val distance = mc.player!!.distanceTo(entity)
+            if (shortestDistance == null || distance < shortestDistance) {
+                shortestDistance = distance.toDouble()
+                crystal = entity
+            }
+        }
+        if (crystal == null) return@EventHook
         if (explode && mc.player?.distanceTo(crystal)!! <= range) {
             if (antiweakness && mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS)) {
                 if (!isAttacking) {

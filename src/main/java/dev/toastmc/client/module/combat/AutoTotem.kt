@@ -9,6 +9,7 @@ import dev.toastmc.client.module.ModuleManifest
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
+import net.minecraft.client.gui.screen.ingame.InventoryScreen
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.screen.slot.SlotActionType
@@ -44,7 +45,7 @@ class AutoTotem : Module(){
         totems = mc.player!!.inventory.main.stream().filter { itemStack: ItemStack -> itemStack.item === Items.TOTEM_OF_UNDYING }.mapToInt { obj: ItemStack -> obj.count }.sum()
         totemsTotal = totems + mc.player!!.inventory.offHand.stream().filter { itemStack: ItemStack -> itemStack.item === Items.TOTEM_OF_UNDYING }.mapToInt { obj: ItemStack -> obj.count }.sum()
         if (mc.player!!.offHandStack.item == Items.TOTEM_OF_UNDYING) totems++ else {
-            if (!mc.player!!.inventory.offHand.isEmpty() && !force) return@EventHook
+            if (!mc.player!!.inventory.offHand.isEmpty() && !force || mc.currentScreen is InventoryScreen) return@EventHook
             when {
                 moving -> {
                     mc.interactionManager!!.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player)
