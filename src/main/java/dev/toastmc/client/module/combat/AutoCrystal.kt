@@ -1,6 +1,5 @@
 package dev.toastmc.client.module.combat
 
-import com.google.common.collect.Streams
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
@@ -34,7 +33,6 @@ import net.minecraft.world.Difficulty
 import net.minecraft.world.RaycastContext
 import net.minecraft.world.explosion.Explosion
 import java.util.*
-import java.util.stream.Collectors
 import kotlin.collections.HashMap
 
 @ModuleManifest(
@@ -140,8 +138,7 @@ class AutoCrystal : Module() {
             }
             this.isAttacking = false
         }
-        crystalSlot =
-            if (mc.player!!.mainHandStack.item === Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
+        crystalSlot = if (mc.player!!.mainHandStack.item === Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
         if (crystalSlot == -1) {
             for (l in 0..8) {
                 if (mc.player!!.inventory.getStack(l).item === Items.END_CRYSTAL) {
@@ -160,11 +157,15 @@ class AutoCrystal : Module() {
         val blocks: Set<BlockPos>? = getCrystalPoses()
         val entities: MutableList<Entity> = ArrayList()
 
-        entities.addAll(Streams.stream(mc.world!!.entities).filter { e: Entity? ->
-            (e is PlayerEntity && players
-                    || e is MobEntity && mobs
-                    || EntityUtils.isAnimal(e) && animals)
-        }.collect(Collectors.toList()))
+        for (entity in mc.world!!.entities){
+            when {
+                entity is PlayerEntity && players -> entities.add(entity)
+                entity is MobEntity && mobs -> entities.add(entity)
+                EntityUtils.isAnimal(entity) && animals -> entities.add(entity)
+            }
+        }
+
+
         var q: BlockPos? = null
         var damage = 0.5
         val var9: Iterator<Entity> = entities.iterator()
@@ -293,16 +294,7 @@ class AutoCrystal : Module() {
         if (mc.world!!.difficulty == Difficulty.PEACEFUL) return 0f
         if (damageCache.containsKey(target)) return damageCache[target]!!
         val crystalPos: Vec3d = Vec3d.of(basePos).add(0.5, 1.0, 0.5)
-        val explosion = Explosion(
-            mc.world,
-            null,
-            crystalPos.x,
-            crystalPos.y,
-            crystalPos.z,
-            6f,
-            false,
-            Explosion.DestructionType.DESTROY
-        )
+        val explosion = Explosion(mc.world, null, crystalPos.x, crystalPos.y, crystalPos.z, 6f, false, Explosion.DestructionType.DESTROY)
         val power = 12.0
         if (!mc.world!!.getOtherEntities(
                 null as Entity?, Box(
