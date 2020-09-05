@@ -52,6 +52,7 @@ class AutoCrystal : Module() {
     @Setting(name = "AutoSwitch") var autoswitch = true
     @Setting(name = "AntiWeakness") var antiweakness = true
     @Setting(name = "IgnoreEating") var ignoreeating = true
+    @Setting(name = "IgnoreTool") var ignoretool = true
 
     private val damageCache: HashMap<Entity, Float> = HashMap()
 
@@ -92,7 +93,7 @@ class AutoCrystal : Module() {
             }
         }
         if (crystal == null) return@EventHook
-        if (explode && mc.player?.distanceTo(crystal)!! <= range && safeToExplode(crystal.blockPos.down()) && !holdingFood(mc.player!!)) {
+        if (explode && mc.player?.distanceTo(crystal)!! <= range && safeToExplode(crystal.blockPos.down()) && !holdingFood(mc.player!!) && !holdingTool(mc.player!!)) {
             if (antiweakness && mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS)) {
                 if (!isAttacking) {
                     oldSlot = mc.player!!.inventory.selectedSlot
@@ -248,6 +249,11 @@ class AutoCrystal : Module() {
     private fun holdingFood(player: PlayerEntity) : Boolean {
         val selectedSlot = mc.player!!.inventory.selectedSlot
         return player.inventory.getStack(selectedSlot).isFood && ignoreeating
+    }
+
+    private fun holdingTool(player: PlayerEntity) : Boolean {
+        val selectedSlot = mc.player!!.inventory.selectedSlot
+        return player.inventory.getStack(selectedSlot).item is ToolItem && ignoretool
     }
 
     private fun getCrystalPoses(): Set<BlockPos>? {

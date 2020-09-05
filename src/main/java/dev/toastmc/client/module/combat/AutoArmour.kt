@@ -20,10 +20,11 @@ import java.util.*
 @ModuleManifest(
         label = "AutoArmour",
         description = "Equips Armour",
-        category = Category.COMBAT
+        category = Category.COMBAT,
+        aliases = ["armour"]
 )
 class AutoArmour : Module() {
-    @Setting(name = "Elytra") var elytra = true
+    @Setting(name = "Elytra") var elytra = false
     @Setting(name = "PreventBreak") var preventbreak = true
 
     override fun onEnable() {
@@ -44,32 +45,39 @@ class AutoArmour : Module() {
         armorMap[EquipmentSlot.LEGS] = intArrayOf(37, getProt(mc.player!!.inventory.getStack(37)), -1, -1)
         armorMap[EquipmentSlot.CHEST] = intArrayOf(38, getProt(mc.player!!.inventory.getStack(38)), -1, -1)
         armorMap[EquipmentSlot.HEAD] = intArrayOf(39, getProt(mc.player!!.inventory.getStack(39)), -1, -1)
-
-        if (preventbreak) {
-            for ((_, value) in armorMap) {
-                val `is` = mc.player!!.inventory.getStack(value[0])
-                val armorSlot = value[0] - 34 + (39 - value[0]) * 2
-                if (`is`.isDamageable && `is`.maxDamage - `is`.damage < 7) {
-                    var forceMoveSlot = -1
-                    for (s in 0..35) {
-                        if (mc.player!!.inventory.getStack(s).isEmpty) {
-                            mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.QUICK_MOVE, mc.player)
-                            return@EventHook
-                        } else if (mc.player!!.inventory.getStack(s).item !is ToolItem
+        when {
+            preventbreak -> {
+                for ((_, value) in armorMap) {
+                    val `is` = mc.player!!.inventory.getStack(value[0])
+                    val armorSlot = value[0] - 34 + (39 - value[0]) * 2
+                    if (`is`.isDamageable && `is`.maxDamage - `is`.damage < 7) {
+                        var forceMoveSlot = -1
+                        for (s in 0..35) {
+                            if (mc.player!!.inventory.getStack(s).isEmpty) {
+                                mc.interactionManager!!.clickSlot(
+                                    mc.player!!.currentScreenHandler.syncId,
+                                    armorSlot,
+                                    1,
+                                    SlotActionType.QUICK_MOVE,
+                                    mc.player
+                                )
+                                return@EventHook
+                            } else if (mc.player!!.inventory.getStack(s).item !is ToolItem
                                 && mc.player!!.inventory.getStack(s).item !is ArmorItem
                                 && mc.player!!.inventory.getStack(s).item !is ElytraItem
-                                && mc.player!!.inventory.getStack(s).item !== Items.TOTEM_OF_UNDYING && forceMoveSlot == -1) {
-                            forceMoveSlot = s
+                                && mc.player!!.inventory.getStack(s).item !== Items.TOTEM_OF_UNDYING && forceMoveSlot == -1
+                            ) {
+                                forceMoveSlot = s
+                            }
                         }
-                    }
-                    if (forceMoveSlot != -1) {
-                        mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId,
-                                if (forceMoveSlot < 9) 36 + forceMoveSlot else forceMoveSlot, 1, SlotActionType.THROW, mc.player)
-                        mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.QUICK_MOVE, mc.player)
+                        if (forceMoveSlot != -1) {
+                            mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, if (forceMoveSlot < 9) 36 + forceMoveSlot else forceMoveSlot, 1, SlotActionType.THROW, mc.player)
+                            mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.QUICK_MOVE, mc.player)
+                            return@EventHook
+                        }
+                        mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.THROW, mc.player)
                         return@EventHook
                     }
-                    mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.THROW, mc.player)
-                    return@EventHook
                 }
             }
         }
