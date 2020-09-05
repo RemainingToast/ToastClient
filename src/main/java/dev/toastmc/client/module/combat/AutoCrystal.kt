@@ -93,39 +93,57 @@ class AutoCrystal : Module() {
                 crystal = entity
             }
         }
+        if (mc.player!!.offHandStack.item === Items.END_CRYSTAL) {
+            offhand = true
+        } else if (crystalSlot == -1) {
+            return@EventHook
+        }
         if (crystal == null) return@EventHook
         if (explode && mc.player?.distanceTo(crystal)!! <= range && safeToExplode(crystal.blockPos.down()) && !holdingFood(mc.player!!) && !holdingTool(mc.player!!)) {
             if (antiweakness && mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS)) {
-                if (!isAttacking) {
-                    oldSlot = mc.player!!.inventory.selectedSlot
-                    isAttacking = true
-                }
-                newSlot = -1
-                run {
-                    while (crystalSlot < 9) {
-                        val stack = mc.player!!.inventory.getStack(crystalSlot)
-                        if (stack != ItemStack.EMPTY) {
-                            if (stack.item is SwordItem) {
-                                newSlot = crystalSlot
-                                break
+                if (!offhand) {
+                    if (!isAttacking) {
+                        oldSlot = mc.player!!.inventory.selectedSlot
+                        isAttacking = true
+                    }
+                    newSlot = -1
+                    run {
+                        while (crystalSlot < 9) {
+                            val stack = mc.player!!.inventory.getStack(crystalSlot)
+                            if (stack != ItemStack.EMPTY) {
+                                if (stack.item is SwordItem) {
+                                    newSlot = crystalSlot
+                                    break
+                                }
+                                if (stack.item is ToolItem) {
+                                    newSlot = crystalSlot
+                                    break
+                                }
                             }
-                            if (stack.item is ToolItem) {
-                                newSlot = crystalSlot
-                                break
-                            }
+                            ++crystalSlot
                         }
-                        ++crystalSlot
+                    }
+                    if (newSlot != -1) {
+                        mc.player!!.inventory.selectedSlot = newSlot;
                     }
                 }
-                if (newSlot != -1) {
-                    mc.player!!.inventory.selectedSlot = newSlot;
+                else {
+                    mc.interactionManager?.attackEntity(mc.player, crystal)
+                    mc.player!!.swingHand(Hand.OFF_HAND)
                 }
             }
-            if (autoswitch && !offhand) {
-                mc.player!!.inventory.selectedSlot = crystalSlot;
+
+            if(!offhand) {
+                if (autoswitch) {
+                    mc.player!!.inventory.selectedSlot = crystalSlot;
+                }
+                mc.interactionManager?.attackEntity(mc.player, crystal)
+                mc.player!!.swingHand(Hand.MAIN_HAND)
+            } else {
+                mc.interactionManager?.attackEntity(mc.player, crystal)
+                mc.player!!.swingHand(Hand.OFF_HAND)
             }
-            mc.interactionManager?.attackEntity(mc.player, crystal)
-            mc.player!!.swingHand(Hand.MAIN_HAND)
+
             ++breaks
             if (breaks == 2) {
                 rotate = false
@@ -148,13 +166,6 @@ class AutoCrystal : Module() {
                     break
                 }
             }
-        }
-
-
-        if (mc.player!!.offHandStack.item === Items.END_CRYSTAL) {
-            offhand = true
-        } else if (crystalSlot == -1) {
-            return@EventHook
         }
 
         val entities: MutableList<Entity> = ArrayList()
