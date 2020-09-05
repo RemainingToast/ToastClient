@@ -1,6 +1,7 @@
 package dev.toastmc.client
 
 import baritone.api.BaritoneAPI
+import baritone.api.IBaritone
 import baritone.api.IBaritoneProvider
 import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
@@ -26,7 +27,9 @@ class ToastClient : ModInitializer {
         var MINECRAFT: MinecraftClient = MinecraftClient.getInstance()
         val COMMAND_MANAGER: CommandManager = CommandManager()
         val MODULE_MANAGER: ModuleManager = ModuleManager()
+
         val BARITONE_PROVIDER: IBaritoneProvider = BaritoneAPI.getProvider()
+        val PRIMARY_BARITONE: IBaritone = BARITONE_PROVIDER.primaryBaritone
 
         val FILE_MANAGER: FileManager = FileManager()
         val CONFIG: SettingSaveUtil = SettingSaveUtil()
