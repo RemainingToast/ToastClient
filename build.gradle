@@ -40,6 +40,8 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
+    implementation 'blue.endless:jankson:1.2.0'
+
     compile "me.zeroeightsix:fiber:${project.fiber_version}-SNAPSHOT"
 
     compile "com.github.ZeroMemes:Alpine:1.9"
@@ -80,6 +82,7 @@ shadowJar {
     dependencies {
         include(dependency('org.yaml:snakeyaml'))
         include(dependency('net.jodah:typetools'))
+        include(dependency('blue.endless:jankson'))
         include(dependency('com.github.ZeroMemes:Alpine'))
         include(dependency('com.github.zeroeightsix:fiber'))
         include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
