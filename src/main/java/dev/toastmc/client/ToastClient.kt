@@ -3,7 +3,6 @@ package dev.toastmc.client
 import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
 import dev.toastmc.client.util.FileManager
-import dev.toastmc.client.util.RenderBuilder
 import dev.toastmc.client.util.SettingSaveUtil
 import dev.toastmc.client.util.WorldUtil
 import kotlinx.coroutines.GlobalScope
@@ -14,14 +13,13 @@ import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.ServerInfo
-import net.minecraft.client.options.ServerList
 import net.minecraft.util.Formatting
 import java.io.File
 
 class ToastClient : ModInitializer {
     companion object {
         const val MODNAME = "Toast Client"
-        const val MODVER = "fabric-1.16.2-beta"
+        const val MODVER = "fabric-1.16.2-beta1"
 
         var MINECRAFT: MinecraftClient = MinecraftClient.getInstance()
         val COMMAND_MANAGER: CommandManager = CommandManager()
