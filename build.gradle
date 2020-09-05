@@ -78,9 +78,10 @@ jar {
 
 shadowJar {
     dependencies {
-        include(dependency('com.github.zeroeightsix:fiber'))
-        include(dependency('net.jodah:typetools'))
         include(dependency('org.yaml:snakeyaml'))
+        include(dependency('net.jodah:typetools'))
+        include(dependency('com.github.ZeroMemes:Alpine'))
+        include(dependency('com.github.zeroeightsix:fiber'))
         include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
         include(dependency('org.jetbrains.kotlinx:kotlinx-coroutines-core'))
     }

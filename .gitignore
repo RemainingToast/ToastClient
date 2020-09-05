@@ -1,5 +1,7 @@
 # gradle
 
+lib/
+
 .gradle/
 build/
 out/
