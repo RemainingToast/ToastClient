@@ -8,7 +8,6 @@ import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
-import net.minecraft.client.toast.Toast
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Heightmap
@@ -186,6 +185,16 @@ object WorldUtil {
      */
     fun getHighestYAtXZ(x: Int, z: Int): Int {
         return ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
+    }
+
+    val BlockPos.block: Block
+        get() = ToastClient.MINECRAFT.world!!.getBlockState(this).block
+
+    val BlockPos.vec3d: Vec3d
+        get() = Vec3d(this.x.toDouble(), this.y.toDouble(), this.z.toDouble())
+
+    fun Block.matches(vararg blocks: Block): Boolean {
+        return blocks.contains(this)
     }
 
     @EventHandler
