@@ -111,11 +111,9 @@ class AutoCrystal : Module() {
                         }
                         if (newSlot != -1 ) {
                             mc.player!!.inventory.selectedSlot = newSlot
-                            isAttacking = true
                             mc.interactionManager?.attackEntity(mc.player, crystal)
                             mc.player!!.swingHand(Hand.MAIN_HAND)
                             mc.player!!.inventory.selectedSlot = oldSlot
-                            isAttacking = false
                         }
                     }
                 } else {
@@ -130,13 +128,11 @@ class AutoCrystal : Module() {
                                     break
                                 }
                             }
-                            if (newSlot != -1 ) {
+                            if (newSlot != -1) {
                                 mc.player!!.inventory.selectedSlot = newSlot
-                                isAttacking = true
                                 mc.interactionManager?.attackEntity(mc.player, crystal)
                                 mc.player!!.swingHand(Hand.OFF_HAND)
                                 mc.player!!.inventory.selectedSlot = oldSlot
-                                isAttacking = false
                             }
                         }
                     }
