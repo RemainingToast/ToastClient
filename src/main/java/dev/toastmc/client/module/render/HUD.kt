@@ -1,5 +1,6 @@
 package dev.toastmc.client.module.render
 
+import baritone.api.BaritoneAPI
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.event.OverlayEvent
 import dev.toastmc.client.event.PacketEvent
@@ -36,6 +37,7 @@ class HUD : Module() {
     @Setting(name = "TPS") var tps = false
     @Setting(name = "FPS") var fps = false
     @Setting(name = "Ping") var ping = false
+    @Setting(name = "Goal") var goal = true
     @Setting(name = "LagNotifier") var lagNotifier = true
     @Setting(name = "Armour") var armour = true
 
@@ -77,7 +79,11 @@ class HUD : Module() {
             val pos = mc.player!!.blockPos
             val vec: Vec3d = mc.player!!.pos
             val pos2: BlockPos = if (nether) BlockPos(vec.getX() * 8, vec.getY(), vec.getZ() * 8) else BlockPos(vec.getX() / 8, vec.getY(), vec.getZ() / 8)
+
             infoList.add(" [ $direction | $direction2 ] " + (if (nether) "\u00a7c" else "\u00a7a") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7a" else "\u00a7c") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
+        }
+        if(goal) {
+            infoList.add("Goal: ${if(BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.isActive) BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.goal.toString() else "none"}")
 
         }
         if (tps) {
