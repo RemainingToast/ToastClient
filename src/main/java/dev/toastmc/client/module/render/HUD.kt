@@ -15,12 +15,14 @@ import me.zero.alpine.listener.Listener
 import net.minecraft.client.MinecraftClient
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 import java.util.*
 import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 
 @ModuleManifest(
@@ -48,7 +50,9 @@ class HUD : Module() {
         infoList.clear()
         lines.clear()
         var arrayCount = 0
-        if (watermark  && !mc.options.debugEnabled) lines.add(0, "Toast Client " + ToastClient.MODVER)
+
+
+        if (watermark && !mc.options.debugEnabled) lines.add(0, "Toast Client " + ToastClient.MODVER)
         if (arraylist && !mc.options.debugEnabled) {
             for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
             lines.sortWith(Comparator { a: String?, b: String? ->
@@ -56,16 +60,25 @@ class HUD : Module() {
             })
             val color: Int = getRainbow(1f, 1f, 10.0, 0)
             for (s in lines) {
-                TwoDRenderUtils.drawText(it.matrix, s, 2, 1 + (arrayCount * 10), color)
+                TwoDRenderUtils.drawText(it.matrix, s, 5, 5 + (arrayCount * 10), color)
                 arrayCount++
             }
         }
         if (coords) {
+            val direction = when (mc.player!!.horizontalFacing) {
+                Direction.NORTH -> "-Z"
+                Direction.SOUTH -> "+Z"
+                Direction.WEST -> "-X"
+                Direction.EAST -> "+X"
+                else -> ""
+            }
+            val direction2 = mc.player!!.horizontalFacing.toString().capitalize()
             val nether = mc.world!!.registryKey.value.path.contains("nether")
             val pos = mc.player!!.blockPos
             val vec: Vec3d = mc.player!!.pos
             val pos2: BlockPos = if (nether) BlockPos(vec.getX() * 8, vec.getY(), vec.getZ() * 8) else BlockPos(vec.getX() / 8, vec.getY(), vec.getZ() / 8)
-            infoList.add("XYZ: " + (if (nether) "\u00a7c" else "\u00a7a") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7a" else "\u00a7c") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
+            infoList.add(" [ $direction | $direction2 ] " + (if (nether) "\u00a7c" else "\u00a7a") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7a" else "\u00a7c") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
+
         }
         if (tps) {
             var suffix = "\u00a77"
@@ -86,10 +99,10 @@ class HUD : Module() {
             if (time - lastPacket > 500) {
                 val text = "The server has been lagging for " + (time - lastPacket) / 1000.0 + "s"
                 TwoDRenderUtils.drawText(
-                    it.matrix, text, mc.window.scaledWidth / 2 - mc.textRenderer.getWidth(text) / 2, Math.min(
+                        it.matrix, text, mc.window.scaledWidth / 2 - mc.textRenderer.getWidth(text) / 2, Math.min(
                         (time - lastPacket - 500) / 20 - 20,
                         10
-                    ).toInt(), 0xd0d0d0
+                ).toInt(), 0xd0d0d0
                 )
             }
         }
@@ -98,7 +111,7 @@ class HUD : Module() {
             var count = 0
             val x1 = mc.window.scaledWidth / 2
             val y =
-                mc.window.scaledHeight - if (mc.player!!.isSubmergedInWater || mc.player!!.air < mc.player!!.maxAir) 64 else 55
+                    mc.window.scaledHeight - if (mc.player!!.isSubmergedInWater || mc.player!!.air < mc.player!!.maxAir) 64 else 55
             for (`is` in mc.player!!.inventory.armor) {
                 count++
                 if (`is`.isEmpty) continue
@@ -116,7 +129,7 @@ class HUD : Module() {
             GL11.glPopMatrix()
         }
         for ((i, s) in infoList.withIndex()) {
-            TwoDRenderUtils.drawText(it.matrix, s, 2, mc.window.scaledHeight - 9 - (i * 10), 0xa0a0a0)
+            TwoDRenderUtils.drawText(it.matrix, s, 10, mc.window.scaledHeight - 20 - (i * 10), 0xa0a0a0)
         }
     })
 
@@ -127,7 +140,7 @@ class HUD : Module() {
             val time = System.currentTimeMillis()
             if (time < 500) return@EventHook
             val timeOffset: Long = Math.abs(1000 - (time - prevTime)) + 1000
-            tpsNum = Math.round(MathHelper.clamp(20 / (timeOffset.toDouble() / 1000), 0.0, 20.0) * 100.0) / 100.0
+            tpsNum = (MathHelper.clamp(20 / (timeOffset.toDouble() / 1000), 0.0, 20.0) * 100.0).roundToInt() / 100.0
             prevTime = time.toInt()
         }
     })
