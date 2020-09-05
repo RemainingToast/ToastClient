@@ -50,8 +50,8 @@ dependencies {
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.19'
 
-    compile 'com.github.cabaletta:baritone:1.5.3'
-    compile 'cabaletta:baritone-api:1.2'
+    include "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
+    modImplementation "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"

@@ -1,8 +1,5 @@
 package dev.toastmc.client
 
-import baritone.api.BaritoneAPI
-import baritone.api.IBaritone
-import baritone.api.IBaritoneProvider
 import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
 import dev.toastmc.client.util.FileManager
@@ -15,7 +12,6 @@ import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.network.ServerInfo
 import net.minecraft.util.Formatting
 import java.io.File
 
@@ -28,14 +24,9 @@ class ToastClient : ModInitializer {
         val COMMAND_MANAGER: CommandManager = CommandManager()
         val MODULE_MANAGER: ModuleManager = ModuleManager()
 
-        val BARITONE_PROVIDER: IBaritoneProvider = BaritoneAPI.getProvider()
-        val PRIMARY_BARITONE: IBaritone = BARITONE_PROVIDER.primaryBaritone
-
         val FILE_MANAGER: FileManager = FileManager()
         val CONFIG: SettingSaveUtil = SettingSaveUtil()
         val MOD_DIRECTORY: File = File(MinecraftClient.getInstance().runDirectory, MODNAME.toLowerCase().replace(" ", "") + "/")
-
-        lateinit var serverList: List<ServerInfo>
 
         var CHAT_PREFIX = "${Formatting.DARK_GRAY}[${Formatting.RED}${Formatting.BOLD}Toast${Formatting.DARK_GRAY}]${Formatting.RESET}"
         var CMD_PREFIX = "."
