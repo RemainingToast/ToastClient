@@ -2,7 +2,8 @@ package dev.toastmc.client.command.cmds
 
 import dev.toastmc.client.command.Command
 import dev.toastmc.client.command.CommandManifest
-import dev.toastmc.client.util.*
+import dev.toastmc.client.util.MessageUtil
+import dev.toastmc.client.util.WorldUtil
 
 @CommandManifest(
     label = "Highest",
