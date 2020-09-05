@@ -38,7 +38,7 @@ import kotlin.collections.HashMap
     label = "AutoCrystal",
     description = "Hit crystals Automatically",
     category = Category.COMBAT,
-    aliases = ["crystal", "crystalaura", "autocrystal"]
+    aliases = ["crystal", "crystalaura"]
 )
 class AutoCrystal : Module() {
     @Setting(name = "Players") var players = true
@@ -62,6 +62,7 @@ class AutoCrystal : Module() {
     private var newSlot = 0
     private var crystalSlot: Int = 0
     private var breaks = 0
+    private var offhand = false
 
     private val blackList = HashMap<BlockPos, Int>()
 
@@ -120,7 +121,7 @@ class AutoCrystal : Module() {
                     mc.player!!.inventory.selectedSlot = newSlot;
                 }
             }
-            if (autoswitch) {
+            if (autoswitch && !offhand) {
                 mc.player!!.inventory.selectedSlot = crystalSlot;
             }
             mc.interactionManager?.attackEntity(mc.player, crystal)
@@ -149,7 +150,7 @@ class AutoCrystal : Module() {
             }
         }
 
-        var offhand = false
+
         if (mc.player!!.offHandStack.item === Items.END_CRYSTAL) {
             offhand = true
         } else if (crystalSlot == -1) {
