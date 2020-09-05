@@ -1,6 +1,5 @@
 package dev.toastmc.client
 
-import baritone.Baritone
 import baritone.api.BaritoneAPI
 import baritone.api.IBaritoneProvider
 import dev.toastmc.client.command.CommandManager
