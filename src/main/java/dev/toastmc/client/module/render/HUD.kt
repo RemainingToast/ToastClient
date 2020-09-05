@@ -52,87 +52,80 @@ class HUD : Module() {
         infoList.clear()
         lines.clear()
         var arrayCount = 0
-
-
-        if (watermark && !mc.options.debugEnabled) lines.add(0, "Toast Client " + ToastClient.MODVER)
-        if (arraylist && !mc.options.debugEnabled) {
-            for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
-            lines.sortWith(Comparator { a: String?, b: String? ->
-                mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
-            })
-            val color: Int = getRainbow(1f, 1f, 10.0, 0)
-            for (s in lines) {
-                TwoDRenderUtils.drawText(it.matrix, s, 5, 5 + (arrayCount * 10), color)
-                arrayCount++
+        when {
+            watermark && !mc.options.debugEnabled -> lines.add(0, "Toast Client " + ToastClient.MODVER)
+            arraylist && !mc.options.debugEnabled -> {
+                for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
+                lines.sortWith(Comparator { a: String?, b: String? ->
+                    mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
+                })
+                val color: Int = getRainbow(1f, 1f, 10.0, 0)
+                for (s in lines) {
+                    TwoDRenderUtils.drawText(it.matrix, s, 5, 5 + (arrayCount * 10), color)
+                    arrayCount++
+                }
             }
-        }
-        if (coords) {
-            val direction = when (mc.player!!.horizontalFacing) {
-                Direction.NORTH -> "-Z"
-                Direction.SOUTH -> "+Z"
-                Direction.WEST -> "-X"
-                Direction.EAST -> "+X"
-                else -> ""
+            coords -> {
+                val direction = when (mc.player!!.horizontalFacing) {
+                    Direction.NORTH -> "-Z"
+                    Direction.SOUTH -> "+Z"
+                    Direction.WEST -> "-X"
+                    Direction.EAST -> "+X"
+                    else -> ""
+                }
+                val direction2 = mc.player!!.horizontalFacing.toString().capitalize()
+                val nether = mc.world!!.registryKey.value.path.contains("nether")
+                val pos = mc.player!!.blockPos
+                val vec: Vec3d = mc.player!!.pos
+                val pos2: BlockPos = if (nether) BlockPos(vec.getX() * 8, vec.getY(), vec.getZ() * 8) else BlockPos(vec.getX() / 8, vec.getY(), vec.getZ() / 8)
+                infoList.add(" [ $direction | $direction2 ] " + (if (nether) "\u00a7c" else "\u00a7a") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7a" else "\u00a7c") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
             }
-            val direction2 = mc.player!!.horizontalFacing.toString().capitalize()
-            val nether = mc.world!!.registryKey.value.path.contains("nether")
-            val pos = mc.player!!.blockPos
-            val vec: Vec3d = mc.player!!.pos
-            val pos2: BlockPos = if (nether) BlockPos(vec.getX() * 8, vec.getY(), vec.getZ() * 8) else BlockPos(vec.getX() / 8, vec.getY(), vec.getZ() / 8)
-
-            infoList.add(" [ $direction | $direction2 ] " + (if (nether) "\u00a7c" else "\u00a7a") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7a" else "\u00a7c") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
-        }
-        if(goal) {
-            infoList.add("Goal: ${if(BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.isActive) BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.goal.toString() else "none"}")
-
-        }
-        if (tps) {
-            var suffix = "\u00a77"
-            if (lastPacket + 7500 < System.currentTimeMillis()) suffix += "...." else if (lastPacket + 5000 < System.currentTimeMillis()) suffix += "..." else if (lastPacket + 2500 < System.currentTimeMillis()) suffix += ".." else if (lastPacket + 1200 < System.currentTimeMillis()) suffix += "."
-            infoList.add("TPS: " + getColorString(tpsNum.toInt(), 18, 15, 12, 8, 4, false) + tpsNum.toInt() + suffix)
-        }
-        if (fps) {
-            val fps = FabricReflect.getFieldValue(MinecraftClient.getInstance(), "field_1738", "currentFps") as Int
-            infoList.add("FPS: " + getColorString(fps, 120, 60, 30, 15, 10, false) + fps)
-        }
-        if (ping) {
-            val playerEntry = mc.player!!.networkHandler.getPlayerListEntry(mc.player!!.gameProfile.id)
-            val ping = playerEntry?.latency ?: 0
-            infoList.add("Ping: " + getColorString(ping, 10, 50, 100, 300, 600, true) + ping)
-        }
-        if (lagNotifier) {
-            val time = System.currentTimeMillis()
-            if (time - lastPacket > 500) {
-                val text = "The server has been lagging for " + (time - lastPacket) / 1000.0 + "s"
-                TwoDRenderUtils.drawText(
+            goal -> infoList.add("Goal: ${if(BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.isActive) BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.goal.toString() else "none"}")
+            tps -> {
+                var suffix = "\u00a77"
+                if (lastPacket + 7500 < System.currentTimeMillis()) suffix += "...." else if (lastPacket + 5000 < System.currentTimeMillis()) suffix += "..." else if (lastPacket + 2500 < System.currentTimeMillis()) suffix += ".." else if (lastPacket + 1200 < System.currentTimeMillis()) suffix += "."
+                infoList.add("TPS: " + getColorString(tpsNum.toInt(), 18, 15, 12, 8, 4, false) + tpsNum.toInt() + suffix)
+            }
+            fps -> {
+                val fps = FabricReflect.getFieldValue(MinecraftClient.getInstance(), "field_1738", "currentFps") as Int
+                infoList.add("FPS: " + getColorString(fps, 120, 60, 30, 15, 10, false) + fps)
+            }
+            ping -> {
+                val playerEntry = mc.player!!.networkHandler.getPlayerListEntry(mc.player!!.gameProfile.id)
+                val ping = playerEntry?.latency ?: 0
+                infoList.add("Ping: " + getColorString(ping, 10, 50, 100, 300, 600, true) + ping)
+            }
+            lagNotifier -> {
+                val time = System.currentTimeMillis()
+                if (time - lastPacket > 500) {
+                    val text = "The server has been lagging for " + (time - lastPacket) / 1000.0 + "s"
+                    TwoDRenderUtils.drawText(
                         it.matrix, text, mc.window.scaledWidth / 2 - mc.textRenderer.getWidth(text) / 2, Math.min(
-                        (time - lastPacket - 500) / 20 - 20,
-                        10
-                ).toInt(), 0xd0d0d0
-                )
+                            (time - lastPacket - 500) / 20 - 20,
+                            10
+                        ).toInt(), 0xd0d0d0
+                    )
+                }
             }
-        }
-        if (armour && !mc.player?.isCreative!! && !mc.player?.isSpectator!!) {
-            GL11.glPushMatrix()
-            var count = 0
-            val x1 = mc.window.scaledWidth / 2
-            val y =
-                    mc.window.scaledHeight - if (mc.player!!.isSubmergedInWater || mc.player!!.air < mc.player!!.maxAir) 64 else 55
-            for (`is` in mc.player!!.inventory.armor) {
-                count++
-                if (`is`.isEmpty) continue
-                val x = x1 - 90 + (9 - count) * 20 + 2
+            armour && !mc.player?.isCreative!! && !mc.player?.isSpectator!! -> {
+                GL11.glPushMatrix()
+                var count = 0
+                val x1 = mc.window.scaledWidth / 2
+                val y = mc.window.scaledHeight - if (mc.player!!.isSubmergedInWater || mc.player!!.air < mc.player!!.maxAir) 64 else 55
+                for (`is` in mc.player!!.inventory.armor) {
+                    count++
+                    if (`is`.isEmpty) continue
+                    val x = x1 - 90 + (9 - count) * 20 + 2
+                    GL11.glEnable(GL11.GL_DEPTH_TEST)
+                    mc.itemRenderer.zOffset = 200f
+                    mc.itemRenderer.renderGuiItemIcon(`is`, x, y)
+                    mc.itemRenderer.renderGuiItemOverlay(mc.textRenderer, `is`, x, y)
+                    mc.itemRenderer.zOffset = 0f
+                    GL11.glDisable(GL11.GL_DEPTH_TEST)
+                }
                 GL11.glEnable(GL11.GL_DEPTH_TEST)
-                mc.itemRenderer.zOffset = 200f
-                mc.itemRenderer.renderGuiItemIcon(`is`, x, y)
-
-                mc.itemRenderer.renderGuiItemOverlay(mc.textRenderer, `is`, x, y)
-
-                mc.itemRenderer.zOffset = 0f
-                GL11.glDisable(GL11.GL_DEPTH_TEST)
+                GL11.glPopMatrix()
             }
-            GL11.glEnable(GL11.GL_DEPTH_TEST)
-            GL11.glPopMatrix()
         }
         for ((i, s) in infoList.withIndex()) {
             TwoDRenderUtils.drawText(it.matrix, s, 10, mc.window.scaledHeight - 20 - (i * 10), 0xa0a0a0)
