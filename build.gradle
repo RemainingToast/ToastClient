@@ -33,6 +33,10 @@ repositories {
         name = "modmuss50's repo"
         url = "https://maven.modmuss50.me/"
     }
+    maven {
+        name = 'spongepowered-repo'
+        url = 'http://repo.spongepowered.org/maven/'
+    }
 }
 
 dependencies {
@@ -46,7 +50,7 @@ dependencies {
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.19'
 
-    compile 'com.github.cabaletta:baritone:1.2.14'
+    compile 'com.github.cabaletta:baritone:1.5.3'
     compile 'cabaletta:baritone-api:1.2'
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
