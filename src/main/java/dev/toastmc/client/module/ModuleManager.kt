@@ -12,7 +12,6 @@ import dev.toastmc.client.module.player.AutoTool
 import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
 import dev.toastmc.client.module.player.Velocity
-import dev.toastmc.client.module.render.DarkFinder
 import dev.toastmc.client.module.render.ESP
 import dev.toastmc.client.module.render.FullBright
 import dev.toastmc.client.module.render.HUD

@@ -3,7 +3,6 @@ package dev.toastmc.client
 import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
 import dev.toastmc.client.util.FileManager
-import dev.toastmc.client.util.RenderBuilder
 import dev.toastmc.client.util.SettingSaveUtil
 import dev.toastmc.client.util.WorldUtil
 import kotlinx.coroutines.GlobalScope
@@ -13,8 +12,6 @@ import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.network.ServerInfo
-import net.minecraft.client.options.ServerList
 import net.minecraft.util.Formatting
 import java.io.File
 
@@ -30,8 +27,6 @@ class ToastClient : ModInitializer {
         val FILE_MANAGER: FileManager = FileManager()
         val CONFIG: SettingSaveUtil = SettingSaveUtil()
         val MOD_DIRECTORY: File = File(MinecraftClient.getInstance().runDirectory, MODNAME.toLowerCase().replace(" ", "") + "/")
-
-        lateinit var serverList: List<ServerInfo>
 
         var CHAT_PREFIX = "${Formatting.DARK_GRAY}[${Formatting.RED}${Formatting.BOLD}Toast${Formatting.DARK_GRAY}]${Formatting.RESET}"
         var CMD_PREFIX = "."

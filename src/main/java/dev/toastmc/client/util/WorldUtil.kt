@@ -8,10 +8,7 @@ import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
-import net.minecraft.client.MinecraftClient
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket.LookOnly
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Heightmap
 import net.minecraft.world.World
@@ -19,18 +16,15 @@ import net.minecraft.world.chunk.Chunk
 import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Collectors
-import kotlin.math.atan2
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
-
 
 /**
  * Some utilities for getting information about the world surrounding the player
  */
 object WorldUtil {
     var loadedChunks: ConcurrentSet<Chunk> = ConcurrentSet()
-    var mc = MinecraftClient.getInstance()
 
     /**
      * Get all tile entities inside a given Chunk and collect them into a map of BlockPos and Block
@@ -42,9 +36,9 @@ object WorldUtil {
      * @see Chunk.getBlockEntityPositions
      */
     fun getTileEntitiesInChunk(
-        world: World,
-        chunkX: Int,
-        chunkZ: Int
+            world: World,
+            chunkX: Int,
+            chunkZ: Int
     ): LinkedHashMap<BlockPos, Block> {
         val map =
                 LinkedHashMap<BlockPos, Block>()
@@ -84,7 +78,7 @@ object WorldUtil {
      */
     fun getDistance(vecA: Vec3d, vecB: Vec3d): Double {
         return sqrt(
-            (vecA.x - vecB.x).pow(2.0) + (vecA.y - vecB.y).pow(2.0) + (vecA.z - vecB.z).pow(2.0)
+                (vecA.x - vecB.x).pow(2.0) + (vecA.y - vecB.y).pow(2.0) + (vecA.z - vecB.z).pow(2.0)
         )
     }
 
@@ -97,8 +91,8 @@ object WorldUtil {
      * @return all vectors between startVec and destinationVec divided by steps
      */
     fun Vec3d.extendVec(
-        destinationVec: Vec3d,
-        steps: Int
+            destinationVec: Vec3d,
+            steps: Int
     ): ArrayList<Vec3d> {
         val returnList =
                 ArrayList<Vec3d>(steps + 1)
@@ -118,12 +112,12 @@ object WorldUtil {
      * @return vector based on startVec that is moved towards destinationVec by distance
      */
     fun Vec3d.advanceVec(
-        destinationVec: Vec3d,
-        distance: Double
+            destinationVec: Vec3d,
+            distance: Double
     ): Vec3d {
         val advanceDirection = destinationVec.subtract(this).normalize()
         return if (destinationVec.distanceTo(this) < distance) destinationVec else advanceDirection.multiply(
-            distance
+                distance
         )
     }
 
@@ -134,7 +128,7 @@ object WorldUtil {
      * @return rounded block positions inside a 3d area between pos1 and pos2
      */
     fun Vec3d.getBlockPositionsInArea(
-        end: Vec3d
+            end: Vec3d
     ): List<BlockPos> {
         val minX: Int = this.x.coerceAtMost(end.x).roundToInt()
         val maxX: Int = this.x.coerceAtLeast(end.x).roundToInt()
@@ -175,13 +169,7 @@ object WorldUtil {
         for (x in startX..endX) {
             for (z in startZ..endZ) {
                 for (y in 0..getHighestYAtXZ(x, z)) {
-                    if (ToastClient.MINECRAFT.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(
-                        BlockPos(
-                            x,
-                            y,
-                            z
-                        )
-                    )
+                    if (ToastClient.MINECRAFT.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(BlockPos(x, y, z))
                 }
             }
         }
@@ -196,11 +184,17 @@ object WorldUtil {
      * @return Y coordinate of the highest non-air block in the column
      */
     fun getHighestYAtXZ(x: Int, z: Int): Int {
-        return ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(
-            Heightmap.Type.WORLD_SURFACE,
-            x,
-            z
-        )
+        return ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
+    }
+
+    val BlockPos.block: Block
+        get() = ToastClient.MINECRAFT.world!!.getBlockState(this).block
+
+    val BlockPos.vec3d: Vec3d
+        get() = Vec3d(this.x.toDouble(), this.y.toDouble(), this.z.toDouble())
+
+    fun Block.matches(vararg blocks: Block): Boolean {
+        return blocks.contains(this)
     }
 
     @EventHandler
@@ -213,34 +207,5 @@ object WorldUtil {
 
     init {
         ToastClient.EVENT_BUS.subscribe(onChunkEvent)
-    }
-
-    fun facePosAuto(x: Double, y: Double, z: Double, sr: Boolean) {
-        if (sr) facePosPacket(x, y, z) else facePos(x, y, z)
-    }
-
-    fun facePos(x: Double, y: Double, z: Double) {
-        val diffX: Double = x - mc.player!!.x
-        val diffY: Double = y - (mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose))
-        val diffZ: Double = z - mc.player!!.z
-        val diffXZ = sqrt(diffX * diffX + diffZ * diffZ)
-        val yaw = Math.toDegrees(atan2(diffZ, diffX)).toFloat() - 90f
-        val pitch = (-Math.toDegrees(atan2(diffY, diffXZ))).toFloat()
-        mc.player?.yaw = mc.player?.yaw?.plus(MathHelper.wrapDegrees(yaw - mc.player!!.yaw))
-        mc.player?.pitch = mc.player?.pitch?.plus(MathHelper.wrapDegrees(pitch - mc.player!!.pitch))
-    }
-
-    fun facePosPacket(x: Double, y: Double, z: Double) {
-        val diffX: Double = x - mc.player!!.x
-        val diffY: Double = y - (mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose))
-        val diffZ: Double = z - mc.player!!.z
-        val diffXZ = sqrt(diffX * diffX + diffZ * diffZ)
-        val yaw = Math.toDegrees(atan2(diffZ, diffX)).toFloat() - 90f
-        val pitch = (-Math.toDegrees(atan2(diffY, diffXZ))).toFloat()
-        //mc.player.headYaw = mc.player.yaw + MathHelper.wrapDegrees(yaw - mc.player.yaw);
-        //mc.player.renderPitch = mc.player.pitch + MathHelper.wrapDegrees(pitch - mc.player.pitch);
-        mc.player!!.networkHandler.sendPacket(
-            LookOnly(mc.player!!.yaw + MathHelper.wrapDegrees(yaw - mc.player!!.yaw), mc.player!!.pitch + MathHelper.wrapDegrees(pitch - mc.player!!.pitch), mc.player!!.isOnGround)
-        )
     }
 }

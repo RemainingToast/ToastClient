@@ -1,20 +1,28 @@
 package dev.toastmc.client.module.render
 
-import dev.toastmc.client.event.ChunkEvent
+import baritone.api.BaritoneAPI
+import baritone.api.pathing.goals.GoalBlock
+import dev.toastmc.client.ToastClient
 import dev.toastmc.client.event.PacketEvent
-import dev.toastmc.client.event.RenderEvent
+import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.*
+import dev.toastmc.client.util.MovementUtil
+import dev.toastmc.client.util.WorldUtil.vec3d
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 import net.minecraft.network.packet.s2c.play.LightUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.Heightmap
+import java.util.concurrent.ConcurrentLinkedQueue
+import kotlin.math.min
 
 @ModuleManifest(
     label = "DarkFinder",
@@ -23,89 +31,95 @@ import net.minecraft.util.math.BlockPos
 )
 class DarkFinder : Module() {
     @Setting(name = "Threshold (<=)") var threshold: Int = 3
+    @Setting(name = "Min. Y") var minY: Int = 1
+    @Setting(name = "Max. Y") var maxY: Int = 255
+    @Setting(name = "Loop (ms)") var loop: Long = 1000
 
-    private var matches = mutableListOf<BlockPos>()
-    private var checked = mutableListOf<BlockPos>()
+    var matches = ConcurrentLinkedQueue<BlockPos>()
+    var start: BlockPos = BlockPos.ORIGIN
+    var doingStuff = false
 
     @EventHandler
-    private val onChunkUnloadEvent = Listener(EventHook<ChunkEvent.Unload> {
-        if (it.chunk == null || matches.isEmpty()) return@EventHook
-        GlobalScope.launch {
-            val x = (it.chunk.pos.x shl 4)
-            val z = (it.chunk.pos.z shl 4)
-            val xRange = IntRange(x, x + 15)
-            val zRange = IntRange(z, z + 15)
-            var index = matches.size
-            while (--index >= 0) {
-                if (xRange.contains(matches[index].x) && zRange.contains(matches[index].z)) {
-                    matches.removeAt(index)
-                }
-            }
-            index = checked.size
-            while (--index >= 0) {
-                if (xRange.contains(checked[index].x) && zRange.contains(checked[index].z)) {
-                    matches.removeAt(index)
-                }
-            }
-        }.start()
+    val onLightUpdateEvent = Listener(EventHook<PacketEvent.Receive> {
+        if (it.packet !is LightUpdateS2CPacket || BaritoneAPI.getProvider().primaryBaritone.pathingBehavior.isPathing || doingStuff) return@EventHook
+        matches.clear()
     })
 
     @EventHandler
-    private val onChunkLoadEvent = Listener(EventHook<ChunkEvent.Load> {
-        if (it.chunk == null) return@EventHook
-        GlobalScope.launch {
-            val x = (it.chunk.pos.x shl 4)
-            val z = (it.chunk.pos.z shl 4)
-            for (currX in x..x + 15) {
-                for (currZ in z..z + 15) {
-                    for (currY in 1..WorldUtil.getHighestYAtXZ(currX, currZ) + 1) {
-                        val pos = BlockPos(currX, currY - 1, currZ)
-                        if (mc.world!!.getBlockState(BlockPos(currX, currY, currZ)).isAir && !mc.world!!.getBlockState(
-                                pos
-                            ).isAir && !checked.contains(pos)
-                        ) {
-                            matches[matches.size] = pos
-                            checked[checked.size] = pos
-                        }
-                    }
+    val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
+        if (matches.size > 0 && !doingStuff) {
+            doingStuff = true
+            GlobalScope.launch {
+                BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.setGoalAndPath(GoalBlock(matches.first()))
+                val async = GlobalScope.async {
+                    if (!BaritoneAPI.getProvider().primaryBaritone.pathingBehavior.isPathing) return@async
+                    delay(loop)
                 }
+                async.await()
+                MovementUtil.lookAt(matches.first().add(0, -1, 0).vec3d.add(0.5, 0.0, 0.5), false)
+                // TODO: PLACE TORCH
+                // TODO: PLACE TORCH
+                // TODO: PLACE TORCH
+                // TODO: PLACE TORCH
+                // TODO: PLACE TORCH
+                // TODO: PLACE TORCH
+                BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.setGoalAndPath(GoalBlock(matches.first()))
             }
-        }.start()
-    })
-
-    @EventHandler
-    private val onLightUpdateEvent = Listener(EventHook<PacketEvent.Receive> {
-        if (it.packet is LightUpdateS2CPacket) {
-            checked.clear()
-            matches.clear()
+            doingStuff = false
         }
     })
 
-    @EventHandler
-    private val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
-        if (mc.player == null) return@EventHook
-    })
+    override fun onEnable() {
+        ToastClient.EVENT_BUS.subscribe(onLightUpdateEvent)
+        ToastClient.EVENT_BUS.subscribe(onTickEvent)
+        matches.clear()
+    }
 
     override fun onDisable() {
-        /*
-        ToastClient.EVENT_BUS.unsubscribe(onWorldRenderEvent)
-        ToastClient.EVENT_BUS.unsubscribe(onChunkLoadEvent)
-        ToastClient.EVENT_BUS.unsubscribe(onChunkUnloadEvent)
         ToastClient.EVENT_BUS.unsubscribe(onLightUpdateEvent)
-         */
-        threshold.coerceIn(0, 14)
+        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
     }
 
-    override fun onEnable() {
-        MessageUtil.sendMessage("$label is kil.", MessageUtil.Color.DARK_RED)
-        disable()
-        /*
-        ToastClient.EVENT_BUS.subscribe(onWorldRenderEvent)
-        ToastClient.EVENT_BUS.subscribe(onChunkLoadEvent)
-        ToastClient.EVENT_BUS.subscribe(onChunkUnloadEvent)
-        ToastClient.EVENT_BUS.subscribe(onLightUpdateEvent)
-        */
-        threshold.coerceIn(0, 14)
+    init {
+        GlobalScope.async {
+            while (true) {
+                if (mc.player != null && !BaritoneAPI.getProvider().primaryBaritone.pathingBehavior.isPathing && !doingStuff) {
+                    val distance = mc.options.viewDistance
+                    for (x in -distance..distance) {
+                        for (z in -distance..distance) {
+                            GlobalScope.async {
+                                val chunk = mc.world!!.getChunk(mc.player!!.blockPos.add(x, 0, z))
+                                if (chunk.maxLightLevel <= threshold) {
+                                    for (x2 in chunk.pos.startX..chunk.pos.endX) {
+                                        for (z2 in chunk.pos.startZ..chunk.pos.endZ) {
+                                            val height = chunk.sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x2, z2)
+                                            for (y in min(minY, height)..min(maxY, height)) {
+                                                if (matches.size > 0) break
+                                                val pos = BlockPos(x2, y, z2)
+                                                val blockState = mc.world!!.getBlockState(pos)
+                                                val under = mc.world!!.getBlockState(pos.add(0, -1, 0))
+                                                if (blockState.isAir && under.isOpaque && mc.world!!.lightingProvider.getLight(
+                                                        pos,
+                                                        0
+                                                    ) <= threshold
+                                                ) matches.add(pos)
+                                            }
+                                            if (matches.size > 0 || doingStuff) break
+                                        }
+                                        if (matches.size > 0 || doingStuff) break
+                                    }
+                                }
+                            }.start()
+                            if (matches.size > 0 || doingStuff) break
+                        }
+                        if (matches.size > 0 || doingStuff) break
+                    }
+                }
+                matches.clear()
+                delay(loop)
+            }
+        }.start()
     }
+
 
 }
