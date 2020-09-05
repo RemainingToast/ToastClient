@@ -6,7 +6,6 @@ import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.EntityUtils
-import dev.toastmc.client.util.WorldUtil
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
@@ -27,10 +26,11 @@ import net.minecraft.item.Items
 import net.minecraft.item.SwordItem
 import net.minecraft.item.ToolItem
 import net.minecraft.util.Hand
-import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.*
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Difficulty
-import net.minecraft.world.RaycastContext
 import net.minecraft.world.explosion.Explosion
 import java.util.*
 import kotlin.collections.HashMap
@@ -48,6 +48,7 @@ class AutoCrystal : Module() {
     @Setting(name = "Explode") var explode = true
     @Setting(name = "Place") var place = true
     @Setting(name = "Range") var range = 4
+    @Setting(name = "MaxSelfDamage") var maxselfdamage = 0
     @Setting(name = "Rotate") var rotate = true
     @Setting(name = "AutoSwitch") var autoswitch = true
     @Setting(name = "AntiWeakness") var antiweakness = true
@@ -94,7 +95,7 @@ class AutoCrystal : Module() {
             }
         }
         if (crystal == null) return@EventHook
-        if (explode && mc.player?.distanceTo(crystal)!! <= range) {
+        if (explode && mc.player?.distanceTo(crystal)!! <= range && safeToExplode(crystal.blockPos.down())) {
             if (antiweakness && mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS)) {
                 if (!isAttacking) {
                     oldSlot = mc.player!!.inventory.selectedSlot
@@ -154,7 +155,7 @@ class AutoCrystal : Module() {
         } else if (crystalSlot == -1) {
             return@EventHook
         }
-        val blocks: Set<BlockPos>? = getCrystalPoses()
+
         val entities: MutableList<Entity> = ArrayList()
 
         for (entity in mc.world!!.entities){
@@ -170,101 +171,105 @@ class AutoCrystal : Module() {
         var damage = 0.5
         val var9: Iterator<Entity> = entities.iterator()
 
-        main_loop@ while (true) {
-            var entity: Entity
-            do {
-                do {
-                    if (!var9.hasNext()) {
-                        if (damage == 0.5) {
-                            render = null
-                            if (rotate) {
-                                isSpoofingAngles = false
-                            }
-                            return@EventHook
-                        }
-                        render = q
-                        if (place) {
-                            if (!offhand && mc.player!!.inventory.selectedSlot != crystalSlot) {
-                                if (autoswitch) {
-                                    mc.player!!.inventory.selectedSlot = crystalSlot
-                                    if (rotate) {
-                                        isSpoofingAngles = false
-                                    }
-                                    switchCooldown = true
-                                }
-                                return@EventHook
-                            }
-                            if (rotate) {
-                                WorldUtil.facePosAuto(q!!.x + 0.5, q.y - 0.5, q.z + 0.5, rotate)
-                            }
-                            var f: Direction = Direction.UP
-                            val result: BlockHitResult = mc.world!!.raycast(
-                                RaycastContext(
-                                    Vec3d(
-                                        mc.player!!.x,
-                                        mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose),
-                                        mc.player!!.z
-                                    ),
-                                    Vec3d(q!!.x + 0.5, q.y - 0.5, q.z + 0.5),
-                                    RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, mc.player
-                                )
-                            )
-                            f = if (result.side != null) {
-                                result.side
-                            } else {
-                                Direction.UP
-                            }
-                            if (switchCooldown) {
-                                switchCooldown = false
-                                return@EventHook
-                            }
-                            mc.interactionManager!!.interactBlock(
-                                mc.player, mc.world, if (offhand) Hand.OFF_HAND else Hand.MAIN_HAND,
-                                BlockHitResult(Vec3d.of(q), f, q, false)
-                            )
-                            blackList[q!!] = 5
-                        }
-                        if (isSpoofingAngles) {
-                            if (togglePitch) {
-                                mc.player!!.pitch += 4.0E-4f
-                                togglePitch = false
-                            } else {
-                                mc.player!!.pitch -= 4.0E-4f
-                                togglePitch = true
-                            }
-                        }
-                        return@EventHook
-                    }
-                    entity = var9.next()
-                } while (entity === mc.player)
-            } while ((entity as LivingEntity).health <= 0.0f)
-            val var11 = blocks!!.iterator()
-            while (true) {
-                var blockPos: BlockPos
-                var d: Double
-                var self: Double
-                do {
-                    do {
-                        var b: Double
-                        do {
-                            if (!var11.hasNext()) {
-                                continue@main_loop
-                            }
-                            blockPos = var11.next()
-                            b = entity.getBlockPos().getSquaredDistance(blockPos)
-                        } while (b >= 169.0)
-                        d = getExplosionDamage(blockPos, entity).toDouble()
-                    } while (d <= damage)
-                    self = getExplosionDamage(blockPos, mc.player!!).toDouble()
-                } while (self > d && d >= entity.health)
-                if (self - 0.5 <= mc.player!!.health) {
-                    damage = d
-                    q = blockPos
-                }
-            }
-        }
+//        main_loop@ while (true) {
+//            var entity: Entity
+//            do {
+//                do {
+//                    if (!var9.hasNext()) {
+//                        if (damage == 0.5) {
+//                            render = null
+//                            if (rotate) {
+//                                isSpoofingAngles = false
+//                            }
+//                            return@EventHook
+//                        }
+//                        render = q
+//                        if (place) {
+//                            if (!offhand && mc.player!!.inventory.selectedSlot != crystalSlot) {
+//                                if (autoswitch) {
+//                                    mc.player!!.inventory.selectedSlot = crystalSlot
+//                                    if (rotate) {
+//                                        isSpoofingAngles = false
+//                                    }
+//                                    switchCooldown = true
+//                                }
+//                                return@EventHook
+//                            }
+//                            if (rotate) {
+//                                WorldUtil.facePosAuto(q!!.x + 0.5, q.y - 0.5, q.z + 0.5, rotate)
+//                            }
+//                            var f: Direction = Direction.UP
+//                            val result: BlockHitResult = mc.world!!.raycast(
+//                                RaycastContext(
+//                                    Vec3d(
+//                                        mc.player!!.x,
+//                                        mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose),
+//                                        mc.player!!.z
+//                                    ),
+//                                    Vec3d(q!!.x + 0.5, q.y - 0.5, q.z + 0.5),
+//                                    RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, mc.player
+//                                )
+//                            )
+//                            f = if (result.side != null) {
+//                                result.side
+//                            } else {
+//                                Direction.UP
+//                            }
+//                            if (switchCooldown) {
+//                                switchCooldown = false
+//                                return@EventHook
+//                            }
+//                            mc.interactionManager!!.interactBlock(
+//                                mc.player, mc.world, if (offhand) Hand.OFF_HAND else Hand.MAIN_HAND,
+//                                BlockHitResult(Vec3d.of(q), f, q, false)
+//                            )
+//                            blackList[q!!] = 5
+//                        }
+//                        if (isSpoofingAngles) {
+//                            if (togglePitch) {
+//                                mc.player!!.pitch += 4.0E-4f
+//                                togglePitch = false
+//                            } else {
+//                                mc.player!!.pitch -= 4.0E-4f
+//                                togglePitch = true
+//                            }
+//                        }
+//                        return@EventHook
+//                    }
+//                    entity = var9.next()
+//                } while (entity === mc.player)
+//            } while ((entity as LivingEntity).health <= 0.0f)
+//            val var11 = blocks!!.iterator()
+//            while (true) {
+//                var blockPos: BlockPos
+//                var d: Double
+//                var self: Double
+//                do {
+//                    do {
+//                        var b: Double
+//                        do {
+//                            if (!var11.hasNext()) {
+//                                continue@main_loop
+//                            }
+//                            blockPos = var11.next()
+//                            b = entity.getBlockPos().getSquaredDistance(blockPos)
+//                        } while (b >= 169.0)
+//                        d = getExplosionDamage(blockPos, entity).toDouble()
+//                    } while (d <= damage)
+//                    self = getExplosionDamage(blockPos, mc.player!!).toDouble()
+//                } while (self > d && d >= entity.health)
+//                if (self - 0.5 <= mc.player!!.health) {
+//                    damage = d
+//                    q = blockPos
+//                }
+//            }
+//        }
     })
 
+    private fun safeToExplode(blockPos: BlockPos) : Boolean {
+            if (mc.player!!.isInvulnerable) return true
+            return getExplosionDamage(blockPos, mc.player!!) - mc.player!!.health <= maxselfdamage - 1
+    }
 
     private fun getCrystalPoses(): Set<BlockPos>? {
         val poses: MutableSet<BlockPos> = HashSet()
