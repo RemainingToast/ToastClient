@@ -3,7 +3,6 @@ package dev.toastmc.client.command
 import dev.toastmc.client.command.cmds.*
 import dev.toastmc.client.command.cmds.List
 import dev.toastmc.client.util.MessageUtil
-import kotlin.collections.HashSet
 
 class CommandManager () {
     var commands: HashSet<Command> = HashSet<Command>()
@@ -37,11 +36,16 @@ class CommandManager () {
      */
     fun initCommands() {
         commands.clear()
-        commands.add(Help())
-        commands.add(Toggle())
-        commands.add(List())
-        commands.add(Coords())
-        commands.add(Highest())
-        commands.add(Hide())
+        commands.addAll(
+            listOf(
+                Coords(),
+                DarkFinder(),
+                Help(),
+                Hide(),
+                Highest(),
+                List(),
+                Toggle()
+            )
+        )
     }
 }

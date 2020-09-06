@@ -52,7 +52,6 @@ class ModuleManager {
             AutoTotem(),
             AutoTool(),
             AutoWalk(),
-            //DarkFinder(),
             ESP(),
             Flight(),
             FullBright(),

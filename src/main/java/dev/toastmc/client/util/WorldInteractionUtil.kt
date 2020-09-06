@@ -18,8 +18,8 @@ import kotlin.math.atan2
 import kotlin.math.sqrt
 
 object WorldInteractionUtil {
-    val AIR = Arrays.asList(Blocks.AIR, Blocks.CAVE_AIR)
-    val REPLACEABLE = Arrays.asList(
+    val AIR = listOf(Blocks.AIR, Blocks.CAVE_AIR)
+    val REPLACEABLE = listOf(
         Blocks.AIR, Blocks.CAVE_AIR, Blocks.LAVA, Blocks.WATER,
         Blocks.GRASS, Blocks.TALL_GRASS, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS, Blocks.FERN, Blocks.DEAD_BUSH,
         Blocks.VINE, Blocks.FIRE, Blocks.STRUCTURE_VOID

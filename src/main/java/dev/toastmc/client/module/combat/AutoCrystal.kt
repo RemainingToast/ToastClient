@@ -183,22 +183,22 @@ class AutoCrystal : Module() {
             }
         }
         val blocks = getCrystalPoses()
-        var q: BlockPos? = null
+        var vec3i: BlockPos? = null
         var damage = 0.5
-        val var9: Iterator<Entity> = entities.iterator()
+        val entityIter: Iterator<Entity> = entities.iterator()
         var blockPos: BlockPos
         var d: Double
         var self: Double
         var b: Double
-        val var11 = blocks!!.iterator()
+        val blockIter = blocks!!.iterator()
         var entity: Entity
 
         main_loop@ while (true) {
             do {
                 do {
-                    if (!var9.hasNext()) {
+                    if (!entityIter.hasNext()) {
                         if (place) {
-                            if (!offhand && mc.player!!.inventory.selectedSlot != crystalSlot || q == null) return@EventHook
+                            if (!offhand && mc.player!!.inventory.selectedSlot != crystalSlot || vec3i == null) return@EventHook
                             val result: BlockHitResult = mc.world!!.raycast(
                                 RaycastContext(
                                     Vec3d(
@@ -206,19 +206,19 @@ class AutoCrystal : Module() {
                                         mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose),
                                         mc.player!!.z
                                     ),
-                                    Vec3d(q.x + 0.5, q.y - 0.5, q.z + 0.5),
+                                    Vec3d(vec3i.x + 0.5, vec3i.y - 0.5, vec3i.z + 0.5),
                                     RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, mc.player
                                 )
                             )
-                            val f: Direction = if (result.side != null) result.side else Direction.UP
+                            val side: Direction = if (result.side != null) result.side else Direction.UP
                             mc.interactionManager!!.interactBlock(
                                 mc.player, mc.world, if (offhand) Hand.OFF_HAND else Hand.MAIN_HAND, BlockHitResult(
                                     Vec3d.of(
-                                        q
-                                    ), f, q, false
+                                        vec3i
+                                    ), side, vec3i, false
                                 )
                             )
-                            blackList[q] = 5
+                            blackList[vec3i] = 5
                         }
                         if (rotate) {
                             if (togglePitch) {
@@ -231,17 +231,17 @@ class AutoCrystal : Module() {
                         }
                         return@EventHook
                     }
-                    entity = var9.next()
+                    entity = entityIter.next()
                 } while (entity === mc.player)
             } while ((entity as LivingEntity).health <= 0.0f)
             while (true) {
                 do {
                     do {
                         do {
-                            if (!var11.hasNext()) {
+                            if (!blockIter.hasNext()) {
                                 continue@main_loop
                             }
-                            blockPos = var11.next()
+                            blockPos = blockIter.next()
                             b = entity.getBlockPos().getSquaredDistance(blockPos)
                         } while (b >= 169.0)
                         d = getExplosionDamage(blockPos, entity).toDouble()
@@ -250,7 +250,7 @@ class AutoCrystal : Module() {
                 } while (self > d && d >= entity.health)
                 if (self - 0.5 <= mc.player!!.health) {
                     damage = d
-                    q = blockPos
+                    vec3i = blockPos
                 }
             }
         }
