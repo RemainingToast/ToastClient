@@ -27,15 +27,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MultiplayerScreen.class)
 public abstract class MixinServerScreen extends Screen {
 
-    @Shadow protected MultiplayerServerListWidget serverListWidget;
+    @Shadow protected  MultiplayerServerListWidget serverListWidget;
     @Shadow private ServerList serverList;
 
     private static Status status = Status.UNKNOWN;
-    private static TexturedButtonWidget authButton;
-    private static ButtonWidget toastmcButton;
+    private TexturedButtonWidget authButton;
+    private ButtonWidget toastmcButton;
 
     private final ServerInfo server = new ServerInfo(" TOASTMC.DEV", "toastmc.dev", false);
-    private Boolean serverExists = false;
+    private int serverExists = 0;
 
     protected MixinServerScreen(Text text_1) {
         super(text_1);
@@ -44,18 +44,21 @@ public abstract class MixinServerScreen extends Screen {
     @Inject(at = @At("HEAD"), method = "init()V")
     private void init(CallbackInfo info) {
         toastmcButton = new ButtonWidget(30, 6, 100, 20, new LiteralText("PLAY TOASTMC.DEV"), button -> {
-            if(!serverExists){
+            if(serverExists == 0){
                 serverList.loadFile();
                 serverList.add(server);
                 serverListWidget.setServers(serverList);
                 serverList.saveFile();
-                serverExists = true;
+                serverExists = 1;
             }
             toastmcButton.visible = false;
         });
 
+        if (serverExists == 0){
+            this.addButton(toastmcButton);
+            serverExists = 1;
+        }
 
-        this.addButton(toastmcButton);
 
         authButton = new TexturedButtonWidget(6,
                 6,
