@@ -36,8 +36,7 @@ import kotlin.collections.HashMap
 @ModuleManifest(
     label = "AutoCrystal",
     description = "Hit crystals Automatically",
-    category = Category.COMBAT,
-    aliases = ["crystal", "crystalaura"]
+    category = Category.COMBAT
 )
 class AutoCrystal : Module() {
     @Setting(name = "Players") var players = true

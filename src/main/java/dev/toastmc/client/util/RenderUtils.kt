@@ -70,7 +70,7 @@ fun <T: RenderBuilder> T.box(bb: Box): T = this.apply {
     vertex(bb.minX, bb.maxY, bb.minZ)
 }
 
-inline fun draw3d(translate: Boolean = false, action: RenderBuilder.() -> Unit) {
+inline fun draw3d(translate: Boolean = false, color: Color = Color(1f, 1f, 1f, 1f), action: RenderBuilder.() -> Unit) {
     val builder = RenderBuilder()
 
     try {
@@ -93,7 +93,7 @@ inline fun draw3d(translate: Boolean = false, action: RenderBuilder.() -> Unit) 
 
         builder.action()
     } finally {
-        GlStateManager.color4f(1f, 1f, 1f, 1f)
+        GlStateManager.color4f(color.red.toFloat(), color.green.toFloat(), color.blue.toFloat(), color.alpha.toFloat())
         GlStateManager.enableDepthTest()
         GlStateManager.enableTexture()
         GlStateManager.enableBlend()
