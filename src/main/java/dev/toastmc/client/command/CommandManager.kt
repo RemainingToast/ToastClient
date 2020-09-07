@@ -39,7 +39,6 @@ class CommandManager () {
         commands.addAll(
             listOf(
                 Coords(),
-                DarkFinder(),
                 Help(),
                 Hide(),
                 Highest(),

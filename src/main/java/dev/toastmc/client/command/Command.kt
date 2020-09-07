@@ -3,6 +3,7 @@ package dev.toastmc.client.command
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
+import net.minecraft.util.Formatting
 
 @Environment(EnvType.CLIENT)
 abstract class Command() {
@@ -11,9 +12,8 @@ abstract class Command() {
     private var description: String? = null
     private var usage: String? = null
     private var alias: Array<String>? = null
-    /**
-     * Method that runs a command while passing it an array of arguments
-     */
+
+    var CHAT_PREFIX = "${Formatting.DARK_GRAY}[${Formatting.RED}${Formatting.BOLD}Toast${Formatting.DARK_GRAY}]${Formatting.RESET}"
 
     init {
         if (javaClass.isAnnotationPresent(CommandManifest::class.java)) {

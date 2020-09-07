@@ -4,15 +4,10 @@ import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
 import dev.toastmc.client.util.FileManager
 import dev.toastmc.client.util.SettingSaveUtil
-import dev.toastmc.client.util.WorldUtil
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
-import net.minecraft.util.Formatting
 import java.io.File
 
 class ToastClient : ModInitializer {
@@ -28,7 +23,6 @@ class ToastClient : ModInitializer {
         val CONFIG: SettingSaveUtil = SettingSaveUtil()
         val MOD_DIRECTORY: File = File(MinecraftClient.getInstance().runDirectory, MODNAME.toLowerCase().replace(" ", "") + "/")
 
-        var CHAT_PREFIX = "${Formatting.DARK_GRAY}[${Formatting.RED}${Formatting.BOLD}Toast${Formatting.DARK_GRAY}]${Formatting.RESET}"
         var CMD_PREFIX = "."
 
         @JvmField
@@ -40,13 +34,5 @@ class ToastClient : ModInitializer {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
         CONFIG.initSettingUtil()
-        GlobalScope.launch {
-            while (true) {
-                if (MINECRAFT.world == null) {
-                    WorldUtil.loadedChunks.clear()
-                }
-                delay(500)
-            }
-        }
     }
 }

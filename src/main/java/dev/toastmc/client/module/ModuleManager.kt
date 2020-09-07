@@ -12,7 +12,6 @@ import dev.toastmc.client.module.player.AutoTool
 import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
 import dev.toastmc.client.module.player.Velocity
-import dev.toastmc.client.module.render.ESP
 import dev.toastmc.client.module.render.FullBright
 import dev.toastmc.client.module.render.HUD
 import dev.toastmc.client.module.render.NoRender
@@ -49,7 +48,7 @@ class ModuleManager {
         modules.clear()
         register(
             AutoArmour(), AutoTotem(), AutoTool(),
-            AutoWalk(), ESP(), Flight(),
+            AutoWalk(), Flight(),
             FullBright(), NoFall(), NoRender(),
             PortalChat(), SafeWalk(), Sprint(),
             Velocity(), HUD(), Jesus(), CrystalAura()
