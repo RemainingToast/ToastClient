@@ -2,6 +2,7 @@ package dev.toastmc.client.command
 
 import dev.toastmc.client.command.cmds.*
 import dev.toastmc.client.command.cmds.List
+import dev.toastmc.client.command.cmds.Set
 import dev.toastmc.client.util.MessageUtil
 
 class CommandManager () {
@@ -36,16 +37,12 @@ class CommandManager () {
      */
     fun initCommands() {
         commands.clear()
-        commands.addAll(
-            listOf(
-                Coords(),
-                DarkFinder(),
-                Help(),
-                Hide(),
-                Highest(),
-                List(),
-                Toggle()
-            )
-        )
+        register(Help(), Hide(), Highest(), List(), Set(), Toggle())
+    }
+
+    private fun register(vararg commands: Command){
+        for (cmd in commands){
+            this.commands.add(cmd)
+        }
     }
 }

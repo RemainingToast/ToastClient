@@ -4,10 +4,6 @@ import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
 import dev.toastmc.client.util.FileManager
 import dev.toastmc.client.util.SettingSaveUtil
-import dev.toastmc.client.util.WorldUtil
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
@@ -40,13 +36,13 @@ class ToastClient : ModInitializer {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
         CONFIG.initSettingUtil()
-        GlobalScope.launch {
-            while (true) {
-                if (MINECRAFT.world == null) {
-                    WorldUtil.loadedChunks.clear()
-                }
-                delay(500)
-            }
-        }
+//        GlobalScope.launch {
+//            while (true) {
+//                if (MINECRAFT.world == null) {
+//                    WorldUtil.loadedChunks.clear()
+//                }
+//                delay(500)
+//            }
+//        }
     }
 }

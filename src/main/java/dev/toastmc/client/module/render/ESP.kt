@@ -6,20 +6,14 @@ import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.EntityUtils
 import dev.toastmc.client.util.box
 import dev.toastmc.client.util.color
 import dev.toastmc.client.util.draw3d
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import io.netty.util.internal.ConcurrentSet
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
-import net.minecraft.entity.Entity
-import net.minecraft.entity.ItemEntity
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.Box
 import org.lwjgl.opengl.GL11.GL_QUADS
 
@@ -43,24 +37,24 @@ class ESP : Module(){
     @EventHandler
     val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         if (isCoroutineRunning) return@EventHook
-        GlobalScope.launch {
-            renderSet.clear()
-            isCoroutineRunning = true
-            for (i in 0 until mc.world!!.entities!!.count()) {
-                val entity: Entity? = mc.world!!.entities!!.elementAtOrNull(i)
-                if (entity == null || !entity.isAlive) continue
-                if ((renderSelf && entity == mc.player!!) ||
-                    (renderPlayers && entity is PlayerEntity && entity != mc.player!!) ||
-                    (renderHostiles && EntityUtils.isHostile(entity)) ||
-                    (renderNeutrals && EntityUtils.isNeutral(entity)) ||
-                    (renderPassives && EntityUtils.isAnimal(entity)) ||
-                    (renderItems && entity is ItemEntity)
-                ) {
-                    renderSet.add(entity.boundingBox)
-                }
-            }
-            isCoroutineRunning = false
-        }
+//        GlobalScope.launch {
+//            renderSet.clear()
+//            isCoroutineRunning = true
+//            for (i in 0 until mc.world!!.entities!!.count()) {
+//                val entity: Entity? = mc.world!!.entities!!.elementAtOrNull(i)
+//                if (entity == null || !entity.isAlive) continue
+//                if ((renderSelf && entity == mc.player!!) ||
+//                    (renderPlayers && entity is PlayerEntity && entity != mc.player!!) ||
+//                    (renderHostiles && EntityUtils.isHostile(entity)) ||
+//                    (renderNeutrals && EntityUtils.isNeutral(entity)) ||
+//                    (renderPassives && EntityUtils.isAnimal(entity)) ||
+//                    (renderItems && entity is ItemEntity)
+//                ) {
+//                    renderSet.add(entity.boundingBox)
+//                }
+//            }
+//            isCoroutineRunning = false
+//        }
     })
 
     @EventHandler
