@@ -1,6 +1,7 @@
 package dev.toastmc.client.module.combat
 
 import dev.toastmc.client.ToastClient
+import dev.toastmc.client.event.KeyPressEvent
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -22,6 +23,7 @@ import net.minecraft.item.SwordItem
 import net.minecraft.item.ToolItem
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
+import org.lwjgl.glfw.GLFW
 
 @ModuleManifest(
         label = "CrystalAura",
@@ -39,6 +41,7 @@ class CrystalAura : Module() {
     @Setting(name = "AntiWeakness") var antiweakness = true
     @Setting(name = "IgnoreEating") var ignoreeating = true
     @Setting(name = "IgnorePickaxe") var ignorepickaxe = true
+    @Setting(name = "SneakSurround") var sneaksurround = true
     @Setting(name = "Players") var players = true
     @Setting(name = "Mobs") var mobs = true
     @Setting(name = "Animals") var animals = true
@@ -54,11 +57,13 @@ class CrystalAura : Module() {
     override fun onEnable() {
         if (mc.player == null) return
         ToastClient.EVENT_BUS.subscribe(onTickEvent)
+        ToastClient.EVENT_BUS.subscribe(inputEvent)
     }
 
     override fun onDisable() {
         if (mc.player == null) return
         ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
+        ToastClient.EVENT_BUS.unsubscribe(inputEvent)
     }
 
     @EventHandler
@@ -130,4 +135,11 @@ class CrystalAura : Module() {
         val damageSafe = getExplosionDamage(entity.blockPos, p) - p.health <= maxselfdamage - 1 || p.isInvulnerable || p.isCreative || p.isSpectator
         return damageSafe && explode && mc.player!!.distanceTo(entity) <= range
     }
+
+    @EventHandler
+    private val inputEvent = Listener(EventHook<KeyPressEvent> {
+        if (mc.player == null) return@EventHook
+        val mod = ToastClient.MODULE_MANAGER.getModuleByName("Surround")
+        if (it.key == GLFW.GLFW_KEY_LEFT_SHIFT && sneaksurround && !mc.player!!.isFallFlying && mod != null) mod.toggle()
+    })
 }

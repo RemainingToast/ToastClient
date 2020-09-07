@@ -3,11 +3,9 @@ package dev.toastmc.client.module
 import dev.toastmc.client.module.combat.AutoArmour
 import dev.toastmc.client.module.combat.AutoTotem
 import dev.toastmc.client.module.combat.CrystalAura
+import dev.toastmc.client.module.combat.Surround
 import dev.toastmc.client.module.misc.PortalChat
-import dev.toastmc.client.module.movement.AutoWalk
-import dev.toastmc.client.module.movement.Flight
-import dev.toastmc.client.module.movement.Jesus
-import dev.toastmc.client.module.movement.Sprint
+import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.AutoTool
 import dev.toastmc.client.module.player.NoFall
 import dev.toastmc.client.module.player.SafeWalk
@@ -48,9 +46,9 @@ class ModuleManager {
         modules.clear()
         register(
             AutoArmour(), AutoTotem(), AutoTool(),
-            AutoWalk(), Flight(),
+            AutoWalk(), Flight(), FastStop(),
             FullBright(), NoFall(), NoRender(),
-            PortalChat(), SafeWalk(), Sprint(),
+            PortalChat(), SafeWalk(), Sprint(), Surround(),
             Velocity(), HUD(), Jesus(), CrystalAura()
         )
     }

@@ -1,8 +1,10 @@
 package dev.toastmc.client.command
 
+import com.mojang.brigadier.CommandDispatcher
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
+import net.minecraft.server.command.CommandSource
 import net.minecraft.util.Formatting
 
 @Environment(EnvType.CLIENT)
