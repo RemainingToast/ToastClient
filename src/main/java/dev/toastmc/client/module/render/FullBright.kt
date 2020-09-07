@@ -8,6 +8,7 @@ import dev.toastmc.client.module.ModuleManifest
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
+import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import java.util.*
 
@@ -37,6 +38,7 @@ class FullBright : Module() {
     override fun onEnable() {
         if (mc.player == null) return
         previousGamma = mc.options.gamma
+        mc.player!!.addStatusEffect(StatusEffectInstance(StatusEffects.NIGHT_VISION, 42069, 42069))
         ToastClient.EVENT_BUS.subscribe(onTickEvent)
     }
 

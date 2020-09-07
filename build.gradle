@@ -54,7 +54,6 @@ dependencies {
     modImplementation "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
 }
 
 processResources {
@@ -90,7 +89,6 @@ shadowJar {
         include(dependency('me.zeroeightsix:fiber'))
         include(dependency('com.github.ZeroMemes:Alpine'))
         include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
-        include(dependency('org.jetbrains.kotlinx:kotlinx-coroutines-core'))
     }
     classifier = 'shadow'
 }
