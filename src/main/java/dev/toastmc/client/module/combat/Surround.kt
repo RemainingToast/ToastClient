@@ -25,16 +25,11 @@ import java.lang.Math.*
     category = Category.COMBAT
 )
 class Surround : Module() {
-//    settings.addBoolean("AutoDisable", true)
-//    settings.addBoolean("Center", true)
-//    settings.addBoolean("All blocks", false)
-//    settings.addBoolean("Rotations", false)
-//    settings.addSlider("Blocks/Tick", 1.0, 2.0, 8.0)
     @Setting(name = "AutoDisable") var autodisable = true
-    @Setting(name = "Center") var centre = true
+    @Setting(name = "Center") var center = true
     @Setting(name = "AllBlocks") var allblocks = false
     @Setting(name = "Rotations") var rotations = false
-    @Setting(name = "BPT") var blockspertick = 1
+    @Setting(name = "BPT") var blockspertick = 8
 
 
     override fun onDisable() {
@@ -64,7 +59,7 @@ class Surround : Module() {
             }
         }
         mc.player!!.inventory.selectedSlot = slot
-        if (centre) centerPlayerPos()
+        if (center) centerPlayerPos()
         placements = 0
         for (i in 0 until blockspertick) {
             /*
