@@ -16,6 +16,7 @@ class SettingSaveUtil {
     private var module: File? = null
     private var initialized = false
     private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
+    private var configTree = ConfigTreeBuilder(null, "config")
 
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
 
@@ -28,28 +29,32 @@ class SettingSaveUtil {
         }
         load()
         save()
-        initialized = true
-    }
-
-    fun getConfigTree(): ConfigBranch {
-        var configTreeBuilder = ConfigTreeBuilder(null, "config")
         for (module in MODULE_MANAGER.modules) {
-            configTreeBuilder = configTreeBuilder.fork(module.label).applyFromPojo(module, annotationSetting).finishBranch()
+            if (module.config == null) {
+                module.config = ConfigTreeBuilder(configTree, module.label).applyFromPojo(module)
+            }
+            configTree = configTree.fork(module.label).applyFromPojo(module, annotationSetting).finishBranch()
         }
-        return configTreeBuilder.build()
+        initialized = true
     }
 
     fun save() {
         val fos = FileOutputStream(module!!)
-        FiberSerialization.serialize(getConfigTree(), fos, serializer)
+        FiberSerialization.serialize(configTree.build(), fos, serializer)
         fos.flush()
         fos.close()
     }
 
     fun load() {
-        getConfigTree()
         val fis = FileInputStream(module!!)
-        FiberSerialization.deserialize(getConfigTree(), fis, serializer)
+        FiberSerialization.deserialize(configTree.build(), fis, serializer)
+        for (module in MODULE_MANAGER.modules) {
+            if (module.enabled) {
+                module.enable()
+            } else {
+                module.disable()
+            }
+        }
         fis.close()
     }
 }
