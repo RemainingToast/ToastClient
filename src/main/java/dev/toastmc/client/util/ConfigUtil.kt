@@ -11,49 +11,47 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-class SettingSaveUtil {
+class ConfigUtil {
     private var directory: File? = null
     private var module: File? = null
     private var initialized = false
-    private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
-    private var configTree = ConfigTreeBuilder(null, "config")
+    private val annotationSetting =
+        AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
 
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
 
-    fun initSettingUtil() {
+    init {
         directory = ToastClient.MOD_DIRECTORY
         module = File(directory, "modules.json")
-        if(!ToastClient.FILE_MANAGER.fileExists(module!!)){ // Prevents crash when loading client for the first time.
+        if (!ToastClient.FILE_MANAGER.fileExists(module!!)) { // Prevents crash when loading client for the first time.
             ToastClient.FILE_MANAGER.createFile(module!!)   //
             save()                                          //
         }
         load()
         save()
-        for (module in MODULE_MANAGER.modules) {
-            if (module.config == null) {
-                module.config = ConfigTreeBuilder(configTree, module.label).applyFromPojo(module)
-            }
-            configTree = configTree.fork(module.label).applyFromPojo(module, annotationSetting).finishBranch()
-        }
         initialized = true
+    }
+
+    private fun getConfigTree(): ConfigBranch? {
+        var configTree = ConfigTreeBuilder(null, "config")
+        for (module in MODULE_MANAGER.modules) {
+            configTree = configTree.withChild(ConfigTreeBuilder(null, module.label).applyFromPojo(module, annotationSetting).build())
+        }
+        return configTree.build()
     }
 
     fun save() {
         val fos = FileOutputStream(module!!)
-        FiberSerialization.serialize(configTree.build(), fos, serializer)
+        FiberSerialization.serialize(getConfigTree(), fos, serializer)
         fos.flush()
         fos.close()
     }
 
     fun load() {
         val fis = FileInputStream(module!!)
-        FiberSerialization.deserialize(configTree.build(), fis, serializer)
+        FiberSerialization.deserialize(getConfigTree(), fis, serializer)
         for (module in MODULE_MANAGER.modules) {
-            if (module.enabled) {
-                module.enable()
-            } else {
-                module.disable()
-            }
+            module.setEnabled(module.enabled)
         }
         fis.close()
     }
