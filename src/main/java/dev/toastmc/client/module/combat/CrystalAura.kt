@@ -2,13 +2,13 @@ package dev.toastmc.client.module.combat
 
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.event.KeyPressEvent
+import dev.toastmc.client.event.RenderEvent
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.DamageUtil
+import dev.toastmc.client.util.*
 import dev.toastmc.client.util.DamageUtil.getExplosionDamage
-import dev.toastmc.client.util.InventoryUtils
 import dev.toastmc.client.util.ItemUtil.isPickaxe
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
@@ -24,6 +24,7 @@ import net.minecraft.item.ToolItem
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
 import org.lwjgl.glfw.GLFW
+import org.lwjgl.opengl.GL11
 
 @ModuleManifest(
         label = "CrystalAura",
@@ -46,6 +47,7 @@ class CrystalAura : Module() {
     @Setting(name = "Mobs") var mobs = true
     @Setting(name = "Animals") var animals = true
     @Setting(name = "Rotate") var rotate = true
+    @Setting(name = "Render") var render = true
 
     private val blackList = HashMap<BlockPos, Int>()
 
@@ -54,23 +56,26 @@ class CrystalAura : Module() {
     private var crystalSlot = 0
     private var breaks = 0
 
+    var crystal: EndCrystalEntity? = null
+
     override fun onEnable() {
         if (mc.player == null) return
         ToastClient.EVENT_BUS.subscribe(onTickEvent)
         ToastClient.EVENT_BUS.subscribe(inputEvent)
+        ToastClient.EVENT_BUS.subscribe(onWorldRenderEvent)
     }
 
     override fun onDisable() {
         if (mc.player == null) return
         ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
         ToastClient.EVENT_BUS.unsubscribe(inputEvent)
+        ToastClient.EVENT_BUS.unsubscribe(onWorldRenderEvent)
     }
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
         var shortestDistance: Double? = null
-        var crystal: EndCrystalEntity? = null
         for (entity in mc.world!!.entities) {
             if (entity == null || entity.removed || entity !is EndCrystalEntity) continue
             val p = entity.blockPos.down()
@@ -88,7 +93,7 @@ class CrystalAura : Module() {
         }
         val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
         crystalSlot = if (InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL)) != null) InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL))!![0] else -1
-        if (explodeCheck(crystal)) {
+        if (explodeCheck(crystal!!)) {
             oldSlot = mc.player!!.inventory.selectedSlot
             when {
                 breaks >= maxbreaks -> {
@@ -141,5 +146,16 @@ class CrystalAura : Module() {
         if (mc.player == null) return@EventHook
         val mod = ToastClient.MODULE_MANAGER.getModuleByName("Surround")
         if (it.key == GLFW.GLFW_KEY_LEFT_SHIFT && sneaksurround && !mc.player!!.isFallFlying && mod != null) mod.toggle()
+    })
+
+    @EventHandler
+    val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
+        if (!render || crystal == null || !crystal!!.isAlive) return@EventHook
+        draw3d(translate = true) {
+            begin(GL11.GL_QUADS) {
+                color(255, 0, 255, 128)
+                box(crystal!!.boundingBox)
+            }
+        }
     })
 }
