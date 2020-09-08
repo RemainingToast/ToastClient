@@ -14,15 +14,14 @@ class CommandManager () {
     /**
      * Gets a command from it's name
      */
-    // TODO: FIX NOT WORKING WITH LABEL
     fun getCommand(cmd: String?): Command? {
         val commandIter = commands.iterator()
         while (commandIter.hasNext()) {
             val next = commandIter.next()
-            if((next.getLabel()?:"").toString().equals(cmd, ignoreCase = true)){
+            if((next.getLabel()?:"").equals(cmd, ignoreCase = true)){
                 return next
             }
-            for (alias in next.getAlias()!!) {
+            for (alias in next.getAlias()?: arrayOf("")) {
                 if (alias.equals(cmd, ignoreCase = true)) {
                     return next
                 }
