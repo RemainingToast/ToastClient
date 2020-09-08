@@ -34,10 +34,6 @@ class ToastClient : ModInitializer {
     override fun onInitialize() {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
-        CONFIG.initSettingUtil()
-        CONFIG.save()
-        CONFIG.load()
-        MODULE_MANAGER.getModuleByClass(Flight::class)!!.enable()
-        CONFIG.save()
+        CONFIG.initSettingUtil()s
     }
 }
