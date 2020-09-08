@@ -2,6 +2,7 @@ package dev.toastmc.client
 
 import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
+import dev.toastmc.client.module.movement.Flight
 import dev.toastmc.client.util.FileManager
 import dev.toastmc.client.util.SettingSaveUtil
 import me.zero.alpine.bus.EventBus
@@ -34,5 +35,9 @@ class ToastClient : ModInitializer {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
         CONFIG.initSettingUtil()
+        CONFIG.save()
+        CONFIG.load()
+        MODULE_MANAGER.getModuleByClass(Flight::class)!!.enable()
+        CONFIG.save()
     }
 }
