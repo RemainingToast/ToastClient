@@ -2,9 +2,8 @@ package dev.toastmc.client
 
 import dev.toastmc.client.command.CommandManager
 import dev.toastmc.client.module.ModuleManager
-import dev.toastmc.client.module.movement.Flight
 import dev.toastmc.client.util.FileManager
-import dev.toastmc.client.util.SettingSaveUtil
+import dev.toastmc.client.util.ConfigUtil
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
@@ -21,7 +20,7 @@ class ToastClient : ModInitializer {
         val MODULE_MANAGER: ModuleManager = ModuleManager()
 
         val FILE_MANAGER: FileManager = FileManager()
-        val CONFIG: SettingSaveUtil = SettingSaveUtil()
+        val CONFIG: ConfigUtil = ConfigUtil()
         val MOD_DIRECTORY: File = File(MinecraftClient.getInstance().runDirectory, MODNAME.toLowerCase().replace(" ", "") + "/")
 
         var CMD_PREFIX = "."
@@ -34,6 +33,5 @@ class ToastClient : ModInitializer {
     override fun onInitialize() {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
-        CONFIG.initSettingUtil()s
     }
 }

@@ -3,6 +3,7 @@ package dev.toastmc.client.module
 import dev.toastmc.client.ToastClient
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
+import me.zero.alpine.listener.Listenable
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
@@ -46,22 +47,27 @@ open class Module {
         }
     }
 
-    private fun setEnabled(newEnabled: Boolean): Boolean {
+    fun setEnabled(newEnabled: Boolean): Boolean {
         enabled = newEnabled
         if (enabled) {
             try {
                 ToastClient.EVENT_BUS.post(this@Module)
             } catch (ignored: IllegalArgumentException) {
             }
-            onEnable()
+            try {
+                onEnable()
+            } catch (ignored: NullPointerException) {
+            }
         } else {
             try {
 //                ToastClient.EVENT_BUS.post(this@Module)
             } catch (ignored: IllegalArgumentException) {
             }
-            onDisable()
+            try {
+                onDisable()
+            } catch (ignored: NullPointerException) {
+            }
         }
-        ToastClient.CONFIG.save()
         return enabled
     }
 
@@ -77,11 +83,23 @@ open class Module {
 
 //    fun getBool(name: String): Boolean = settings.getBoolean(name)
 
-    fun disable(): Boolean = setEnabled(false)
+    fun disable(): Boolean {
+        val enabled = setEnabled(false)
+        ToastClient.CONFIG.save()
+        return enabled
+    }
 
-    fun enable(): Boolean = setEnabled(true)
+    fun enable(): Boolean {
+        val enabled = setEnabled(true)
+        ToastClient.CONFIG.save()
+        return enabled
+    }
 
-    fun toggle(): Boolean = setEnabled(!enabled)
+    fun toggle(): Boolean {
+        val enabled = setEnabled(!this.enabled)
+        ToastClient.CONFIG.save()
+        return enabled
+    }
 
     open fun onEnable() {
 
