@@ -3,9 +3,7 @@ package dev.toastmc.client.util
 import net.minecraft.client.MinecraftClient
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket.LookOnly
 import net.minecraft.util.math.Vec3d
-import kotlin.math.asin
-import kotlin.math.atan2
-import kotlin.math.sqrt
+import kotlin.math.*
 
 object MovementUtil {
     private val mc = MinecraftClient.getInstance()
@@ -48,4 +46,22 @@ object MovementUtil {
             lookClient(yaw, pitch)
         }
     }
+
+    fun getMovementYaw(): Double {
+        var strafe = 90f
+        strafe += if(mc.player!!.input.movementForward != 0F) mc.player!!.input.movementForward * 0.5F else 1F
+        var yaw = mc.player!!.yaw - strafe
+        yaw -= if(mc.player!!.input.movementForward < 0F)180 else 0
+        return Math.toRadians(yaw.toDouble())
+    }
+
+
+    fun getSpeed(): Double {
+        return sqrt(mc.player!!.velocity.x.pow(2) + mc.player!!.velocity.z.pow(2))
+    }
+
+    fun setSpeed(speed: Double) {
+        mc.player!!.setVelocity(-sin(getMovementYaw()) * speed, mc.player!!.velocity.y, cos(getMovementYaw()) * speed)
+    }
+
 }

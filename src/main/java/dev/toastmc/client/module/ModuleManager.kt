@@ -6,10 +6,7 @@ import dev.toastmc.client.module.combat.CrystalAura
 import dev.toastmc.client.module.combat.Surround
 import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.movement.*
-import dev.toastmc.client.module.player.AutoTool
-import dev.toastmc.client.module.player.NoFall
-import dev.toastmc.client.module.player.SafeWalk
-import dev.toastmc.client.module.player.Velocity
+import dev.toastmc.client.module.player.*
 import dev.toastmc.client.module.render.FullBright
 import dev.toastmc.client.module.render.HUD
 import dev.toastmc.client.module.render.NoRender
@@ -49,7 +46,7 @@ class ModuleManager {
             AutoWalk(), Flight(), FastStop(),
             FullBright(), NoFall(), NoRender(),
             PortalChat(), SafeWalk(), Sprint(), Surround(),
-            Velocity(), HUD(), Jesus(), CrystalAura()
+            Velocity(), HUD(), Jesus(), CrystalAura(), AntiHunger(), AutoReplenish()
         )
     }
 

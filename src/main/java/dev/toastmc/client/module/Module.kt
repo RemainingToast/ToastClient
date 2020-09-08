@@ -3,7 +3,6 @@ package dev.toastmc.client.module
 import dev.toastmc.client.ToastClient
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
-import me.zero.alpine.listener.Listenable
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient

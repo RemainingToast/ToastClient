@@ -182,20 +182,16 @@ object InventoryUtils {
      * if [slotTo] contains an item, then move it to [slotFrom]
      */
     fun moveToSlot(windowId: Int, slotFrom: Int, slotTo: Int, delayMillis: Long) {
-        if (inProgress) return
-        Thread(Runnable {
+        while (inProgress) {
             inProgress = true
             val prevScreen = mc.currentScreen
             if (prevScreen !is InventoryScreen) mc.openScreen(InventoryScreen(mc.player))
-            Thread.sleep(delayMillis)
             inventoryClick(windowId, slotFrom, SlotActionType.PICKUP)
-            Thread.sleep(delayMillis)
             inventoryClick(windowId, slotTo, SlotActionType.PICKUP)
-            Thread.sleep(delayMillis)
             inventoryClick(windowId, slotFrom, SlotActionType.PICKUP)
             if (prevScreen !is InventoryScreen) mc.openScreen(prevScreen)
             inProgress = false
-        }).start()
+        }
     }
 
     /**
