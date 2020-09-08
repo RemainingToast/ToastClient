@@ -9,7 +9,7 @@ import dev.toastmc.client.util.MessageUtil
 @CommandManifest(
     label = "Set",
     description = "Set module setting.",
-    aliases = ["set"]
+    aliases = []
 )
 class Set : Command() {
     //TODO(".set flight speed 60") // .set <module> <setting> <value>

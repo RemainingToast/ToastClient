@@ -9,7 +9,7 @@ import dev.toastmc.client.util.MessageUtil
 @CommandManifest(
         label = "List",
         description = "List Modules",
-        aliases = ["modules", "mods", "list"]
+        aliases = ["modules", "mods"]
 )
 class List : Command() {
     override fun run(args: Array<String>) {

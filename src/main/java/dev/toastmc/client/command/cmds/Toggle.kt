@@ -11,7 +11,7 @@ import net.minecraft.util.Formatting
 
 @CommandManifest(
         label = "Toggle",
-        aliases = ["tog", "toggle", "t"],
+        aliases = ["tog", "t"],
         description = "Toggle on and off modules",
         usage = "toggle <module>"
 )

@@ -10,7 +10,7 @@ import net.minecraft.util.Formatting
 @CommandManifest(
     label = "Hide",
     description = "Hide Modules in ArrayList",
-    aliases = ["hide", "draw"]
+    aliases = ["draw"]
 )
 class Hide : Command(){
     override fun run(args: Array<String>) {
