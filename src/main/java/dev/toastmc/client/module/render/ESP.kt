@@ -36,6 +36,7 @@ class ESP : Module(){
     /*@Setting(name = "Vehicle Color")*/       var vehicleColor = Color4i(255, 165, 0, 128)
     @Setting(name = "Render Self")      var renderSelf = false
     /*@Setting(name = "Self Color")*/       var selfColor = Color4i(0, 255, 255, 128)
+    @Setting(name = "Render Others")     var renderOthers = true
 
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
@@ -67,7 +68,7 @@ class ESP : Module(){
                         renderItems && entity is Item -> {
                             color(itemColor)
                         }
-                        else -> {
+                        renderOthers -> {
                             color(Color4i(0, 0, 0, 128))
                         }
                     }
