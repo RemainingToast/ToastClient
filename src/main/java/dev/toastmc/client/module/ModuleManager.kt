@@ -7,10 +7,7 @@ import dev.toastmc.client.module.combat.Surround
 import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
-import dev.toastmc.client.module.render.ESP
-import dev.toastmc.client.module.render.FullBright
-import dev.toastmc.client.module.render.HUD
-import dev.toastmc.client.module.render.NoRender
+import dev.toastmc.client.module.render.*
 import kotlin.reflect.KClass
 
 
@@ -49,7 +46,7 @@ class ModuleManager {
             Flight(),       FullBright(),   HUD(),
             Jesus(),        NoFall(),       NoRender(),
             PortalChat(),   SafeWalk(),     Sprint(),
-            Surround(),     Velocity()
+            Surround(),     Tracers(),      Velocity()
         )
     }
 

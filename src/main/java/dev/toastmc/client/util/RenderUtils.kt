@@ -35,12 +35,20 @@ fun <T: RenderBuilder> T.vertex(x: Double, y: Double, z: Double): T = this.apply
     GL11.glVertex3d(x + translation.x, y + translation.y, z + translation.z)
 }
 
+fun <T: RenderBuilder> T.vertex(vec3d: Vec3d): T = this.apply {
+    GL11.glVertex3d(vec3d.x + translation.x, vec3d.y + translation.y, vec3d.z + translation.z)
+}
+
 fun <T: RenderBuilder> T.color(r: Float, g: Float, b: Float, a: Float): T = this.apply {
     GlStateManager.color4f(r, g, b, a)
 }
 
 fun <T: RenderBuilder> T.color(color4f: Color4f): T = this.apply {
     GlStateManager.color4f(color4f.r, color4f.g, color4f.b, color4f.a)
+}
+
+fun <T: RenderBuilder> T.color(color3f: Color3f): T = this.apply {
+    GlStateManager.color4f(color3f.r, color3f.g, color3f.b, 1f)
 }
 
 fun <T: RenderBuilder> T.color(r: Int, g: Int, b: Int, a: Int): T = this.apply {
@@ -51,9 +59,17 @@ fun <T: RenderBuilder> T.color(color4i: Color4i): T = this.apply {
     GlStateManager.color4f(color4i.r / 255f, color4i.g / 255f, color4i.b / 255f, color4i.a / 255f)
 }
 
+fun <T: RenderBuilder> T.color(color3i: Color3i): T = this.apply {
+    GlStateManager.color4f(color3i.r / 255f, color3i.g / 255f, color3i.b / 255f, 1f)
+}
+
 data class Color4f(var r: Float, var g: Float, var b: Float, var a: Float)
 
 data class Color4i(var r: Int, var g: Int, var b: Int, var a: Int)
+
+data class Color3f(var r: Float, var g: Float, var b: Float)
+
+data class Color3i(var r: Int, var g: Int, var b: Int)
 
 fun <T: RenderBuilder> T.box(bb: Box): T = this.apply {
     vertex(bb.minX, bb.minY, bb.minZ)
@@ -80,6 +96,12 @@ fun <T: RenderBuilder> T.box(bb: Box): T = this.apply {
     vertex(bb.minX, bb.minY, bb.maxZ)
     vertex(bb.minX, bb.maxY, bb.maxZ)
     vertex(bb.minX, bb.maxY, bb.minZ)
+}
+
+fun <T: RenderBuilder> T.line(start: Vec3d, end: Vec3d): T = this.apply {
+    vertex(start)
+    vertex(start)
+    vertex(end)
 }
 
 inline fun draw3d(translate: Boolean = false, color: Color = Color(1f, 1f, 1f, 1f), action: RenderBuilder.() -> Unit) {
