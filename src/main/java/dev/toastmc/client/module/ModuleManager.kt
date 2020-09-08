@@ -7,6 +7,7 @@ import dev.toastmc.client.module.combat.Surround
 import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
+import dev.toastmc.client.module.render.ESP
 import dev.toastmc.client.module.render.FullBright
 import dev.toastmc.client.module.render.HUD
 import dev.toastmc.client.module.render.NoRender
@@ -42,11 +43,13 @@ class ModuleManager {
     init {
         modules.clear()
         register(
-            AutoArmour(), AutoTotem(), AutoTool(),
-            AutoWalk(), Flight(), FastStop(),
-            FullBright(), NoFall(), NoRender(),
-            PortalChat(), SafeWalk(), Sprint(), Surround(),
-            Velocity(), HUD(), Jesus(), CrystalAura(), AntiHunger(), AutoReplenish()
+            AutoArmour(),   AntiHunger(),   AutoReplenish(),
+            AutoTotem(),    AutoTool(),     AutoWalk(),
+            CrystalAura(),  ESP(),          FastStop(),
+            Flight(),       FullBright(),   HUD(),
+            Jesus(),        NoFall(),       NoRender(),
+            PortalChat(),   SafeWalk(),     Sprint(),
+            Surround(),     Velocity()
         )
     }
 

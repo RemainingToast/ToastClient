@@ -39,9 +39,21 @@ fun <T: RenderBuilder> T.color(r: Float, g: Float, b: Float, a: Float): T = this
     GlStateManager.color4f(r, g, b, a)
 }
 
+fun <T: RenderBuilder> T.color(color4f: Color4f): T = this.apply {
+    GlStateManager.color4f(color4f.r, color4f.g, color4f.b, color4f.a)
+}
+
 fun <T: RenderBuilder> T.color(r: Int, g: Int, b: Int, a: Int): T = this.apply {
     GlStateManager.color4f(r / 255f, g / 255f, b / 255f, a / 255f)
 }
+
+fun <T: RenderBuilder> T.color(color4i: Color4i): T = this.apply {
+    GlStateManager.color4f(color4i.r / 255f, color4i.g / 255f, color4i.b / 255f, color4i.a / 255f)
+}
+
+data class Color4f(var r: Float, var g: Float, var b: Float, var a: Float)
+
+data class Color4i(var r: Int, var g: Int, var b: Int, var a: Int)
 
 fun <T: RenderBuilder> T.box(bb: Box): T = this.apply {
     vertex(bb.minX, bb.minY, bb.minZ)
