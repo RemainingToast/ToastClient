@@ -15,9 +15,9 @@ class SettingSaveUtil {
     private var directory: File? = null
     private var module: File? = null
     private var initialized = false
+    private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
 
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
-    var configTree: ConfigBranch
 
     fun initSettingUtil() {
         directory = ToastClient.MOD_DIRECTORY
@@ -31,25 +31,25 @@ class SettingSaveUtil {
         initialized = true
     }
 
-    init {
+    fun getConfigTree(): ConfigBranch {
         var configTreeBuilder = ConfigTreeBuilder(null, "config")
-        val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
         for (module in MODULE_MANAGER.modules) {
             configTreeBuilder = configTreeBuilder.fork(module.label).applyFromPojo(module, annotationSetting).finishBranch()
         }
-        configTree = configTreeBuilder.build()
+        return configTreeBuilder.build()
     }
 
     fun save() {
         val fos = FileOutputStream(module!!)
-        FiberSerialization.serialize(configTree, fos, serializer)
+        FiberSerialization.serialize(getConfigTree(), fos, serializer)
         fos.flush()
         fos.close()
     }
 
     fun load() {
+        getConfigTree()
         val fis = FileInputStream(module!!)
-        FiberSerialization.deserialize(configTree, fis, serializer)
+        FiberSerialization.deserialize(getConfigTree(), fis, serializer)
         fis.close()
     }
 }
