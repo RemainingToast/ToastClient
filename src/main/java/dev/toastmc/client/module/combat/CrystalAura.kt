@@ -23,6 +23,8 @@ import net.minecraft.item.SwordItem
 import net.minecraft.item.ToolItem
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
 
@@ -35,7 +37,7 @@ import org.lwjgl.opengl.GL11
 class CrystalAura : Module() {
     @Setting(name = "Explode") var explode = true
     @Setting(name = "Place") var place = true
-    @Setting(name = "Range") var range = 4
+    @Setting(name = "Range") var range = 4.0
     @Setting(name = "MaxSelfDamage") var maxselfdamage = 0
     @Setting(name = "MaxBreaks") var maxbreaks = 2
     @Setting(name = "AutoSwitch") var autoswitch = true
@@ -63,6 +65,7 @@ class CrystalAura : Module() {
         ToastClient.EVENT_BUS.subscribe(onTickEvent)
         ToastClient.EVENT_BUS.subscribe(inputEvent)
         ToastClient.EVENT_BUS.subscribe(onWorldRenderEvent)
+        crystal = null
     }
 
     override fun onDisable() {
@@ -70,23 +73,14 @@ class CrystalAura : Module() {
         ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
         ToastClient.EVENT_BUS.unsubscribe(inputEvent)
         ToastClient.EVENT_BUS.unsubscribe(onWorldRenderEvent)
+        crystal = null
     }
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
-        var shortestDistance: Double? = null
-        for (entity in mc.world!!.entities) {
-            if (entity == null || entity.removed || entity !is EndCrystalEntity) continue
-            val p = entity.blockPos.down()
-            if (blackList.containsKey(p)) {
-                if (blackList[p]!! > 0) blackList.replace(p, blackList[p]!! - 1) else blackList.remove(p)
-            }
-            val distance = mc.player!!.distanceTo(entity)
-            if (shortestDistance == null || distance < shortestDistance) {
-                shortestDistance = distance.toDouble()
-                crystal = entity
-            }
+        if (crystal == null || crystal!!.removed) {
+            crystal = findCrystal(range)
         }
         if (crystal == null) {
             return@EventHook
@@ -126,6 +120,7 @@ class CrystalAura : Module() {
             mc.interactionManager?.attackEntity(mc.player, crystal)
             mc.player!!.swingHand(if(!offhand) Hand.MAIN_HAND else Hand.OFF_HAND)
             ++breaks
+            crystal = findCrystal(range)
         } else { // Failed explodeCheck
             rotate = false
             if (oldSlot != -1) {
@@ -135,10 +130,33 @@ class CrystalAura : Module() {
         }
     })
 
+    private fun findCrystal(range: Double): EndCrystalEntity? {
+        var foundCrystal: EndCrystalEntity? = null
+        var sd: Double? = null
+        for (entity in mc.world!!.entities) {
+            if (entity == null || entity.removed || entity !is EndCrystalEntity) continue
+            val p = entity.blockPos.down()
+            if (blackList.containsKey(p)) {
+                if (blackList[p]!! > 0) blackList.replace(p, blackList[p]!! - 1) else blackList.remove(p)
+            }
+            // d^2=(bx−ax)^2+(by−ay)^2+(bz-az)^2
+            val distance = mc.player!!.distanceTo(entity)
+            if (canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range) && (sd == null || distance < sd)) {
+                sd = distance.toDouble()
+                foundCrystal = entity
+            }
+        }
+        return foundCrystal
+    }
+
     private fun explodeCheck(entity: Entity) : Boolean {
         val p = mc.player!!
         val damageSafe = getExplosionDamage(entity.blockPos, p) - p.health <= maxselfdamage - 1 || p.isInvulnerable || p.isCreative || p.isSpectator
-        return damageSafe && explode && mc.player!!.distanceTo(entity) <= range
+        return damageSafe && explode && canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range)
+    }
+
+    fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
+        return aabb.expand(maxRange).contains(point)
     }
 
     @EventHandler
@@ -150,7 +168,7 @@ class CrystalAura : Module() {
 
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
-        if (!render || crystal == null || !crystal!!.isAlive) return@EventHook
+        if (!render || crystal == null || crystal!!.removed) return@EventHook
         draw3d(translate = true) {
             begin(GL11.GL_QUADS) {
                 color(255, 0, 255, 128)
