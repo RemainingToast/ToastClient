@@ -34,6 +34,6 @@ class ToastClient : ModInitializer {
     override fun onInitialize() {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
-        CONFIG.initSettingUtil()s
+        CONFIG.initSettingUtil()
     }
 }
