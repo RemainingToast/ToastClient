@@ -2,6 +2,7 @@ pipeline {
   agent {
     docker 'gradle:latest'
   }
+  node {
   stages {
     stage('Gradle Build') {
       steps {
@@ -42,5 +43,6 @@ pipeline {
         }
       }
     }
+  }
   }
 }
