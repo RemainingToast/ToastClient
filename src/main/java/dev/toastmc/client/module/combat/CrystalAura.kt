@@ -1,6 +1,7 @@
 package dev.toastmc.client.module.combat
 
 import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
 import dev.toastmc.client.event.KeyPressEvent
 import dev.toastmc.client.event.RenderEvent
 import dev.toastmc.client.event.TickEvent
@@ -31,6 +32,7 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
+import java.awt.Color
 
 @ModuleManifest(
     label = "CrystalAura",
@@ -65,37 +67,29 @@ class CrystalAura : Module() {
     var crystal: EndCrystalEntity? = null
 
     override fun onEnable() {
-        if (mc.player == null) return
         ToastClient.EVENT_BUS.subscribe(onTickEvent)
         ToastClient.EVENT_BUS.subscribe(inputEvent)
         ToastClient.EVENT_BUS.subscribe(onWorldRenderEvent)
-        crystal = null
     }
 
     override fun onDisable() {
-        if (mc.player == null) return
         ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
         ToastClient.EVENT_BUS.unsubscribe(inputEvent)
         ToastClient.EVENT_BUS.unsubscribe(onWorldRenderEvent)
-        crystal = null
     }
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
-        if (crystal == null || crystal!!.removed) {
-            crystal = findCrystal(range)
-        }
-        if (crystal == null) {
-            return@EventHook
-        }
+//        if (crystal == null || crystal!!.removed) {
+//            crystal = findCrystal(range)
+//        }
+//        if (crystal == null) {
+//            return@EventHook
+//        }
+        crystal = findCrystal(range) ?: return@EventHook
         val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
-        crystalSlot =
-            if (InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL)) != null) InventoryUtils.getSlotsHotbar(
-                Item.getRawId(
-                    Items.END_CRYSTAL
-                )
-            )!![0] else -1
+        crystalSlot = if (InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL)) != null) InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL))!![0] else -1
         if (explodeCheck(crystal!!)) {
             oldSlot = mc.player!!.inventory.selectedSlot
             when {
@@ -165,38 +159,44 @@ class CrystalAura : Module() {
     private fun explodeCheck(entity: Entity) : Boolean {
         val p = mc.player!!
         val damageSafe = getExplosionDamage(entity.blockPos, p) - p.health <= maxselfdamage - 1 || p.isInvulnerable || p.isCreative || p.isSpectator
-        return damageSafe && explode && canReach(
-            mc.player!!.pos.add(
-                0.0,
-                mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(),
-                0.0
-            ), entity.boundingBox, range
-        )
+        return damageSafe && explode && canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range)
     }
 
-    fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
+    private fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
         return aabb.expand(maxRange).contains(point)
     }
 
     @EventHandler
     private val inputEvent = Listener(EventHook<KeyPressEvent> {
         if (mc.player == null) return@EventHook
-        val mod = ToastClient.MODULE_MANAGER.getModuleByName("Surround")
+        val mod = MODULE_MANAGER.getModuleByName("Surround")
         if (it.key == GLFW.GLFW_KEY_LEFT_SHIFT && sneaksurround && !mc.player!!.isFallFlying && mod != null) mod.toggle()
     })
 
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
         if (!render || crystal == null || crystal!!.removed) return@EventHook
-        draw3d(translate = true) {
-            begin(GL11.GL_QUADS) {
-                color(255, 0, 255, 128)
-                box(crystal!!.boundingBox)
+        if (canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), crystal!!.boundingBox, range)) {
+            val pos = crystal!!.blockPos.down()
+            val str =  getExplosionDamage(crystal!!.blockPos, mc.player!!).toString()
+            val color = healthGradient(str.toDouble(), 0.0, mc.player!!.maxHealth.toDouble())
+            draw3d(translate = true) {
+                begin(GL11.GL_QUADS) {
+                    color(color)
+                    box(pos)
+                }
+                text(str, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
             }
         }
     })
 
     fun canPlaceCrystal(pos: BlockPos): Boolean {
         return mc.world != null && pos.block.matches(BEDROCK, OBSIDIAN) && mc.world!!.getNonSpectatingEntities(Entity::class.java, Box(pos.up()).expand(0.0, 1.0, 0.0)).isNotEmpty()
+    }
+
+    private fun healthGradient(x: Double, minX: Double, maxX: Double, from: Color = Color.RED, to: Color = Color.GREEN): Color4f {
+        val range = maxX - minX
+        val p = (x - minX) / range
+        return Color4f((from.red * p + to.red * (1 - p)).toFloat(), (from.green * p + to.green * (1 - p)).toFloat(), (from.blue * p + to.blue * (1 - p)).toFloat(), 0.5f)
     }
 }

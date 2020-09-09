@@ -57,7 +57,6 @@ class ConfigUtil {
                 module.setEnabled(module.enabled)
             }
             fis.close()
-
         } catch (ignored: ValueDeserializationException){
             println("Config failed to load. \n\nStackTrace:\n${ignored.stackTrace}")
         }

@@ -3,17 +3,20 @@ package dev.toastmc.client.util
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.client.ToastClient
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.*
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.*
 import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL14
 import java.awt.Color
-import kotlin.math.ceil
 
 /**
  * @credit cookiedragon234 26/Jun/2020
  * @from https://github.com/cookiedragon234/Raion-116/
  */
+val mc = MinecraftClient.getInstance()
 
 open class RenderBuilder {
     var translation: Vec3d = Vec3d.ZERO
@@ -79,6 +82,30 @@ data class Color4i(var r: Int, var g: Int, var b: Int, var a: Int)
 data class Color3f(var r: Float, var g: Float, var b: Float)
 
 data class Color3i(var r: Int, var g: Int, var b: Int)
+
+fun <T: RenderBuilder> T.text(text: String, x: Double, y: Double, z: Double): T = this.apply {
+    val i = mc.textRenderer.getWidth(text) / 2
+    val t = Tessellator.getInstance()
+    val b = t.buffer
+    val f = mc.options.getTextBackgroundOpacity(0.25f)
+    glSetup(x.toInt(), y.toInt(), z.toInt())
+    GL11.glScaled(-0.025, -0.025, 0.025);
+    GL11.glDisable(GL11.GL_TEXTURE_2D)
+    b.begin(7, VertexFormats.POSITION_COLOR)
+    b.vertex(-i - 1.toDouble(), -1.0, 0.0).color(0.0f, 0.0f, 0.0f, f).next()
+    b.vertex(-i - 1.toDouble(), 8.0, 0.0).color(0.0f, 0.0f, 0.0f, f).next()
+    b.vertex(i + 1.toDouble(), 8.0, 0.0).color(0.0f, 0.0f, 0.0f, f).next()
+    b.vertex(i + 1.toDouble(), -1.0, 0.0).color(0.0f, 0.0f, 0.0f, f).next()
+    t.draw()
+    GL11.glEnable(GL11.GL_TEXTURE_2D)
+    mc.textRenderer.draw(MatrixStack(), text, -i.toFloat(), 0f, 553648127)
+    mc.textRenderer.draw(MatrixStack(), text, -i.toFloat(), 0f, -1)
+    glCleanup()
+}
+
+fun <T: RenderBuilder> T.box(bp: BlockPos): T = this.apply {
+    box(Box(bp))
+}
 
 fun <T: RenderBuilder> T.box(bb: Box): T = this.apply {
     vertex(bb.minX, bb.minY, bb.minZ)
@@ -382,4 +409,48 @@ class Vec2fMutable(
         public set
     override var y: Float = y
         public set
+}
+
+fun glSetup(x: Int, y: Int, z: Int) {
+    GL11.glPushMatrix()
+    offsetRender()
+    GL11.glTranslated(x.toDouble(), y.toDouble(), z.toDouble())
+    GL11.glNormal3f(0.0f, 1.0f, 0.0f)
+    GL11.glRotatef(-mc.player!!.yaw, 0.0f, 1.0f, 0.0f)
+    GL11.glRotatef(mc.player!!.pitch, 1.0f, 0.0f, 0.0f)
+    GL11.glDepthFunc(GL11.GL_ALWAYS)
+    GL11.glEnable(GL11.GL_BLEND)
+    GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
+}
+
+fun glCleanup() {
+    GL11.glDisable(GL11.GL_BLEND)
+    GL11.glDepthFunc(GL11.GL_LEQUAL)
+    GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
+    GL11.glPopMatrix()
+}
+
+fun offsetRender() {
+    val camera: Camera = BlockEntityRenderDispatcher.INSTANCE.camera
+    val camPos: Vec3d = camera.getPos()
+    GL11.glRotated(MathHelper.wrapDegrees(camera.getPitch()).toDouble(), 1.0, 0.0, 0.0)
+    GL11.glRotated(MathHelper.wrapDegrees(camera.getYaw() + 180.0), 0.0, 1.0, 0.0)
+    GL11.glTranslated(-camPos.x, -camPos.y, -camPos.z)
+}
+
+fun gl11Setup() {
+    GL11.glPushMatrix()
+    GL11.glEnable(GL11.GL_BLEND)
+    GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
+    GL11.glLineWidth(2.5f)
+    GL11.glDisable(GL11.GL_TEXTURE_2D)
+    GL11.glEnable(GL11.GL_LINE_SMOOTH)
+    offsetRender()
+}
+
+fun gl11Cleanup() {
+    GL11.glDisable(GL11.GL_LINE_SMOOTH)
+    GL11.glEnable(GL11.GL_TEXTURE_2D)
+    GL11.glDisable(GL11.GL_BLEND)
+    GL11.glPopMatrix()
 }

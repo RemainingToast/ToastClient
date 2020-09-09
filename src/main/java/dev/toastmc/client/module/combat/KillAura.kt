@@ -62,23 +62,15 @@ class KillAura : Module() {
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
-        if (target == null || target!!.removed || target!!.isDead) {
-            target = findTarget(reach)
-        }
-        if (target == null) {
-            return@EventHook
-        }
+        if (target == null || target!!.removed || target!!.isDead) target = findTarget(reach)
+        if (target == null) return@EventHook
         oldSlot = mc.player!!.inventory.selectedSlot
         val shield = mc.player!!.offHandStack.item === Items.SHIELD
         when {
-            (mc.player!!.inventory.mainHandStack.isFood && ignoreeating) ->
-                return@EventHook
-            autoswitch ->
-                weaponSlot = equipBestWeapon()
+            (mc.player!!.inventory.mainHandStack.isFood && ignoreeating) -> return@EventHook
+            autoswitch -> weaponSlot = equipBestWeapon()
         }
-        if (mc.player!!.getAttackCooldownProgress(0f) < 1f ||
-            (shield && mc.player!!.isUsingItem))
-            return@EventHook
+        if (mc.player!!.getAttackCooldownProgress(0f) < 1f || (shield && mc.player!!.isUsingItem)) return@EventHook
         mc.interactionManager?.attackEntity(mc.player, target)
         mc.player!!.swingHand(Hand.MAIN_HAND)
         target = findTarget(reach)
@@ -108,7 +100,7 @@ class KillAura : Module() {
         return foundTarget
     }
 
-    fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
+    private fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
         return aabb.expand(maxRange).contains(point)
     }
 

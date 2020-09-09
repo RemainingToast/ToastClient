@@ -3,8 +3,6 @@ package dev.toastmc.client.mixin.client;
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.event.ScreenEvent;
 import dev.toastmc.client.event.TickEvent;
-import dev.toastmc.client.module.combat.CrystalAura;
-import dev.toastmc.client.module.combat.KillAura;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -15,8 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Objects;
 
 //Credit: https://github.com/zeroeightysix/KAMI/blob/fabric/src/main/java/me/zeroeightsix/kami/mixin/client/MixinMinecraftClient.java
 @Mixin(MinecraftClient.class)
@@ -31,11 +27,9 @@ public abstract class MixinMinecraftClient {
     public void tick(CallbackInfo info) {
         TickEvent.Client event;
         if (player != null && world != null) {
-            event = new TickEvent.Client.InGame();
+           event = new TickEvent.Client.InGame();
         } else {
             event = new TickEvent.Client.OutOfGame();
-            Objects.requireNonNull(ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(KillAura.class)).disable();
-            Objects.requireNonNull(ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(CrystalAura.class)).disable();
         }
         ToastClient.EVENT_BUS.post(event);
         if (event.isCancelled()) info.cancel();
