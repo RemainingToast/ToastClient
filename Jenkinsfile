@@ -2,7 +2,6 @@ pipeline {
   agent {
     docker 'gradle:latest'
   }
-  node {
   stages {
     stage('Gradle Build') {
       steps {
@@ -15,6 +14,7 @@ pipeline {
   }
   post {
     always {
+  node {
       archiveArtifacts artifacts: "toastclient-fabric-${env.BUILD_NUMBER}.jar", fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
       script {
         def artifactUrl = env.BUILD_URL + "artifact/"
