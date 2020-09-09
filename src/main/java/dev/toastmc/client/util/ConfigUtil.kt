@@ -69,10 +69,16 @@ class ConfigUtil {
 
     fun ConfigTreeBuilder.setInt(settingName: String, value: Int) {
         this.lookupLeaf(settingName, ConfigTypes.INTEGER.serializedType)?.value = BigDecimal(value)
+        save()
+    }
+
+    fun ConfigTreeBuilder.getLong(settingName: String): Long? {
+        return this.lookupLeaf(settingName, ConfigTypes.LONG.serializedType)?.value?.longValueExact()
     }
 
     fun ConfigTreeBuilder.setLong(settingName: String, value: Long) {
         this.lookupLeaf(settingName, ConfigTypes.LONG.serializedType)?.value = BigDecimal(value)
+        save()
     }
 
     fun ConfigTreeBuilder.getBigInteger(settingName: String): BigInteger? {
@@ -81,6 +87,7 @@ class ConfigUtil {
 
     fun ConfigTreeBuilder.setBigInteger(settingName: String, value: BigInteger) {
         this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_INTEGER.serializedType)?.value = value.toBigDecimal()
+        save()
     }
 
     fun ConfigTreeBuilder.getDouble(settingName: String): Double? {
@@ -89,6 +96,7 @@ class ConfigUtil {
 
     fun ConfigTreeBuilder.setDouble(settingName: String, value: Double) {
         this.lookupLeaf(settingName, ConfigTypes.DOUBLE.serializedType)?.value = BigDecimal(value)
+        save()
     }
 
     fun ConfigTreeBuilder.getFloat(settingName: String): Float? {
@@ -97,6 +105,7 @@ class ConfigUtil {
 
     fun ConfigTreeBuilder.setFloat(settingName: String, value: Float) {
         this.lookupLeaf(settingName, ConfigTypes.FLOAT.serializedType)?.value = BigDecimal(value.toDouble())
+        save()
     }
 
     fun ConfigTreeBuilder.getBigDecimal(settingName: String): BigDecimal? {
@@ -105,10 +114,7 @@ class ConfigUtil {
 
     fun ConfigTreeBuilder.setBigDecimal(settingName: String, value: BigDecimal) {
         this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_DECIMAL.serializedType)?.value = value
-    }
-
-    fun ConfigTreeBuilder.getLong(settingName: String): Long? {
-        return this.lookupLeaf(settingName, ConfigTypes.LONG.serializedType)?.value?.longValueExact()
+        save()
     }
 
     fun ConfigTreeBuilder.getBoolean(settingName: String): Boolean? {
@@ -117,5 +123,6 @@ class ConfigUtil {
 
     fun ConfigTreeBuilder.setBoolean(settingName: String, value: Boolean) {
         this.lookupLeaf(settingName, ConfigTypes.BOOLEAN.serializedType)?.value = value
+        save()
     }
 }
