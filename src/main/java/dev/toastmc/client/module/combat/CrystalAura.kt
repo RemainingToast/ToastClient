@@ -149,7 +149,6 @@ class CrystalAura : Module() {
             if (blackList.containsKey(p)) {
                 if (blackList[p]!! > 0) blackList.replace(p, blackList[p]!! - 1) else blackList.remove(p)
             }
-            // d^2=(bx−ax)^2+(by−ay)^2+(bz-az)^2
             val distance = mc.player!!.distanceTo(entity)
             if (canReach(
                     mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0),

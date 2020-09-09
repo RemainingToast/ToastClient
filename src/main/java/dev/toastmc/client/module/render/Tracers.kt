@@ -5,6 +5,7 @@ import dev.toastmc.client.event.RenderEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
+import dev.toastmc.client.module.combat.KillAura
 import dev.toastmc.client.util.*
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
@@ -45,6 +46,9 @@ class Tracers : Module(){
                     val entity: Entity? = mc.world!!.entities!!.elementAtOrNull(i)
                     if (entity == null || !entity.isAlive || entity == mc.player!!) continue
                     when {
+                        entity == KillAura.target -> {
+                            color(255, 0, 0, 255)
+                        }
                         renderPlayers && entity is PlayerEntity && entity != mc.player!! -> {
                             color(playerColor)
                         }

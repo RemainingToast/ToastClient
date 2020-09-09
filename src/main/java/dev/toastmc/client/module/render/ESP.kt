@@ -5,6 +5,7 @@ import dev.toastmc.client.event.RenderEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
+import dev.toastmc.client.module.combat.KillAura
 import dev.toastmc.client.util.*
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
@@ -48,7 +49,7 @@ class ESP : Module(){
                 }
                 for (i in 0 until mc.world!!.entities!!.count()) {
                     val entity: Entity? = mc.world!!.entities!!.elementAtOrNull(i)
-                    if (entity == null || !entity.isAlive || entity == mc.player!!) continue
+                    if (entity == null || !entity.isAlive || entity == mc.player!! || entity == KillAura.target) continue
                     when {
                         renderPlayers && entity is PlayerEntity -> {
                             color(playerColor)
