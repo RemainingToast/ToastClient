@@ -9,6 +9,7 @@ import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.FabricReflect
 import dev.toastmc.client.util.TwoDRenderUtils
+import dev.toastmc.client.util.getRainbow
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
@@ -20,9 +21,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import org.lwjgl.opengl.GL11
-import java.awt.Color
 import java.util.*
-import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 
@@ -58,7 +57,7 @@ class HUD : Module() {
             lines.sortWith(Comparator { a: String?, b: String? ->
                 mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
             })
-            val color: Int = getRainbow(1f, 1f, 10.0, 0)
+            val color: Int = getRainbow(1f, 1f, 10.0, 0).rgb
             for (s in lines) {
                 TwoDRenderUtils.drawText(it.matrix, s, 5, 5 + (arrayCount * 10), color)
                 arrayCount++
@@ -154,11 +153,5 @@ class HUD : Module() {
 
     private fun getColorString(value: Int, best: Int, good: Int, mid: Int, bad: Int, worst: Int, rev: Boolean): String? {
         return if (if (!rev) value > best else value < best) "\u00a72" else if (if (!rev) value > good else value < good) "\u00a7a" else if (if (!rev) value > mid else value < mid) "\u00a7e" else if (if (!rev) value > bad else value < bad) "\u00a76" else if (if (!rev) value > worst else value < worst) "\u00a7c" else "\u00a74"
-    }
-
-    private fun getRainbow(sat: Float, bri: Float, speed: Double, offset: Int): Int {
-        var rainbowState = ceil((System.currentTimeMillis() + offset) / speed)
-        rainbowState %= 360.0
-        return Color.HSBtoRGB((rainbowState / 360.0).toFloat(), sat, bri)
     }
 }
