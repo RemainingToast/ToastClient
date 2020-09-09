@@ -31,20 +31,16 @@ class Surround : Module() {
     @Setting(name = "Rotations") var rotations = false
     @Setting(name = "BPT") var blockspertick = 8
 
-
     override fun onDisable() {
-        if (mc.player == null) return
         ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     override fun onEnable() {
-        if (mc.player == null) return
         ToastClient.EVENT_BUS.subscribe(onTickEvent)
     }
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
-        if (mc.player == null) return@EventHook
         if (mc.player == null) return@EventHook
         val lastSlot = mc.player!!.inventory.selectedSlot
         slot = mc.player!!.inventory.selectedSlot
@@ -61,7 +57,7 @@ class Surround : Module() {
         mc.player!!.inventory.selectedSlot = slot
         if (center) centerPlayerPos()
         placements = 0
-        for (i in 0 until blockspertick) {
+        for (i in 1..8) {
             /*
              *     -Z
              *
