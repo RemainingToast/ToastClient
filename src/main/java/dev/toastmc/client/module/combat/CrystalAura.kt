@@ -10,10 +10,14 @@ import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.*
 import dev.toastmc.client.util.DamageUtil.getExplosionDamage
 import dev.toastmc.client.util.ItemUtil.isPickaxe
+import dev.toastmc.client.util.WorldUtil.block
+import dev.toastmc.client.util.WorldUtil.matches
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
+import net.minecraft.block.Blocks.BEDROCK
+import net.minecraft.block.Blocks.OBSIDIAN
 import net.minecraft.entity.Entity
 import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.entity.effect.StatusEffects
@@ -29,10 +33,10 @@ import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
 
 @ModuleManifest(
-        label = "CrystalAura",
-        description = "Hit crystals Automatically",
-        category = Category.COMBAT,
-        aliases = ["crystal"]
+    label = "CrystalAura",
+    description = "Hit crystals Automatically",
+    category = Category.COMBAT,
+    aliases = ["crystal"]
 )
 class CrystalAura : Module() {
     @Setting(name = "Explode") var explode = true
@@ -86,7 +90,12 @@ class CrystalAura : Module() {
             return@EventHook
         }
         val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
-        crystalSlot = if (InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL)) != null) InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL))!![0] else -1
+        crystalSlot =
+            if (InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL)) != null) InventoryUtils.getSlotsHotbar(
+                Item.getRawId(
+                    Items.END_CRYSTAL
+                )
+            )!![0] else -1
         if (explodeCheck(crystal!!)) {
             oldSlot = mc.player!!.inventory.selectedSlot
             when {
@@ -97,7 +106,8 @@ class CrystalAura : Module() {
                 }
                 mc.player!!.inventory.mainHandStack.isFood && ignoreeating -> return@EventHook
                 isPickaxe(mc.player!!.inventory.mainHandStack.item) && ignorepickaxe -> return@EventHook
-                autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand ->  mc.player!!.inventory.selectedSlot = crystalSlot
+                autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot =
+                    crystalSlot
                 mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && antiweakness -> {
                     newSlot = -1
                     if (mc.player!!.inventory.mainHandStack.item !is ToolItem || mc.player!!.inventory.mainHandStack.item !is SwordItem) {
@@ -110,7 +120,7 @@ class CrystalAura : Module() {
                     } else {
                         mc.interactionManager?.attackEntity(mc.player, crystal)
                         mc.player!!.swingHand(Hand.MAIN_HAND)
-                        if(autoswitch) mc.player!!.inventory.selectedSlot = crystalSlot
+                        if (autoswitch) mc.player!!.inventory.selectedSlot = crystalSlot
                     }
                     if (newSlot != -1) {
                         mc.player!!.inventory.selectedSlot = newSlot
@@ -118,7 +128,7 @@ class CrystalAura : Module() {
                 }
             }
             mc.interactionManager?.attackEntity(mc.player, crystal)
-            mc.player!!.swingHand(if(!offhand) Hand.MAIN_HAND else Hand.OFF_HAND)
+            mc.player!!.swingHand(if (!offhand) Hand.MAIN_HAND else Hand.OFF_HAND)
             ++breaks
             crystal = findCrystal(range)
         } else { // Failed explodeCheck
@@ -141,7 +151,11 @@ class CrystalAura : Module() {
             }
             // d^2=(bx−ax)^2+(by−ay)^2+(bz-az)^2
             val distance = mc.player!!.distanceTo(entity)
-            if (canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range) && (sd == null || distance < sd)) {
+            if (canReach(
+                    mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0),
+                    entity.boundingBox,
+                    range
+                ) && (sd == null || distance < sd)) {
                 sd = distance.toDouble()
                 foundCrystal = entity
             }
@@ -152,7 +166,13 @@ class CrystalAura : Module() {
     private fun explodeCheck(entity: Entity) : Boolean {
         val p = mc.player!!
         val damageSafe = getExplosionDamage(entity.blockPos, p) - p.health <= maxselfdamage - 1 || p.isInvulnerable || p.isCreative || p.isSpectator
-        return damageSafe && explode && canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range)
+        return damageSafe && explode && canReach(
+            mc.player!!.pos.add(
+                0.0,
+                mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(),
+                0.0
+            ), entity.boundingBox, range
+        )
     }
 
     fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
@@ -176,4 +196,8 @@ class CrystalAura : Module() {
             }
         }
     })
+
+    fun canPlaceCrystal(pos: BlockPos): Boolean {
+        return mc.world != null && pos.block.matches(BEDROCK, OBSIDIAN) && mc.world!!.getNonSpectatingEntities(Entity::class.java, Box(pos.up()).expand(0.0, 1.0, 0.0)).isNotEmpty()
+    }
 }
