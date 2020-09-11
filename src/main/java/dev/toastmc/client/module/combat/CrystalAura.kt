@@ -185,7 +185,7 @@ class CrystalAura : Module() {
                     color(color)
                     box(pos)
                 }
-                text(str, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
+//                text(it.matrixStack, str, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
             }
         }
     })
