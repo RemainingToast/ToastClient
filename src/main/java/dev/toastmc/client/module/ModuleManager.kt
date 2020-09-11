@@ -2,6 +2,7 @@ package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.*
 import dev.toastmc.client.module.misc.PortalChat
+import dev.toastmc.client.module.misc.PrefixChat
 import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
 import dev.toastmc.client.module.render.*
@@ -37,18 +38,31 @@ class ModuleManager {
     init {
         modules.clear()
         register(
-            AutoArmour(),   AntiHunger(),   AutoReplenish(),
-            AutoTotem(),    AutoTool(),     AutoWalk(),
-            CrystalAura(),  ESP(),          FastStop(),
-            Flight(),       FullBright(),   HUD(),
-            Jesus(),        KillAura(),     NoFall(),
-            NoRender(),     PortalChat(),   SafeWalk(),
-            Sprint(),       Surround(),     Tracers(),
-            Velocity(),     ClickGUI()
+            AutoArmour(),
+            AntiHunger(),
+            AutoReplenish(),
+            AutoTotem(),
+            AutoTool(),
+            AutoWalk(),
+            CrystalAura(),
+            ESP(),
+            FastStop(),
+            Flight(),
+            FullBright(),
+            HUD(),
+            Jesus(),
+            KillAura(),
+            NoFall(),
+            NoRender(),
+            PortalChat(),
+            PrefixChat(),
+            SafeWalk(),
+            Sprint(),
+            Surround(),
+            Tracers(),
+            Velocity()
         )
     }
-
-
 
     private fun register(vararg modules: Module) {
         for (cheat in modules) {

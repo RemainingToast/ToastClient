@@ -42,6 +42,7 @@ class CommandManager () {
                 Hide(),
                 Highest(),
                 List(),
+                //Teleport(),
                 Toggle()
             )
         )
