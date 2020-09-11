@@ -79,12 +79,12 @@ object ConfigUtil {
         return this.lookupLeaf(name, type.serializedType)?.value
     }
 
-    fun ConfigBranch.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Any? {
-        if (this.lookupLeaf(name, type.serializedType)?.setValue(newValue)) save()
+    fun ConfigBranch.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal) {
+        if (this.lookupLeaf(name, type.serializedType)?.setValue(newValue)!!) save()
     }
 
     fun ConfigTree.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal) {
-		if (this.lookupLeaf(name, type.serializedType)?.setValue(newValue)) save()
+		if (this.lookupLeaf(name, type.serializedType)?.setValue(newValue)!!) save()
     }
 
     fun ConfigBranch.getBoolean(name: String): Boolean? {
@@ -96,10 +96,10 @@ object ConfigUtil {
     }
 
     fun ConfigBranch.setBoolean(name: String, newValue: Boolean) {
-        if (this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)) save()
+        if (this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)!!) save()
     }
 
     fun ConfigTree.setBoolean(name: String, newValue: Boolean) {
-        if (this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)) save()
+        if (this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)!!) save()
     }
 }

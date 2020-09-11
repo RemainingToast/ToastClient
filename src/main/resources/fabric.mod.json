@@ -27,6 +27,6 @@
     "minecraft": "1.16.x"
   },
   "suggests": {
-    "flamingo": "*"
+    "fabritone": ">=1.6.2"
   }
 }
