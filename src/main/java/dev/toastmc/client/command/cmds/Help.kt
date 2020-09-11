@@ -9,7 +9,7 @@ import net.minecraft.util.Formatting
 @CommandManifest(
         label = "Help",
         description = "Lists Commands",
-        aliases = ["help", "commands"])
+        aliases = ["commands"])
 class Help : Command() {
     override fun run(args: Array<String>) {
         val sb: StringBuilder = StringBuilder()

@@ -43,22 +43,17 @@ public abstract class MixinServerScreen extends Screen {
 
     @Inject(at = @At("HEAD"), method = "init()V")
     private void init(CallbackInfo info) {
-        toastmcButton = new ButtonWidget(30, 6, 100, 20, new LiteralText("PLAY TOASTMC.DEV"), button -> {
-            if(serverExists == 0){
+        if (serverExists == 0){
+            toastmcButton = new ButtonWidget(30, 6, 100, 20, new LiteralText("PLAY TOASTMC.DEV"), button -> {
                 serverList.loadFile();
                 serverList.add(server);
                 serverListWidget.setServers(serverList);
                 serverList.saveFile();
-                serverExists = 1;
-            }
-            toastmcButton.visible = false;
-        });
-
-        if (serverExists == 0){
+                toastmcButton.visible = false;
+            });
             this.addButton(toastmcButton);
             serverExists = 1;
         }
-
 
         authButton = new TexturedButtonWidget(6,
                 6,

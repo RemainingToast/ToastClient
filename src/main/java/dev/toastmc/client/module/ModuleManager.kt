@@ -1,21 +1,10 @@
 package dev.toastmc.client.module
 
-import dev.toastmc.client.module.combat.AutoArmour
-import dev.toastmc.client.module.combat.AutoTotem
-import dev.toastmc.client.module.combat.CrystalAura
+import dev.toastmc.client.module.combat.*
 import dev.toastmc.client.module.misc.PortalChat
-import dev.toastmc.client.module.movement.AutoWalk
-import dev.toastmc.client.module.movement.Flight
-import dev.toastmc.client.module.movement.Jesus
-import dev.toastmc.client.module.movement.Sprint
-import dev.toastmc.client.module.player.AutoTool
-import dev.toastmc.client.module.player.NoFall
-import dev.toastmc.client.module.player.SafeWalk
-import dev.toastmc.client.module.player.Velocity
-import dev.toastmc.client.module.render.ESP
-import dev.toastmc.client.module.render.FullBright
-import dev.toastmc.client.module.render.HUD
-import dev.toastmc.client.module.render.NoRender
+import dev.toastmc.client.module.movement.*
+import dev.toastmc.client.module.player.*
+import dev.toastmc.client.module.render.*
 import kotlin.reflect.KClass
 
 
@@ -48,11 +37,14 @@ class ModuleManager {
     init {
         modules.clear()
         register(
-            AutoArmour(), AutoTotem(), AutoTool(),
-            AutoWalk(), ESP(), Flight(),
-            FullBright(), NoFall(), NoRender(),
-            PortalChat(), SafeWalk(), Sprint(),
-            Velocity(), HUD(), Jesus(), CrystalAura()
+            AutoArmour(),   AntiHunger(),   AutoReplenish(),
+            AutoTotem(),    AutoTool(),     AutoWalk(),
+            CrystalAura(),  ESP(),          FastStop(),
+            Flight(),       FullBright(),   HUD(),
+            Jesus(),        KillAura(),     NoFall(),
+            NoRender(),     PortalChat(),   SafeWalk(),
+            Sprint(),       Surround(),     Tracers(),
+            Velocity()
         )
     }
 

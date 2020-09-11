@@ -4,21 +4,16 @@ import dev.toastmc.client.command.Command
 import dev.toastmc.client.command.CommandManifest
 import dev.toastmc.client.util.MessageUtil
 import net.minecraft.client.network.ClientPlayerEntity
-import java.awt.Toolkit
-import java.awt.datatransfer.Clipboard
-import java.awt.datatransfer.StringSelection
 import java.text.DecimalFormat
 
 @CommandManifest(
         label = "Coords",
         description = "Copy player coordinates to clipboard.",
-        aliases = ["coords"]
+        aliases = []
 )
 class Coords : Command() {
     override fun run(args: Array<String>) {
-        val selection: StringSelection = StringSelection(formatPlayerCoords(mc.player))
-        val clipboard: Clipboard = Toolkit.getDefaultToolkit().systemClipboard
-        clipboard.setContents(selection, selection)
+        mc.keyboard.clipboard = formatPlayerCoords(mc.player)
         MessageUtil.sendMessage("Copied coordinates to clipboard!", MessageUtil.Color.GREEN)
     }
 

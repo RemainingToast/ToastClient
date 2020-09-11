@@ -3,16 +3,23 @@ package dev.toastmc.client.util
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.client.ToastClient
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.*
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.*
 import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL14
 import java.awt.Color
+import kotlin.math.ceil
+import kotlin.random.Random
+
 
 /**
  * @credit cookiedragon234 26/Jun/2020
  * @from https://github.com/cookiedragon234/Raion-116/
  */
+val mc = MinecraftClient.getInstance()
 
 open class RenderBuilder {
     var translation: Vec3d = Vec3d.ZERO
@@ -27,23 +34,96 @@ open class RenderBuilder {
     }
 }
 
-fun <T: RenderBuilder> T.vertex(x: Float, y: Float, z: Float): T = this.apply {
+fun <T : RenderBuilder> T.vertex(x: Float, y: Float, z: Float): T = this.apply {
     GL11.glVertex3d(x + translation.x, y + translation.y, z + translation.z)
 }
 
-fun <T: RenderBuilder> T.vertex(x: Double, y: Double, z: Double): T = this.apply {
+fun <T : RenderBuilder> T.vertex(x: Double, y: Double, z: Double): T = this.apply {
     GL11.glVertex3d(x + translation.x, y + translation.y, z + translation.z)
 }
 
-fun <T: RenderBuilder> T.color(r: Float, g: Float, b: Float, a: Float): T = this.apply {
+fun <T : RenderBuilder> T.vertex(vec3d: Vec3d): T = this.apply {
+    GL11.glVertex3d(vec3d.x + translation.x, vec3d.y + translation.y, vec3d.z + translation.z)
+}
+
+fun <T : RenderBuilder> T.color(r: Float, g: Float, b: Float, a: Float): T = this.apply {
     GlStateManager.color4f(r, g, b, a)
 }
 
-fun <T: RenderBuilder> T.color(r: Int, g: Int, b: Int, a: Int): T = this.apply {
+fun <T : RenderBuilder> T.color(r: Float, g: Float, b: Float): T = this.apply {
+    GlStateManager.color4f(r, g, b, 1f)
+}
+
+fun <T : RenderBuilder> T.color(r: Int, g: Int, b: Int, a: Int): T = this.apply {
     GlStateManager.color4f(r / 255f, g / 255f, b / 255f, a / 255f)
 }
 
-fun <T: RenderBuilder> T.box(bb: Box): T = this.apply {
+fun <T : RenderBuilder> T.color(r: Int, g: Int, b: Int): T = this.apply {
+    GlStateManager.color4f(r / 255f, g / 255f, b / 255f, 1f)
+}
+
+fun <T : RenderBuilder> T.color(color4f: Color4f): T = this.apply {
+    GlStateManager.color4f(color4f.r, color4f.g, color4f.b, color4f.a)
+}
+
+fun <T : RenderBuilder> T.color(color3f: Color3f): T = this.apply {
+    GlStateManager.color4f(color3f.r, color3f.g, color3f.b, 1f)
+}
+
+fun <T : RenderBuilder> T.color(color4i: Color4i): T = this.apply {
+    GlStateManager.color4f(color4i.r / 255f, color4i.g / 255f, color4i.b / 255f, color4i.a / 255f)
+}
+
+fun <T : RenderBuilder> T.color(color3i: Color3i): T = this.apply {
+    GlStateManager.color4f(color3i.r / 255f, color3i.g / 255f, color3i.b / 255f, 1f)
+}
+
+data class Color4f(var r: Float, var g: Float, var b: Float, var a: Float)
+
+data class Color4i(var r: Int, var g: Int, var b: Int, var a: Int)
+
+data class Color3f(var r: Float, var g: Float, var b: Float)
+
+data class Color3i(var r: Int, var g: Int, var b: Int)
+
+fun getRandomRainbow(seed: Int): Color {
+    return getRainbow(
+        Random(seed).nextFloat(),
+        Random(seed).nextFloat(),
+        Random(seed).nextDouble(),
+        Random(seed).nextInt()
+    )
+}
+
+fun getRainbow(sat: Float, bri: Float, speed: Double, offset: Int): Color {
+    var rainbowState = ceil((System.currentTimeMillis() + offset) / speed)
+    rainbowState %= 360.0
+    return Color((rainbowState / 360.0).toFloat(), sat, bri)
+}
+
+fun <T : RenderBuilder> T.text(matrixStack: MatrixStack, text: String, x: Double, y: Double, z: Double): T = this.apply {
+    glSetup(x, y, z);
+    GL11.glScaled(-0.025, -0.025, 0.025);
+    val i = mc.textRenderer.getWidth(text) / 2
+    val tessellator = Tessellator.getInstance()
+    GL11.glDisable(GL11.GL_TEXTURE_2D)
+//    color(0, 0, 255, 128)
+//    vertex(-i - 1.0, -1.0, 0.0)
+//    vertex(x + 0.5, y + 0.5, z + 0.5)
+//    vertex(x - 0.5, y - 0.5, z - 0.5)
+//    vertex(x + 0.5, y + 0.5, z + 0.5)
+    tessellator.draw()
+    GL11.glEnable(GL11.GL_TEXTURE_2D)
+    mc.textRenderer.draw(matrixStack, text, x.toFloat() - 0.5f, y.toFloat() - 0.5f, -1)
+    mc.textRenderer.draw(matrixStack, text, x.toFloat() - 0.5f, y.toFloat() - 0.5f, -1)
+    glCleanup()
+}
+
+fun <T : RenderBuilder> T.box(bp: BlockPos): T = this.apply {
+    box(Box(bp))
+}
+
+fun <T : RenderBuilder> T.box(bb: Box): T = this.apply {
     vertex(bb.minX, bb.minY, bb.minZ)
     vertex(bb.maxX, bb.minY, bb.minZ)
     vertex(bb.maxX, bb.minY, bb.maxZ)
@@ -68,6 +148,12 @@ fun <T: RenderBuilder> T.box(bb: Box): T = this.apply {
     vertex(bb.minX, bb.minY, bb.maxZ)
     vertex(bb.minX, bb.maxY, bb.maxZ)
     vertex(bb.minX, bb.maxY, bb.minZ)
+}
+
+fun <T : RenderBuilder> T.line(start: Vec3d, end: Vec3d): T = this.apply {
+    vertex(start)
+    vertex(start)
+    vertex(end)
 }
 
 inline fun draw3d(translate: Boolean = false, color: Color = Color(1f, 1f, 1f, 1f), action: RenderBuilder.() -> Unit) {
@@ -102,6 +188,25 @@ inline fun draw3d(translate: Boolean = false, color: Color = Color(1f, 1f, 1f, 1
     }
 }
 
+fun glCleanup() {
+    GL11.glDisable(GL11.GL_BLEND);
+    GL11.glDepthFunc(GL11.GL_LEQUAL);
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GL11.glPopMatrix();
+}
+
+fun glSetup(x: Double, y: Double, z: Double) {
+    GL11.glPushMatrix()
+    offsetRender()
+    GL11.glTranslated(x, y, z)
+    GL11.glNormal3f(0.0f, 1.0f, 0.0f)
+    GL11.glRotatef(-mc.player!!.yaw, 0.0f, 1.0f, 0.0f)
+    GL11.glRotatef(mc.player!!.pitch, 1.0f, 0.0f, 0.0f)
+    GL11.glDepthFunc(GL11.GL_ALWAYS)
+    GL11.glEnable(GL11.GL_BLEND)
+    GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
+}
+
 private fun RenderBuilder.translateVec(camera: Camera) {
 
 }
@@ -110,7 +215,12 @@ class KOpenGLRenderer(val matrices: Matrix4f, val bufferBuilder: BufferBuilder) 
 }
 class KOpenGLVertex(val matrices: Matrix4f, val bufferBuilder: BufferBuilder)
 
-inline fun <T> MatrixStack.draw(translate: Camera? = null, glMode: Int? = null, format: VertexFormat? = null, action: KOpenGLRenderer.() -> T): T {
+inline fun <T> MatrixStack.draw(
+    translate: Camera? = null,
+    glMode: Int? = null,
+    format: VertexFormat? = null,
+    action: KOpenGLRenderer.() -> T
+): T {
     RenderSystem.enableBlend()
     RenderSystem.disableTexture()
     RenderSystem.defaultBlendFunc()
@@ -144,7 +254,7 @@ inline fun KOpenGLRenderer.vertex(action: KOpenGLVertex.() -> Unit): KOpenGLRend
     }
 }
 
-fun <T: MatrixStack> T.translateToRender(camera: Camera): T = this.apply {
+fun <T : MatrixStack> T.translateToRender(camera: Camera): T = this.apply {
     val pos = camera.pos
     this.translate(
         -pos.x,
@@ -307,7 +417,12 @@ open class Box2f(
 
     fun getCornersOffset(offset: Float = 0f): Array<Vec2f> {
         if (offset == 0f) return corners
-        return arrayOf(Vec2f(posX - offset, bottomY + offset), Vec2f(rightX + offset, bottomY + offset), Vec2f(rightX + offset, posY - offset), Vec2f(posX - offset, posY - offset))
+        return arrayOf(
+            Vec2f(posX - offset, bottomY + offset), Vec2f(rightX + offset, bottomY + offset), Vec2f(
+                rightX + offset,
+                posY - offset
+            ), Vec2f(posX - offset, posY - offset)
+        )
     }
 }
 
@@ -339,4 +454,12 @@ class Vec2fMutable(
         public set
     override var y: Float = y
         public set
+}
+
+fun offsetRender() {
+    val camera: Camera = BlockEntityRenderDispatcher.INSTANCE.camera
+    val camPos: Vec3d = camera.pos
+    GL11.glRotated(MathHelper.wrapDegrees(camera.pitch).toDouble(), 1.0, 0.0, 0.0)
+    GL11.glRotated(MathHelper.wrapDegrees(camera.yaw + 180.0), 0.0, 1.0, 0.0)
+    GL11.glTranslated(-camPos.x, -camPos.y, -camPos.z)
 }

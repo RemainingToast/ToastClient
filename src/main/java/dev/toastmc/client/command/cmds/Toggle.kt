@@ -11,7 +11,7 @@ import net.minecraft.util.Formatting
 
 @CommandManifest(
         label = "Toggle",
-        aliases = ["tog", "toggle"],
+        aliases = ["tog", "t"],
         description = "Toggle on and off modules",
         usage = "toggle <module>"
 )
@@ -30,7 +30,7 @@ class Toggle : Command(){
             val mod: Module? = ToastClient.MODULE_MANAGER.getModuleByName(argss.toLowerCase().replace(" ", ""))
             if(mod != null){
                 mod.toggle()
-                sendMessage("Toggled ${mod.label}${if (!mod.enabled!!) Formatting.RED.toString() + " OFF" else Formatting.GREEN.toString() + " ON"}", MessageUtil.Color.GRAY)
+                sendMessage("Toggled ${mod.label}${if (!mod.enabled) Formatting.RED.toString() + " OFF" else Formatting.GREEN.toString() + " ON"}", MessageUtil.Color.GRAY)
                 return
             }
             sendMessage("\"${argss.toLowerCase().replace(" ", "")}\" wasn't found.", MessageUtil.Color.RED)

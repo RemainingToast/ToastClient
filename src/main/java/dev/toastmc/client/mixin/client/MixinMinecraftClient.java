@@ -27,7 +27,7 @@ public abstract class MixinMinecraftClient {
     public void tick(CallbackInfo info) {
         TickEvent.Client event;
         if (player != null && world != null) {
-            event = new TickEvent.Client.InGame();
+           event = new TickEvent.Client.InGame();
         } else {
             event = new TickEvent.Client.OutOfGame();
         }

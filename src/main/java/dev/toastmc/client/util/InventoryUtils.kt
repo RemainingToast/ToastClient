@@ -1,15 +1,34 @@
 package dev.toastmc.client.util
 
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.InventoryScreen
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import net.minecraft.screen.slot.SlotActionType
+import java.util.*
+
 
 // Orginally made for 1.12.2 forge by Dominkaa https://github.com/kami-blue/client/blob/master/src/main/java/me/zeroeightsix/kami/util/InventoryUtils.kt
 // Ported to 1.16.2 fabric by RemainingToast
 
 object InventoryUtils {
-    private val mc = MinecraftClient.getInstance()
+
+    private fun getInventory(): Map<Int, ItemStack> {
+        return getInventorySlots(9, 35)
+    }
+
+    fun getHotbar(): Map<Int, ItemStack> {
+        return getInventorySlots(36, 44)
+    }
+
+    private fun getInventorySlots(current: Int, last: Int): Map<Int, ItemStack> {
+        var current = current
+        val fullInventorySlots: MutableMap<Int, ItemStack> = HashMap()
+        while (current <= last) {
+            fullInventorySlots[current] = mc.player!!.inventory.getStack(current)
+            current++
+        }
+        return fullInventorySlots
+    }
 
     /**
      * Returns slots contains item with given item id in player inventory
@@ -26,13 +45,17 @@ object InventoryUtils {
         return if (slots.isNotEmpty()) slots.toTypedArray() else null
     }
 
+    fun getSlots(min: Int, max: Int, itemStack: ItemStack): Array<Int>? {
+        return getSlots(min, max, Item.getRawId(itemStack.item))
+    }
+
     /**
      * Returns slots contains item with given item id in player hotbar
      *
      * @return Array contains slot index, null if no item found
      */
     fun getSlotsHotbar(itemId: Int): Array<Int>? {
-        return getSlots(0, 8, itemId)
+        return getSlots(0, 8, itemId)!!
     }
 
     /**
@@ -182,20 +205,16 @@ object InventoryUtils {
      * if [slotTo] contains an item, then move it to [slotFrom]
      */
     fun moveToSlot(windowId: Int, slotFrom: Int, slotTo: Int, delayMillis: Long) {
-        if (inProgress) return
-        Thread(Runnable {
+        while (inProgress) {
             inProgress = true
-            val prevScreen = mc.currentScreen
-            if (prevScreen !is InventoryScreen) mc.openScreen(InventoryScreen(mc.player))
-            Thread.sleep(delayMillis)
+//            val prevScreen = mc.currentScreen
+//            if (prevScreen !is InventoryScreen) mc.openScreen(InventoryScreen(mc.player))
             inventoryClick(windowId, slotFrom, SlotActionType.PICKUP)
-            Thread.sleep(delayMillis)
             inventoryClick(windowId, slotTo, SlotActionType.PICKUP)
-            Thread.sleep(delayMillis)
             inventoryClick(windowId, slotFrom, SlotActionType.PICKUP)
-            if (prevScreen !is InventoryScreen) mc.openScreen(prevScreen)
+//            if (prevScreen !is InventoryScreen) mc.openScreen(prevScreen)
             inProgress = false
-        }).start()
+        }
     }
 
     /**

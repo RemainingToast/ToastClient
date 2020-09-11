@@ -2,7 +2,6 @@ package dev.toastmc.client.command
 
 import dev.toastmc.client.command.cmds.*
 import dev.toastmc.client.command.cmds.List
-import dev.toastmc.client.command.cmds.Set
 import dev.toastmc.client.util.MessageUtil
 
 class CommandManager () {
@@ -15,15 +14,14 @@ class CommandManager () {
     /**
      * Gets a command from it's name
      */
-    // TODO: FIX NOT WORKING WITH LABEL
     fun getCommand(cmd: String?): Command? {
         val commandIter = commands.iterator()
         while (commandIter.hasNext()) {
             val next = commandIter.next()
-            if((next.getLabel()?:"").toString().equals(cmd, ignoreCase = true)){
+            if((next.getLabel()?:"").equals(cmd, ignoreCase = true)){
                 return next
             }
-            for (alias in next.getAlias()!!) {
+            for (alias in next.getAlias()?: arrayOf("")) {
                 if (alias.equals(cmd, ignoreCase = true)) {
                     return next
                 }
@@ -37,12 +35,15 @@ class CommandManager () {
      */
     fun initCommands() {
         commands.clear()
-        register(Help(), Hide(), Highest(), List(), Set(), Toggle())
-    }
-
-    private fun register(vararg commands: Command){
-        for (cmd in commands){
-            this.commands.add(cmd)
-        }
+        commands.addAll(
+            listOf(
+                Coords(),
+                Help(),
+                Hide(),
+                Highest(),
+                List(),
+                Toggle()
+            )
+        )
     }
 }
