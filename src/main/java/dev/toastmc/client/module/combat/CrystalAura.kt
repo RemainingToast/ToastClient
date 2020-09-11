@@ -81,12 +81,6 @@ class CrystalAura : Module() {
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
-//        if (crystal == null || crystal!!.removed) {
-//            crystal = findCrystal(range)
-//        }
-//        if (crystal == null) {
-//            return@EventHook
-//        }
         crystal = findCrystal(range) ?: return@EventHook
         val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
         crystalSlot = if (InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL)) != null) InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL))!![0] else -1
@@ -185,7 +179,6 @@ class CrystalAura : Module() {
                     color(color)
                     box(pos)
                 }
-//                text(it.matrixStack, str, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
             }
         }
     })
