@@ -98,11 +98,27 @@ object ConfigUtil {
         return this.lookupLeaf(name, type.serializedType)?.value
     }
 
+    fun ConfigBranch.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Any? {
+        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
+    }
+
+    fun ConfigTree.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Any? {
+        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
+    }
+
     fun ConfigBranch.getBoolean(name: String): Boolean? {
         return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
     }
 
     fun ConfigTree.getBoolean(name: String): Boolean? {
         return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
+    }
+
+    fun ConfigBranch.setBoolean(name: String, newValue: Boolean): Any? {
+        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
+    }
+
+    fun ConfigTree.setBoolean(name: String, newValue: Boolean): Any? {
+        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
     }
 }
