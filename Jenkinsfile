@@ -14,7 +14,6 @@ pipeline {
   }
   post {
     always {
-  node('master') {
       archiveArtifacts artifacts: "toastclient-fabric-${env.BUILD_NUMBER}.jar", fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
       script {
         def artifactUrl = env.BUILD_URL + "artifact/"
@@ -43,6 +42,5 @@ pipeline {
         }
       }
     }
-  }
   }
 }
