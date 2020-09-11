@@ -20,7 +20,6 @@ class ToastClient : ModInitializer {
         val MODULE_MANAGER: ModuleManager = ModuleManager()
 
         val FILE_MANAGER: FileManager = FileManager()
-        val CONFIG: ConfigUtil = ConfigUtil()
         val MOD_DIRECTORY: File = File(MinecraftClient.getInstance().runDirectory, "toastclient" + "/")
 
         var CMD_PREFIX = "."
@@ -33,6 +32,6 @@ class ToastClient : ModInitializer {
     override fun onInitialize() {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
-        CONFIG.init()
+        ConfigUtil.init()
     }
 }

@@ -1,6 +1,7 @@
 package dev.toastmc.client.module
 
 import dev.toastmc.client.ToastClient
+import dev.toastmc.client.util.ConfigUtil
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
 import net.fabricmc.api.EnvType
@@ -72,7 +73,7 @@ open class Module {
 
     fun setHidden(newHidden: Boolean): Boolean {
         hidden = newHidden
-        ToastClient.CONFIG.save()
+        ConfigUtil.save()
         return hidden
     }
 
@@ -84,19 +85,19 @@ open class Module {
 
     fun disable(): Boolean {
         val enabled = setEnabled(false)
-        ToastClient.CONFIG.save()
+        ConfigUtil.save()
         return enabled
     }
 
     fun enable(): Boolean {
         val enabled = setEnabled(true)
-        ToastClient.CONFIG.save()
+        ConfigUtil.save()
         return enabled
     }
 
     fun toggle(): Boolean {
         val enabled = setEnabled(!this.enabled)
-        ToastClient.CONFIG.save()
+        ConfigUtil.save()
         return enabled
     }
 
