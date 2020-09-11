@@ -5,6 +5,7 @@ import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
+import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook

@@ -44,9 +44,11 @@ class ModuleManager {
             Jesus(),        KillAura(),     NoFall(),
             NoRender(),     PortalChat(),   SafeWalk(),
             Sprint(),       Surround(),     Tracers(),
-            Velocity()
+            Velocity(),     ClickGUI()
         )
     }
+
+
 
     private fun register(vararg modules: Module) {
         for (cheat in modules) {

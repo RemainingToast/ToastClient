@@ -1,6 +1,5 @@
 package dev.toastmc.client.module.movement
 
-import baritone.api.BaritoneAPI
 import baritone.api.pathing.goals.GoalBlock
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.event.PacketEvent
@@ -8,6 +7,7 @@ import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.Baritone
+import dev.toastmc.client.util.mc
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
@@ -30,8 +30,8 @@ class AutoWalk : Module() {
         super.onDisable()
         ToastClient.EVENT_BUS.unsubscribe(onEvent)
         Baritone.invoke {
-            if (BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.isActive){
-                BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.setGoalAndPath(null)
+            if (Baritone.BARITONE.customGoalProcess.isActive){
+                Baritone.BARITONE.customGoalProcess.setGoalAndPath(null)
             }
 
         }
@@ -42,8 +42,8 @@ class AutoWalk : Module() {
         if (mc.player == null) return@EventHook
         var baritone = false
         Baritone.invoke {
-            if (!BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.isActive){
-                BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.setGoalAndPath(GoalBlock(mc.player!!.blockPos.method_30513(mc.player!!.movementDirection.axis, 1000)))
+            if (!Baritone.BARITONE.customGoalProcess.isActive){
+                Baritone.BARITONE.customGoalProcess.setGoalAndPath(GoalBlock(mc.player!!.blockPos.method_30513(mc.player!!.movementDirection.axis, 1000)))
             }
             baritone = true
             return@invoke

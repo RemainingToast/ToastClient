@@ -6,6 +6,7 @@ import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.FabricReflect
+import dev.toastmc.client.util.mc
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener

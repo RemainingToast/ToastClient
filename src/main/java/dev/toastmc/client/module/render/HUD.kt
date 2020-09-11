@@ -10,6 +10,7 @@ import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.FabricReflect
 import dev.toastmc.client.util.TwoDRenderUtils
 import dev.toastmc.client.util.getRainbow
+import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook

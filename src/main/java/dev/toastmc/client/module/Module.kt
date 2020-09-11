@@ -3,14 +3,11 @@ package dev.toastmc.client.module
 import dev.toastmc.client.ToastClient
 import dev.toastmc.client.util.ConfigUtil
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
-import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
-import net.minecraft.client.MinecraftClient
 
 @Environment(EnvType.CLIENT)
 open class Module {
-    protected var mc: MinecraftClient = MinecraftClient.getInstance()
 
     var label: String = ""
     var description: String = ""
@@ -19,8 +16,6 @@ open class Module {
 
     var persistent: Boolean = false
     var category: Category = Category.NONE
-
-    var config: ConfigTreeBuilder? = null
 
     @Setting(name = "Enabled")
     var enabled: Boolean = false
@@ -43,7 +38,6 @@ open class Module {
             persistent = moduleManifest.persistent
             key = moduleManifest.key
             category = moduleManifest.category
-
         }
     }
 
