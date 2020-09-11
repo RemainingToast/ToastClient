@@ -6,17 +6,18 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.ValueDeserializationException
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigTypes
+import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.NumberConfigType
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch
+import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree
 import net.minecraft.client.MinecraftClient
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.math.BigDecimal
-import java.math.BigInteger
 
-class ConfigUtil {
+object ConfigUtil {
     private var module: File? = null
     private var initialized = false
     private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
@@ -34,7 +35,7 @@ class ConfigUtil {
         initialized = true
     }
 
-    private fun getConfigTree(): ConfigBranch? {
+    fun getConfigTree(): ConfigBranch? {
         var configTree = ConfigTreeBuilder(null, "config")
         for (module in MODULE_MANAGER.modules) {
             configTree = configTree.withChild(ConfigTreeBuilder(null, module.label).applyFromPojo(module, annotationSetting).build())
@@ -80,48 +81,43 @@ class ConfigUtil {
         save()
     }
 
-    fun ConfigTreeBuilder.getBigInteger(settingName: String): BigInteger? {
-        return this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_INTEGER.serializedType)?.value?.toBigIntegerExact()
+    fun ConfigBranch.getBranch(name: String): ConfigBranch? {
+        return this.lookupBranch(name)
     }
 
-    fun ConfigTreeBuilder.setBigInteger(settingName: String, value: BigInteger) {
-        this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_INTEGER.serializedType)?.value = value.toBigDecimal()
-        save()
+    fun ConfigTree.getBranch(name: String): ConfigBranch? {
+        return this.lookupBranch(name)
     }
 
-    fun ConfigTreeBuilder.getDouble(settingName: String): Double? {
-        return this.lookupLeaf(settingName, ConfigTypes.DOUBLE.serializedType)?.value?.toDouble()
+    fun ConfigBranch.getNumber(type: NumberConfigType<*>, name: String): Any? {
+        return this.lookupLeaf(name, type.serializedType)?.value
     }
 
-    fun ConfigTreeBuilder.setDouble(settingName: String, value: Double) {
-        this.lookupLeaf(settingName, ConfigTypes.DOUBLE.serializedType)?.value = BigDecimal(value)
-        save()
+    fun ConfigTree.getNumber(type: NumberConfigType<*>, name: String): Any? {
+        return this.lookupLeaf(name, type.serializedType)?.value
     }
 
-    fun ConfigTreeBuilder.getFloat(settingName: String): Float? {
-        return this.lookupLeaf(settingName, ConfigTypes.FLOAT.serializedType)?.value?.toFloat()
+    fun ConfigBranch.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Any? {
+        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
     }
 
-    fun ConfigTreeBuilder.setFloat(settingName: String, value: Float) {
-        this.lookupLeaf(settingName, ConfigTypes.FLOAT.serializedType)?.value = BigDecimal(value.toDouble())
-        save()
+    fun ConfigTree.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Any? {
+        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
     }
 
-    fun ConfigTreeBuilder.getBigDecimal(settingName: String): BigDecimal? {
-        return this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_DECIMAL.serializedType)?.value
+    fun ConfigBranch.getBoolean(name: String): Boolean? {
+        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
     }
 
-    fun ConfigTreeBuilder.setBigDecimal(settingName: String, value: BigDecimal) {
-        this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_DECIMAL.serializedType)?.value = value
-        save()
+    fun ConfigTree.getBoolean(name: String): Boolean? {
+        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
     }
 
-    fun ConfigTreeBuilder.getBoolean(settingName: String): Boolean? {
-        return this.lookupLeaf(settingName, ConfigTypes.BOOLEAN.serializedType)?.value
+    fun ConfigBranch.setBoolean(name: String, newValue: Boolean): Any? {
+        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
     }
 
-    fun ConfigTreeBuilder.setBoolean(settingName: String, value: Boolean) {
-        this.lookupLeaf(settingName, ConfigTypes.BOOLEAN.serializedType)?.value = value
-        save()
+    fun ConfigTree.setBoolean(name: String, newValue: Boolean): Any? {
+        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
     }
 }

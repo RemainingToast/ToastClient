@@ -53,6 +53,8 @@ dependencies {
     include "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
     modImplementation "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
 
+    testImplementation(group: "org.junit.jupiter", name: "junit-jupiter", version: "5.4.1")
+
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
 }
 
@@ -71,6 +73,10 @@ processResources {
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
