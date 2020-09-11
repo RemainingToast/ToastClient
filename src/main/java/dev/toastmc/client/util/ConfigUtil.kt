@@ -14,7 +14,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.math.BigDecimal
-import java.math.BigInteger
 
 class ConfigUtil {
     private var module: File? = null
@@ -81,48 +80,48 @@ class ConfigUtil {
         save()
     }
 
-    fun ConfigTreeBuilder.getBigInteger(settingName: String): BigInteger? {
-        return this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_INTEGER.serializedType)?.value?.toBigIntegerExact()
-    }
-
-    fun ConfigTreeBuilder.setBigInteger(settingName: String, value: BigInteger) {
-        this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_INTEGER.serializedType)?.value = value.toBigDecimal()
-        save()
-    }
-
-    fun ConfigTreeBuilder.getDouble(settingName: String): Double? {
-        return this.lookupLeaf(settingName, ConfigTypes.DOUBLE.serializedType)?.value?.toDouble()
-    }
-
-    fun ConfigTreeBuilder.setDouble(settingName: String, value: Double) {
-        this.lookupLeaf(settingName, ConfigTypes.DOUBLE.serializedType)?.value = BigDecimal(value)
-        save()
-    }
-
-    fun ConfigTreeBuilder.getFloat(settingName: String): Float? {
-        return this.lookupLeaf(settingName, ConfigTypes.FLOAT.serializedType)?.value?.toFloat()
-    }
-
-    fun ConfigTreeBuilder.setFloat(settingName: String, value: Float) {
-        this.lookupLeaf(settingName, ConfigTypes.FLOAT.serializedType)?.value = BigDecimal(value.toDouble())
-        save()
-    }
-
-    fun ConfigTreeBuilder.getBigDecimal(settingName: String): BigDecimal? {
-        return this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_DECIMAL.serializedType)?.value
-    }
-
-    fun ConfigTreeBuilder.setBigDecimal(settingName: String, value: BigDecimal) {
-        this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_DECIMAL.serializedType)?.value = value
-        save()
-    }
-
-    fun ConfigTreeBuilder.getBoolean(settingName: String): Boolean? {
-        return this.lookupLeaf(settingName, ConfigTypes.BOOLEAN.serializedType)?.value
-    }
-
-    fun ConfigTreeBuilder.setBoolean(settingName: String, value: Boolean) {
-        this.lookupLeaf(settingName, ConfigTypes.BOOLEAN.serializedType)?.value = value
-        save()
-    }
+//    fun ConfigTreeBuilder.getBigInteger(settingName: String): BigInteger? {
+//        return this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_INTEGER.serializedType)?.value?.toBigIntegerExact()
+//    }
+//
+//    fun ConfigTreeBuilder.setBigInteger(settingName: String, value: BigInteger) {
+//        this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_INTEGER.serializedType)?.value = value.toBigDecimal()
+//        save()
+//    }
+//
+//    fun ConfigTreeBuilder.getDouble(settingName: String): Double? {
+//        return this.lookupLeaf(settingName, ConfigTypes.DOUBLE.serializedType)?.value?.toDouble()
+//    }
+//
+//    fun ConfigTreeBuilder.setDouble(settingName: String, value: Double) {
+//        this.lookupLeaf(settingName, ConfigTypes.DOUBLE.serializedType)?.value = BigDecimal(value)
+//        save()
+//    }
+//
+//    fun ConfigTreeBuilder.getFloat(settingName: String): Float? {
+//        return this.lookupLeaf(settingName, ConfigTypes.FLOAT.serializedType)?.value?.toFloat()
+//    }
+//
+//    fun ConfigTreeBuilder.setFloat(settingName: String, value: Float) {
+//        this.lookupLeaf(settingName, ConfigTypes.FLOAT.serializedType)?.value = BigDecimal(value.toDouble())
+//        save()
+//    }
+//
+//    fun ConfigTreeBuilder.getBigDecimal(settingName: String): BigDecimal? {
+//        return this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_DECIMAL.serializedType)?.value
+//    }
+//
+//    fun ConfigTreeBuilder.setBigDecimal(settingName: String, value: BigDecimal) {
+//        this.lookupLeaf(settingName, ConfigTypes.UNBOUNDED_DECIMAL.serializedType)?.value = value
+//        save()
+//    }
+//
+//    fun ConfigTreeBuilder.getBoolean(settingName: String): Boolean? {
+//        return this.lookupLeaf(settingName, ConfigTypes.BOOLEAN.serializedType)?.value
+//    }
+//
+//    fun ConfigTreeBuilder.setBoolean(settingName: String, value: Boolean) {
+//        this.lookupLeaf(settingName, ConfigTypes.BOOLEAN.serializedType)?.value = value
+//        save()
+//    }
 }
