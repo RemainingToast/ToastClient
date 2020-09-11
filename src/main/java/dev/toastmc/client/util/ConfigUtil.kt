@@ -64,24 +64,6 @@ object ConfigUtil {
         }
     }
 
-    fun ConfigTreeBuilder.getInt(settingName: String): Int? {
-        return this.lookupLeaf(settingName, ConfigTypes.INTEGER.serializedType)?.value?.toInt()
-    }
-
-    fun ConfigTreeBuilder.setInt(settingName: String, value: Int) {
-        this.lookupLeaf(settingName, ConfigTypes.INTEGER.serializedType)?.value = BigDecimal(value)
-        save()
-    }
-
-    fun ConfigTreeBuilder.getLong(settingName: String): Long? {
-        return this.lookupLeaf(settingName, ConfigTypes.LONG.serializedType)?.value?.longValueExact()
-    }
-
-    fun ConfigTreeBuilder.setLong(settingName: String, value: Long) {
-        this.lookupLeaf(settingName, ConfigTypes.LONG.serializedType)?.value = BigDecimal(value)
-        save()
-    }
-
     fun ConfigBranch.getBranch(name: String): ConfigBranch? {
         return this.lookupBranch(name)
     }
@@ -99,11 +81,11 @@ object ConfigUtil {
     }
 
     fun ConfigBranch.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Any? {
-        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
+        if (this.lookupLeaf(name, type.serializedType)?.setValue(newValue)) save()
     }
 
-    fun ConfigTree.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Any? {
-        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
+    fun ConfigTree.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal) {
+		if (this.lookupLeaf(name, type.serializedType)?.setValue(newValue)) save()
     }
 
     fun ConfigBranch.getBoolean(name: String): Boolean? {
@@ -114,11 +96,11 @@ object ConfigUtil {
         return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
     }
 
-    fun ConfigBranch.setBoolean(name: String, newValue: Boolean): Any? {
-        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
+    fun ConfigBranch.setBoolean(name: String, newValue: Boolean) {
+        if (this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)) save()
     }
 
-    fun ConfigTree.setBoolean(name: String, newValue: Boolean): Any? {
-        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
+    fun ConfigTree.setBoolean(name: String, newValue: Boolean) {
+        if (this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)) save()
     }
 }
