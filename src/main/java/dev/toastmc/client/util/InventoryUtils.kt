@@ -106,6 +106,11 @@ object InventoryUtils {
         return if (slots.isNotEmpty()) slots.toTypedArray() else null
     }
 
+    fun getSlotFullInv(min: Int, max: Int, itemId: Int): Int? {
+        val i = getSlotsFullInv(min, max, itemId)!!.iterator().next()
+        return if (i != -1) i else null
+    }
+
     /**
      * Returns slots contains item with given [itemId] in player hotbar
      * This is same as [getSlots] but it returns full inventory slot index

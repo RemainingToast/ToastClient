@@ -29,6 +29,12 @@ class AutoWalk : Module() {
     override fun onDisable() {
         super.onDisable()
         ToastClient.EVENT_BUS.unsubscribe(onEvent)
+        Baritone.invoke {
+            if (BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.isActive){
+                BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.setGoalAndPath(null)
+            }
+
+        }
     }
 
     @EventHandler
