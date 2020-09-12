@@ -107,7 +107,7 @@ object InventoryUtils {
     }
 
     fun getSlotFullInv(min: Int, max: Int, itemId: Int): Int? {
-        val i = getSlotsFullInv(min, max, itemId)!!.iterator().next()
+        val i = getSlotsFullInv(min, max, itemId)?.getOrNull(0)
         return if (i != -1) i else null
     }
 
