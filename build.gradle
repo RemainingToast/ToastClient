@@ -101,3 +101,8 @@ remapJar {
     mustRunAfter shadowJar
     input = file("build/libs/${archivesBaseName}-${version}-shadow.jar")
 }
+compileKotlin {
+    kotlinOptions {
+        languageVersion = "1.4"
+    }
+}

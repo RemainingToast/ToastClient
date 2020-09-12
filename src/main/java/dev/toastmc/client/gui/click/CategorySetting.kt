@@ -1,6 +1,5 @@
 package dev.toastmc.client.gui.click
 
-import com.google.gson.annotations.SerializedName
 import java.util.*
 
 

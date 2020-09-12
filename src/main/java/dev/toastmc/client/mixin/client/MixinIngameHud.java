@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public class MixinIngameHud {
 
-    private static NoRender mod = (NoRender) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoRender.class);
+    private static NoRender mod = ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoRender.class);
 
 
     @Inject(at = @At(value = "RETURN"), method = "render", cancellable = true)

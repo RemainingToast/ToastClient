@@ -7,6 +7,7 @@ import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
 import dev.toastmc.client.module.render.*
 import kotlin.reflect.KClass
+import kotlin.reflect.cast
 
 
 class ModuleManager {
@@ -44,6 +45,7 @@ class ModuleManager {
             AutoTotem(),
             AutoTool(),
             AutoWalk(),
+            ClickGUI(),
             CrystalAura(),
             ESP(),
             FastStop(),
@@ -70,13 +72,9 @@ class ModuleManager {
         }
     }
 
-    fun <T : Module> getModuleByClass(clazz: KClass<T>): Module? {
-        return getModuleByClass(clazz.java)
-    }
-
-    fun <T : Module> getModuleByClass(clazz: Class<T>): Module? {
+    fun <T : Module> getModuleByClass(clazz: Class<T>): T? {
         for (current in modules) {
-            if (current.javaClass == clazz) return current
+            if (current::class.isInstance(clazz)) return current as T
         }
         return null
     }

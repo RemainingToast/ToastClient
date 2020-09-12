@@ -1,43 +1,38 @@
 package dev.toastmc.client.gui.click
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import dev.toastmc.client.ToastClient.Companion.FILE_MANAGER
 import dev.toastmc.client.module.Category
 import net.minecraft.client.MinecraftClient
 import java.awt.Color
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.FileReader
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ClickGuiSettings {
-    private val clickColorsFile = "gui-colors.json"
-    private val clickPosFile = "click-gui-positions.json"
+class ClickGuiSettings(val clickGuiScreen: ClickGuiScreen) {
+    private val clickColorsFile = File("toastclient/gui-colors.json")
+    private val clickPosFile = File("toastclient/click-gui-positions.json")
 
-    private val defaultOnTextColor: Int = Color(255, 255, 255, 255).rgb
-    private val defaultOffTextColor: Int = Color(177, 177, 177, 255).rgb
-    private val defaultBgColor: Int = Color(0, 0, 0, 64).rgb
-    private val defaultHoverBgColor: Int = Color(131, 212, 252, 92).rgb
-    private val defaultBoxColor: Int = Color(0, 0, 0, 255).rgb
-    private val defaultPrefixColor: Int = Color(8, 189, 8, 255).rgb
-    private val defaultClickColor: Int = Color(121, 205, 255, 128).rgb
+    private val defaultOnTextColor = Color(255, 255, 255, 255).rgb
+    private val defaultOffTextColor = Color(177, 177, 177, 255).rgb
+    private val defaultBgColor = Color(0, 0, 0, 64).rgb
+    private val defaultHoverBgColor = Color(131, 212, 252, 92).rgb
+    private val defaultBoxColor = Color(0, 0, 0, 255).rgb
+    private val defaultPrefixColor = Color(8, 189, 8, 255).rgb
+    private val defaultClickColor = Color(121, 205, 255, 128).rgb
 
-    private var gson: Gson = GsonBuilder().setPrettyPrinting().create()
+    private var gson = GsonBuilder().setPrettyPrinting().create()
     private var categoryPositions: MutableMap<String, CategorySetting> = TreeMap()
-    var colors: Colors = Colors()
-
-    private var guiScreen = ClickGuiScreen()
+    var colors = Colors()
 
     init {
         loadColors()
         loadPositions()
     }
 
-    fun getPositions(category: String?): CategorySetting {
+    fun getPositions(category: String): CategorySetting {
         var setting = categoryPositions[category]
         if (setting == null) {
             loadPositions()
@@ -48,11 +43,12 @@ class ClickGuiSettings {
     }
 
     private fun initCategoryPositions() {
+        if (MinecraftClient.getInstance().window == null) return
         var i = 0
         var y = 5
         for (category in Category.values()) {
-            var x: Int = 5 + guiScreen.width.times(i) + 5 * i
-            if (x + guiScreen.width + 10 > MinecraftClient.getInstance().window.width / 2) {
+            var x: Int = 5 + clickGuiScreen.w.times(i) + 5 * i
+            if (x + clickGuiScreen.w + 10 > MinecraftClient.getInstance().window.width / 2) {
                 y += MinecraftClient.getInstance().window.height / 2 / 3
                 x = 5
                 i = 0
@@ -65,22 +61,31 @@ class ClickGuiSettings {
 
     fun loadPositions() {
         try {
-            categoryPositions = gson.fromJson(
-                FileReader(FILE_MANAGER.createFile(File(clickPosFile))),
-                object : TypeToken<Map<String?, CategorySetting?>?>() {}.type
-            )
-        } catch (e: FileNotFoundException) {
+            categoryPositions = TreeMap()
+            val loadedData: MutableMap<String?, CategorySetting?>? =
+                gson.fromJson(clickPosFile.readText(), object : TypeToken<Map<String?, CategorySetting?>?>() {}.type)
+            if (loadedData != null) {
+                for (item in loadedData) if (item.key != null || item.value != null) categoryPositions.putIfAbsent(
+                    item.key!!,
+                    item.value!!
+                )
+                return
+            }
+        } catch (_: FileNotFoundException) {
+        } finally {
             initCategoryPositions()
             savePositions()
         }
     }
 
     fun savePositions() {
-        gson.toJson(categoryPositions)?.let { FILE_MANAGER.writeFile(File(clickPosFile), it) }
+        clickPosFile.createNewFile()
+        clickPosFile.writeText(gson.toJson(categoryPositions))
     }
 
     fun saveColors() {
-        gson.toJson(colors)?.let { FILE_MANAGER.writeFile(File(clickColorsFile), it) }
+        clickColorsFile.createNewFile()
+        clickColorsFile.writeText(gson.toJson(colors))
     }
 
     private fun allDefaults() {
@@ -139,11 +144,13 @@ class ClickGuiSettings {
 
     fun loadColors() {
         try {
-            colors = gson.fromJson(
-                FileReader(FILE_MANAGER.createFile(File(clickColorsFile))),
-                object : TypeToken<Colors?>() {}.type
-            )!!
-        } catch (e: FileNotFoundException) {
+            val newColors: Colors? = gson.fromJson(clickColorsFile.readText(), object : TypeToken<Colors?>() {}.type)
+            if (newColors != null) {
+                colors = newColors
+                return
+            }
+        } catch (_: FileNotFoundException) {
+        } finally {
             allDefaults()
             saveColors()
         }

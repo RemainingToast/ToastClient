@@ -7,13 +7,12 @@ import dev.toastmc.client.gui.click.components.Description
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.util.ConfigUtil
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.util.math.MatrixStack
 import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
 class CategoryRenderer(
+    private val clickGuiScreen: ClickGuiScreen,
     matrixStack: MatrixStack,
     mouseX: Int,
     mouseY: Int,
@@ -22,14 +21,14 @@ class CategoryRenderer(
     clickedR: Boolean
 ) {
     var keybindingPressed: Boolean = false
-    var keybindingModule: Module? = null
-    var isKeyPressed: Boolean = false
+    private var keybindingModule: Module? = null
+    private var isKeyPressed: Boolean = false
     var description: Description? = null
-    var isClickedL: Boolean
-    var isClickedR: Boolean
+    private var isClickedL: Boolean
+    private var isClickedR: Boolean
     var mouseX: Double
     var mouseY: Double
-    var isCategory: Boolean = true
+    private var isCategory: Boolean = true
     private fun setX(newX: Double) {
         settings.getPositions(categoryString).x = newX
     }
@@ -40,7 +39,10 @@ class CategoryRenderer(
 
     private val xInt: Int get() = settings.getPositions(categoryString).x.roundToInt()
     private val yInt: Int get() = settings.getPositions(categoryString).y.roundToInt()
-    private val isMouseOverCat: Boolean get() { return isMouseOverRect(mouseX, mouseY, x - 4, y - 4, boxWidth + 4, boxHeight + 2) }
+    private val isMouseOverCat: Boolean
+        get() {
+            return isMouseOverRect(mouseX, mouseY, x - 4, y - 4, boxWidth + 4, boxHeight + 2)
+        }
 
     fun setKeyPressed(keyPressed: Int) {
         if (keybindingPressed) {
@@ -48,7 +50,7 @@ class CategoryRenderer(
                 -1
             else keybindingModule?.key = keyPressed
             isKeyPressed = true
-            ClickGuiScreen.keybindingPressedCategory = null
+            clickGuiScreen.keybindingPressedCategory = null
             ConfigUtil.save()
         } else keybindingPressed = true
     }
@@ -68,13 +70,13 @@ class CategoryRenderer(
         return false
     }
 
-    val boxWidth: Int
+    private val boxWidth: Int
         get() {
-            return ClickGuiScreen.width
+            return clickGuiScreen.w
         }
-    val boxHeight: Int
+    private val boxHeight: Int
         get() {
-            return ClickGuiScreen.height
+            return clickGuiScreen.h
         }
     val x: Double
         get() {
@@ -85,21 +87,17 @@ class CategoryRenderer(
             return settings.getPositions(categoryString).y
         }
 
-    fun getYIteration(iteration: Int): Double {
+    private fun getYIteration(iteration: Int): Double {
         return y + iteration + (boxHeight * iteration)
     }
 
-    val categoryString: String
+    private val categoryString: String
         get() {
             return category.toString()
         }
-    var settings: ClickGuiSettings = ClickGuiScreen.settings
-    val textRenderer: TextRenderer
-        get() {
-            return MinecraftClient.getInstance().textRenderer
-        }
+    private var settings = clickGuiScreen.settings
 
-    var colors: ClickGuiSettings.Colors = settings.colors
+    var colors = settings.colors
 
     init {
         this.mouseX = mouseX.toDouble()
@@ -130,7 +128,7 @@ class CategoryRenderer(
             category.toString()
         )
         if (settings.getPositions(category.toString()).expanded) {
-            var u: Int = 1
+            var u = 1
             for (module: Module in MODULE_MANAGER.getModulesInCategory(category)) {
                 var moduleTextColor: Int
                 var moduleBgColor: Int

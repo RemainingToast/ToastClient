@@ -18,21 +18,17 @@ import java.io.FileOutputStream
 import java.math.BigDecimal
 
 object ConfigUtil {
+    private var configFile = File("toastclient/modules.json")
     private var module: File? = null
-    private var initialized = false
     private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
 
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
 
     fun init() {
         module = File(File(MinecraftClient.getInstance().runDirectory, "toastclient/"), "modules.json")
-        if (!ToastClient.FILE_MANAGER.fileExists(module!!)) { // Prevents crash when loading client for the first time.
-            ToastClient.FILE_MANAGER.createFile(module!!)   //
-            save()                                          //
-        }
+        if (configFile.createNewFile()) save()
         load()
         save()
-        initialized = true
     }
 
     fun getConfigTree(): ConfigBranch? {

@@ -27,7 +27,7 @@ class FileManager {
     }
 
     fun initReadMe() {
-        writeFile(File(ToastClient.MOD_DIRECTORY, "README.txt"), "${ToastClient.MODNAME} ${ToastClient.MODVER} is WORK IN PROGRESS, bugs are very probable.\n"
+        writeFile(File(ToastClient.MOD_DIRECTORY, "README.md"), "${ToastClient.MODNAME} ${ToastClient.MODVER} is WORK IN PROGRESS, bugs are very probable.\n"
                 + "Please REPORT BUGS or SUGGEST FEATURES in the official discord: https://discord.gg/gxyWEdG\n"
                 + "\nNOTE: THIS BUILD OF TOAST CLIENT DOES NOT HAVE A CLICKGUI, YOU MUST TOGGLE MODULES USING COMMANDS.\n\n"
                 + "Do .help to get a list of all the commands.\n" +
