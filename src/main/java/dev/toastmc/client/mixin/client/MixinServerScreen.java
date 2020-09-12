@@ -1,10 +1,8 @@
 package dev.toastmc.client.mixin.client;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import dev.toastmc.client.gui.auth.AuthScreen;
 import dev.toastmc.client.util.auth.LoginUtil;
 import dev.toastmc.client.util.auth.Status;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
@@ -33,9 +31,10 @@ public abstract class MixinServerScreen extends Screen {
     private static Status status = Status.UNKNOWN;
     private TexturedButtonWidget authButton;
     private ButtonWidget toastmcButton;
+    private ButtonWidget testServerButton;
 
-    private final ServerInfo server = new ServerInfo(" TOASTMC.DEV", "toastmc.dev", false);
-    private int serverExists = 0;
+    private final ServerInfo toastdev = new ServerInfo(" TOASTMC.DEV", "toastmc.dev", false);
+    private final ServerInfo testServer = new ServerInfo(" TEST SERVER", "139.99.208.240:42069", false);
 
     protected MixinServerScreen(Text text_1) {
         super(text_1);
@@ -43,17 +42,23 @@ public abstract class MixinServerScreen extends Screen {
 
     @Inject(at = @At("HEAD"), method = "init()V")
     private void init(CallbackInfo info) {
-        if (serverExists == 0){
-            toastmcButton = new ButtonWidget(30, 6, 100, 20, new LiteralText("PLAY TOASTMC.DEV"), button -> {
-                serverList.loadFile();
-                serverList.add(server);
-                serverListWidget.setServers(serverList);
-                serverList.saveFile();
-                toastmcButton.visible = false;
-            });
-            this.addButton(toastmcButton);
-            serverExists = 1;
-        }
+        toastmcButton = new ButtonWidget(30, 6, 100, 20, new LiteralText("PLAY TOASTMC.DEV"), button -> {
+            serverList.loadFile();
+            serverList.add(toastdev);
+            serverList.saveFile();
+            serverListWidget.setSelected((MultiplayerServerListWidget.Entry)null);
+            serverListWidget.setServers(this.serverList);
+        });
+        this.addButton(toastmcButton);
+
+        testServerButton = new ButtonWidget(134, 6, 100, 20, new LiteralText("TEST SERVER"), button -> {
+            serverList.loadFile();
+            serverList.add(testServer);
+            serverList.saveFile();
+            serverListWidget.setSelected((MultiplayerServerListWidget.Entry)null);
+            serverListWidget.setServers(this.serverList);
+        });
+        this.addButton(testServerButton);
 
         authButton = new TexturedButtonWidget(6,
                 6,
