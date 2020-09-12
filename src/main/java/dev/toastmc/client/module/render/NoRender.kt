@@ -8,7 +8,9 @@ import dev.toastmc.client.module.ModuleManifest
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
-import net.minecraft.network.packet.s2c.play.*
+import net.minecraft.network.packet.s2c.play.ExperienceOrbSpawnS2CPacket
+import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
+import net.minecraft.network.packet.s2c.play.LightUpdateS2CPacket
 
 @ModuleManifest(
     label = "NoRender",

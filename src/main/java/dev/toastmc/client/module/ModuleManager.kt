@@ -55,6 +55,7 @@ class ModuleManager {
             Jesus(),
             KillAura(),
             NoFall(),
+            NoFog(),
             NoRender(),
             PortalChat(),
             PrefixChat(),
