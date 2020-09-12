@@ -23,7 +23,7 @@ import java.util.Objects;
 @Mixin(BackgroundRenderer.class)
 public class MixinBackgroundRenderer {
 
-    private static NoRender mod = ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoRender.class);
+    private static NoRender mod = (NoRender) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoRender.class);
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"), method = {"render(Lnet/minecraft/client/render/Camera;FLnet/minecraft/client/world/ClientWorld;IF)V", "applyFog(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/BackgroundRenderer$FogType;FZ)V" })
     private static boolean hasStatusEffect(LivingEntity entity, StatusEffect effect) {

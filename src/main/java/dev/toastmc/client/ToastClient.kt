@@ -13,7 +13,7 @@ import java.io.File
 class ToastClient : ModInitializer {
     companion object {
         const val MODNAME = "Toast Client"
-        const val MODVER = "fabric-1.16.2-beta"
+        const val MODVER = "fabric-1.16.3-beta"
 
         var MINECRAFT: MinecraftClient = MinecraftClient.getInstance()
         val COMMAND_MANAGER: CommandManager = CommandManager()
