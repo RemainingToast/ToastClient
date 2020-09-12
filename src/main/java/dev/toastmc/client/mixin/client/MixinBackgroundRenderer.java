@@ -25,7 +25,7 @@ public class MixinBackgroundRenderer {
 
     private static NoRender mod = ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoRender.class);
 
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"), method = "Lnet/minecraft/client/render/BackgroundRenderer;render(Lnet/minecraft/client/render/Camera;FLnet/minecraft/client/world/ClientWorld;IF)V")
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"), method = {"render(Lnet/minecraft/client/render/Camera;FLnet/minecraft/client/world/ClientWorld;IF)V", "applyFog(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/BackgroundRenderer$FogType;FZ)V" })
     private static boolean hasStatusEffect(LivingEntity entity, StatusEffect effect) {
         if (effect == StatusEffects.BLINDNESS && mod.getEnabled() && mod.getBlindness())
             return false;
