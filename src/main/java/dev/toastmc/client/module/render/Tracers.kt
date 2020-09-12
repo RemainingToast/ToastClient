@@ -26,7 +26,7 @@ import org.lwjgl.opengl.GL11.GL_LINE_STRIP
 class Tracers : Module(){
     // TODO: figure out how to save Color3i/Color3f with fiber
     @Setting(name = "Trace Players")   var renderPlayers = true
-    /*@Setting(name = "Player Color")*/     var playerColor = Color3i(255, 0, 255)
+    /*@Setting(name = "Player Color") */   var playerColor = Color3i(255, 0, 255)
     @Setting(name = "Trace Hostiles")  var renderHostiles = true
     /*@Setting(name = "Hostile Color")*/    var hostileColor = Color3i(255, 0, 0)
     @Setting(name = "Trace Neutrals")  var renderNeutrals = true

@@ -6,8 +6,6 @@ import dev.toastmc.client.module.misc.PrefixChat
 import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
 import dev.toastmc.client.module.render.*
-import kotlin.reflect.KClass
-import kotlin.reflect.cast
 
 
 class ModuleManager {
