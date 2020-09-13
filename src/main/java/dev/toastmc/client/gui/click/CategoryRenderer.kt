@@ -108,11 +108,11 @@ class CategoryRenderer(
         var catBgColor: Int = Color(55, 175, 0, 200).rgb
         if (isMouseOverRect(mouseX.toDouble(), mouseY.toDouble(), x, y, boxWidth, boxHeight)) {
             if (isClickedR) {
-                catBgColor = Color(55, 175, 0, 155).rgb
+                catBgColor = Color(55, 175, 0, 100).rgb
                 settings.getPositions(categoryString).expanded = !settings.getPositions(categoryString).expanded
                 settings.savePositions()
             } else {
-                catBgColor = Color(55, 175, 0, 155).rgb
+                catBgColor = Color(55, 175, 0, 100).rgb
             }
         }
         drawTextBox(matrixStack, xInt, yInt, boxWidth, boxHeight, colors.categoryBoxColor, colors.categoryTextColor, colors.categoryPrefixColor, catBgColor, if(catExpanded) "- " else "+ ", category.toString())

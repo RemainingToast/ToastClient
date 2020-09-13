@@ -2,7 +2,6 @@ package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.*
 import dev.toastmc.client.module.misc.PortalChat
-import dev.toastmc.client.module.misc.PrefixChat
 import dev.toastmc.client.module.misc.SignCopy
 import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
@@ -57,7 +56,6 @@ class ModuleManager {
             NoFog(),
             NoRender(),
             PortalChat(),
-            PrefixChat(),
             SafeWalk(),
             Sprint(),
             SignCopy(),
