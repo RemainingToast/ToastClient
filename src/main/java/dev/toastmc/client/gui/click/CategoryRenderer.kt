@@ -9,6 +9,7 @@ import dev.toastmc.client.module.Module
 import dev.toastmc.client.util.ConfigUtil
 import net.minecraft.client.util.math.MatrixStack
 import org.lwjgl.glfw.GLFW
+import java.awt.Color
 import kotlin.math.roundToInt
 
 class CategoryRenderer(
@@ -46,8 +47,7 @@ class CategoryRenderer(
 
     fun setKeyPressed(keyPressed: Int) {
         if (keybindingPressed) {
-            if (keyPressed == -1) return else if (keyPressed == GLFW.GLFW_KEY_BACKSPACE || keyPressed == GLFW.GLFW_KEY_DELETE) keybindingModule?.key =
-                -1
+            if (keyPressed == -1) return else if (keyPressed == GLFW.GLFW_KEY_BACKSPACE || keyPressed == GLFW.GLFW_KEY_DELETE) keybindingModule?.key = -1
             else keybindingModule?.key = keyPressed
             isKeyPressed = true
             clickGuiScreen.keybindingPressedCategory = null
@@ -104,30 +104,19 @@ class CategoryRenderer(
         this.mouseY = mouseY.toDouble()
         isClickedL = clickedL
         isClickedR = clickedR
-        var catBgColor: Int = colors.categoryBgColor
+        val catExpanded = settings.getPositions(category.toString()).expanded
+        var catBgColor: Int = Color(55, 175, 0, 200).rgb
         if (isMouseOverRect(mouseX.toDouble(), mouseY.toDouble(), x, y, boxWidth, boxHeight)) {
             if (isClickedR) {
-                catBgColor = colors.categoryClickColor
+                catBgColor = Color(55, 175, 0, 155).rgb
                 settings.getPositions(categoryString).expanded = !settings.getPositions(categoryString).expanded
                 settings.savePositions()
             } else {
-                catBgColor = colors.categoryHoverBgColor
+                catBgColor = Color(55, 175, 0, 155).rgb
             }
         }
-        drawTextBox(
-            matrixStack,
-            xInt,
-            yInt,
-            boxWidth,
-            boxHeight,
-            colors.categoryBoxColor,
-            colors.categoryTextColor,
-            colors.categoryPrefixColor,
-            catBgColor,
-            colors.categoryPrefix,
-            category.toString()
-        )
-        if (settings.getPositions(category.toString()).expanded) {
+        drawTextBox(matrixStack, xInt, yInt, boxWidth, boxHeight, colors.categoryBoxColor, colors.categoryTextColor, colors.categoryPrefixColor, catBgColor, if(catExpanded) "- " else "+ ", category.toString())
+        if (catExpanded) {
             var u = 1
             for (module: Module in MODULE_MANAGER.getModulesInCategory(category)) {
                 var moduleTextColor: Int
@@ -158,16 +147,9 @@ class CategoryRenderer(
                             moduleBgColor = colors.moduleHoverBgColor
                         }
                     }
-                    description = Description(
-                        module.description,
-                        (x + boxWidth).roundToInt(),
-                        getYIteration(u).roundToInt(),
-                        true
-                    )
+                    if(module.description.isNotEmpty()) description = Description(module.description, (x + boxWidth).roundToInt(), getYIteration(u).roundToInt(), true)
                 }
-                drawTextBox(
-                    matrixStack,
-                    xInt,
+                drawTextBox(matrixStack, xInt,
                     getYIteration(u).roundToInt(),
                     boxWidth,
                     boxHeight,
@@ -175,9 +157,8 @@ class CategoryRenderer(
                     moduleTextColor,
                     colors.modulePrefixColor,
                     moduleBgColor,
-                    colors.modulePrefix,
-                    module.label
-                )
+                    "",
+                    module.label)
                 u++
             }
         }

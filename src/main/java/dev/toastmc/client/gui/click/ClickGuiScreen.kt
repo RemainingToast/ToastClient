@@ -8,14 +8,12 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.LiteralText
 import org.lwjgl.glfw.GLFW
-import java.util.*
-import kotlin.collections.HashMap
 
 class ClickGuiScreen(val module: ClickGUI) : Screen(LiteralText("ClickGuiScreen")) {
     var settings: ClickGuiSettings = ClickGuiSettings(this)
     var categoryRenderers = HashMap<Category, CategoryRenderer>()
     var keybindingPressedCategory: CategoryRenderer? = null
-    var w = 50
+    var w = 110
     var h = 10
     private var mouseIsClickedL = false
     private var mouseIsClickedR = false
@@ -25,9 +23,7 @@ class ClickGuiScreen(val module: ClickGUI) : Screen(LiteralText("ClickGuiScreen"
         h = MinecraftClient.getInstance().textRenderer.getStringBoundedHeight("> A", 100) + 3
         categoryRenderers.clear()
         for (category in Category.values()) {
-            println("${category.name} about to draw")
-            if (!category.isHidden) categoryRenderers[category] =
-                CategoryRenderer(this, matrixStack, mouseX, mouseY, category, mouseIsClickedL, mouseIsClickedR)
+            if (!category.isHidden) categoryRenderers[category] = CategoryRenderer(this, matrixStack, mouseX, mouseY, category, mouseIsClickedL, mouseIsClickedR)
         }
         if (clickedOnce) {
             mouseIsClickedL = false
@@ -116,7 +112,9 @@ class ClickGuiScreen(val module: ClickGUI) : Screen(LiteralText("ClickGuiScreen"
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
         val exitKeyCodes = arrayOf(GLFW.GLFW_KEY_ESCAPE, module.key)
         if (keyCode != GLFW.GLFW_KEY_UNKNOWN) {
-            if (keyCode in exitKeyCodes) module.disable() else keybindingPressedCategory?.setKeyPressed(keyCode)
+            if (keyCode in exitKeyCodes) {
+                module.disable()
+            } else keybindingPressedCategory?.setKeyPressed(keyCode)
         }
         return false
     }

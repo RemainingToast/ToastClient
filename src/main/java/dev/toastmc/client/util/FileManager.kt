@@ -1,7 +1,6 @@
 package dev.toastmc.client.util
 
 import dev.toastmc.client.ToastClient.Companion.MODNAME
-import dev.toastmc.client.ToastClient.Companion.MODVER
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -23,17 +22,6 @@ class FileManager {
             fileManagerLogger("Created Mod Directory! " + (modDirectory ?: return).path)
         }
         initialized = true
-        initReadMe()
-    }
-
-    fun initReadMe() {
-        writeFile(File(MOD_DIRECTORY, "README.md"), "$MODNAME $MODVER is WORK IN PROGRESS, bugs are very probable.\n"
-                + "Please REPORT BUGS or SUGGEST FEATURES in the official discord: https://discord.gg/gxyWEdG\n"
-                + "\nNOTE: THIS BUILD OF TOAST CLIENT DOES NOT HAVE A CLICKGUI, YOU MUST TOGGLE MODULES USING COMMANDS.\n\n"
-                + "Do .help to get a list of all the commands.\n" +
-                "Do .toggle <module> to toggle a module.\n" +
-                "Do .modules for a list of modules\n\n" +
-                "Thanks for using Toast Client :)")
     }
 
     private fun fileManagerLogger(m: String) {

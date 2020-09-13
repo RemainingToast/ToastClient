@@ -18,7 +18,7 @@ class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     private val defaultBgColor = Color(0, 0, 0, 64).rgb
     private val defaultHoverBgColor = Color(131, 212, 252, 92).rgb
     private val defaultBoxColor = Color(0, 0, 0, 255).rgb
-    private val defaultPrefixColor = Color(8, 189, 8, 255).rgb
+    private val defaultPrefixColor = Color(255, 0, 0, 255).rgb
     private val defaultClickColor = Color(121, 205, 255, 128).rgb
 
     private var gson = GsonBuilder().setPrettyPrinting().create()
@@ -47,7 +47,7 @@ class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         for (category in Category.values()) {
             if (category == Category.NONE) continue
             var x: Int = 5 + clickGuiScreen.w.times(i) + 5 * i
-            if (x + clickGuiScreen.w + 10 > MinecraftClient.getInstance().window.width / 2) {
+            if (x + clickGuiScreen.w + 30 > MinecraftClient.getInstance().window.width / 2) {
                 y += MinecraftClient.getInstance().window.height / 2 / 3
                 x = 5
                 i = 0
@@ -99,7 +99,7 @@ class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         colors.categoryBoxColor = defaultBoxColor
         colors.categoryClickColor = defaultClickColor
         colors.categoryHoverBgColor = defaultHoverBgColor
-        colors.categoryPrefix = "> "
+        colors.categoryPrefix = "+ "
         colors.categoryPrefixColor = defaultPrefixColor
         colors.categoryTextColor = defaultOnTextColor
     }

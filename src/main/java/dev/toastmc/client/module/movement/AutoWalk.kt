@@ -30,10 +30,11 @@ class AutoWalk : Module() {
         super.onDisable()
         EVENT_BUS.unsubscribe(onEvent)
         Baritone.invoke {
-            if (Baritone.BARITONE.customGoalProcess.isActive){
-                Baritone.BARITONE.customGoalProcess.setGoalAndPath(null)
+            if(Baritone.baritonePresent()){
+                if (Baritone.BARITONE.customGoalProcess.isActive){
+                    Baritone.BARITONE.customGoalProcess.setGoalAndPath(null)
+                }
             }
-
         }
     }
 
@@ -42,8 +43,10 @@ class AutoWalk : Module() {
         if (mc.player == null) return@EventHook
         var baritone = false
         Baritone.invoke {
-            if (!Baritone.BARITONE.customGoalProcess.isActive){
-                Baritone.BARITONE.customGoalProcess.setGoalAndPath(GoalBlock(mc.player!!.blockPos.method_30513(mc.player!!.movementDirection.axis, 1000)))
+            if(Baritone.baritonePresent()){
+                if (!Baritone.BARITONE.customGoalProcess.isActive){
+                    Baritone.BARITONE.customGoalProcess.setGoalAndPath(GoalBlock(mc.player!!.blockPos.method_30513(mc.player!!.movementDirection.axis, 1000)))
+                }
             }
             baritone = true
             return@invoke
