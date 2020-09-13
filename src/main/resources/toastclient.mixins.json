@@ -21,6 +21,7 @@
       "MixinKeyboard",
       "MixinMinecraftClient",
       "MixinPlayerEntity",
+      "MixinRenderTickCounter",
       "MixinServerScreen"
   ],
   "injectors": {

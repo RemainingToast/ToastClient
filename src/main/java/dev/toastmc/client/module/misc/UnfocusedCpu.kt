@@ -9,5 +9,5 @@ import dev.toastmc.client.module.ModuleManifest
     category = Category.MISC
 )
 class UnfocusedCpu : Module() {
-    
+
 }

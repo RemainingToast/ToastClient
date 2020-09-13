@@ -46,7 +46,7 @@ public abstract class MixinServerScreen extends Screen {
             serverList.loadFile();
             serverList.add(toastdev);
             serverList.saveFile();
-            serverListWidget.setSelected((MultiplayerServerListWidget.Entry)null);
+            serverListWidget.setSelected(null);
             serverListWidget.setServers(this.serverList);
         });
         this.addButton(toastmcButton);
@@ -55,7 +55,7 @@ public abstract class MixinServerScreen extends Screen {
             serverList.loadFile();
             serverList.add(testServer);
             serverList.saveFile();
-            serverListWidget.setSelected((MultiplayerServerListWidget.Entry)null);
+            serverListWidget.setSelected(null);
             serverListWidget.setServers(this.serverList);
         });
         this.addButton(testServerButton);
