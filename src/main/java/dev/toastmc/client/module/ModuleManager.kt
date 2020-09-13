@@ -76,7 +76,7 @@ class ModuleManager {
     fun <T : Module> getModuleByClass(clazz: Class<T>): Module? {
         for (current in modules) {
             if (current.javaClass == clazz) return current
-//            if (current::class.isInstance(clazz)) return current as T
+            if (current::class.isInstance(clazz)) return current as T
         }
         return null
     }

@@ -5,15 +5,13 @@ import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.InventoryUtils.getSlotFullInv
-import dev.toastmc.client.util.InventoryUtils.getSlotsHotbar
 import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen
 import net.minecraft.client.gui.screen.ingame.InventoryScreen
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.screen.slot.SlotActionType
@@ -39,26 +37,26 @@ class AutoReplenish : Module() {
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
-        if (mc.player == null || mc.currentScreen is InventoryScreen || mc.player!!.inventory.mainHandStack.item == Items.AIR) return@EventHook
+        if (mc.player == null || mc.currentScreen is InventoryScreen || mc.currentScreen is CreativeInventoryScreen || mc.player!!.inventory.mainHandStack.item == Items.AIR) return@EventHook
         delayStep = if (delayStep < delay) { delayStep++; return@EventHook } else 0
-        val (inventorySlot, hotbarSlot) = findReplenishableHotbarSlot(mc.player!!.inventory.mainHandStack.item)
-        if (inventorySlot == -1 || inventorySlot == null || hotbarSlot == -1 || hotbarSlot == null || mc.player!!.inventory.mainHandStack.count >= threshold) return@EventHook
+        val (inventorySlot, hotbarSlot) = findReplenishableHotbarSlot(mc.player!!.inventory.mainHandStack)
+        if (inventorySlot == -1 || inventorySlot == null || hotbarSlot == -1 || hotbarSlot == null) return@EventHook
         mc.interactionManager!!.clickSlot(0, inventorySlot, 0, SlotActionType.PICKUP, mc.player)
         mc.interactionManager!!.clickSlot(0, hotbarSlot, 0, SlotActionType.PICKUP, mc.player)
         mc.interactionManager!!.clickSlot(0, inventorySlot, 0, SlotActionType.PICKUP, mc.player)
     })
 
-    private fun findReplenishableHotbarSlot(item: Item): Pair<Int?, Int?> {
-        val returnPair = Pair(getCompatibleStack(item.stackForRender), getSlotsHotbar(Item.getRawId(item))!!.first())
-        if (returnPair.first == null || returnPair.second == -1) return Pair(null, null)
+    private fun findReplenishableHotbarSlot(itemStack: ItemStack): Pair<Int?, Int?> {
+        val t = (0..8).firstOrNull { mc.player!!.inventory.getStack(it).item == itemStack.item } ?: -1
+        val returnPair = Pair(getCompatibleStack(itemStack), t)
         println("Found: $returnPair")
         return returnPair
     }
 
-    private fun getCompatibleStack(stack: ItemStack): Int? {
-        val slot = getSlotFullInv(9, 35, Item.getRawId(stack.item)) ?: return null
-        println("$stack and ${mc.player!!.inventory.getStack(slot)} are ${if (isCompatibleStacks(stack, mc.player!!.inventory.getStack(slot))) "" else "NOT"} compatiable")
-        return if (isCompatibleStacks(stack, mc.player!!.inventory.getStack(slot))) slot else null
+    private fun getCompatibleStack(itemStack: ItemStack): Int? {
+        val t = (9..35).firstOrNull { mc.player!!.inventory.getStack(it).item == itemStack.item } ?: return -1
+        println("$itemStack and ${mc.player!!.inventory.getStack(t)} are ${if (isCompatibleStacks(itemStack, mc.player!!.inventory.getStack(t))) "" else "NOT"} compatiable")
+        return if (isCompatibleStacks(itemStack, mc.player!!.inventory.getStack(t))) t else null
     }
 
     private fun isCompatibleStacks(stack1: ItemStack, stack2: ItemStack): Boolean {

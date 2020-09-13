@@ -22,7 +22,6 @@ import net.minecraft.block.Blocks.OBSIDIAN
 import net.minecraft.entity.Entity
 import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.entity.effect.StatusEffects
-import net.minecraft.item.Item
 import net.minecraft.item.Items
 import net.minecraft.item.SwordItem
 import net.minecraft.item.ToolItem
@@ -80,10 +79,11 @@ class CrystalAura : Module() {
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
+        if (mc.player == null) return@EventHook
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
         crystal = findCrystal(range) ?: return@EventHook
         val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
-        crystalSlot = if (InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL)) != null) InventoryUtils.getSlotsHotbar(Item.getRawId(Items.END_CRYSTAL))!![0] else -1
+        crystalSlot = if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1;
         if (explodeCheck(crystal!!)) {
             oldSlot = mc.player!!.inventory.selectedSlot
             when {
