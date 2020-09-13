@@ -35,7 +35,7 @@ object EntityUtils {
                 e is PiglinEntity && e.isAngryAt(mc.player) ||
                 e is WolfEntity && e.isAttacking && e.ownerUuid !== mc.player!!.uuid ||
                 e is EndermanEntity && e.isAngry ||
-                e is GolemEntity && e.handSwinging
+                e is GolemEntity && e.handSwinging || e is SlimeEntity && e.isAttacking || e is MagmaCubeEntity && e.isAttacking
     }
 
     fun isNeutral(e: Entity?): Boolean {
