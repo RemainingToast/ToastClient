@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.movement
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -21,12 +21,12 @@ class FastStop : Module() {
 
     override fun onDisable() {
         if (mc.player == null) return
-        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
+        EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     override fun onEnable() {
         if (mc.player == null) return
-        ToastClient.EVENT_BUS.subscribe(onTickEvent)
+        EVENT_BUS.subscribe(onTickEvent)
     }
 
     @EventHandler

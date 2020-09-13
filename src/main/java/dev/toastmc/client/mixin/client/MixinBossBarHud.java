@@ -2,6 +2,7 @@ package dev.toastmc.client.mixin.client;
 
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.module.render.NoRender;
+import dev.toastmc.client.util.UtilKt;
 import net.minecraft.client.gui.hud.BossBarHud;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

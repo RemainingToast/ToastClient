@@ -1,6 +1,6 @@
 package dev.toastmc.client.util
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.ChunkEvent
 import io.netty.util.internal.ConcurrentSet
 import me.zero.alpine.listener.EventHandler
@@ -169,7 +169,7 @@ object WorldUtil {
         for (x in startX..endX) {
             for (z in startZ..endZ) {
                 for (y in 0..getHighestYAtXZ(x, z)) {
-                    if (ToastClient.MINECRAFT.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(BlockPos(x, y, z))
+                    if (mc.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(BlockPos(x, y, z))
                 }
             }
         }
@@ -184,11 +184,11 @@ object WorldUtil {
      * @return Y coordinate of the highest non-air block in the column
      */
     fun getHighestYAtXZ(x: Int, z: Int): Int {
-        return ToastClient.MINECRAFT.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
+        return mc.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
     }
 
     val BlockPos.block: Block
-        get() = ToastClient.MINECRAFT.world!!.getBlockState(this).block
+        get() = mc.world!!.getBlockState(this).block
 
     val BlockPos.vec3d: Vec3d
         get() = Vec3d(this.x.toDouble(), this.y.toDouble(), this.z.toDouble())
@@ -199,13 +199,13 @@ object WorldUtil {
 
     @EventHandler
     val onChunkEvent = Listener(EventHook<ChunkEvent> {
-        if (ToastClient.MINECRAFT.world!!.isChunkLoaded(it.chunk!!.pos.startX, it.chunk.pos.startZ))
+        if (mc.world!!.isChunkLoaded(it.chunk!!.pos.startX, it.chunk.pos.startZ))
             loadedChunks.add(it.chunk)
         else
             loadedChunks.remove(it.chunk)
     })
 
     init {
-        ToastClient.EVENT_BUS.subscribe(onChunkEvent)
+        EVENT_BUS.subscribe(onChunkEvent)
     }
 }

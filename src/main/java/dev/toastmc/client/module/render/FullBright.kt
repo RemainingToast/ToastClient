@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.render
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -33,14 +33,14 @@ class FullBright : Module() {
         if (mc.player!!.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
             if (Objects.requireNonNull(mc.player!!.getStatusEffect(StatusEffects.NIGHT_VISION))!!.amplifier == 42069) mc.player!!.removeStatusEffect(StatusEffects.NIGHT_VISION)
         }
-        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
+        EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     override fun onEnable() {
         if (mc.player == null) return
         previousGamma = mc.options.gamma
         mc.player!!.addStatusEffect(StatusEffectInstance(StatusEffects.NIGHT_VISION, 42069, 42069))
-        ToastClient.EVENT_BUS.subscribe(onTickEvent)
+        EVENT_BUS.subscribe(onTickEvent)
     }
 
     private fun increaseGamma() {

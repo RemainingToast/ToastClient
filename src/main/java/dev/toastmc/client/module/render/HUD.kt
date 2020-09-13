@@ -1,7 +1,9 @@
 package dev.toastmc.client.module.render
 
 import baritone.api.BaritoneAPI
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
+import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
+import dev.toastmc.client.ToastClient.Companion.MODVER
 import dev.toastmc.client.event.OverlayEvent
 import dev.toastmc.client.event.PacketEvent
 import dev.toastmc.client.module.Category
@@ -52,9 +54,9 @@ class HUD : Module() {
         infoList.clear()
         lines.clear()
         var arrayCount = 0
-        if (watermark && !mc.options.debugEnabled) lines.add(0, "Toast Client " + ToastClient.MODVER)
+        if (watermark && !mc.options.debugEnabled) lines.add(0, "Toast Client $MODVER")
         if (arraylist && !mc.options.debugEnabled) {
-            for (m in ToastClient.MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
+            for (m in MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
             lines.sortWith(Comparator { a: String?, b: String? ->
                 mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
             })
@@ -142,14 +144,14 @@ class HUD : Module() {
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(onOverlayEvent)
-        ToastClient.EVENT_BUS.subscribe(packetEventListener)
+        EVENT_BUS.subscribe(onOverlayEvent)
+        EVENT_BUS.subscribe(packetEventListener)
     }
 
     override fun onDisable() {
         super.onDisable()
-        ToastClient.EVENT_BUS.unsubscribe(onOverlayEvent)
-        ToastClient.EVENT_BUS.unsubscribe(packetEventListener)
+        EVENT_BUS.unsubscribe(onOverlayEvent)
+        EVENT_BUS.unsubscribe(packetEventListener)
     }
 
     private fun getColorString(value: Int, best: Int, good: Int, mid: Int, bad: Int, worst: Int, rev: Boolean): String? {

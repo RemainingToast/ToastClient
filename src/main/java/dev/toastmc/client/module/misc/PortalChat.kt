@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.misc
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.CloseScreenInPortalEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -18,12 +18,12 @@ class PortalChat : Module() {
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(closeScreenEvent)
+        EVENT_BUS.subscribe(closeScreenEvent)
     }
 
     override fun onDisable() {
         super.onDisable()
-        ToastClient.EVENT_BUS.unsubscribe(closeScreenEvent)
+        EVENT_BUS.unsubscribe(closeScreenEvent)
     }
 
     @EventHandler

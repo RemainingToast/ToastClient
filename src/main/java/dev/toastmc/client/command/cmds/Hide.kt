@@ -1,6 +1,6 @@
 package dev.toastmc.client.command.cmds
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
 import dev.toastmc.client.command.Command
 import dev.toastmc.client.command.CommandManifest
 import dev.toastmc.client.module.Module
@@ -24,7 +24,7 @@ class Hide : Command(){
             for (s in args) {
                 argss += s
             }
-            val mod: Module? = ToastClient.MODULE_MANAGER.getModuleByName(argss.toLowerCase().replace(" ", ""))
+            val mod: Module? = MODULE_MANAGER.getModuleByName(argss.toLowerCase().replace(" ", ""))
             if(mod != null){
                 mod.setHidden(!mod.hidden)
                 MessageUtil.sendMessage("${mod.label} is now being ${if (mod.hidden) Formatting.RED.toString() + "HIDDEN" else Formatting.GREEN.toString() + "SHOWN"}", MessageUtil.Color.GRAY)

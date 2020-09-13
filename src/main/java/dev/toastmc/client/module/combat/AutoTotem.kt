@@ -1,7 +1,7 @@
 package dev.toastmc.client.module.combat
 
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -32,12 +32,12 @@ class AutoTotem : Module(){
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(onTickEvent)
+        EVENT_BUS.subscribe(onTickEvent)
     }
 
     override fun onDisable() {
         super.onDisable()
-        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
+        EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     @EventHandler
@@ -56,8 +56,7 @@ class AutoTotem : Module(){
                 }
                 !mc.player!!.inventory.isEmpty -> {
                     if (totems == 0) return@EventHook
-                    val t = (0..44).firstOrNull { mc.player!!.inventory.getStack(it).item === Items.TOTEM_OF_UNDYING }
-                            ?: -1
+                    val t = (0..44).firstOrNull { mc.player!!.inventory.getStack(it).item === Items.TOTEM_OF_UNDYING } ?: -1
                     if (t == -1) return@EventHook
                     mc.interactionManager!!.clickSlot(0, if (t < 9) t + 36 else t, 0, SlotActionType.PICKUP, mc.player)
                     moving = true

@@ -3,6 +3,7 @@ package dev.toastmc.client.module
 import dev.toastmc.client.module.combat.*
 import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.misc.PrefixChat
+import dev.toastmc.client.module.misc.SignCopy
 import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
 import dev.toastmc.client.module.render.*
@@ -59,6 +60,7 @@ class ModuleManager {
             PrefixChat(),
             SafeWalk(),
             Sprint(),
+            SignCopy(),
             Surround(),
             Tracers(),
             Velocity()
@@ -82,7 +84,7 @@ class ModuleManager {
 
     fun getModuleByName(name: String?): Module? {
         for (current in modules) {
-            if (current.alias?.contains(name)!!) return current
+            if (current.alias.contains(name)) return current
             if (current.label.equals(name, ignoreCase = true)) return current
         }
         return null
@@ -99,12 +101,24 @@ class ModuleManager {
         }
         return moduleList
     }
+
+    fun getModulesNamesInCategory(category: Category): ArrayList<String> {
+        val arrayList: ArrayList<String> = arrayListOf("none")
+        if (arrayList.contains("none")){
+            for(mod in getModulesInCategory(category)){
+                arrayList.add(mod.label)
+            }
+            arrayList.remove("none")
+        }
+        return arrayList
+    }
+
     fun getModulesInArrayList(): String? {
         val sb: StringBuilder? = null
         val string: String
         sb?.clear()
         for(module in modules){
-            if(module.enabled!! && !module.hidden!! && !module.category?.equals(Category.NONE)!!){
+            if(module.enabled && !module.hidden && module.category != Category.NONE){
                 sb?.append("${module.label}\n ")
             }
         }

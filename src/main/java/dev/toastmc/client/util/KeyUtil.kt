@@ -1,7 +1,5 @@
 package dev.toastmc.client.util
 
-import kotlin.collections.LinkedHashMap
-
 object KeyUtil {
     val keys = LinkedHashMap<String, Int>()
 

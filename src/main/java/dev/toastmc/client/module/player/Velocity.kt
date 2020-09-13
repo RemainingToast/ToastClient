@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.player
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.EntityEvent
 import dev.toastmc.client.event.MoveEntityFluidEvent
 import dev.toastmc.client.event.PacketEvent
@@ -30,16 +30,16 @@ class Velocity : Module() {
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(packetEventListener)
-        ToastClient.EVENT_BUS.subscribe(entityCollisionListener)
-        ToastClient.EVENT_BUS.subscribe(moveEntityFluidEventListener)
+        EVENT_BUS.subscribe(packetEventListener)
+        EVENT_BUS.subscribe(entityCollisionListener)
+        EVENT_BUS.subscribe(moveEntityFluidEventListener)
     }
 
     override fun onDisable() {
         super.onDisable()
-        ToastClient.EVENT_BUS.unsubscribe(packetEventListener)
-        ToastClient.EVENT_BUS.unsubscribe(entityCollisionListener)
-        ToastClient.EVENT_BUS.unsubscribe(moveEntityFluidEventListener)
+        EVENT_BUS.unsubscribe(packetEventListener)
+        EVENT_BUS.unsubscribe(entityCollisionListener)
+        EVENT_BUS.unsubscribe(moveEntityFluidEventListener)
     }
 
     @EventHandler

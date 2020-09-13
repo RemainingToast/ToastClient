@@ -2,8 +2,8 @@ package dev.toastmc.client.mixin.client;
 
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.event.RenderEvent;
-import dev.toastmc.client.module.ModuleManager;
 import dev.toastmc.client.module.render.NoRender;
+import dev.toastmc.client.util.UtilKt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;

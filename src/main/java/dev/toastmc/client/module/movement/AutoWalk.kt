@@ -1,7 +1,7 @@
 package dev.toastmc.client.module.movement
 
 import baritone.api.pathing.goals.GoalBlock
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.PacketEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -23,12 +23,12 @@ class AutoWalk : Module() {
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(onEvent)
+        EVENT_BUS.subscribe(onEvent)
     }
 
     override fun onDisable() {
         super.onDisable()
-        ToastClient.EVENT_BUS.unsubscribe(onEvent)
+        EVENT_BUS.unsubscribe(onEvent)
         Baritone.invoke {
             if (Baritone.BARITONE.customGoalProcess.isActive){
                 Baritone.BARITONE.customGoalProcess.setGoalAndPath(null)

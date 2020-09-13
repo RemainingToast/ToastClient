@@ -2,7 +2,6 @@ package dev.toastmc.client.util
 
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
-import dev.toastmc.client.ToastClient
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.*
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
@@ -19,8 +18,6 @@ import kotlin.random.Random
  * @credit cookiedragon234 26/Jun/2020
  * @from https://github.com/cookiedragon234/Raion-116/
  */
-val mc = MinecraftClient.getInstance()
-
 open class RenderBuilder {
     var translation: Vec3d = Vec3d.ZERO
 
@@ -98,7 +95,7 @@ fun getRandomRainbow(seed: Int): Color {
 fun getRainbow(sat: Float, bri: Float, speed: Double, offset: Int): Color {
     var rainbowState = ceil((System.currentTimeMillis() + offset) / speed)
     rainbowState %= 360.0
-    return Color((rainbowState / 360.0).toFloat(), sat, bri)
+    return Color.getHSBColor((rainbowState / 360.0).toFloat(), sat, bri)
 }
 
 fun <T : RenderBuilder> T.text(matrixStack: MatrixStack, text: String, x: Double, y: Double, z: Double): T = this.apply {
@@ -171,7 +168,7 @@ inline fun draw3d(translate: Boolean = false, color: Color = Color(1f, 1f, 1f, 1
         GlStateManager.disableLighting()
 
         if (translate) {
-            val camera = ToastClient.MINECRAFT.gameRenderer.camera
+            val camera = mc.gameRenderer.camera
             GlStateManager.rotatef(MathHelper.wrapDegrees(camera.pitch), 1f, 0f, 0f)
             GlStateManager.rotatef(MathHelper.wrapDegrees(camera.yaw + 180f), 0f, 1f, 0f)
             builder.translation = builder.translation.subtract(camera.pos)

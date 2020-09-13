@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.player
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.PlayerAttackBlockEvent
 import dev.toastmc.client.event.PlayerAttackEntityEvent
 import dev.toastmc.client.module.Category
@@ -23,14 +23,14 @@ class AutoTool : Module(){
 
     override fun onDisable() {
         if (mc.player != null) mc.player!!.inventory.selectedSlot = lastSlot
-        ToastClient.EVENT_BUS.unsubscribe(leftClickListener)
-        ToastClient.EVENT_BUS.unsubscribe(attackListener)
+        EVENT_BUS.unsubscribe(leftClickListener)
+        EVENT_BUS.unsubscribe(attackListener)
     }
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(leftClickListener)
-        ToastClient.EVENT_BUS.subscribe(attackListener)
+        EVENT_BUS.subscribe(leftClickListener)
+        EVENT_BUS.subscribe(attackListener)
     }
 
     @EventHandler
@@ -42,7 +42,7 @@ class AutoTool : Module(){
 
 
     @EventHandler
-    private val attackListener = Listener(EventHook<PlayerAttackEntityEvent> { event: PlayerAttackEntityEvent? ->
+    private val attackListener = Listener(EventHook<PlayerAttackEntityEvent> {
         ItemUtil.equipBestWeapon()
     })
 }

@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.combat
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
 import dev.toastmc.client.event.KeyPressEvent
 import dev.toastmc.client.event.RenderEvent
@@ -67,15 +67,15 @@ class CrystalAura : Module() {
     var crystal: EndCrystalEntity? = null
 
     override fun onEnable() {
-        ToastClient.EVENT_BUS.subscribe(onTickEvent)
-        ToastClient.EVENT_BUS.subscribe(inputEvent)
-        ToastClient.EVENT_BUS.subscribe(onWorldRenderEvent)
+        EVENT_BUS.subscribe(onTickEvent)
+        EVENT_BUS.subscribe(inputEvent)
+        EVENT_BUS.subscribe(onWorldRenderEvent)
     }
 
     override fun onDisable() {
-        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
-        ToastClient.EVENT_BUS.unsubscribe(inputEvent)
-        ToastClient.EVENT_BUS.unsubscribe(onWorldRenderEvent)
+        EVENT_BUS.unsubscribe(onTickEvent)
+        EVENT_BUS.unsubscribe(inputEvent)
+        EVENT_BUS.unsubscribe(onWorldRenderEvent)
     }
 
     @EventHandler

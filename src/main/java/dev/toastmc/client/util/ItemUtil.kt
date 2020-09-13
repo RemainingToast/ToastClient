@@ -10,7 +10,6 @@ import net.minecraft.item.Items
 import net.minecraft.item.MiningToolItem
 import net.minecraft.item.SwordItem
 import kotlin.math.pow
-import dev.toastmc.client.ToastClient.Companion.MINECRAFT as mc
 
 object ItemUtil {
     private val pickaxeList = listOf(

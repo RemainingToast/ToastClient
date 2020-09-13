@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.combat
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.RenderEvent
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
@@ -47,15 +47,15 @@ class KillAura : Module() {
 
     override fun onEnable() {
         if (mc.player == null) return
-        ToastClient.EVENT_BUS.subscribe(onTickEvent)
-        ToastClient.EVENT_BUS.subscribe(onWorldRenderEvent)
+        EVENT_BUS.subscribe(onTickEvent)
+        EVENT_BUS.subscribe(onWorldRenderEvent)
         target = null
     }
 
     override fun onDisable() {
         if (mc.player == null) return
-        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
-        ToastClient.EVENT_BUS.unsubscribe(onWorldRenderEvent)
+        EVENT_BUS.unsubscribe(onTickEvent)
+        EVENT_BUS.unsubscribe(onWorldRenderEvent)
         target = null
     }
 

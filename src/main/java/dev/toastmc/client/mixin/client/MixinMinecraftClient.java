@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-//Credit: https://github.com/zeroeightysix/KAMI/blob/fabric/src/main/java/me/zeroeightsix/kami/mixin/client/MixinMinecraftClient.java
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient {
 
@@ -37,15 +36,15 @@ public abstract class MixinMinecraftClient {
 
     @ModifyVariable(method = "openScreen", at = @At("HEAD"))
     private Screen openScreen(Screen screen) {
-        ScreenEvent.Closed closedEvent = new ScreenEvent.Closed(ToastClient.Companion.getMINECRAFT().currentScreen);
+        ScreenEvent.Closed closedEvent = new ScreenEvent.Closed(MinecraftClient.getInstance().currentScreen);
         ToastClient.EVENT_BUS.post(closedEvent);
         if (closedEvent.isCancelled()) {
-            return ToastClient.Companion.getMINECRAFT().currentScreen;
+            return MinecraftClient.getInstance().currentScreen;
         }
         ScreenEvent.Displayed displayedEvent = new ScreenEvent.Displayed(screen);
         ToastClient.EVENT_BUS.post(displayedEvent);
         if (displayedEvent.isCancelled()) {
-            return ToastClient.Companion.getMINECRAFT().currentScreen;
+            return MinecraftClient.getInstance().currentScreen;
         }
         return displayedEvent.getScreen();
     }

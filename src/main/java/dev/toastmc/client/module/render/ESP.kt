@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.render
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.RenderEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -80,10 +80,10 @@ class ESP : Module(){
     })
 
     override fun onEnable() {
-        ToastClient.EVENT_BUS.subscribe(onWorldRenderEvent)
+        EVENT_BUS.subscribe(onWorldRenderEvent)
     }
 
     override fun onDisable() {
-        ToastClient.EVENT_BUS.unsubscribe(onWorldRenderEvent)
+        EVENT_BUS.unsubscribe(onWorldRenderEvent)
     }
 }

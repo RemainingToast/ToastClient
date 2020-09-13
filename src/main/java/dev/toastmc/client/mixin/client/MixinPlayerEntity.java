@@ -3,6 +3,7 @@ package dev.toastmc.client.mixin.client;
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.event.ClipAtLedgeEvent;
 import dev.toastmc.client.event.PlayerAttackEntityEvent;
+import dev.toastmc.client.util.UtilKt;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

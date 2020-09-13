@@ -1,6 +1,6 @@
 package dev.toastmc.client.module
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.util.ConfigUtil
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import net.fabricmc.api.EnvType
@@ -45,7 +45,7 @@ open class Module {
         enabled = newEnabled
         if (enabled) {
             try {
-                ToastClient.EVENT_BUS.post(this@Module)
+                EVENT_BUS.post(this@Module)
             } catch (ignored: IllegalArgumentException) {
             }
             try {

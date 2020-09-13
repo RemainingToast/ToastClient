@@ -1,6 +1,5 @@
 package dev.toastmc.client.gui.click
 
-import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
 import dev.toastmc.client.gui.TwoDRenderUtils.drawTextBox
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.render.ClickGUI

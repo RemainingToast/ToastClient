@@ -1,6 +1,6 @@
 package dev.toastmc.client.event
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.util.mc
 import me.zero.alpine.event.type.Cancellable
 
 /**
@@ -9,7 +9,7 @@ import me.zero.alpine.event.type.Cancellable
 open class ToastEvent : Cancellable(){
     var era = Era.PRE
         protected set
-    val partialTicks: Float = ToastClient.MINECRAFT.tickDelta
+    val partialTicks: Float = mc.tickDelta
 
     enum class Era {
         PRE, POST

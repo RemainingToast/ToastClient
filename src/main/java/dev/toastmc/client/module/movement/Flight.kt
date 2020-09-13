@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.movement
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -26,7 +26,7 @@ class Flight : Module() {
         mc.player!!.abilities.allowFlying = true
         mc.player!!.abilities.flying = true
         mc.player!!.abilities.flySpeed = (0.05f * speed)
-        ToastClient.EVENT_BUS.subscribe(onTickEvent)
+        EVENT_BUS.subscribe(onTickEvent)
     }
 
     override fun onDisable() {
@@ -42,7 +42,7 @@ class Flight : Module() {
             mc.player!!.abilities.flying = false
             mc.player!!.abilities.flySpeed = 0.05f
         }
-        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
+        EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     @EventHandler

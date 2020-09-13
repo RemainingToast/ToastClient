@@ -9,7 +9,7 @@ import java.text.DecimalFormat
 @CommandManifest(
         label = "Coords",
         description = "Copy player coordinates to clipboard.",
-        aliases = []
+        aliases = ["pos"]
 )
 class Coords : Command() {
     override fun run(args: Array<String>) {

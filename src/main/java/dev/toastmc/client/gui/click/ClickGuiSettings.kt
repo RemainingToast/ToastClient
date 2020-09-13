@@ -8,12 +8,10 @@ import java.awt.Color
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
-import kotlin.collections.ArrayList
 
-
-class ClickGuiSettings(val clickGuiScreen: ClickGuiScreen) {
-    private val clickColorsFile = File("toastclient/gui-colors.json")
-    private val clickPosFile = File("toastclient/click-gui-positions.json")
+class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
+    private val clickColorsFile = File("toastclient/clickguicolors.json")
+    private val clickPosFile = File("toastclient/clickguipos.json")
 
     private val defaultOnTextColor = Color(255, 255, 255, 255).rgb
     private val defaultOffTextColor = Color(177, 177, 177, 255).rgb
@@ -47,14 +45,14 @@ class ClickGuiSettings(val clickGuiScreen: ClickGuiScreen) {
         var i = 0
         var y = 5
         for (category in Category.values()) {
+            if (category == Category.NONE) continue
             var x: Int = 5 + clickGuiScreen.w.times(i) + 5 * i
             if (x + clickGuiScreen.w + 10 > MinecraftClient.getInstance().window.width / 2) {
                 y += MinecraftClient.getInstance().window.height / 2 / 3
                 x = 5
                 i = 0
             }
-            (categoryPositions as TreeMap<String, CategorySetting>)[category.toString()] =
-                CategorySetting(x.toDouble(), y.toDouble(), false, ArrayList())
+            (categoryPositions as TreeMap<String, CategorySetting>)[category.toString()] = CategorySetting(x.toDouble(), y.toDouble(), false, ArrayList())
             i++
         }
     }

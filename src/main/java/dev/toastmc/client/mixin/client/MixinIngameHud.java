@@ -3,6 +3,7 @@ package dev.toastmc.client.mixin.client;
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.event.OverlayEvent;
 import dev.toastmc.client.module.render.NoRender;
+import dev.toastmc.client.util.UtilKt;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.player
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -30,11 +30,11 @@ class AutoReplenish : Module() {
     private var delayStep = 0
 
     override fun onDisable() {
-        ToastClient.EVENT_BUS.unsubscribe(onTickEvent)
+        EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     override fun onEnable() {
-        ToastClient.EVENT_BUS.subscribe(onTickEvent)
+        EVENT_BUS.subscribe(onTickEvent)
     }
 
     @EventHandler

@@ -1,7 +1,7 @@
 package dev.toastmc.client.util
 
-import dev.toastmc.client.ToastClient
-import net.minecraft.client.MinecraftClient
+import dev.toastmc.client.ToastClient.Companion.MODNAME
+import dev.toastmc.client.ToastClient.Companion.MODVER
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -18,7 +18,7 @@ class FileManager {
      * Initializes the file manager
      */
     fun initFileManager() {
-        modDirectory = ToastClient.MOD_DIRECTORY
+        modDirectory = MOD_DIRECTORY
         if ((modDirectory ?: return).mkdirs()) {
             fileManagerLogger("Created Mod Directory! " + (modDirectory ?: return).path)
         }
@@ -27,7 +27,7 @@ class FileManager {
     }
 
     fun initReadMe() {
-        writeFile(File(ToastClient.MOD_DIRECTORY, "README.md"), "${ToastClient.MODNAME} ${ToastClient.MODVER} is WORK IN PROGRESS, bugs are very probable.\n"
+        writeFile(File(MOD_DIRECTORY, "README.md"), "$MODNAME $MODVER is WORK IN PROGRESS, bugs are very probable.\n"
                 + "Please REPORT BUGS or SUGGEST FEATURES in the official discord: https://discord.gg/gxyWEdG\n"
                 + "\nNOTE: THIS BUILD OF TOAST CLIENT DOES NOT HAVE A CLICKGUI, YOU MUST TOGGLE MODULES USING COMMANDS.\n\n"
                 + "Do .help to get a list of all the commands.\n" +
@@ -37,7 +37,7 @@ class FileManager {
     }
 
     private fun fileManagerLogger(m: String) {
-        println("[" + ToastClient.MODNAME.replace(" ", "") + "] " + m)
+        println("[" + MODNAME.replace(" ", "") + "] " + m)
     }
 
     /**

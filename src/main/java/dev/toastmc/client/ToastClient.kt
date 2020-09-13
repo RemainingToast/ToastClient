@@ -7,26 +7,18 @@ import dev.toastmc.client.util.FileManager
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
-import net.minecraft.client.MinecraftClient
-import java.io.File
 
 class ToastClient : ModInitializer {
     companion object {
-        const val MODNAME = "Toast Client"
-        const val MODVER = "fabric-1.16.3-beta"
-
-        var MINECRAFT: MinecraftClient = MinecraftClient.getInstance()
+        val MODNAME = "Toast Client"
+        val MODVER = "fabric-1.16.3-beta"
         val COMMAND_MANAGER: CommandManager = CommandManager()
         val MODULE_MANAGER: ModuleManager = ModuleManager()
-
         val FILE_MANAGER: FileManager = FileManager()
-        val MOD_DIRECTORY: File = File(MinecraftClient.getInstance().runDirectory, "toastclient" + "/")
-
         var CMD_PREFIX = "."
 
         @JvmField
         val EVENT_BUS: EventBus = EventManager()
-        var rainbow = 0xFFFFFF // This'll be updated every tick
     }
 
     override fun onInitialize() {
@@ -34,4 +26,5 @@ class ToastClient : ModInitializer {
         FILE_MANAGER.initFileManager()
         ConfigUtil.init()
     }
+
 }

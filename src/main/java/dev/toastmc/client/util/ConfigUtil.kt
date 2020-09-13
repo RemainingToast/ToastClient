@@ -1,6 +1,5 @@
 package dev.toastmc.client.util
 
-import dev.toastmc.client.ToastClient
 import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder

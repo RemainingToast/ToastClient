@@ -1,6 +1,7 @@
 package dev.toastmc.client.module.misc
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.CMD_PREFIX
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.KeyPressEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -21,17 +22,17 @@ class PrefixChat : Module() {
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(onKeyPressEvent)
+        EVENT_BUS.subscribe(onKeyPressEvent)
     }
 
     override fun onDisable() {
         super.onDisable()
-        ToastClient.EVENT_BUS.unsubscribe(onKeyPressEvent)
+        EVENT_BUS.unsubscribe(onKeyPressEvent)
     }
 
     @EventHandler
     private val onKeyPressEvent =  Listener(EventHook<KeyPressEvent> {
-        if (mc.player == null || ToastClient.CMD_PREFIX.length != 1) return@EventHook
-        if (it.key == KeyUtil.getKeyCode(ToastClient.CMD_PREFIX) && mc.currentScreen == null) mc.openScreen(ChatScreen(""))
+        if (mc.player == null || CMD_PREFIX.length != 1) return@EventHook
+        if (it.key == KeyUtil.getKeyCode(CMD_PREFIX) && mc.currentScreen == null) mc.openScreen(ChatScreen(""))
     })
 }

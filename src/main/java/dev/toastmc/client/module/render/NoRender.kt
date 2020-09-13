@@ -1,6 +1,6 @@
 package dev.toastmc.client.module.render
 
-import dev.toastmc.client.ToastClient
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.PacketEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -32,12 +32,12 @@ class NoRender : Module() {
 
     override fun onEnable() {
         super.onEnable()
-        ToastClient.EVENT_BUS.subscribe(packetListener)
+        EVENT_BUS.subscribe(packetListener)
     }
 
     override fun onDisable() {
         super.onDisable()
-        ToastClient.EVENT_BUS.unsubscribe(packetListener)
+        EVENT_BUS.unsubscribe(packetListener)
     }
 
     @EventHandler
