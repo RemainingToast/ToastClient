@@ -13,9 +13,7 @@ import me.zero.alpine.listener.Listener
 import net.minecraft.block.entity.BedBlockEntity
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
-import kotlin.math.sqrt
 
 @ModuleManifest(
     label = "BedAura",
@@ -25,6 +23,8 @@ class BedAura : Module() {
     @Setting(name = "Suicide") var suicide = true
     @Setting(name = "Break") var breakk = true
     @Setting(name = "Range") var range = 3
+
+    private var beds: MutableList<BedBlockEntity> = ArrayList()
 
     override fun onEnable() {
         EVENT_BUS.subscribe(onTickEvent)
@@ -36,17 +36,27 @@ class BedAura : Module() {
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
-        if (mc.player == null || mc.world!!.registryKey.value.path == "overworld" || mc.world!!.blockEntities == null) return@EventHook
-        for (b in mc.world!!.blockEntities) {
-            if (b is BedBlockEntity) {
-                println("${distance(b.pos, mc.player!!.blockPos)} blocks away, in range = ${distance(b.pos, mc.player!!.blockPos) <= range}")
+        if (mc.player == null || mc.world!!.registryKey.value.path == "overworld") return@EventHook
+        findBeds() ?: return@EventHook
+        when {
+            beds.isNotEmpty() -> {
                 mc.player!!.isSneaking = false
-                mc.interactionManager!!.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, BlockHitResult(mc.player!!.pos, Direction.UP, b.pos, false))
+                mc.interactionManager!!.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, BlockHitResult(mc.player!!.pos, Direction.UP, beds[0].pos, false))
+                beds.remove(beds[0])
             }
         }
     })
 
-    private fun distance(blockPos: BlockPos, blockPos1: BlockPos): Double {
-        return sqrt((blockPos1.x - blockPos.x * blockPos1.x - blockPos.x + blockPos1.y - blockPos.x * blockPos1.y - blockPos.x + blockPos1.y - blockPos.z * blockPos1.y - blockPos.z).toDouble())
+    private fun findBeds(): Unit? {
+        return try {
+            for (b in mc.world!!.blockEntities) {
+                if (b is BedBlockEntity && mc.player!!.squaredDistanceTo(b.pos.x.toDouble(), b.pos.y.toDouble(), b.pos.y.toDouble()) <= range) {
+                    beds.add(b)
+                    println("${mc.player!!.squaredDistanceTo(b.pos.x.toDouble(), b.pos.y.toDouble(), b.pos.y.toDouble())} blocks away, in range = ${mc.player!!.squaredDistanceTo(b.pos.x.toDouble(), b.pos.y.toDouble(), b.pos.y.toDouble()) <= range}")
+                }
+            }
+        } catch (e: ConcurrentModificationException) {
+            return null
+        }
     }
 }

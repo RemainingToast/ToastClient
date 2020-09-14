@@ -60,17 +60,17 @@ class CrystalAura : Module() {
     @Setting(name = "Rotate") var rotate = true
     @Setting(name = "Render") var render = true
 
-    private val blackList = HashMap<BlockPos, Int>()
-    private val renderBlocks: MutableList<BlockPos> = ArrayList()
-
     private var oldSlot = -1
     private var newSlot = 0
     private var crystalSlot = 0
     private var breaks = 0
-    private var bestBlock: BlockPos? = null
+    private var bestBlock: MutableList<BlockPos> = ArrayList()
     private var bestDamage = 0.0
+    private var offhand = false
 
-    var crystal: EndCrystalEntity? = null
+    private var crystal: MutableList<EndCrystalEntity> = ArrayList()
+    private var entities: MutableList<Entity> = ArrayList()
+    private val blackList = HashMap<BlockPos, Int>()
 
     override fun onEnable() {
         EVENT_BUS.subscribe(onTickEvent)
@@ -82,36 +82,40 @@ class CrystalAura : Module() {
         EVENT_BUS.unsubscribe(onTickEvent)
         EVENT_BUS.unsubscribe(inputEvent)
         EVENT_BUS.unsubscribe(onWorldRenderEvent)
-        renderBlocks.clear()
+//        renderBlocks.clear()
     }
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         if (mc.player == null) return@EventHook
-        renderBlocks.clear()
-        val validEntities = findValidEntity()
-        val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
-        val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
-        crystalSlot = if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
-        if (place && validEntities.isNotEmpty()) {
-            val target: Entity = validEntities[0]
-            val hand = if (mc.player!!.offHandStack.item == Items.END_CRYSTAL) Hand.OFF_HAND else if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) Hand.MAIN_HAND else return@EventHook
+        crystal.clear()
+        entities.clear()
+        bestBlock.clear()
+        blackList.clear()
+        findCrystals(range.toDouble())
+        findValidEntities()
+        offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
+        crystalSlot =
+            if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
+        if (place && entities.isNotEmpty()) {
+            println("test")
+            val hand =
+                if (mc.player!!.offHandStack.item == Items.END_CRYSTAL) Hand.OFF_HAND else if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) Hand.MAIN_HAND else return@EventHook
             if (autoswitch) {
                 when {
-                    !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot = crystalSlot
+                    !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot =
+                        crystalSlot
                     mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && antiweakness -> performAntiWeaknessStrike()
                 }
             }
-            findBestBlock(target)
-            if (bestBlock != null && bestDamage >= mindamage) {
-                placeBlock(bestBlock!!, hand)
+            findBestBlocks(entities[0])
+            if (bestBlock.isNotEmpty() && bestDamage >= mindamage) {
+                println("Should place on ${entities[0].displayName} at ${bestBlock[0].toShortString()}")
+                placeBlock(bestBlock[0], hand)
             }
         }
-        crystal = findCrystal(range.toDouble()) ?: return@EventHook
-        renderBlocks.add(crystal!!.blockPos.down())
         when {
-            explodeCheck(crystal!!) -> {
-                renderBlocks.add(crystal!!.blockPos.down())
+            explodeCheck() -> {
                 oldSlot = mc.player!!.inventory.selectedSlot
                 when {
                     breaks >= maxbreaks -> {
@@ -121,12 +125,14 @@ class CrystalAura : Module() {
                     }
                     mc.player!!.inventory.mainHandStack.isFood && ignoreeating -> return@EventHook
                     isPickaxe(mc.player!!.inventory.mainHandStack.item) && ignorepickaxe -> return@EventHook
-                    autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot = crystalSlot
+                    autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot =
+                        crystalSlot
                     mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && antiweakness -> performAntiWeaknessStrike()
                 }
-                mc.interactionManager?.attackEntity(mc.player, crystal)
+                mc.interactionManager?.attackEntity(mc.player, crystal[0])
                 mc.player!!.swingHand(if (!offhand) Hand.MAIN_HAND else Hand.OFF_HAND)
                 ++breaks
+//                crystal.remove(crystal[0])
             }
             else -> {
                 rotate = false
@@ -138,8 +144,7 @@ class CrystalAura : Module() {
         }
     })
 
-    private fun findCrystal(range: Double): EndCrystalEntity? {
-        var foundCrystal: EndCrystalEntity? = null
+    private fun findCrystals(range: Double) {
         var sd: Double? = null
         for (entity in mc.world!!.entities) {
             if (entity == null || entity.removed || entity !is EndCrystalEntity) continue
@@ -150,10 +155,9 @@ class CrystalAura : Module() {
             val distance = mc.player!!.distanceTo(entity)
             if (canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range) && (sd == null || distance < sd)) {
                 sd = distance.toDouble()
-                foundCrystal = entity
+                crystal.add(entity)
             }
         }
-        return foundCrystal
     }
 
     private fun performAntiWeaknessStrike(){
@@ -166,7 +170,7 @@ class CrystalAura : Module() {
                 }
             }
         } else {
-            mc.interactionManager?.attackEntity(mc.player, crystal)
+            mc.interactionManager?.attackEntity(mc.player, crystal[0])
             mc.player!!.swingHand(Hand.MAIN_HAND)
             if (autoswitch) mc.player!!.inventory.selectedSlot = crystalSlot
         }
@@ -175,41 +179,40 @@ class CrystalAura : Module() {
         }
     }
 
-    private fun findValidEntity(): MutableList<Entity> {
-        val entities: MutableList<Entity> = ArrayList()
+    private fun findValidEntities() {
         for (entity in mc.world!!.entities){
-            if (entity == null || entity.removed || entity !is LivingEntity || entity.isDead) continue
+            if (entity == null || entity.removed || entity !is LivingEntity || entity.isDead) {
+                if(entities.isNotEmpty()) entities.removeAt(0)
+                continue
+            }
             when {
                 mobs && EntityUtils.isHostile(entity) && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
                 players && entity is PlayerEntity && entity.displayName != mc.player!!.displayName && !entity.isCreative && !entity.isSpectator && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
                 animals && EntityUtils.isAnimal(entity) && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
             }
         }
-        return entities
     }
 
-    private fun findBestBlock(t: Entity) {
+    private fun findBestBlocks(t: Entity) {
         val target = t as LivingEntity
-        bestBlock = null
         val r = ceil(range.toDouble()).toInt()
         for (x in -r until +r) {
             for (y in -r until +r) {
                 for (z in - 2 until r + 2) {
-                    val basePos = mc.player!!.blockPos.add(x, y, z)
-                    var damage = 0.0
-                    if (!canPlace(basePos) || blackList.containsKey(basePos) && blacklist) continue
-                    if (bestBlock == null){
-                        bestBlock = basePos
-                        damage = getExplosionDamage(BlockPos(bestBlock!!.add(0.5, 1.0, 0.5)), target).toDouble()
-                        bestDamage = damage
-                    } else if (bestDamage < damage && damage < maxselfdamage) {
-                        bestBlock = basePos
-                        damage = getExplosionDamage(BlockPos(bestBlock!!.add(0.5, 1.0, 0.5)), target).toDouble()
-                        bestDamage = damage
+                    val pos = mc.player!!.blockPos.add(x, y, z)
+                    if (!canPlace(pos) || blackList.containsKey(pos) && blacklist) continue
+                    if (bestBlock.isEmpty()){
+                        bestBlock.add(pos)
+                        bestDamage = getExplosionDamage(pos.add(0.5, 1.0, 0.5), target).toDouble()
+                    } else if (bestDamage < getExplosionDamage(pos.add(0.5, 1.0, 0.5), target).toDouble() && getExplosionDamage(pos.add(0.5, 1.0, 0.5), target).toDouble() < maxselfdamage) {
+                        bestBlock.add(pos)
+                        bestDamage = getExplosionDamage(pos.add(0.5, 1.0, 0.5), target).toDouble()
                     }
                 }
             }
         }
+        println("BestBlock: $bestBlock, BestDamage: $bestDamage")
+
     }
 
     private fun canPlace(blockPos: BlockPos): Boolean{
@@ -235,16 +238,12 @@ class CrystalAura : Module() {
         ).isEmpty()
     }
 
-    private fun explodeCheck(entity: Entity) : Boolean {
+    private fun explodeCheck() : Boolean {
+        if (crystal.isEmpty()) return false
+        val entity = crystal[0]
         val p = mc.player!!
         val damageSafe = getExplosionDamage(entity.blockPos, p) - p.health <= maxselfdamage - 1 || p.isInvulnerable || p.isCreative || p.isSpectator
-        return damageSafe && explode && canReach(
-            mc.player!!.pos.add(
-                0.0,
-                mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(),
-                0.0
-            ), entity.boundingBox, range.toDouble()
-        )
+        return damageSafe && explode && canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range.toDouble())
     }
 
     private fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
@@ -260,21 +259,24 @@ class CrystalAura : Module() {
 
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
-        if (!render || crystal == null || crystal!!.removed) return@EventHook
+        if (!render || crystal.isEmpty()) return@EventHook
         if (canReach(
                 mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0),
-                crystal!!.boundingBox,
+                crystal[0].boundingBox,
                 range.toDouble()
             )
         ) {
-            val str = getExplosionDamage(crystal!!.blockPos, mc.player!!).toDouble()
+            val str = getExplosionDamage(crystal[0].blockPos, mc.player!!).toDouble()
             val color = healthGradient(str, 0.0, mc.player!!.maxHealth.toDouble())
-            for (pos in renderBlocks) {
-                draw3d(translate = true) {
-                    begin(GL11.GL_QUADS) {
-                        color(color)
-                        box(pos)
-                        text(it.matrixStack, str.toString(), pos)
+            if (crystal.isNotEmpty()){
+                for (cry in crystal) {
+                    val pos = cry.blockPos.down()
+                    draw3d(translate = true) {
+                        begin(GL11.GL_QUADS) {
+                            color(color)
+                            box(pos)
+                            text(it.matrixStack, str.toString(), pos)
+                        }
                     }
                 }
             }
@@ -285,20 +287,33 @@ class CrystalAura : Module() {
     private fun placeBlock(block: BlockPos, hand: Hand) {
         val bop = block.add(0.5, 0.5, 0.5)
         val vec = Vec3d(bop.x.toDouble(), bop.y.toDouble(), bop.z.toDouble())
-        val yaw = mc.player!!.yaw + MathHelper.wrapDegrees(Math.toDegrees(atan2(vec.z - mc.player!!.z, vec.x - mc.player!!.x)).toFloat() - 90f - mc.player!!.yaw)
-        val pitch = mc.player!!.pitch + MathHelper.wrapDegrees((-Math.toDegrees(atan2(vec.y - (mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose)), sqrt(vec.x - mc.player!!.x * vec.y - (mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose)) + vec.z - mc.player!!.z * vec.z - mc.player!!.z)))).toFloat() - mc.player!!.pitch)
+        val yaw = getYaw(vec)
+        val pitch = getPitch(vec)
         mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(yaw, pitch, mc.player!!.isOnGround))
         mc.interactionManager!!.interactBlock(mc.player, mc.world, hand, BlockHitResult(Vec3d(block.x.toDouble(), block.y.toDouble(), block.y.toDouble()), Direction.UP, block, false))
         mc.player!!.swingHand(hand)
         mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(mc.player!!.yaw, mc.player!!.pitch, mc.player!!.isOnGround))
         mc.player!!.yaw = mc.player!!.yaw
         mc.player!!.pitch = mc.player!!.pitch
+        println("Yaw: $yaw, Pitch: $pitch")
+    }
+
+    private fun getYaw(vec: Vec3d): Float {
+        return mc.player!!.yaw + MathHelper.wrapDegrees(Math.toDegrees(atan2(vec.z - mc.player!!.z, vec.x - mc.player!!.x)).toFloat() - 90f - mc.player!!.yaw)
+    }
+
+    private fun getPitch(vec: Vec3d): Float {
+        val diffX: Double = vec.x - mc.player!!.x
+        val diffY: Double = vec.y - (mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose))
+        val diffZ: Double = vec.z - mc.player!!.z
+        val diffXZ = sqrt(diffX * diffX + diffZ * diffZ)
+        return mc.player!!.pitch + MathHelper.wrapDegrees((-Math.toDegrees(atan2(diffY, diffXZ))).toFloat() - mc.player!!.pitch)
     }
 
     private fun healthGradient(x: Double, minX: Double, maxX: Double, from: Color = Color.RED, to: Color = Color.GREEN): Color4f {
         val range = maxX - minX
         val p = (x - minX) / range
-        return Color4f((from.red * p + to.red * (1 - p)).toFloat(), (from.green * p + to.green * (1 - p)).toFloat(), (from.blue * p + to.blue * (1 - p)).toFloat(), 0.3f)
+        return Color4f((from.red * p + to.red * (1 - p)).toFloat(), (from.green * p + to.green * (1 - p)).toFloat(), (from.blue * p + to.blue * (1 - p)).toFloat(), 0.45f)
     }
 }
 
