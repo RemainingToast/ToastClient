@@ -36,6 +36,7 @@ import net.minecraft.util.math.Vec3d
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
 import java.awt.Color
+import kotlin.math.ceil
 
 
 // Place Mode created by Meteor Client
@@ -51,6 +52,7 @@ import java.awt.Color
 class CrystalAura : Module() {
     @Setting(name = "Explode") var explode = true
     @Setting(name = "Place") var place = true
+    @Setting(name = "Blacklist") var blacklist = true
     @Setting(name = "Range") var range = 4
     @Setting(name = "MinPlaceDamage") var mindamage = 10
     @Setting(name = "MaxSelfDamage") var maxselfdamage = 0
@@ -73,9 +75,9 @@ class CrystalAura : Module() {
     private var newSlot = 0
     private var crystalSlot = 0
     private var breaks = 0
-    private var bestBlock: Vec3d? = null
+    private var bestBlock: BlockPos? = null
     private var bestDamage = 0.0
-    private var pos: Vec3d? = null
+    private var pos: BlockPos? = null
 
     var crystal: EndCrystalEntity? = null
 
@@ -95,34 +97,27 @@ class CrystalAura : Module() {
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         if (mc.player == null) return@EventHook
-
+        renderBlocks.clear()
         val validEntities = findValidEntity()
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
         val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
-        crystalSlot =
-            if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
-
+        crystalSlot = if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
 
         if (place && validEntities.isNotEmpty()) {
             val target: Entity = validEntities[0]
             val hand = if (mc.player!!.offHandStack.item == Items.END_CRYSTAL) Hand.OFF_HAND else if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) Hand.MAIN_HAND else return@EventHook
             if (autoswitch) {
                 when {
-                    !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot =
-                        crystalSlot
+                    !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot = crystalSlot
                     mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && antiweakness -> performAntiWeaknessStrike()
                 }
             }
-            findValidBlocks(target)
+            findBestBlock(target)
             if (bestBlock != null && bestDamage >= mindamage) {
                 placeBlock(bestBlock!!, hand)
             }
         }
-        crystal = findCrystal(range.toDouble())
-        if(crystal == null) {
-            renderBlocks.clear()
-            return@EventHook
-        }
+        crystal = findCrystal(range.toDouble()) ?: return@EventHook
         renderBlocks.add(crystal!!.blockPos.down())
         when {
             explodeCheck(crystal!!) -> {
@@ -136,8 +131,7 @@ class CrystalAura : Module() {
                     }
                     mc.player!!.inventory.mainHandStack.isFood && ignoreeating -> return@EventHook
                     isPickaxe(mc.player!!.inventory.mainHandStack.item) && ignorepickaxe -> return@EventHook
-                    autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot =
-                        crystalSlot
+                    autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot = crystalSlot
                     mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && antiweakness -> performAntiWeaknessStrike()
                 }
                 mc.interactionManager?.attackEntity(mc.player, crystal)
@@ -164,11 +158,7 @@ class CrystalAura : Module() {
                 if (blackList[p]!! > 0) blackList.replace(p, blackList[p]!! - 1) else blackList.remove(p)
             }
             val distance = mc.player!!.distanceTo(entity)
-            if (canReach(
-                    mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0),
-                    entity.boundingBox,
-                    range
-                ) && (sd == null || distance < sd)) {
+            if (canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range) && (sd == null || distance < sd)) {
                 sd = distance.toDouble()
                 foundCrystal = entity
             }
@@ -180,10 +170,7 @@ class CrystalAura : Module() {
         newSlot = -1
         if (mc.player!!.inventory.mainHandStack.item !is ToolItem || mc.player!!.inventory.mainHandStack.item !is SwordItem) {
             for (l in 0..8) {
-                if (mc.player!!.inventory.getStack(l).item is ToolItem || mc.player!!.inventory.getStack(
-                        l
-                    ).item is SwordItem
-                ) {
+                if (mc.player!!.inventory.getStack(l).item is ToolItem || mc.player!!.inventory.getStack(l).item is SwordItem) {
                     newSlot = l
                     break
                 }
@@ -207,43 +194,41 @@ class CrystalAura : Module() {
                 animals && entity is AnimalEntity && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
             }
         }
-//        println(entities)
         return entities
     }
 
-    private fun findValidBlocks(t: Entity) {
+    private fun findBestBlock(t: Entity) {
         val target = t as LivingEntity
         bestBlock = null
-        for (i in mc.player!!.blockPos.x - range until mc.player!!.blockPos.x + range) {
-            for (j in mc.player!!.blockPos.z - range until mc.player!!.blockPos.z + range) {
-                for (k in mc.player!!.blockPos.y - 3 until mc.player!!.blockPos.y + 3) {
-                    pos = Vec3d(i.toDouble(), k.toDouble(), j.toDouble())
-                    if ((mc.world!!.getBlockState(BlockPos(pos)).block === Blocks.BEDROCK || mc.world!!.getBlockState(
-                            BlockPos(
-                                pos
-                            )
-                        ).block === Blocks.OBSIDIAN) && isEmpty(BlockPos(pos!!.add(0.0, 1.0, 0.0)))) {
-                        if (bestBlock == null) {
-                            bestBlock = pos
-                            bestDamage = getExplosionDamage(BlockPos(bestBlock!!.add(0.5, 1.0, 0.5)), target).toDouble()
-                        }
-                        if (bestDamage < getExplosionDamage(BlockPos(bestBlock!!.add(0.5, 1.0, 0.5)), target).toDouble() && (getExplosionDamage(
-                                BlockPos(
-                                    bestBlock!!.add(
-                                        0.5,
-                                        1.0,
-                                        0.5
-                                    )
-                                ), target
-                            ).toDouble() < maxselfdamage)) {
-                            bestBlock = pos
-                            bestDamage = getExplosionDamage(BlockPos(bestBlock!!.add(0.5, 1.0, 0.5)), target).toDouble()
-                        }
+        val r = ceil(range.toDouble()).toInt()
+        for (x in -r until +r) {
+            for (y in -r until +r) {
+                for (z in - 2 until r + 2) {
+                    val basePos = mc.player!!.blockPos.add(x, y, z)
+                    var damage = 0.0
+                    if (!canPlace(basePos) || blackList.containsKey(basePos) && blacklist) continue
+                    if (bestBlock == null){
+                        bestBlock = basePos
+                        damage = getExplosionDamage(BlockPos(bestBlock!!.add(0.5, 1.0, 0.5)), target).toDouble()
+                        bestDamage = damage
+                    } else if (bestDamage < damage && damage < maxselfdamage) {
+                        bestBlock = basePos
+                        damage = getExplosionDamage(BlockPos(bestBlock!!.add(0.5, 1.0, 0.5)), target).toDouble()
+                        bestDamage = damage
                     }
                 }
             }
         }
-//        println("$bestDamage at $bestBlock")
+    }
+
+    private fun canPlace(blockPos: BlockPos): Boolean{
+        return (mc.world!!.getBlockState(blockPos).block === Blocks.BEDROCK || mc.world!!.getBlockState(blockPos).block === Blocks.OBSIDIAN) && isEmpty(
+            blockPos.add(
+                0.0,
+                1.0,
+                0.0
+            )
+        )
     }
 
     private fun isEmpty(pos: BlockPos): Boolean {
@@ -262,7 +247,13 @@ class CrystalAura : Module() {
     private fun explodeCheck(entity: Entity) : Boolean {
         val p = mc.player!!
         val damageSafe = getExplosionDamage(entity.blockPos, p) - p.health <= maxselfdamage - 1 || p.isInvulnerable || p.isCreative || p.isSpectator
-        return damageSafe && explode && canReach(mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0), entity.boundingBox, range.toDouble())
+        return damageSafe && explode && canReach(
+            mc.player!!.pos.add(
+                0.0,
+                mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(),
+                0.0
+            ), entity.boundingBox, range.toDouble()
+        )
     }
 
     private fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
@@ -299,35 +290,21 @@ class CrystalAura : Module() {
         }
     })
 
-    private fun placeBlock(block: Vec3d, hand: Hand) {
-        val yaw = mc.player!!.yaw
-        val pitch = mc.player!!.pitch
-        val vec1 = block.add(0.5, 0.5, 0.5)
-        var packet = PlayerMoveC2SPacket.LookOnly(getNeededYaw(vec1), getNeededPitch(vec1), mc.player!!.isOnGround)
-        mc.player!!.networkHandler.sendPacket(packet)
-        mc.interactionManager!!.interactBlock(
-            mc.player, mc.world, hand, BlockHitResult(
-                block, Direction.UP, BlockPos(
-                    block
-                ), false
-            )
-        )
+    private fun placeBlock(block: BlockPos, hand: Hand) {
+        val bop = block.add(0.5, 0.5, 0.5)
+        val vec1 = Vec3d(bop.x.toDouble(), bop.y.toDouble(), bop.z.toDouble())
+        mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(getNeededYaw(vec1), getNeededPitch(vec1), mc.player!!.isOnGround))
+        mc.interactionManager!!.interactBlock(mc.player, mc.world, hand, BlockHitResult(Vec3d(block.x.toDouble(), block.y.toDouble(), block.y.toDouble()), Direction.UP, block, false))
         mc.player!!.swingHand(hand)
-        packet = PlayerMoveC2SPacket.LookOnly(yaw, pitch, mc.player!!.isOnGround)
-        mc.player!!.networkHandler.sendPacket(packet)
-        mc.player!!.yaw = yaw
-        mc.player!!.pitch = pitch
+        mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(mc.player!!.yaw, mc.player!!.pitch, mc.player!!.isOnGround))
+        mc.player!!.yaw = mc.player!!.yaw
+        mc.player!!.pitch = mc.player!!.pitch
     }
 
     private fun healthGradient(x: Double, minX: Double, maxX: Double, from: Color = Color.RED, to: Color = Color.GREEN): Color4f {
         val range = maxX - minX
         val p = (x - minX) / range
-        return Color4f(
-            (from.red * p + to.red * (1 - p)).toFloat(),
-            (from.green * p + to.green * (1 - p)).toFloat(),
-            (from.blue * p + to.blue * (1 - p)).toFloat(),
-            0.5f
-        )
+        return Color4f((from.red * p + to.red * (1 - p)).toFloat(), (from.green * p + to.green * (1 - p)).toFloat(), (from.blue * p + to.blue * (1 - p)).toFloat(), 0.3f)
     }
 }
 
