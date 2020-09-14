@@ -29,14 +29,13 @@ import net.minecraft.item.ToolItem
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
+import net.minecraft.util.math.*
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
 import java.awt.Color
+import kotlin.math.atan2
 import kotlin.math.ceil
+import kotlin.math.sqrt
 
 @ModuleManifest(
     label = "CrystalAura",
@@ -72,7 +71,6 @@ class CrystalAura : Module() {
     private var breaks = 0
     private var bestBlock: BlockPos? = null
     private var bestDamage = 0.0
-    private var pos: BlockPos? = null
 
     var crystal: EndCrystalEntity? = null
 
@@ -97,7 +95,6 @@ class CrystalAura : Module() {
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
         val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
         crystalSlot = if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
-
         if (place && validEntities.isNotEmpty()) {
             val target: Entity = validEntities[0]
             val hand = if (mc.player!!.offHandStack.item == Items.END_CRYSTAL) Hand.OFF_HAND else if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) Hand.MAIN_HAND else return@EventHook
@@ -285,10 +282,13 @@ class CrystalAura : Module() {
         }
     })
 
+
     private fun placeBlock(block: BlockPos, hand: Hand) {
         val bop = block.add(0.5, 0.5, 0.5)
-        val vec1 = Vec3d(bop.x.toDouble(), bop.y.toDouble(), bop.z.toDouble())
-        mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(getNeededYaw(vec1), getNeededPitch(vec1), mc.player!!.isOnGround))
+        val vec = Vec3d(bop.x.toDouble(), bop.y.toDouble(), bop.z.toDouble())
+        val yaw = mc.player!!.yaw + MathHelper.wrapDegrees(Math.toDegrees(atan2(vec.z - mc.player!!.z, vec.x - mc.player!!.x)).toFloat() - 90f - mc.player!!.yaw)
+        val pitch = mc.player!!.pitch + MathHelper.wrapDegrees((-Math.toDegrees(atan2(vec.y - (mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose)), sqrt(vec.x - mc.player!!.x * vec.y - (mc.player!!.y + mc.player!!.getEyeHeight(mc.player!!.pose)) + vec.z - mc.player!!.z * vec.z - mc.player!!.z)))).toFloat() - mc.player!!.pitch)
+        mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(yaw, pitch, mc.player!!.isOnGround))
         mc.interactionManager!!.interactBlock(mc.player, mc.world, hand, BlockHitResult(Vec3d(block.x.toDouble(), block.y.toDouble(), block.y.toDouble()), Direction.UP, block, false))
         mc.player!!.swingHand(hand)
         mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(mc.player!!.yaw, mc.player!!.pitch, mc.player!!.isOnGround))

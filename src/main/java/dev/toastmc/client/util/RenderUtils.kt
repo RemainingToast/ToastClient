@@ -98,7 +98,7 @@ fun getRainbow(sat: Float, bri: Float, speed: Double, offset: Int): Color {
 }
 
 fun <T : RenderBuilder> T.text(matrixStack: MatrixStack, text: String, blockPos: BlockPos): T = this.apply {
-
+    //TODO: 3d Text at BlockPos
 //    glSetup(x, y, z);
 //    GL11.glScaled(-0.025, -0.025, 0.025);
 //    val i = mc.textRenderer.getWidth(text) / 2
