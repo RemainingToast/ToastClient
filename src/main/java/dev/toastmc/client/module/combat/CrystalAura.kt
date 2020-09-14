@@ -20,8 +20,6 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.entity.effect.StatusEffects
-import net.minecraft.entity.mob.MobEntity
-import net.minecraft.entity.passive.AnimalEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.item.SwordItem
@@ -180,10 +178,11 @@ class CrystalAura : Module() {
     private fun findValidEntity(): MutableList<Entity> {
         val entities: MutableList<Entity> = ArrayList()
         for (entity in mc.world!!.entities){
+            if (entity == null || entity.removed || entity !is LivingEntity || entity.isDead) continue
             when {
-                mobs && entity is MobEntity && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
-                players && entity is PlayerEntity && entity.displayName != mc.player!!.displayName && !entity.isCreative && !entity.isSpectator && entity.health >= 0 && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
-                animals && entity is AnimalEntity && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
+                mobs && EntityUtils.isHostile(entity) && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
+                players && entity is PlayerEntity && entity.displayName != mc.player!!.displayName && !entity.isCreative && !entity.isSpectator && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
+                animals && EntityUtils.isAnimal(entity) && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
             }
         }
         return entities
