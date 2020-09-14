@@ -38,11 +38,6 @@ import org.lwjgl.opengl.GL11
 import java.awt.Color
 import kotlin.math.ceil
 
-
-// Place Mode created by Meteor Client
-// Then rewritten in Kotlin by RemainingToast
-// Credit: https://github.com/MineGame159/meteor-client/blob/master/src/main/java/minegame159/meteorclient/modules/combat/CrystalAura.java
-// License: https://github.com/MineGame159/meteor-client/blob/master/LICENSE
 @ModuleManifest(
     label = "CrystalAura",
     description = "Hit crystals Automatically",

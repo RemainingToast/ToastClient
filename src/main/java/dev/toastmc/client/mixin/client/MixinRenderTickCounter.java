@@ -19,7 +19,7 @@ public class MixinRenderTickCounter {
     @Inject(method = "beginRenderTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/RenderTickCounter;prevTimeMillis:J"))
     private void onBeingRenderTick(long a, CallbackInfoReturnable<Integer> info) {
         if(mod.getOnGroundCheck()){
-            lastFrameDuration *= mod.getMultiplier();
+            lastFrameDuration *= mod.getSpeed();
         }
     }
 }
