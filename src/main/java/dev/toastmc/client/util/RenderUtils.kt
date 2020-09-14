@@ -2,7 +2,6 @@ package dev.toastmc.client.util
 
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.*
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.util.math.MatrixStack
@@ -98,22 +97,23 @@ fun getRainbow(sat: Float, bri: Float, speed: Double, offset: Int): Color {
     return Color.getHSBColor((rainbowState / 360.0).toFloat(), sat, bri)
 }
 
-fun <T : RenderBuilder> T.text(matrixStack: MatrixStack, text: String, x: Double, y: Double, z: Double): T = this.apply {
-    glSetup(x, y, z);
-    GL11.glScaled(-0.025, -0.025, 0.025);
-    val i = mc.textRenderer.getWidth(text) / 2
-    val tessellator = Tessellator.getInstance()
-    GL11.glDisable(GL11.GL_TEXTURE_2D)
+fun <T : RenderBuilder> T.text(matrixStack: MatrixStack, text: String, blockPos: BlockPos): T = this.apply {
+
+//    glSetup(x, y, z);
+//    GL11.glScaled(-0.025, -0.025, 0.025);
+//    val i = mc.textRenderer.getWidth(text) / 2
+//    val tessellator = Tessellator.getInstance()
+//    GL11.glDisable(GL11.GL_TEXTURE_2D)
 //    color(0, 0, 255, 128)
 //    vertex(-i - 1.0, -1.0, 0.0)
 //    vertex(x + 0.5, y + 0.5, z + 0.5)
 //    vertex(x - 0.5, y - 0.5, z - 0.5)
 //    vertex(x + 0.5, y + 0.5, z + 0.5)
-    tessellator.draw()
-    GL11.glEnable(GL11.GL_TEXTURE_2D)
-    mc.textRenderer.draw(matrixStack, text, x.toFloat() - 0.5f, y.toFloat() - 0.5f, -1)
-    mc.textRenderer.draw(matrixStack, text, x.toFloat() - 0.5f, y.toFloat() - 0.5f, -1)
-    glCleanup()
+//    tessellator.draw()
+//    GL11.glEnable(GL11.GL_TEXTURE_2D)
+//    mc.textRenderer.draw(matrixStack, text, x.toFloat() - 0.5f, y.toFloat() - 0.5f, -1)
+//    mc.textRenderer.draw(matrixStack, text, x.toFloat() - 0.5f, y.toFloat() - 0.5f, -1)
+//    glCleanup()
 }
 
 fun <T : RenderBuilder> T.box(bp: BlockPos): T = this.apply {

@@ -14,6 +14,8 @@ import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket
 import java.util.*
 import kotlin.collections.HashMap
 
+// Converted to Kotlin from https://github.com/MineGame159/meteor-client/blob/master/src/main/java/minegame159/meteorclient/modules/combat/TotemPopNotifier.java
+// LICENSE: https://github.com/MineGame159/meteor-client/blob/master/LICENSE
 @ModuleManifest(
     label = "TotemNotifier",
     description = "Notify Totem Pops",
