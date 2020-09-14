@@ -2,11 +2,8 @@ package dev.toastmc.client.mixin.client;
 
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.event.RenderEvent;
-import dev.toastmc.client.module.ModuleManager;
-import dev.toastmc.client.module.misc.UnfocusedCpu;
 import dev.toastmc.client.module.player.NoEntityTrace;
 import dev.toastmc.client.module.render.NoRender;
-import dev.toastmc.client.util.UtilKt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
@@ -26,12 +23,6 @@ public class MixinGameRenderer {
 
     private static NoRender mod = (NoRender) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoRender.class);
     private static NoEntityTrace mod1 = (NoEntityTrace) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoEntityTrace.class);
-    private static UnfocusedCpu mod2 = (UnfocusedCpu) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(UnfocusedCpu.class);
-
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    private void onRenderHead(float tickDelta, long startTime, boolean tick, CallbackInfo info) {
-        if (mod2.getEnabled() && !MinecraftClient.getInstance().isWindowFocused()) info.cancel();
-    }
 
     @Inject(at = @At("HEAD"), method = "bobViewWhenHurt(Lnet/minecraft/client/util/math/MatrixStack;F)V", cancellable = true)
     private void onBobViewWhenHurt(MatrixStack matrixStack, float f, CallbackInfo ci) {

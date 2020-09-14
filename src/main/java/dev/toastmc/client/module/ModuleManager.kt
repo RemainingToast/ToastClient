@@ -63,9 +63,6 @@ class ModuleManager {
             NoEntityTrace(),
             Surround(),
             Tracers(),
-            TotemNotifier(),
-            Timer(),
-            UnfocusedCpu(),
             Velocity()
         )
     }

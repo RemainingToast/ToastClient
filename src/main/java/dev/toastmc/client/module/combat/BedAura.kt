@@ -35,13 +35,13 @@ class BedAura : Module() {
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
-        if (mc.player == null || mc.world!!.registryKey.value.path == "overworld") return@EventHook
+        if (mc.player == null || mc.world!!.registryKey.value.path == "overworld" || mc.world!!.blockEntities == null) return@EventHook
         for (b in mc.world!!.blockEntities) {
             if (b is BedBlockEntity) {
                 println("${distance(b.pos, mc.player!!.blockPos)} blocks away, in range = ${distance(b.pos, mc.player!!.blockPos) <= range}")
                 mc.player!!.isSneaking = false
                 mc.interactionManager!!.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, BlockHitResult(mc.player!!.pos, Direction.UP, b.pos, false))
-                println(b.pos)
+                println(BlockHitResult(mc.player!!.pos, Direction.UP, b.pos, false))
             }
         }
     })
