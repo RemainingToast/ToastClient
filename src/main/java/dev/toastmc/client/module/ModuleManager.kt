@@ -60,7 +60,6 @@ class ModuleManager {
             SafeWalk(),
             Sprint(),
             SignCopy(),
-            NoEntityTrace(),
             Surround(),
             Tracers(),
             Velocity()
