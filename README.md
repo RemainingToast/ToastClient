@@ -6,8 +6,12 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/toastmc/fabric-client)
  
 [Fabric](https://fabricmc.net) utility mod coded in Kotlin and Java. Only the latest version of Minecraft is maintained, so in order to connect to earlier versions use [multiconnect](https://github.com/Earthcomputer/multiconnect/releases). For any support join our [Discord](https://discord.gg/gxyWEdG). Report bugs and make suggestions by making an [issue](https://github.com/toastmc/fabric-client/issues)
+
+# Download
+You can find the latest version [here](https://jenkins.wnuke.dev/job/toast/job/fabric-client/job/1.16.3/)
+
  
- # Building Instructions
+# Building Instructions
  
 Download the source code:
  - `git clone https://github.com/toastmc/fabric-client`
