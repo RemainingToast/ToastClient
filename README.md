@@ -4,6 +4,7 @@
 ![GitHub Contributors](https://img.shields.io/github/contributors/toastmc/fabric-client)
 ![GitHub lines of code](https://tokei.rs/b1/github/toastmc/fabric-client)
 ![GitHub last commit](https://img.shields.io/github/last-commit/toastmc/fabric-client)
+[![Build Status](https://jenkins.wnuke.dev/job/toast/job/fabric-client/job/1.16.3/badge/icon)](https://jenkins.wnuke.dev/job/toast/job/fabric-client/job/1.16.3/)
  
 [Fabric](https://fabricmc.net) utility mod coded in Kotlin and Java. Only the latest version of Minecraft is maintained, so in order to connect to earlier versions use [multiconnect](https://github.com/Earthcomputer/multiconnect/releases). For any support join our [Discord](https://discord.gg/gxyWEdG). Report bugs and make suggestions by making an [issue](https://github.com/toastmc/fabric-client/issues)
 
