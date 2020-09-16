@@ -46,14 +46,12 @@ class KillAura : Module() {
     }
 
     override fun onEnable() {
-        if (mc.player == null) return
         EVENT_BUS.subscribe(onTickEvent)
         EVENT_BUS.subscribe(onWorldRenderEvent)
         target = null
     }
 
     override fun onDisable() {
-        if (mc.player == null) return
         EVENT_BUS.unsubscribe(onTickEvent)
         EVENT_BUS.unsubscribe(onWorldRenderEvent)
         target = null

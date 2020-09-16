@@ -9,7 +9,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
-class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
+open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     private val clickColorsFile = File("toastclient/clickguicolors.json")
     private val clickPosFile = File("toastclient/clickguipos.json")
 
@@ -76,7 +76,8 @@ class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         }
     }
 
-    fun savePositions() {
+
+    open fun savePositions() {
         clickPosFile.createNewFile()
         clickPosFile.writeText(gson.toJson(categoryPositions))
     }

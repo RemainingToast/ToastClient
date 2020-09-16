@@ -10,5 +10,5 @@ import dev.toastmc.client.module.ModuleManifest
         category = Category.MISC
 )
 class SignCopy : Module() {
-
+    // See # dev/toastmc/client/mixin/client/MixinAbstractSignBlock.java
 }

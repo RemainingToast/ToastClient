@@ -18,12 +18,10 @@ import me.zero.alpine.listener.Listener
 class SafeWalk : Module() {
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(clipListener)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(clipListener)
     }
 

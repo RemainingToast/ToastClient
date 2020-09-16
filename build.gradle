@@ -49,6 +49,7 @@ dependencies {
     compile "me.zeroeightsix:fiber:${project.fiber_version}-SNAPSHOT"
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
+    modCompile "com.github.Vatuu:discord-rpc:1.6.2"
 }
 
 processResources {

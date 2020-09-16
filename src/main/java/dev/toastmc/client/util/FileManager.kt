@@ -1,14 +1,11 @@
 package dev.toastmc.client.util
 
-import dev.toastmc.client.ToastClient.Companion.MODNAME
+import dev.toastmc.client.ToastClient
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 import java.nio.file.Files
 
-/**
- * Object containing functions to help with operations on the filesystem
- */
 class FileManager {
     private var modDirectory: File? = null
     private var initialized = false
@@ -25,7 +22,7 @@ class FileManager {
     }
 
     private fun fileManagerLogger(m: String) {
-        println("[" + MODNAME.replace(" ", "") + "] " + m)
+        println("[" + ToastClient.MODNAME.replace(" ", "") + "] " + m)
     }
 
     /**

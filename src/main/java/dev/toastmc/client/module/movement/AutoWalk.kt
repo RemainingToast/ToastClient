@@ -20,19 +20,16 @@ import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
 class AutoWalk : Module() {
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(onEvent)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(onEvent)
     }
 
     @EventHandler
     private val onEvent = Listener(EventHook<PacketEvent.Send> {
         if (mc.player == null) return@EventHook
-        var baritone = false
         if (it.packet is PlayerMoveC2SPacket || it.packet is InventoryS2CPacket) {
             mc.options.sprintToggled = true
             mc.options.keyForward.isPressed = true

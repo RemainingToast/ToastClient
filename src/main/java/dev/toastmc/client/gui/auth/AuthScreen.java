@@ -1,7 +1,7 @@
 package dev.toastmc.client.gui.auth;
 
 import com.mojang.authlib.exceptions.InvalidCredentialsException;
-import dev.toastmc.client.util.auth.LoginUtil;
+import dev.toastmc.client.util.LoginUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;

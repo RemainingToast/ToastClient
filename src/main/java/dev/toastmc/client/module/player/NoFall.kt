@@ -19,12 +19,10 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 class NoFall : Module() {
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(onTickEvent)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(onTickEvent)
     }
 

@@ -5,7 +5,8 @@ import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.WorldInteractionUtil
+import dev.toastmc.client.util.WorldUtil.isReplaceable
+import dev.toastmc.client.util.WorldUtil.placeBlock
 import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
@@ -307,9 +308,9 @@ class Surround : Module() {
     }
 
     private fun tryPlace(offX: Double, offY: Double, offZ: Double) {
-        if (placements < blockspertick && WorldInteractionUtil.isReplaceable(mc.world!!.getBlockState(BlockPos(offX, offY, offZ).add(mc.player!!.pos.getX(), mc.player!!.pos.getY(), mc.player!!.pos.getZ())).block)) {
+        if (placements < blockspertick && isReplaceable(mc.world!!.getBlockState(BlockPos(offX, offY, offZ).add(mc.player!!.pos.getX(), mc.player!!.pos.getY(), mc.player!!.pos.getZ())).block)) {
             mc.player!!.inventory.selectedSlot = slot
-            if (WorldInteractionUtil.placeBlock(BlockPos(offX, offY, offZ).add(mc.player!!.pos.getX(), mc.player!!.pos.getY(), mc.player!!.pos.getZ()), Hand.MAIN_HAND, rotations)) placements++
+            if (placeBlock(BlockPos(offX, offY, offZ).add(mc.player!!.pos.getX(), mc.player!!.pos.getY(), mc.player!!.pos.getZ()), Hand.MAIN_HAND, rotations)) placements++
         }
     }
 

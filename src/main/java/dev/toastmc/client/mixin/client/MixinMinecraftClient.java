@@ -3,7 +3,11 @@ package dev.toastmc.client.mixin.client;
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.event.ScreenEvent;
 import dev.toastmc.client.event.TickEvent;
+import dev.toastmc.client.gui.click.ClickGuiScreen;
+import dev.toastmc.client.module.render.ClickGUI;
+import dev.toastmc.client.module.render.NoRender;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -21,6 +25,8 @@ public abstract class MixinMinecraftClient {
     public ClientWorld world;
 
     @Shadow public ClientPlayerEntity player;
+
+    private static ClickGUI mod = (ClickGUI) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(ClickGUI.class);
 
     @Inject(method = "tick", at = @At(value = "INVOKE"), cancellable = true)
     public void tick(CallbackInfo info) {

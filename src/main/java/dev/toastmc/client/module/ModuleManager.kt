@@ -14,26 +14,6 @@ class ModuleManager {
      */
     val modules: HashSet<Module> = HashSet()
 
-    /**
-     * Checks each module for a key-bind and toggles the module if the key-bind matches the key
-     */
-    //TODO: fun onKey
-//    fun onKey(key: Int, action: Int) {
-//        val iter = modules.iterator()
-//        while (iter.hasNext()) {
-//            val next = iter.next()
-//            if (next.key == key && action == -1 && MinecraftClient.getInstance().currentScreen == null) {
-//                if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) continue
-//                next.toggle()
-//            }
-//        }
-//    }
-
-    /**
-     * Register modules to function with commands and gui etc
-     */
-    //TOOD: When we have config file enable modules here
-
     init {
         modules.clear()
         register(

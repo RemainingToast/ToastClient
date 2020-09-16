@@ -5,7 +5,7 @@ import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.WorldInteractionUtil
+import dev.toastmc.client.util.WorldUtil.isFluid
 import dev.toastmc.client.util.mc
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
@@ -21,12 +21,10 @@ import net.minecraft.util.math.BlockPos
 class Jesus : Module() {
 
     override fun onDisable() {
-        if (mc.player == null) return
         EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     override fun onEnable() {
-        if (mc.player == null) return
         EVENT_BUS.subscribe(onTickEvent)
     }
 
@@ -35,10 +33,10 @@ class Jesus : Module() {
         val e = if (mc.player!!.vehicle != null) mc.player!!.vehicle else mc.player
         if (e!!.isSneaking || e.fallDistance > 3f) return@EventHook
         when {
-            WorldInteractionUtil.isFluid(BlockPos(e.pos.add(0.0, 0.3, 0.0))) -> e.setVelocity(e.velocity.x, 0.08, e.velocity.z)
-            WorldInteractionUtil.isFluid(BlockPos(e.pos.add(0.0, 0.1, 0.0))) -> e.setVelocity(e.velocity.x, 0.05, e.velocity.z)
-            WorldInteractionUtil.isFluid(BlockPos(e.pos.add(0.0, 0.05, 0.0))) -> e.setVelocity(e.velocity.x, 0.01, e.velocity.z)
-            WorldInteractionUtil.isFluid(BlockPos(e.pos)) -> {
+            isFluid(BlockPos(e.pos.add(0.0, 0.3, 0.0))) -> e.setVelocity(e.velocity.x, 0.08, e.velocity.z)
+            isFluid(BlockPos(e.pos.add(0.0, 0.1, 0.0))) -> e.setVelocity(e.velocity.x, 0.05, e.velocity.z)
+            isFluid(BlockPos(e.pos.add(0.0, 0.05, 0.0))) -> e.setVelocity(e.velocity.x, 0.01, e.velocity.z)
+            isFluid(BlockPos(e.pos)) -> {
                 e.setVelocity(e.velocity.x, -0.005, e.velocity.z)
                 e.isOnGround = true
             }

@@ -31,12 +31,10 @@ class NoRender : Module() {
     @Setting(name = "Skylight") var skylight = true
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(packetListener)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(packetListener)
     }
 

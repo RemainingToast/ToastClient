@@ -31,12 +31,10 @@ class AutoTotem : Module(){
     private var force = true
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(onTickEvent)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(onTickEvent)
     }
 

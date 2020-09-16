@@ -1,8 +1,8 @@
 package dev.toastmc.client.mixin.client;
 
 import dev.toastmc.client.gui.auth.AuthScreen;
-import dev.toastmc.client.util.auth.LoginUtil;
-import dev.toastmc.client.util.auth.Status;
+import dev.toastmc.client.util.LoginUtil;
+import dev.toastmc.client.util.Status;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
@@ -58,7 +58,7 @@ public abstract class MixinServerScreen extends Screen {
             serverListWidget.setSelected(null);
             serverListWidget.setServers(this.serverList);
         });
-        this.addButton(testServerButton);
+//        this.addButton(testServerButton);
 
         authButton = new TexturedButtonWidget(6,
                 6,
@@ -84,6 +84,6 @@ public abstract class MixinServerScreen extends Screen {
     {
         // Draw status text/icon on button
         assert this.client != null;
-        drawCenteredString(matrices, this.client.textRenderer, Formatting.BOLD + status.toString(), authButton.x + authButton.getWidth(), authButton.y - 1, status.color);
+        drawCenteredString(matrices, this.client.textRenderer, Formatting.BOLD + status.toString(), authButton.x + authButton.getWidth(), authButton.y - 1, status.getColor());
     }
 }

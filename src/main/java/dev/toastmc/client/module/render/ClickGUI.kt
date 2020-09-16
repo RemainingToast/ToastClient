@@ -37,5 +37,4 @@ class ClickGUI : Module() {
             clickGuiHasOpened = false
         }
     }
-
 }

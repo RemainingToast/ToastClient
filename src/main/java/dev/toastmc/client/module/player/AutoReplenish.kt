@@ -27,12 +27,12 @@ class AutoReplenish : Module() {
 
     private var delayStep = 0
 
-    override fun onDisable() {
-        EVENT_BUS.unsubscribe(onTickEvent)
-    }
-
     override fun onEnable() {
         EVENT_BUS.subscribe(onTickEvent)
+    }
+
+    override fun onDisable() {
+        EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     @EventHandler
