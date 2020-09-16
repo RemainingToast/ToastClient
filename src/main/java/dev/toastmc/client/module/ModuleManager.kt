@@ -13,6 +13,8 @@ class ModuleManager {
      * Array containing the instances of all the modules
      */
     val modules: HashSet<Module> = HashSet()
+    var clickguiHasOpened: Boolean = false
+//    var clickGuiSettings: ClickGuiSettings? = null
 
     init {
         modules.clear()

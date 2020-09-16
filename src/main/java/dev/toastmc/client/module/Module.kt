@@ -71,12 +71,6 @@ open class Module {
         return hidden
     }
 
-//    val mode: String? get() = settings.getMode("Mode")
-
-//    fun getDouble(name: String): Double = settings.getValue(name)!!
-
-//    fun getBool(name: String): Boolean = settings.getBoolean(name)
-
     fun disable(): Boolean {
         val enabled = setEnabled(false)
         ConfigUtil.save()

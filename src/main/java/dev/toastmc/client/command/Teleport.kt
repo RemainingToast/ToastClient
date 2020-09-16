@@ -8,13 +8,10 @@ import dev.toastmc.client.util.sendMessage
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.server.command.CommandSource
 import net.minecraft.util.math.Vec3d
-import java.text.DecimalFormat
 import kotlin.math.floor
 
-@Cmd(name = "teleport")
-class Teleport : Command() {
+class Teleport : Command("teleport") {
     var tpThread: Thread? = null
-    val df: DecimalFormat = DecimalFormat("#.###")
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral("teleport") {
             string("stop") {
@@ -29,22 +26,22 @@ class Teleport : Command() {
                     0
                 }
             }
-            string("x"){
-                string("y"){
-                    string("z"){
-                        string("blockspertick"){
+            then(float("x"){
+                then(float("y"){
+                    then(float("y"){
+                        then(float("blockspertick"){
                             does { ctx ->
-                                val x: String = "x" from ctx
-                                val y: String = "y" from ctx
-                                val z: String = "z" from ctx
-                                val bpt: String = "blockerspertick" from ctx
+                                val x: Float = "x" from ctx
+                                val y: Float = "y" from ctx
+                                val z: Float = "z" from ctx
+                                val bpt: Float = "blockerspertick" from ctx
                                 try {
                                     tpThread = Thread {
                                         try {
                                             if (mc.player == null) return@Thread
-                                            val x = x.parseCoord(mc.player!!.x)
-                                            val y = y.parseCoord(mc.player!!.y)
-                                            val z = z.parseCoord(mc.player!!.z)
+                                            val x = x.toString().parseCoord(mc.player!!.x)
+                                            val y = y.toString().parseCoord(mc.player!!.y)
+                                            val z = z.toString().parseCoord(mc.player!!.z)
                                             val bpt = bpt.toDouble()
                                             val totalTicks = floor(mc.player!!.pos.distanceTo(Vec3d(x, y, z)) / bpt)
                                             val moveVec = Vec3d((x - mc.player!!.x) / totalTicks, (y - mc.player!!.y) / totalTicks, (z - mc.player!!.z) / totalTicks)
@@ -69,15 +66,15 @@ class Teleport : Command() {
                                 } catch (ignored: Throwable) {}
                                 0
                             }
-                        }
-                    }
-                }
-            }
+                        })
+                    })
+                })
+            })
         }
     }
 
 
-    fun String.parseCoord(relativeTo: Double): Double {
+    private fun String.parseCoord(relativeTo: Double): Double {
         return if (this.equals("~", true)) relativeTo else if (this.elementAt(0) == '~') this.substring(1).toDoubleOrNull()?:0 + relativeTo else this.toDoubleOrNull()?:relativeTo
     }
 }

@@ -11,9 +11,9 @@ class CommandManager {
      */
     fun initCommands() {
         commands.clear()
-        commands.addAll(listOf(
+        commands.addAll(listOf(Config(),
                 Help(), Hide(), Pos(),
-                Prefix(), Teleport(), Toggle()
+                Prefix(), Toggle(), Fov(), Shutdown()
         ))
         commands.forEach {
             it.register(Command.dispatcher)

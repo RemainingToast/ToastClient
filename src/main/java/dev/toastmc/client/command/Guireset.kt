@@ -10,12 +10,17 @@ import dev.toastmc.client.util.Color
 import dev.toastmc.client.util.sendMessage
 import net.minecraft.server.command.CommandSource
 
-class Help : Command("help") {
+class Guireset : Command("guireset") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
-        dispatcher register rootLiteral("help") {
+        dispatcher register rootLiteral("guireset"){
             does {
-                val str = ToastClient.COMMAND_MANAGER.commandsToString()
-                sendMessage("Commands (${ToastClient.COMMAND_MANAGER.commands.size}): $str", Color.GRAY)
+                if(ToastClient.MODULE_MANAGER.clickguiHasOpened){
+//                    val mod = ToastClient.MODULE_MANAGER.getModuleByClass(ClickGUI::class.java) as ClickGUI
+//                    mod.settings.initCategoryPositions()
+//                    mod.settings.savePositions()
+//                    mod.settings.saveColors()
+                    sendMessage("GUI has been reset", Color.GREEN)
+                } else sendMessage("GUI HASNT OPENED", Color.RED)
                 0
             }
         }

@@ -1,8 +1,9 @@
 package dev.toastmc.client.gui.click
 
-import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import dev.toastmc.client.module.Category
+import dev.toastmc.client.util.gson
+import dev.toastmc.client.util.mc
 import net.minecraft.client.MinecraftClient
 import java.awt.Color
 import java.io.File
@@ -21,7 +22,6 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     private val defaultPrefixColor = Color(255, 0, 0, 255).rgb
     private val defaultClickColor = Color(121, 205, 255, 128).rgb
 
-    private var gson = GsonBuilder().setPrettyPrinting().create()
     private var categoryPositions: MutableMap<String, CategorySetting> = TreeMap()
     var colors = Colors()
 
@@ -40,8 +40,8 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         return categoryPositions[category]!!
     }
 
-    private fun initCategoryPositions() {
-        if (MinecraftClient.getInstance().window == null) return
+    fun initCategoryPositions() {
+        if (mc.window == null) return
         var i = 0
         var y = 5
         for (category in Category.values()) {
@@ -60,8 +60,7 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     fun loadPositions() {
         try {
             categoryPositions = TreeMap()
-            val loadedData: MutableMap<String?, CategorySetting?>? =
-                gson.fromJson(clickPosFile.readText(), object : TypeToken<Map<String?, CategorySetting?>?>() {}.type)
+            val loadedData: MutableMap<String?, CategorySetting?>? = gson.fromJson(clickPosFile.readText(), object : TypeToken<Map<String?, CategorySetting?>?>() {}.type)
             if (loadedData != null) {
                 for (item in loadedData) if (item.key != null || item.value != null) categoryPositions.putIfAbsent(
                     item.key!!,

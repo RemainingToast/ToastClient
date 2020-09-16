@@ -17,7 +17,7 @@ import java.io.FileOutputStream
 import java.math.BigDecimal
 
 object ConfigUtil {
-    private var configFile = File("toastclient/modules.json")
+    var configFile = File("toastclient/modules.json")
     private var module: File? = null
     private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
 
@@ -30,7 +30,7 @@ object ConfigUtil {
         save()
     }
 
-    fun getConfigTree(): ConfigBranch? {
+    fun getConfigTree(): ConfigBranch {
         var configTree = ConfigTreeBuilder(null, "config")
         for (module in MODULE_MANAGER.modules) {
             configTree = configTree.withChild(ConfigTreeBuilder(null, module.label).applyFromPojo(module, annotationSetting).build())
@@ -97,5 +97,10 @@ object ConfigUtil {
 
     fun ConfigTree.setBoolean(name: String, newValue: Boolean): Boolean? {
         return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
+    }
+
+    fun ConfigTree.getKey(): Any? {
+        return this.lookupLeaf("key", ConfigTypes.INTEGER.serializedType)
+
     }
 }

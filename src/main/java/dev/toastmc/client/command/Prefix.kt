@@ -8,8 +8,7 @@ import dev.toastmc.client.util.KeyUtil.keys
 import dev.toastmc.client.util.sendMessage
 import net.minecraft.server.command.CommandSource
 
-@Cmd(name = "prefix")
-class Prefix : Command() {
+class Prefix : Command("prefix") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral("prefix") {
             greedyString("char"){

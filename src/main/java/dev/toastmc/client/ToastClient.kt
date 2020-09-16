@@ -3,10 +3,7 @@ package dev.toastmc.client
 import dev.toastmc.client.command.util.CommandManager
 import dev.toastmc.client.event.KeyPressEvent
 import dev.toastmc.client.module.ModuleManager
-import dev.toastmc.client.util.ConfigUtil
-import dev.toastmc.client.util.FileManager
-import dev.toastmc.client.util.KeyUtil
-import dev.toastmc.client.util.mc
+import dev.toastmc.client.util.*
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
@@ -31,6 +28,8 @@ class ToastClient : ModInitializer {
         val EVENT_BUS: EventBus = EventManager()
     }
 
+
+
     override fun onInitialize() {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
@@ -40,6 +39,8 @@ class ToastClient : ModInitializer {
             println("TOAST CLIENT SAVING AND SHUTTING DOWN")
             ConfigUtil.save()
         })
+        Friend.add("_RemainingToast")
+        println("Is RemainingToast your friend? ${if(Friend.isFriend("_RemainingToast")) "YES!" else "NAH CUNT"}")
     }
 
     @EventHandler

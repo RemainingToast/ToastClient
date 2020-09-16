@@ -9,8 +9,7 @@ import dev.toastmc.client.util.sendMessage
 import net.minecraft.server.command.CommandSource
 import net.minecraft.util.Formatting
 
-@Cmd(name = "toggle")
-class Toggle : Command() {
+class Toggle : Command("toggle") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral("toggle") {
             argument("module", ModuleArgumentType.getModule()){

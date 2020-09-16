@@ -34,7 +34,7 @@ class NoEntityTrace : Module() {
 
 
     override fun onEnable() {
-        if(render) EVENT_BUS.subscribe(onWorldRenderEvent)
+        if(render && work()) EVENT_BUS.subscribe(onWorldRenderEvent)
     }
 
     override fun onDisable() {

@@ -1,5 +1,6 @@
 package dev.toastmc.client.module.render
 
+import dev.toastmc.client.ToastClient
 import dev.toastmc.client.gui.click.ClickGuiScreen
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -15,18 +16,17 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 class ClickGUI : Module() {
 
     private var guiScreen: ClickGuiScreen? = null
-    private var clickGuiHasOpened = false
+//    var settings: ClickGuiSettings = ClickGuiSettings(guiScreen)
 
     @Setting(name = "Descriptions")
     var descriptions = true
 
     override fun onEnable() {
-        if (guiScreen == null) guiScreen = ClickGuiScreen(this)
         if (mc.player != null) {
             if (mc.currentScreen == null) {
+                guiScreen = ClickGuiScreen(this)
                 mc.openScreen(guiScreen)
-                println("opened clickgui: ${mc.currentScreen is ClickGuiScreen}")
-                clickGuiHasOpened = true
+                ToastClient.MODULE_MANAGER.clickguiHasOpened = true
             }
         }
     }
@@ -34,7 +34,7 @@ class ClickGUI : Module() {
     override fun onDisable() {
         if (mc.currentScreen is ClickGuiScreen && mc.player != null) {
             mc.openScreen(null)
-            clickGuiHasOpened = false
+            ToastClient.MODULE_MANAGER.clickguiHasOpened = false
         }
     }
 }

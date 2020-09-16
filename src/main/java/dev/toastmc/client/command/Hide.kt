@@ -9,8 +9,7 @@ import dev.toastmc.client.util.sendMessage
 import net.minecraft.server.command.CommandSource
 import net.minecraft.util.Formatting
 
-@Cmd(name = "hide")
-class Hide : Command() {
+class Hide : Command("hide") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral("hide") {
             argument("module", ModuleArgumentType.getModule()){

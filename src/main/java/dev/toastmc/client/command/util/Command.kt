@@ -6,30 +6,22 @@ import net.fabricmc.api.Environment
 import net.minecraft.server.command.CommandSource
 
 @Environment(EnvType.CLIENT)
-abstract class Command {
+abstract class Command(name: String) {
     companion object {
         @JvmField
         var dispatcher = CommandDispatcher<CommandSource>()
     }
 
-    private var name: String = ""
-    private var description: String = ""
+    var label: String = ""
 
     init {
-        if (javaClass.isAnnotationPresent(Cmd::class.java)) {
-            val moduleManifest = javaClass.getAnnotation(Cmd::class.java)
-            name = moduleManifest.name
-            description = moduleManifest.description
-        }
+        label = name
     }
 
     abstract fun register(dispatcher: CommandDispatcher<CommandSource>)
 
-    open fun getDescription(): String {
-        return description
+    fun getName(): String {
+        return label
     }
 
-    open fun getName(): String {
-        return name
-    }
 }

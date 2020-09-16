@@ -1,5 +1,6 @@
 package dev.toastmc.client.util
 
+import com.google.gson.GsonBuilder
 import com.mojang.authlib.Agent
 import com.mojang.authlib.exceptions.AuthenticationException
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService
@@ -63,6 +64,7 @@ import java.util.function.Consumer
 import java.util.stream.Collectors
 import kotlin.math.*
 
+val gson = GsonBuilder().setPrettyPrinting().create()
 val mc = MinecraftClient.getInstance()
 val MOD_DIRECTORY: File = File(mc.runDirectory, "toastclient" + "/")
 
