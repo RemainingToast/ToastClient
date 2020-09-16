@@ -1,6 +1,5 @@
 package dev.toastmc.client.module.render
 
-import baritone.api.BaritoneAPI
 import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
 import dev.toastmc.client.ToastClient.Companion.MODVER
@@ -39,7 +38,6 @@ class HUD : Module() {
     @Setting(name = "TPS") var tps = false
     @Setting(name = "FPS") var fps = false
     @Setting(name = "Ping") var ping = false
-    @Setting(name = "Goal") var goal = true
     @Setting(name = "LagNotifier") var lagNotifier = true
     @Setting(name = "Armour") var armour = true
 
@@ -81,9 +79,6 @@ class HUD : Module() {
             val pos2: BlockPos = if (nether) BlockPos(vec.getX() * 8, vec.getY(), vec.getZ() * 8) else BlockPos(vec.getX() / 8, vec.getY(), vec.getZ() / 8)
 
             infoList.add("[ $direction | $direction2 ] " + (if (nether) "\u00a7c" else "\u00a7a") + pos.x + " " + pos.y + " " + pos.z + " \u00a77[" + (if (nether) "\u00a7a" else "\u00a7c") + pos2.x + " " + pos2.y + " " + pos2.z + "\u00a77]")
-        }
-        if(goal) {
-            infoList.add("Goal: ${if(BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.isActive)  BaritoneAPI.getProvider().primaryBaritone.customGoalProcess.goal.toString() else "none"}")
         }
         if (tps) {
             var suffix = "\u00a77"
