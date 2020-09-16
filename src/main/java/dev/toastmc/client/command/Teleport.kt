@@ -1,7 +1,8 @@
 package dev.toastmc.client.command
 
-import dev.toastmc.client.util.MessageUtil
+import dev.toastmc.client.util.Color
 import dev.toastmc.client.util.mc
+import dev.toastmc.client.util.sendMessage
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.util.math.Vec3d
 import java.text.DecimalFormat
@@ -16,15 +17,15 @@ class Teleport {
         if (mc.player == null || args.size == 0) return
         if (args[0].equals("stop", true)) {
             if (tpThread != null && tpThread!!.isAlive) {
-                MessageUtil.sendMessage("Teleport Cancelled!", MessageUtil.Color.YELLOW)
+                sendMessage("Teleport Cancelled!", Color.YELLOW)
                 tpThread?.interrupt()
                 tpThread = null
             } else {
-                MessageUtil.sendMessage("Bruh it's not running!", MessageUtil.Color.YELLOW)
+                sendMessage("Bruh it's not running!", Color.YELLOW)
             }
             return
         } else if (args.size != 4) {
-            MessageUtil.sendMessage("Invalid coords!", MessageUtil.Color.DARK_RED)
+            sendMessage("Invalid coords!", Color.DARK_RED)
             return;
         } else {
             try {
@@ -78,7 +79,7 @@ class Teleport {
                                 )
                             )
                         }
-                        MessageUtil.sendMessage("Teleport Finished!", MessageUtil.Color.GREEN)
+                        sendMessage("Teleport Finished!", Color.GREEN)
                     } catch (ignored: Throwable) {}
                 }
                 tpThread!!.start()

@@ -3,7 +3,7 @@ package dev.toastmc.client.mixin.client;
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.module.Module;
 import dev.toastmc.client.module.misc.SignCopy;
-import dev.toastmc.client.util.MessageUtil;
+import dev.toastmc.client.util.Color;
 import dev.toastmc.client.util.UtilKt;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
@@ -23,8 +23,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Objects;
 
 @Mixin(AbstractSignBlock.class)
 public class MixinAbstractSignBlock {
@@ -49,7 +47,7 @@ public class MixinAbstractSignBlock {
                     }
                     MinecraftClient.getInstance().keyboard.setClipboard(textToCopy.toString());
                     player.sendMessage(new LiteralText("Sign copied.").formatted(Formatting.GREEN), true);
-                    MessageUtil.INSTANCE.sendMessage("Sign copied.", MessageUtil.Color.GREEN);
+                    UtilKt.sendMessage("Sign copied.", Color.GREEN);
                 }
             }
         }

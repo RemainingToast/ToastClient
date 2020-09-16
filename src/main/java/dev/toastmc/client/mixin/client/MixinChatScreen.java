@@ -4,7 +4,8 @@ package dev.toastmc.client.mixin.client;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.command.util.Command;
-import dev.toastmc.client.util.MessageUtil;
+import dev.toastmc.client.util.Color;
+import dev.toastmc.client.util.UtilKt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +23,7 @@ public class MixinChatScreen {
             try {
                 Command.dispatcher.execute(message, MinecraftClient.getInstance().player.networkHandler.getCommandSource());
             } catch (CommandSyntaxException e){
-                MessageUtil.INSTANCE.sendMessage(e.getMessage(), MessageUtil.Color.RED);
+                UtilKt.sendMessage(e.getMessage(), Color.RED);
                 System.out.println(e.getMessage());
             }
         } else screen.sendMessage(message);
