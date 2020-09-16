@@ -2,6 +2,7 @@ package dev.toastmc.client.mixin.client;
 
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.event.RenderEvent;
+import dev.toastmc.client.module.player.NoEntityTrace;
 import dev.toastmc.client.module.render.NoRender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
@@ -9,6 +10,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,6 +47,18 @@ public class MixinGameRenderer {
         RenderEvent.World event = new RenderEvent.World(tickDelta, matrices, camera);
         ToastClient.EVENT_BUS.post(event);
         if (event.isCancelled()) ci.cancel();
+    }
+
+    private NoEntityTrace net = (NoEntityTrace) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(NoEntityTrace.class);
+
+    @Inject(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/hit/EntityHitResult;getEntity()Lnet/minecraft/entity/Entity;"), cancellable = true)
+    private void onUpdateTargetedEntity(float tickDelta, CallbackInfo info) {
+        if (net.work() && MinecraftClient.getInstance().crosshairTarget != null) {
+            if (MinecraftClient.getInstance().crosshairTarget.getType() == HitResult.Type.BLOCK) {
+                MinecraftClient.getInstance().getProfiler().pop();
+                info.cancel();
+            }
+        }
     }
 
 }

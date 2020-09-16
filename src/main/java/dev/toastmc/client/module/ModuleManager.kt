@@ -42,7 +42,8 @@ class ModuleManager {
             SignCopy(),
             Surround(),
             Tracers(),
-            Velocity()
+            Velocity(),
+            NoEntityTrace()
         )
     }
 

@@ -74,9 +74,9 @@ val CHAT_PREFIX = Formatting.DARK_GRAY.toString() + "[" + Formatting.RED + Forma
 fun sendRawMessage(message: String?) {
     assert(mc.player != null)
     mc.inGameHud.addChatMessage(
-            MessageType.CHAT,
-            LiteralText(message),
-            mc.player!!.uuid
+        MessageType.CHAT,
+        LiteralText(message),
+        mc.player!!.uuid
     )
 }
 
@@ -170,6 +170,15 @@ class TimerUtil {
     }
 }
 
+fun interpolateEntity(entity: Entity, time: Float): Vec3d {
+    return Vec3d(
+        entity.prevX + (entity.prevX - entity.prevX) * time,
+        entity.prevY + (entity.prevY - entity.prevY) * time,
+        entity.prevZ + (entity.prevZ - entity.prevZ) * time
+    )
+}
+
+
 object WorldUtil {
     var loadedChunks: ConcurrentSet<Chunk> = ConcurrentSet()
 
@@ -183,9 +192,9 @@ object WorldUtil {
      * @see Chunk.getBlockEntityPositions
      */
     fun getTileEntitiesInChunk(
-            world: World,
-            chunkX: Int,
-            chunkZ: Int
+        world: World,
+        chunkX: Int,
+        chunkZ: Int
     ): LinkedHashMap<BlockPos, Block> {
         val map =
                 LinkedHashMap<BlockPos, Block>()
@@ -225,7 +234,7 @@ object WorldUtil {
      */
     fun getDistance(vecA: Vec3d, vecB: Vec3d): Double {
         return sqrt(
-                (vecA.x - vecB.x).pow(2.0) + (vecA.y - vecB.y).pow(2.0) + (vecA.z - vecB.z).pow(2.0)
+            (vecA.x - vecB.x).pow(2.0) + (vecA.y - vecB.y).pow(2.0) + (vecA.z - vecB.z).pow(2.0)
         )
     }
 
@@ -238,8 +247,8 @@ object WorldUtil {
      * @return all vectors between startVec and destinationVec divided by steps
      */
     fun Vec3d.extendVec(
-            destinationVec: Vec3d,
-            steps: Int
+        destinationVec: Vec3d,
+        steps: Int
     ): ArrayList<Vec3d> {
         val returnList =
                 ArrayList<Vec3d>(steps + 1)
@@ -259,12 +268,12 @@ object WorldUtil {
      * @return vector based on startVec that is moved towards destinationVec by distance
      */
     fun Vec3d.advanceVec(
-            destinationVec: Vec3d,
-            distance: Double
+        destinationVec: Vec3d,
+        distance: Double
     ): Vec3d {
         val advanceDirection = destinationVec.subtract(this).normalize()
         return if (destinationVec.distanceTo(this) < distance) destinationVec else advanceDirection.multiply(
-                distance
+            distance
         )
     }
 
@@ -275,7 +284,7 @@ object WorldUtil {
      * @return rounded block positions inside a 3d area between pos1 and pos2
      */
     fun Vec3d.getBlockPositionsInArea(
-            end: Vec3d
+        end: Vec3d
     ): List<BlockPos> {
         val minX: Int = this.x.coerceAtMost(end.x).roundToInt()
         val maxX: Int = this.x.coerceAtLeast(end.x).roundToInt()
@@ -358,102 +367,102 @@ object WorldUtil {
 
     val AIR = listOf(Blocks.AIR, Blocks.CAVE_AIR)
     val REPLACEABLE = listOf(
-            Blocks.AIR, Blocks.CAVE_AIR, Blocks.LAVA, Blocks.WATER,
-            Blocks.GRASS, Blocks.TALL_GRASS, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS, Blocks.FERN, Blocks.DEAD_BUSH,
-            Blocks.VINE, Blocks.FIRE, Blocks.STRUCTURE_VOID
+        Blocks.AIR, Blocks.CAVE_AIR, Blocks.LAVA, Blocks.WATER,
+        Blocks.GRASS, Blocks.TALL_GRASS, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS, Blocks.FERN, Blocks.DEAD_BUSH,
+        Blocks.VINE, Blocks.FIRE, Blocks.STRUCTURE_VOID
     )
 
     //what i mean with special items are like if you rightclick a cauldron with a waterbottle it fills it
     private val RIGHTCLICKABLE_NOSPECIALITEM: MutableList<Block> = listOf(
-            Blocks.DISPENSER,
-            Blocks.NOTE_BLOCK,
-            Blocks.WHITE_BED,
-            Blocks.ORANGE_BED,
-            Blocks.MAGENTA_BED,
-            Blocks.LIGHT_BLUE_BED,
-            Blocks.YELLOW_BED,
-            Blocks.LIME_BED,
-            Blocks.PINK_BED,
-            Blocks.GRAY_BED,
-            Blocks.LIGHT_GRAY_BED,
-            Blocks.CYAN_BED,
-            Blocks.PURPLE_BED,
-            Blocks.BLUE_BED,
-            Blocks.BROWN_BED,
-            Blocks.GREEN_BED,
-            Blocks.RED_BED,
-            Blocks.BLACK_BED,
-            Blocks.CHEST,
-            Blocks.FURNACE,
-            Blocks.OAK_DOOR,
-            Blocks.LEVER,
-            Blocks.STONE_BUTTON,
-            Blocks.CAKE,
-            Blocks.REPEATER,
-            Blocks.OAK_TRAPDOOR,
-            Blocks.SPRUCE_TRAPDOOR,
-            Blocks.BIRCH_TRAPDOOR,
-            Blocks.JUNGLE_TRAPDOOR,
-            Blocks.ACACIA_TRAPDOOR,
-            Blocks.DARK_OAK_TRAPDOOR,
-            Blocks.OAK_FENCE_GATE,
-            Blocks.BREWING_STAND,
-            Blocks.ENDER_CHEST,
-            Blocks.COMMAND_BLOCK,
-            Blocks.OAK_BUTTON,
-            Blocks.SPRUCE_BUTTON,
-            Blocks.BIRCH_BUTTON,
-            Blocks.JUNGLE_BUTTON,
-            Blocks.ACACIA_BUTTON,
-            Blocks.DARK_OAK_BUTTON,
-            Blocks.ANVIL,
-            Blocks.CHIPPED_ANVIL,
-            Blocks.DAMAGED_ANVIL,
-            Blocks.TRAPPED_CHEST,
-            Blocks.COMPARATOR,
-            Blocks.DAYLIGHT_DETECTOR,
-            Blocks.HOPPER,
-            Blocks.DROPPER,
-            Blocks.SPRUCE_FENCE_GATE,
-            Blocks.BIRCH_FENCE_GATE,
-            Blocks.JUNGLE_FENCE_GATE,
-            Blocks.ACACIA_FENCE_GATE,
-            Blocks.DARK_OAK_FENCE_GATE,
-            Blocks.SPRUCE_DOOR,
-            Blocks.BIRCH_DOOR,
-            Blocks.JUNGLE_DOOR,
-            Blocks.ACACIA_DOOR,
-            Blocks.DARK_OAK_DOOR,
-            Blocks.REPEATING_COMMAND_BLOCK,
-            Blocks.CHAIN_COMMAND_BLOCK,
-            Blocks.SHULKER_BOX,
-            Blocks.WHITE_SHULKER_BOX,
-            Blocks.ORANGE_SHULKER_BOX,
-            Blocks.MAGENTA_SHULKER_BOX,
-            Blocks.LIGHT_BLUE_SHULKER_BOX,
-            Blocks.YELLOW_SHULKER_BOX,
-            Blocks.LIME_SHULKER_BOX,
-            Blocks.PINK_SHULKER_BOX,
-            Blocks.GRAY_SHULKER_BOX,
-            Blocks.LIGHT_GRAY_SHULKER_BOX,
-            Blocks.CYAN_SHULKER_BOX,
-            Blocks.PURPLE_SHULKER_BOX,
-            Blocks.BLUE_SHULKER_BOX,
-            Blocks.BROWN_SHULKER_BOX,
-            Blocks.GREEN_SHULKER_BOX,
-            Blocks.RED_SHULKER_BOX,
-            Blocks.BLACK_SHULKER_BOX,
-            Blocks.LOOM,
-            Blocks.BARREL,
-            Blocks.SMOKER,
-            Blocks.BLAST_FURNACE,
-            Blocks.GRINDSTONE,
-            Blocks.LECTERN,
-            Blocks.STONECUTTER,
-            Blocks.BELL,
-            Blocks.SWEET_BERRY_BUSH,
-            Blocks.STRUCTURE_BLOCK,
-            Blocks.JIGSAW
+        Blocks.DISPENSER,
+        Blocks.NOTE_BLOCK,
+        Blocks.WHITE_BED,
+        Blocks.ORANGE_BED,
+        Blocks.MAGENTA_BED,
+        Blocks.LIGHT_BLUE_BED,
+        Blocks.YELLOW_BED,
+        Blocks.LIME_BED,
+        Blocks.PINK_BED,
+        Blocks.GRAY_BED,
+        Blocks.LIGHT_GRAY_BED,
+        Blocks.CYAN_BED,
+        Blocks.PURPLE_BED,
+        Blocks.BLUE_BED,
+        Blocks.BROWN_BED,
+        Blocks.GREEN_BED,
+        Blocks.RED_BED,
+        Blocks.BLACK_BED,
+        Blocks.CHEST,
+        Blocks.FURNACE,
+        Blocks.OAK_DOOR,
+        Blocks.LEVER,
+        Blocks.STONE_BUTTON,
+        Blocks.CAKE,
+        Blocks.REPEATER,
+        Blocks.OAK_TRAPDOOR,
+        Blocks.SPRUCE_TRAPDOOR,
+        Blocks.BIRCH_TRAPDOOR,
+        Blocks.JUNGLE_TRAPDOOR,
+        Blocks.ACACIA_TRAPDOOR,
+        Blocks.DARK_OAK_TRAPDOOR,
+        Blocks.OAK_FENCE_GATE,
+        Blocks.BREWING_STAND,
+        Blocks.ENDER_CHEST,
+        Blocks.COMMAND_BLOCK,
+        Blocks.OAK_BUTTON,
+        Blocks.SPRUCE_BUTTON,
+        Blocks.BIRCH_BUTTON,
+        Blocks.JUNGLE_BUTTON,
+        Blocks.ACACIA_BUTTON,
+        Blocks.DARK_OAK_BUTTON,
+        Blocks.ANVIL,
+        Blocks.CHIPPED_ANVIL,
+        Blocks.DAMAGED_ANVIL,
+        Blocks.TRAPPED_CHEST,
+        Blocks.COMPARATOR,
+        Blocks.DAYLIGHT_DETECTOR,
+        Blocks.HOPPER,
+        Blocks.DROPPER,
+        Blocks.SPRUCE_FENCE_GATE,
+        Blocks.BIRCH_FENCE_GATE,
+        Blocks.JUNGLE_FENCE_GATE,
+        Blocks.ACACIA_FENCE_GATE,
+        Blocks.DARK_OAK_FENCE_GATE,
+        Blocks.SPRUCE_DOOR,
+        Blocks.BIRCH_DOOR,
+        Blocks.JUNGLE_DOOR,
+        Blocks.ACACIA_DOOR,
+        Blocks.DARK_OAK_DOOR,
+        Blocks.REPEATING_COMMAND_BLOCK,
+        Blocks.CHAIN_COMMAND_BLOCK,
+        Blocks.SHULKER_BOX,
+        Blocks.WHITE_SHULKER_BOX,
+        Blocks.ORANGE_SHULKER_BOX,
+        Blocks.MAGENTA_SHULKER_BOX,
+        Blocks.LIGHT_BLUE_SHULKER_BOX,
+        Blocks.YELLOW_SHULKER_BOX,
+        Blocks.LIME_SHULKER_BOX,
+        Blocks.PINK_SHULKER_BOX,
+        Blocks.GRAY_SHULKER_BOX,
+        Blocks.LIGHT_GRAY_SHULKER_BOX,
+        Blocks.CYAN_SHULKER_BOX,
+        Blocks.PURPLE_SHULKER_BOX,
+        Blocks.BLUE_SHULKER_BOX,
+        Blocks.BROWN_SHULKER_BOX,
+        Blocks.GREEN_SHULKER_BOX,
+        Blocks.RED_SHULKER_BOX,
+        Blocks.BLACK_SHULKER_BOX,
+        Blocks.LOOM,
+        Blocks.BARREL,
+        Blocks.SMOKER,
+        Blocks.BLAST_FURNACE,
+        Blocks.GRINDSTONE,
+        Blocks.LECTERN,
+        Blocks.STONECUTTER,
+        Blocks.BELL,
+        Blocks.SWEET_BERRY_BUSH,
+        Blocks.STRUCTURE_BLOCK,
+        Blocks.JIGSAW
     ) as MutableList<Block>
 
     fun isReplaceable(b: Block): Boolean {
@@ -496,23 +505,23 @@ object WorldUtil {
                 }
                 if (isRightClickable(offsetBlock)) {
                     player!!.networkHandler.sendPacket(
-                            ClientCommandC2SPacket(
-                                    player,
-                                    ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY
-                            )
+                        ClientCommandC2SPacket(
+                            player,
+                            ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY
+                        )
                     )
                 }
                 if (player!!.getStackInHand(hand).item != null && player.getStackInHand(hand)
                                 .item !== Items.AIR
                 ) {
                     mc.interactionManager!!.interactBlock(
-                            player, mc.world, hand,
-                            BlockHitResult(
-                                    Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()),
-                                    direction.opposite,
-                                    offsetPos,
-                                    false
-                            )
+                        player, mc.world, hand,
+                        BlockHitResult(
+                            Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()),
+                            direction.opposite,
+                            offsetPos,
+                            false
+                        )
                     )
                     player.swingHand(hand)
                 } else {
@@ -520,10 +529,10 @@ object WorldUtil {
                 }
                 if (isRightClickable(offsetBlock)) {
                     player.networkHandler.sendPacket(
-                            ClientCommandC2SPacket(
-                                    mc.player,
-                                    ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY
-                            )
+                        ClientCommandC2SPacket(
+                            mc.player,
+                            ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY
+                        )
                     )
                 }
                 return true
@@ -578,7 +587,12 @@ object LoginUtil {
         val auth = YggdrasilAuthenticationService(Proxy.NO_PROXY, "").createUserAuthentication(Agent.MINECRAFT) as YggdrasilUserAuthentication
         auth.setUsername(mail); auth.setPassword(pass)
         try { auth.logIn() } catch (e: AuthenticationException) { e.printStackTrace(); return false }
-        val account = Session(auth.selectedProfile.name, auth.selectedProfile.id.toString(), auth.authenticatedToken, "mojang")
+        val account = Session(
+            auth.selectedProfile.name,
+            auth.selectedProfile.id.toString(),
+            auth.authenticatedToken,
+            "mojang"
+        )
         return setSession(account)
     }
 
@@ -770,12 +784,12 @@ object KeyUtil {
 
 object ItemUtil {
     private val pickaxeList = listOf(
-            Items.WOODEN_PICKAXE,
-            Items.STONE_PICKAXE,
-            Items.IRON_PICKAXE,
-            Items.GOLDEN_PICKAXE,
-            Items.DIAMOND_PICKAXE,
-            Items.NETHERITE_PICKAXE
+        Items.WOODEN_PICKAXE,
+        Items.STONE_PICKAXE,
+        Items.IRON_PICKAXE,
+        Items.GOLDEN_PICKAXE,
+        Items.DIAMOND_PICKAXE,
+        Items.NETHERITE_PICKAXE
     )
 
     fun isPickaxe(item: Item): Boolean {
@@ -819,9 +833,15 @@ object ItemUtil {
                 if (stack.item is MiningToolItem || stack.item is SwordItem) {
                     // Not sure of the best way to cast stack.item as either SwordItem or MiningToolItem
                     val damage = if (stack.item is SwordItem) {
-                        (stack.item as SwordItem).attackDamage + EnchantmentHelper.getAttackDamage(stack, EntityGroup.DEFAULT).toDouble()
+                        (stack.item as SwordItem).attackDamage + EnchantmentHelper.getAttackDamage(
+                            stack,
+                            EntityGroup.DEFAULT
+                        ).toDouble()
                     } else {
-                        (stack.item as MiningToolItem).attackDamage + EnchantmentHelper.getAttackDamage(stack, EntityGroup.DEFAULT).toDouble()
+                        (stack.item as MiningToolItem).attackDamage + EnchantmentHelper.getAttackDamage(
+                            stack,
+                            EntityGroup.DEFAULT
+                        ).toDouble()
                     }
                     if (damage > maxDamage) {
                         maxDamage = damage
@@ -840,23 +860,23 @@ object ItemUtil {
     }
 
     private val shulkerList = listOf(
-            Blocks.SHULKER_BOX,
-            Blocks.WHITE_SHULKER_BOX,
-            Blocks.ORANGE_SHULKER_BOX,
-            Blocks.MAGENTA_SHULKER_BOX,
-            Blocks.LIGHT_BLUE_SHULKER_BOX,
-            Blocks.YELLOW_SHULKER_BOX,
-            Blocks.LIME_SHULKER_BOX,
-            Blocks.PINK_SHULKER_BOX,
-            Blocks.GRAY_SHULKER_BOX,
-            Blocks.LIGHT_GRAY_SHULKER_BOX,
-            Blocks.CYAN_SHULKER_BOX,
-            Blocks.PURPLE_SHULKER_BOX,
-            Blocks.BLUE_SHULKER_BOX,
-            Blocks.BROWN_SHULKER_BOX,
-            Blocks.GREEN_SHULKER_BOX,
-            Blocks.RED_SHULKER_BOX,
-            Blocks.BLACK_SHULKER_BOX
+        Blocks.SHULKER_BOX,
+        Blocks.WHITE_SHULKER_BOX,
+        Blocks.ORANGE_SHULKER_BOX,
+        Blocks.MAGENTA_SHULKER_BOX,
+        Blocks.LIGHT_BLUE_SHULKER_BOX,
+        Blocks.YELLOW_SHULKER_BOX,
+        Blocks.LIME_SHULKER_BOX,
+        Blocks.PINK_SHULKER_BOX,
+        Blocks.GRAY_SHULKER_BOX,
+        Blocks.LIGHT_GRAY_SHULKER_BOX,
+        Blocks.CYAN_SHULKER_BOX,
+        Blocks.PURPLE_SHULKER_BOX,
+        Blocks.BLUE_SHULKER_BOX,
+        Blocks.BROWN_SHULKER_BOX,
+        Blocks.GREEN_SHULKER_BOX,
+        Blocks.RED_SHULKER_BOX,
+        Blocks.BLACK_SHULKER_BOX
     )
 
     fun isShulkerBox(item: Item): Boolean {
@@ -1044,11 +1064,11 @@ object EntityUtils {
     private fun lookPacket(yaw: Double, pitch: Double) {
         if (mc.player == null) return
         mc.player!!.networkHandler.sendPacket(
-                PlayerMoveC2SPacket.LookOnly(
-                        yaw.toFloat(),
-                        pitch.toFloat(),
-                        mc.player!!.isOnGround
-                )
+            PlayerMoveC2SPacket.LookOnly(
+                yaw.toFloat(),
+                pitch.toFloat(),
+                mc.player!!.isOnGround
+            )
         )
     }
 
@@ -1107,9 +1127,31 @@ object DamageUtil {
         if (mc.world!!.difficulty == Difficulty.PEACEFUL) return 0f
         if (damageCache.containsKey(target)) return damageCache[target]!!
         val crystalPos: Vec3d = Vec3d.of(basePos).add(0.5, 1.0, 0.5)
-        val explosion = Explosion(mc.world, null, crystalPos.x, crystalPos.y, crystalPos.z, 6f, false, Explosion.DestructionType.DESTROY)
+        val explosion = Explosion(
+            mc.world,
+            null,
+            crystalPos.x,
+            crystalPos.y,
+            crystalPos.z,
+            6f,
+            false,
+            Explosion.DestructionType.DESTROY
+        )
         val power = 12.0
-        if (!mc.world!!.getOtherEntities(null as Entity?, Box(MathHelper.floor(crystalPos.x - power - 1.0).toDouble(), MathHelper.floor(crystalPos.y - power - 1.0).toDouble(), MathHelper.floor(crystalPos.z - power - 1.0).toDouble(), MathHelper.floor(crystalPos.x + power + 1.0).toDouble(), MathHelper.floor(crystalPos.y + power + 1.0).toDouble(), MathHelper.floor(crystalPos.z + power + 1.0).toDouble())).contains(target)) {
+        if (!mc.world!!.getOtherEntities(
+                null as Entity?, Box(
+                    MathHelper.floor(crystalPos.x - power - 1.0).toDouble(),
+                    MathHelper.floor(
+                        crystalPos.y - power - 1.0
+                    ).toDouble(),
+                    MathHelper.floor(crystalPos.z - power - 1.0).toDouble(),
+                    MathHelper.floor(crystalPos.x + power + 1.0).toDouble(),
+                    MathHelper.floor(
+                        crystalPos.y + power + 1.0
+                    ).toDouble(),
+                    MathHelper.floor(crystalPos.z + power + 1.0).toDouble()
+                )
+            ).contains(target)) {
             damageCache[target] = 0f
             return 0f
         }
@@ -1131,11 +1173,18 @@ object DamageUtil {
                     // double_14 + double_14) / 2.0D * 7.0D * power + 1.0D)));
                     var toDamage = Math.floor((double_14 * double_14 + double_14) / 2.0 * 7.0 * power + 1.0).toFloat()
                     if (target is PlayerEntity) {
-                        if (mc.world!!.difficulty == Difficulty.EASY) toDamage = Math.min(toDamage / 2.0f + 1.0f, toDamage) else if (mc.world!!.difficulty == Difficulty.HARD) toDamage = toDamage * 3.0f / 2.0f
+                        if (mc.world!!.difficulty == Difficulty.EASY) toDamage = Math.min(
+                            toDamage / 2.0f + 1.0f,
+                            toDamage
+                        ) else if (mc.world!!.difficulty == Difficulty.HARD) toDamage = toDamage * 3.0f / 2.0f
                     }
 
                     // Armor
-                    toDamage = DamageUtil.getDamageLeft(toDamage, target.armor.toFloat(), target.getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS)!!.value.toFloat())
+                    toDamage = DamageUtil.getDamageLeft(
+                        toDamage, target.armor.toFloat(), target.getAttributeInstance(
+                            EntityAttributes.GENERIC_ARMOR_TOUGHNESS
+                        )!!.value.toFloat()
+                    )
 
                     // Enchantments
                     if (target.hasStatusEffect(StatusEffects.RESISTANCE)) {
@@ -1145,7 +1194,10 @@ object DamageUtil {
                         toDamage = Math.max(resistance_1 / 25.0f, 0.0f)
                     }
                     if (toDamage <= 0.0f) { toDamage = 0.0f } else {
-                        val protAmount = EnchantmentHelper.getProtectionAmount(target.armorItems, explosion.damageSource)
+                        val protAmount = EnchantmentHelper.getProtectionAmount(
+                            target.armorItems,
+                            explosion.damageSource
+                        )
                         if (protAmount > 0) { toDamage = DamageUtil.getInflictedDamage(toDamage, protAmount.toFloat()) }
                     }
                     damageCache[target] = toDamage
