@@ -3,8 +3,10 @@ package dev.toastmc.client
 import dev.toastmc.client.command.util.CommandManager
 import dev.toastmc.client.event.KeyPressEvent
 import dev.toastmc.client.module.ModuleManager
-import dev.toastmc.client.module.render.ClickGUI
-import dev.toastmc.client.util.*
+import dev.toastmc.client.util.ConfigUtil
+import dev.toastmc.client.util.FileManager
+import dev.toastmc.client.util.KeyUtil
+import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
@@ -29,29 +31,20 @@ class ToastClient : ModInitializer {
         val EVENT_BUS: EventBus = EventManager()
     }
 
-    private val clickGUI = MODULE_MANAGER.getModuleByClass(ClickGUI::class.java) as ClickGUI
-
     override fun onInitialize() {
         COMMAND_MANAGER.initCommands()
         FILE_MANAGER.initFileManager()
         ConfigUtil.init()
         EVENT_BUS.subscribe(onKeyPressEvent)
         Runtime.getRuntime().addShutdownHook(Thread {
-            println("$MODNAME SAVING AND SHUTTING DOWN")
-            if (clickGUI.getSettings() != null) {
-                clickGUI.getSettings()!!.saveColors()
-                clickGUI.getSettings()!!.savePositions()
-            }
+            println("TOAST CLIENT SAVING AND SHUTTING DOWN")
             ConfigUtil.save()
-            Discord.end()
         })
-        Discord.start()
     }
 
     @EventHandler
     private val onKeyPressEvent = Listener(EventHook<KeyPressEvent> {
         if (mc.player == null || CMD_PREFIX.length != 1) return@EventHook
-        if (it.scancode == 1) println("Scancode 1")
         if (it.key == KeyUtil.getKeyCode(CMD_PREFIX) && mc.currentScreen == null) {
             mc.openScreen(ChatScreen(""))
             return@EventHook

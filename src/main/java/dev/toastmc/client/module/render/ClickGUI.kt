@@ -1,7 +1,6 @@
 package dev.toastmc.client.module.render
 
 import dev.toastmc.client.gui.click.ClickGuiScreen
-import dev.toastmc.client.gui.click.ClickGuiSettings
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
@@ -37,13 +36,5 @@ class ClickGUI : Module() {
             mc.openScreen(null)
             clickGuiHasOpened = false
         }
-    }
-
-    fun getScreen(): ClickGuiScreen? {
-        return guiScreen
-    }
-
-    fun getSettings(): ClickGuiSettings? {
-        return if(guiScreen != null) guiScreen!!.settings else null
     }
 }

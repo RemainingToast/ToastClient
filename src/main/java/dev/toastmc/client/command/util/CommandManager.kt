@@ -13,7 +13,7 @@ class CommandManager {
         commands.clear()
         commands.addAll(listOf(
                 Help(), Hide(), Pos(),
-                Prefix(), Toggle()
+                Prefix(), Teleport(), Toggle()
         ))
         commands.forEach {
             it.register(Command.dispatcher)

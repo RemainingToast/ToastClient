@@ -9,6 +9,7 @@ import com.mojang.brigadier.context.CommandContext
 
 /**
  *@author 086
+ *@from https://gist.github.com/zeroeightysix/cc982cc0526e9a367d7f42a1dd8c354e
  */
 @DslMarker
 @Target(AnnotationTarget.TYPE)

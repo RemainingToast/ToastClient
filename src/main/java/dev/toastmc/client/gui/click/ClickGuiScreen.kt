@@ -124,7 +124,8 @@ class ClickGuiScreen(val module: ClickGUI) : Screen(LiteralText("ClickGuiScreen"
         settings.loadPositions()
     }
 
-    fun getGuiSettings(): ClickGuiSettings? {
+    @JvmName("getSettings1")
+    fun getSettings(): ClickGuiSettings? {
         return settings
     }
 

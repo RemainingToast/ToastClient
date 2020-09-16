@@ -51,8 +51,7 @@ dependencies {
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
     modImplementation "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
     include "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
-    modImplementation "com.github.Vatuu:discord-rpc:1.6.2"
-    include "com.github.Vatuu:discord-rpc:1.6.2"
+    modCompile "com.github.Vatuu:discord-rpc:1.6.2"
 }
 
 processResources {
