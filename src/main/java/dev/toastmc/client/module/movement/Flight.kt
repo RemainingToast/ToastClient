@@ -22,7 +22,6 @@ class Flight : Module() {
     @Setting(name = "Speed") var speed = 5f
 
     override fun onEnable() {
-        if (mc.player == null) return
         mc.player!!.abilities.allowFlying = true
         mc.player!!.abilities.flying = true
         mc.player!!.abilities.flySpeed = (0.05f * speed)
@@ -30,7 +29,6 @@ class Flight : Module() {
     }
 
     override fun onDisable() {
-        if (mc.player == null) return
         if (!mc.player!!.abilities.creativeMode) {
             mc.player!!.abilities.allowFlying = false
         }

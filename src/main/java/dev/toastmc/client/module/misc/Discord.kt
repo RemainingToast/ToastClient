@@ -1,5 +1,6 @@
 package dev.toastmc.client.module.misc
 
+import dev.toastmc.client.ToastClient.Companion.EVENT_BUS
 import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
@@ -23,11 +24,13 @@ class Discord : Module() {
     override fun onEnable() {
         delay = 0
         Discord.start()
+        EVENT_BUS.subscribe(onTickEvent)
     }
 
     override fun onDisable() {
         Discord.end()
         delay = 0
+        EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     @EventHandler

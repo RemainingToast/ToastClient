@@ -1,7 +1,6 @@
 package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.*
-import dev.toastmc.client.module.misc.Discord
 import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.misc.SignCopy
 import dev.toastmc.client.module.movement.*
@@ -14,26 +13,6 @@ class ModuleManager {
      * Array containing the instances of all the modules
      */
     val modules: HashSet<Module> = HashSet()
-
-    /**
-     * Checks each module for a key-bind and toggles the module if the key-bind matches the key
-     */
-    //TODO: fun onKey
-//    fun onKey(key: Int, action: Int) {
-//        val iter = modules.iterator()
-//        while (iter.hasNext()) {
-//            val next = iter.next()
-//            if (next.key == key && action == -1 && MinecraftClient.getInstance().currentScreen == null) {
-//                if (MinecraftClient.getInstance().inGameHud.chatHud.isChatFocused) continue
-//                next.toggle()
-//            }
-//        }
-//    }
-
-    /**
-     * Register modules to function with commands and gui etc
-     */
-    //TOOD: When we have config file enable modules here
 
     init {
         modules.clear()
@@ -63,8 +42,7 @@ class ModuleManager {
             SignCopy(),
             Surround(),
             Tracers(),
-            Velocity(),
-            Discord()
+            Velocity()
         )
     }
 

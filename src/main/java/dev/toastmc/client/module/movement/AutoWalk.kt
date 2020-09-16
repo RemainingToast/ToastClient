@@ -20,12 +20,10 @@ import net.minecraft.network.packet.s2c.play.InventoryS2CPacket
 class AutoWalk : Module() {
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(onEvent)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(onEvent)
     }
 

@@ -20,12 +20,10 @@ class FastStop : Module() {
     @Setting(name = "AirStop") var airstop = true
 
     override fun onDisable() {
-        if (mc.player == null) return
         EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     override fun onEnable() {
-        if (mc.player == null) return
         EVENT_BUS.subscribe(onTickEvent)
     }
 

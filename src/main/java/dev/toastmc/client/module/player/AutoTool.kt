@@ -21,16 +21,15 @@ class AutoTool : Module(){
 
     private var lastSlot = 0
 
-    override fun onDisable() {
-        if (mc.player != null) mc.player!!.inventory.selectedSlot = lastSlot
-        EVENT_BUS.unsubscribe(leftClickListener)
-        EVENT_BUS.unsubscribe(attackListener)
-    }
-
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(leftClickListener)
         EVENT_BUS.subscribe(attackListener)
+    }
+
+    override fun onDisable() {
+        mc.player!!.inventory.selectedSlot = lastSlot
+        EVENT_BUS.unsubscribe(leftClickListener)
+        EVENT_BUS.unsubscribe(attackListener)
     }
 
     @EventHandler

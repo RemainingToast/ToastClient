@@ -18,12 +18,10 @@ import me.zero.alpine.listener.Listener
 class Sprint : Module(){
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(onTickEvent)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(onTickEvent)
     }
 

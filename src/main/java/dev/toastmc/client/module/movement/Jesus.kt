@@ -21,12 +21,10 @@ import net.minecraft.util.math.BlockPos
 class Jesus : Module() {
 
     override fun onDisable() {
-        if (mc.player == null) return
         EVENT_BUS.unsubscribe(onTickEvent)
     }
 
     override fun onEnable() {
-        if (mc.player == null) return
         EVENT_BUS.subscribe(onTickEvent)
     }
 

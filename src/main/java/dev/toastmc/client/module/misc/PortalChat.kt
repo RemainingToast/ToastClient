@@ -17,12 +17,10 @@ import me.zero.alpine.listener.Listener
 class PortalChat : Module() {
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(closeScreenEvent)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(closeScreenEvent)
     }
 

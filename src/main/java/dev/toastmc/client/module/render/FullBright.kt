@@ -27,7 +27,6 @@ class FullBright : Module() {
     })
 
     override fun onDisable() {
-        if (mc.player == null) return
         mc.options.gamma = previousGamma
         increasedGamma = false
         if (mc.player!!.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
@@ -37,7 +36,6 @@ class FullBright : Module() {
     }
 
     override fun onEnable() {
-        if (mc.player == null) return
         previousGamma = mc.options.gamma
         mc.player!!.addStatusEffect(StatusEffectInstance(StatusEffects.NIGHT_VISION, 42069, 42069))
         EVENT_BUS.subscribe(onTickEvent)

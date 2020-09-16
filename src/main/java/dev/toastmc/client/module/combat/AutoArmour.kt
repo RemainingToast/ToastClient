@@ -29,12 +29,10 @@ class AutoArmour : Module() {
     @Setting(name = "PreventBreak") var preventbreak = true
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(onTickEvent)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(onTickEvent)
     }
 

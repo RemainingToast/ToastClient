@@ -82,7 +82,6 @@ class CrystalAura : Module() {
         EVENT_BUS.unsubscribe(onTickEvent)
         EVENT_BUS.unsubscribe(inputEvent)
         EVENT_BUS.unsubscribe(onWorldRenderEvent)
-//        renderBlocks.clear()
     }
 
     @EventHandler
@@ -95,22 +94,17 @@ class CrystalAura : Module() {
         findCrystals(range.toDouble())
         findValidEntities()
         offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
-        crystalSlot =
-            if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
+        crystalSlot = if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) mc.player!!.inventory.selectedSlot else -1
         if (place && entities.isNotEmpty()) {
-            println("test")
-            val hand =
-                if (mc.player!!.offHandStack.item == Items.END_CRYSTAL) Hand.OFF_HAND else if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) Hand.MAIN_HAND else return@EventHook
+            val hand = if (mc.player!!.offHandStack.item == Items.END_CRYSTAL) Hand.OFF_HAND else if (mc.player!!.mainHandStack.item == Items.END_CRYSTAL) Hand.MAIN_HAND else return@EventHook
             if (autoswitch) {
                 when {
-                    !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot =
-                        crystalSlot
+                    !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot = crystalSlot
                     mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && antiweakness -> performAntiWeaknessStrike()
                 }
             }
             findBestBlocks(entities[0])
             if (bestBlock.isNotEmpty() && bestDamage >= mindamage) {
-                println("Should place on ${entities[0].displayName} at ${bestBlock[0].toShortString()}")
                 placeBlock(bestBlock[0], hand)
             }
         }
@@ -125,14 +119,12 @@ class CrystalAura : Module() {
                     }
                     mc.player!!.inventory.mainHandStack.isFood && ignoreeating -> return@EventHook
                     isPickaxe(mc.player!!.inventory.mainHandStack.item) && ignorepickaxe -> return@EventHook
-                    autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot =
-                        crystalSlot
+                    autoswitch && !mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && !offhand -> mc.player!!.inventory.selectedSlot = crystalSlot
                     mc.player!!.hasStatusEffect(StatusEffects.WEAKNESS) && antiweakness -> performAntiWeaknessStrike()
                 }
                 mc.interactionManager?.attackEntity(mc.player, crystal[0])
                 mc.player!!.swingHand(if (!offhand) Hand.MAIN_HAND else Hand.OFF_HAND)
                 ++breaks
-//                crystal.remove(crystal[0])
             }
             else -> {
                 rotate = false
@@ -211,8 +203,6 @@ class CrystalAura : Module() {
                 }
             }
         }
-        println("BestBlock: $bestBlock, BestDamage: $bestDamage")
-
     }
 
     private fun canPlace(blockPos: BlockPos): Boolean{
@@ -295,7 +285,6 @@ class CrystalAura : Module() {
         mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(mc.player!!.yaw, mc.player!!.pitch, mc.player!!.isOnGround))
         mc.player!!.yaw = mc.player!!.yaw
         mc.player!!.pitch = mc.player!!.pitch
-        println("Yaw: $yaw, Pitch: $pitch")
     }
 
     private fun getYaw(vec: Vec3d): Float {

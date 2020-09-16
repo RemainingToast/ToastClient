@@ -29,14 +29,12 @@ class Velocity : Module() {
     @Setting(name = "Vertical") var vertical = 0f
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(packetEventListener)
         EVENT_BUS.subscribe(entityCollisionListener)
         EVENT_BUS.subscribe(moveEntityFluidEventListener)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(packetEventListener)
         EVENT_BUS.unsubscribe(entityCollisionListener)
         EVENT_BUS.unsubscribe(moveEntityFluidEventListener)
@@ -48,7 +46,7 @@ class Velocity : Module() {
         if (it.era === ToastEvent.Era.PRE) {
             if (it.packet is EntityVelocityUpdateS2CPacket) {
                 val velocity: EntityVelocityUpdateS2CPacket = it.packet
-                if (velocity.id === mc.player!!.entityId) {
+                if (velocity.id == mc.player!!.entityId) {
                     if (horizontal == 0f && vertical == 0f) it.cancel()
                     val xyz = velocity as IEntityVelocityUpdateS2CPacket
                     xyz.velocityX = (xyz.velocityX * horizontal).toInt()
