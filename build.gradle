@@ -48,9 +48,11 @@ dependencies {
     modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
     compile "me.zeroeightsix:fiber:${project.fiber_version}-SNAPSHOT"
     compile "com.github.ZeroMemes:Alpine:1.9"
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
     modImplementation "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
     include "com.gitlab.CDAGaming:fabritone:fabritone~1.16.x-Fabric-SNAPSHOT"
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
+    modImplementation "com.github.Vatuu:discord-rpc:1.6.2"
+    include "com.github.Vatuu:discord-rpc:1.6.2"
 }
 
 processResources {

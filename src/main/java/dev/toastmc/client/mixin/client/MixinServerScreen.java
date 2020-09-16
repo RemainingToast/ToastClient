@@ -58,7 +58,7 @@ public abstract class MixinServerScreen extends Screen {
             serverListWidget.setSelected(null);
             serverListWidget.setServers(this.serverList);
         });
-        this.addButton(testServerButton);
+//        this.addButton(testServerButton);
 
         authButton = new TexturedButtonWidget(6,
                 6,

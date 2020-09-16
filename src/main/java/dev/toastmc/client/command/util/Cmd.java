@@ -1,4 +1,4 @@
-package dev.toastmc.client.command;
+package dev.toastmc.client.command.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,9 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface CommandManifest {
-    String label();
-    String[] aliases() default {};
+public @interface Cmd {
+    String name() default "";
     String description() default "";
-    String usage() default "";
 }

@@ -1,24 +1,18 @@
-package dev.toastmc.client.command.cmds
+package dev.toastmc.client.command
 
-import dev.toastmc.client.command.Command
-import dev.toastmc.client.command.CommandManifest
 import dev.toastmc.client.util.MessageUtil
+import dev.toastmc.client.util.mc
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.util.math.Vec3d
 import java.text.DecimalFormat
 import kotlin.math.floor
 
 
-@CommandManifest(
-    label = "Teleport",
-    description = "Teleports to a location.",
-    aliases = ["tp"]
-)
-class Teleport : Command() {
+class Teleport {
     var tpThread: Thread? = null
     val df: DecimalFormat = DecimalFormat("#.###")
 
-    override fun run(args: Array<String>) {
+    fun run(args: Array<String>) {
         if (mc.player == null || args.size == 0) return
         if (args[0].equals("stop", true)) {
             if (tpThread != null && tpThread!!.isAlive) {

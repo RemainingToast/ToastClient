@@ -1,6 +1,7 @@
 package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.*
+import dev.toastmc.client.module.misc.Discord
 import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.misc.SignCopy
 import dev.toastmc.client.module.movement.*
@@ -62,7 +63,8 @@ class ModuleManager {
             SignCopy(),
             Surround(),
             Tracers(),
-            Velocity()
+            Velocity(),
+            Discord()
         )
     }
 

@@ -1,0 +1,31 @@
+package dev.toastmc.client.command
+
+import com.mojang.brigadier.CommandDispatcher
+import dev.toastmc.client.command.util.*
+import dev.toastmc.client.command.util.type.ModuleArgumentType
+import dev.toastmc.client.module.Module
+import dev.toastmc.client.util.MessageUtil
+import net.minecraft.server.command.CommandSource
+import net.minecraft.util.Formatting
+
+@Cmd(
+        name = "toggle"
+)
+class Toggle : Command() {
+    override fun register(dispatcher: CommandDispatcher<CommandSource>) {
+        dispatcher register rootLiteral("toggle") {
+            argument("module", ModuleArgumentType.getModule()){
+                does { ctx ->
+                    val mod: Module = "module" from ctx
+                    mod.enabled = !mod.enabled
+                    MessageUtil.sendMessage("Toggled ${mod.label}${if (!mod.enabled) Formatting.RED.toString() + " OFF" else Formatting.GREEN.toString() + " ON"}", MessageUtil.Color.GRAY)
+                    0
+                }
+            }
+            does{
+                println("ree")
+                0
+            }
+        }
+    }
+}

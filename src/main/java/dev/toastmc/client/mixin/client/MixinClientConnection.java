@@ -32,20 +32,20 @@ public class MixinClientConnection {
         PacketEvent.Send ep = new PacketEvent.Send(packet);
         ToastClient.EVENT_BUS.post(ep);
         if (ep.isCancelled()) ci.cancel();
-        if (packet instanceof ChatMessageC2SPacket) {
-            ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
-            if (packet2.getChatMessage().startsWith(ToastClient.Companion.getCMD_PREFIX())) {
-                String cmd = packet2.getChatMessage().replaceFirst(ToastClient.Companion.getCMD_PREFIX(), "").toLowerCase();
-                if (packet2.getChatMessage().contains(" ")) {
-                    cmd = cmd.split(" ")[0];
-                }
-                String[] args = packet2.getChatMessage().toLowerCase().replaceFirst(ToastClient.Companion.getCMD_PREFIX() + cmd, "").split(" ");
-                String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
-                System.out.println("cmd: " + cmd + ", args: " + Arrays.toString(betterArgs));
-                ToastClient.Companion.getCOMMAND_MANAGER().executeCmd(cmd, betterArgs);
-                ci.cancel();
-            }
-        }
+//        if (packet instanceof ChatMessageC2SPacket) {
+//            ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
+//            if (packet2.getChatMessage().startsWith(ToastClient.Companion.getCMD_PREFIX())) {
+//                String cmd = packet2.getChatMessage().replaceFirst(ToastClient.Companion.getCMD_PREFIX(), "").toLowerCase();
+//                if (packet2.getChatMessage().contains(" ")) {
+//                    cmd = cmd.split(" ")[0];
+//                }
+//                String[] args = packet2.getChatMessage().toLowerCase().replaceFirst(ToastClient.Companion.getCMD_PREFIX() + cmd, "").split(" ");
+//                String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
+//                System.out.println("cmd: " + cmd + ", args: " + Arrays.toString(betterArgs));
+//                ToastClient.Companion.getCOMMAND_MANAGER().executeCmd(cmd, betterArgs);
+//                ci.cancel();
+//            }
+//        }
     }
 
     @Inject(method = "sendImmediately", at = @At("HEAD"), cancellable = true)
