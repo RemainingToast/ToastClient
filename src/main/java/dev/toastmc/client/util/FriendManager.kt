@@ -8,7 +8,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
-object FriendUtil {
+object FriendManager {
     private var friends: MutableMap<String, UUID> = HashMap()
     private var friendsFile = File(File(MinecraftClient.getInstance().runDirectory, "toastclient/"), "friends.json")
 

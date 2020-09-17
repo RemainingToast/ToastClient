@@ -13,7 +13,6 @@ import java.util.*
 open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     private val clickColorsFile = File("toastclient/colors.json")
     private val clickPosFile = File("toastclient/clickgui.json")
-
     private val defaultOnTextColor = Color(255, 255, 255, 255).rgb
     private val defaultOffTextColor = Color(177, 177, 177, 255).rgb
     private val defaultBgColor = Color(0, 0, 0, 64).rgb
@@ -21,7 +20,6 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     private val defaultBoxColor = Color(0, 0, 0, 255).rgb
     private val defaultPrefixColor = Color(255, 0, 0, 255).rgb
     private val defaultClickColor = Color(121, 205, 255, 128).rgb
-
     private var categoryPositions: MutableMap<String, CategorySetting> = TreeMap()
     var colors = Colors()
 

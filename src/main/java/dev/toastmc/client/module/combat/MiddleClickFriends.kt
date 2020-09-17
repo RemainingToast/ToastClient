@@ -5,7 +5,7 @@ import dev.toastmc.client.event.TickEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
-import dev.toastmc.client.util.FriendUtil
+import dev.toastmc.client.util.FriendManager
 import dev.toastmc.client.util.mc
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
@@ -44,7 +44,7 @@ class MiddleClickFriends : Module() {
                 val name = entity.displayName.string
                 val uuid = entity.uuid
                 if (entity is PlayerEntity){
-                    if (FriendUtil.isFriend(uuid)) FriendUtil.remove(name, uuid) else FriendUtil.add(name, uuid)
+                    if (FriendManager.isFriend(uuid)) FriendManager.remove(name, uuid) else FriendManager.add(name, uuid)
                 }
             }
         } else if (GLFW.glfwGetMouseButton(mc.window.handle, button) == 0){

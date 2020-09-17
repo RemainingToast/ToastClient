@@ -3,7 +3,7 @@ package dev.toastmc.client.command
 import com.mojang.brigadier.CommandDispatcher
 import dev.toastmc.client.command.util.*
 import dev.toastmc.client.util.Color
-import dev.toastmc.client.util.FriendUtil
+import dev.toastmc.client.util.FriendManager
 import dev.toastmc.client.util.sendMessage
 import net.minecraft.command.EntitySelector
 import net.minecraft.command.argument.EntityArgumentType
@@ -11,7 +11,7 @@ import net.minecraft.server.command.CommandSource
 import net.minecraft.util.Formatting
 
 class Friend : Command(name = "friend") {
-    private var friends = FriendUtil.getFriends()
+    private var friends = FriendManager.getFriends()
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral(this.getName()){
             literal("add"){
