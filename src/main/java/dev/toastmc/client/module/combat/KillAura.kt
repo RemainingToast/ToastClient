@@ -60,8 +60,8 @@ class KillAura : Module() {
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
-        if (target == null || target!!.removed || target!!.isDead) target = findTarget(reach)
-        if (target == null) return@EventHook
+        target = findTarget(reach) ?: return@EventHook
+        if (target!!.removed || target!!.isDead)
         oldSlot = mc.player!!.inventory.selectedSlot
         val shield = mc.player!!.offHandStack.item === Items.SHIELD
         when {

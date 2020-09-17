@@ -14,7 +14,10 @@ open class Module {
     var usage: String = ""
     var alias: Array<String> = arrayOf("")
 
+    @Setting(name = "Persistent")
     var persistent: Boolean = false
+
+    @Setting(name = "Category")
     var category: Category = Category.NONE
 
     @Setting(name = "Enabled")

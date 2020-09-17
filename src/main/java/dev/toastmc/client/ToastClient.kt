@@ -3,7 +3,9 @@ package dev.toastmc.client
 import dev.toastmc.client.command.util.CommandManager
 import dev.toastmc.client.event.KeyPressEvent
 import dev.toastmc.client.module.ModuleManager
-import dev.toastmc.client.util.*
+import dev.toastmc.client.util.ConfigUtil
+import dev.toastmc.client.util.KeyUtil
+import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
@@ -19,7 +21,6 @@ class ToastClient : ModInitializer {
         val MODVER = "fabric-1.16.3-beta"
         val COMMAND_MANAGER: CommandManager = CommandManager()
         val MODULE_MANAGER: ModuleManager = ModuleManager()
-        val FILE_MANAGER: FileManager = FileManager()
 
         @Setting
         var CMD_PREFIX = "."
@@ -31,16 +32,14 @@ class ToastClient : ModInitializer {
 
 
     override fun onInitialize() {
+//        MOD_DIRECTORY.mkdirs()
         COMMAND_MANAGER.initCommands()
-        FILE_MANAGER.initFileManager()
         ConfigUtil.init()
         EVENT_BUS.subscribe(onKeyPressEvent)
         Runtime.getRuntime().addShutdownHook(Thread {
-            println("TOAST CLIENT SAVING AND SHUTTING DOWN")
+            println("${MODNAME.toUpperCase()} SAVING AND SHUTTING DOWN")
             ConfigUtil.save()
         })
-        Friend.add("_RemainingToast")
-        println("Is RemainingToast your friend? ${if(Friend.isFriend("_RemainingToast")) "YES!" else "NAH CUNT"}")
     }
 
     @EventHandler

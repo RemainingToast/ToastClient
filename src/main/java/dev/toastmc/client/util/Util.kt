@@ -1,5 +1,6 @@
 package dev.toastmc.client.util
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.mojang.authlib.Agent
 import com.mojang.authlib.exceptions.AuthenticationException
@@ -64,8 +65,8 @@ import java.util.function.Consumer
 import java.util.stream.Collectors
 import kotlin.math.*
 
-val gson = GsonBuilder().setPrettyPrinting().create()
-val mc = MinecraftClient.getInstance()
+val gson: Gson = GsonBuilder().setPrettyPrinting().create()
+val mc: MinecraftClient = MinecraftClient.getInstance()
 val MOD_DIRECTORY: File = File(mc.runDirectory, "toastclient" + "/")
 
 fun lit(string: String): LiteralText {

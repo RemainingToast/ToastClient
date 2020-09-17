@@ -6,6 +6,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.suggestion.Suggestions;
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.command.util.Command;
+import dev.toastmc.client.module.render.HUD;
 import dev.toastmc.client.util.TwoDRenderUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.CommandSuggestor;
@@ -39,13 +40,15 @@ public abstract class MixinCommandSuggestor {
 
     @Shadow protected abstract void show();
 
-    @Shadow @Final private Screen owner;
+   HUD hud = (HUD) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(HUD.class);
 
     @Inject(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;canRead()Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
     public void refresh(CallbackInfo ci, String string, StringReader stringReader) {
         if(slashRequired) return;
         int i;
+        hud.setPrefixPresent(false);
         if(stringReader.canRead() && stringReader.peek() == ToastClient.Companion.getCMD_PREFIX().charAt(0)){
+            hud.setPrefixPresent(true);
             stringReader.skip();
             CommandDispatcher<CommandSource> commandDispatcher = Command.dispatcher;
             if(parse == null && MinecraftClient.getInstance().player != null) parse = commandDispatcher.parse(stringReader, MinecraftClient.getInstance().player.networkHandler.getCommandSource());
@@ -58,7 +61,6 @@ public abstract class MixinCommandSuggestor {
                     }
                 });
             }
-            TwoDRenderUtils.drawHollowRect(new MatrixStack(), 2, this.owner.height - 14, this.owner.width - 2, this.owner.height - 2, 5, Color.RED.getRGB());
             ci.cancel();
         }
     }

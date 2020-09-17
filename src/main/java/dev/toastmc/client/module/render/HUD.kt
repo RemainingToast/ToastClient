@@ -10,6 +10,7 @@ import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.FabricReflect
 import dev.toastmc.client.util.TwoDRenderUtils
+import dev.toastmc.client.util.TwoDRenderUtils.drawHollowRect
 import dev.toastmc.client.util.getRainbow
 import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
@@ -17,19 +18,23 @@ import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import org.lwjgl.opengl.GL11
+import java.awt.Color
 import java.util.*
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
 @ModuleManifest(
-    label = "HUD",
-    category = Category.RENDER
+        label = "HUD",
+        category = Category.RENDER,
+        persistent = true
 )
 class HUD : Module() {
     @Setting(name = "Arraylist") var arraylist = true
@@ -46,9 +51,16 @@ class HUD : Module() {
     var lastPacket = 0L
     var tpsNum = 20.0
     var prevTime = 0
+    var color = Color(0, 255, 0, 155)
+
+    var prefixPresent = false
 
     @EventHandler
     private val onOverlayEvent = Listener(EventHook<OverlayEvent> {
+        if (mc.currentScreen is ChatScreen && prefixPresent) {
+//            drawHollowRect(it.matrix, 3, mc.currentScreen!!.height - 16, mc.currentScreen!!.width - 8, 10, 1, Color(0, 255, 0, 155).rgb)
+            drawHollowRect(it.matrix, 2, mc.currentScreen!!.height - 14, mc.currentScreen!!.width - 4, 11, 1, color.rgb)
+        }
         infoList.clear()
         lines.clear()
         var arrayCount = 0
@@ -131,7 +143,7 @@ class HUD : Module() {
         if (it.packet is WorldTimeUpdateS2CPacket) {
             val time = System.currentTimeMillis()
             if (time < 500) return@EventHook
-            val timeOffset: Long = Math.abs(1000 - (time - prevTime)) + 1000
+            val timeOffset: Long = abs(1000 - (time - prevTime)) + 1000
             tpsNum = (MathHelper.clamp(20 / (timeOffset.toDouble() / 1000), 0.0, 20.0) * 100.0).roundToInt() / 100.0
             prevTime = time.toInt()
         }

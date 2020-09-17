@@ -15,7 +15,7 @@ class Hide : Command("hide") {
             argument("module", ModuleArgumentType.getModule()){
                 does { ctx ->
                     val mod: Module = "module" from ctx
-                    mod.hidden = !mod.hidden
+                    mod.setHidden(!mod.hidden)
                     sendMessage("${mod.label} is now being ${if (mod.hidden) Formatting.RED.toString() + "HIDDEN" else Formatting.GREEN.toString() + "SHOWN"}", Color.GRAY)
                     0
                 }

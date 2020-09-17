@@ -45,7 +45,9 @@ class ModuleManager {
             Surround(),
             Tracers(),
             Velocity(),
-            NoEntityTrace()
+            NoEntityTrace(),
+            MiddleClickFriends(),
+            Friends()
         )
     }
 

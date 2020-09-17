@@ -5,6 +5,7 @@ import dev.toastmc.client.command.util.*
 import dev.toastmc.client.util.Color
 import dev.toastmc.client.util.mc
 import dev.toastmc.client.util.sendMessage
+import net.minecraft.command.argument.Vec3ArgumentType
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.server.command.CommandSource
 import net.minecraft.util.math.Vec3d
@@ -25,6 +26,9 @@ class Teleport : Command("teleport") {
                     }
                     0
                 }
+            }
+            argument("pos", Vec3ArgumentType.vec3()){
+
             }
             then(float("x"){
                 then(float("y"){

@@ -15,7 +15,7 @@ class Toggle : Command("toggle") {
             argument("module", ModuleArgumentType.getModule()){
                 does { ctx ->
                     val mod: Module = "module" from ctx
-                    mod.enabled = !mod.enabled
+                    mod.toggle()
                     sendMessage("Toggled ${mod.label}${if (!mod.enabled) Formatting.RED.toString() + " OFF" else Formatting.GREEN.toString() + " ON"}", Color.GRAY)
                     0
                 }

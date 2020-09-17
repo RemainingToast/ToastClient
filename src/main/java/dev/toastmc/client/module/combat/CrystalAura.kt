@@ -179,7 +179,7 @@ class CrystalAura : Module() {
             }
             when {
                 mobs && EntityUtils.isHostile(entity) && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
-                players && entity is PlayerEntity && entity.displayName != mc.player!!.displayName && !entity.isCreative && !entity.isSpectator && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
+                players && entity is PlayerEntity && entity.displayName != mc.player!!.displayName && !entity.isCreative && !entity.isSpectator && mc.player!!.distanceTo(entity) <= 10 && (!FriendUtil.isFriend(entity.uuid) || !FriendUtil.friendsModuleEnabled()) -> entities.add(entity)
                 animals && EntityUtils.isAnimal(entity) && mc.player!!.distanceTo(entity) <= 10 -> entities.add(entity)
             }
         }

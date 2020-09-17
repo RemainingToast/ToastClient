@@ -34,7 +34,7 @@ class NoEntityTrace : Module() {
 
 
     override fun onEnable() {
-        if(render && work()) EVENT_BUS.subscribe(onWorldRenderEvent)
+        EVENT_BUS.subscribe(onWorldRenderEvent)
     }
 
     override fun onDisable() {
@@ -48,7 +48,7 @@ class NoEntityTrace : Module() {
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
         val ray: HitResult? = mc.crosshairTarget
-        if (render && ray != null && mc.player != null) {
+        if (render && ray != null && mc.player != null && work()) {
             if (ray.type == HitResult.Type.BLOCK) {
                 val blockState: BlockState = mc.world!!.getBlockState(BlockPos(ray.pos))
                 if (blockState.material != Material.AIR && mc.world!!.worldBorder.contains(BlockPos(ray.pos))) {

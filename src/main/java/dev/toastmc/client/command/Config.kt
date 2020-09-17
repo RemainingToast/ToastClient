@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher
 import dev.toastmc.client.command.util.*
 import dev.toastmc.client.util.Color
 import dev.toastmc.client.util.ConfigUtil
+import dev.toastmc.client.util.MOD_DIRECTORY
 import dev.toastmc.client.util.sendMessage
 import net.minecraft.server.command.CommandSource
 import net.minecraft.util.Formatting
@@ -31,7 +32,7 @@ class Config : Command("config") {
             }
             literal("path"){
                 does {
-                    val path = ConfigUtil.configFile.absolutePath
+                    val path = MOD_DIRECTORY.absolutePath
                     sendMessage("Config file found at ${Formatting.GREEN}$path", Color.GRAY)
                     0
                 }

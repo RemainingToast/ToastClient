@@ -14,7 +14,7 @@ class Help : Command("help") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral("help") {
             does {
-                val str = ToastClient.COMMAND_MANAGER.commandsToString()
+                val str = ToastClient.COMMAND_MANAGER.commandsToString(true)
                 sendMessage("Commands (${ToastClient.COMMAND_MANAGER.commands.size}): $str", Color.GRAY)
                 0
             }

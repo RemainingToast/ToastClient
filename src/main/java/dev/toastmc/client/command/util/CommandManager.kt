@@ -13,16 +13,17 @@ class CommandManager {
         commands.clear()
         commands.addAll(listOf(Config(),
                 Help(), Hide(), Pos(),
-                Prefix(), Toggle(), Fov(), Shutdown()
+                Prefix(), Toggle(), Fov(), Shutdown(), Friend()
         ))
         commands.forEach {
             it.register(Command.dispatcher)
         }
     }
 
-    fun commandsToString(): String {
+    fun commandsToString(ignoreHelp: Boolean): String {
         var str = ""
         for (c in commands){
+            if(ignoreHelp && c.getName() == "help") continue
             str += "${c.getName().capitalize()}, "
         }
         str.removeSuffix(",")

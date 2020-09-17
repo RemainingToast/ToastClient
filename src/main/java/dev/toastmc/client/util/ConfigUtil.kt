@@ -10,27 +10,26 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree
-import net.minecraft.client.MinecraftClient
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.math.BigDecimal
 
 object ConfigUtil {
-    var configFile = File("toastclient/modules.json")
+    private var configFile = File("toastclient/modules.json")
     private var module: File? = null
     private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
 
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
 
     fun init() {
-        module = File(File(MinecraftClient.getInstance().runDirectory, "toastclient/"), "modules.json")
+        module = File(MOD_DIRECTORY, "modules.json")
         if (configFile.createNewFile()) save()
         load()
         save()
     }
 
-    fun getConfigTree(): ConfigBranch {
+    fun getConfigTree(): ConfigBranch? {
         var configTree = ConfigTreeBuilder(null, "config")
         for (module in MODULE_MANAGER.modules) {
             configTree = configTree.withChild(ConfigTreeBuilder(null, module.label).applyFromPojo(module, annotationSetting).build())
@@ -97,10 +96,5 @@ object ConfigUtil {
 
     fun ConfigTree.setBoolean(name: String, newValue: Boolean): Boolean? {
         return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
-    }
-
-    fun ConfigTree.getKey(): Any? {
-        return this.lookupLeaf("key", ConfigTypes.INTEGER.serializedType)
-
     }
 }
