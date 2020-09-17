@@ -32,9 +32,9 @@ class ToastClient : ModInitializer {
 
 
     override fun onInitialize() {
-//        MOD_DIRECTORY.mkdirs()
-        COMMAND_MANAGER.initCommands()
         ConfigUtil.init()
+        println("Config loaded successfully")
+        COMMAND_MANAGER.initCommands()
         EVENT_BUS.subscribe(onKeyPressEvent)
         Runtime.getRuntime().addShutdownHook(Thread {
             println("${MODNAME.toUpperCase()} SAVING AND SHUTTING DOWN")

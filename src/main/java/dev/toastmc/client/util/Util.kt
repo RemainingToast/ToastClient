@@ -67,6 +67,7 @@ import kotlin.math.*
 
 val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 val mc: MinecraftClient = MinecraftClient.getInstance()
+
 val MOD_DIRECTORY: File = File(mc.runDirectory, "toastclient" + "/")
 
 fun lit(string: String): LiteralText {

@@ -33,8 +33,7 @@ import kotlin.math.roundToInt
 
 @ModuleManifest(
         label = "HUD",
-        category = Category.RENDER,
-        persistent = true
+        category = Category.RENDER
 )
 class HUD : Module() {
     @Setting(name = "Arraylist") var arraylist = true

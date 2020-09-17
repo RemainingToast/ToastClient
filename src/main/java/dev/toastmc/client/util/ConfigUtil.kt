@@ -17,14 +17,15 @@ import java.math.BigDecimal
 
 object ConfigUtil {
     private var configFile = File("toastclient/modules.json")
-    private var module: File? = null
     private val annotationSetting = AnnotatedSettings.builder().collectOnlyAnnotatedMembers().collectMembersRecursively().build()
 
     private val serializer: JanksonValueSerializer = JanksonValueSerializer(false)
 
     fun init() {
-        module = File(MOD_DIRECTORY, "modules.json")
-        if (configFile.createNewFile()) save()
+        configFile.also {
+            file -> file.parentFile.mkdirs()
+            save()
+        }
         load()
         save()
     }
@@ -38,7 +39,7 @@ object ConfigUtil {
     }
 
     fun save() {
-        val fos = FileOutputStream(module!!)
+        val fos = FileOutputStream(configFile)
         FiberSerialization.serialize(getConfigTree(), fos, serializer)
         fos.flush()
         fos.close()
@@ -46,15 +47,15 @@ object ConfigUtil {
 
     fun load() {
         try {
-            val fis = FileInputStream(module!!)
+            val fis = FileInputStream(configFile)
             FiberSerialization.deserialize(getConfigTree(), fis, serializer)
             for (module in MODULE_MANAGER.modules) {
-                module.setEnabled(module.enabled)
+                if(module.enabled) module.setEnabled(true)
+//                module.setEnabled(module.enabled)
             }
             fis.close()
-            println("Config loaded successfully")
         } catch (ignored: ValueDeserializationException){
-            println("Config failed to load. \n\nStackTrace:\n${ignored.stackTrace}")
+            println("Config failed to load. StackTrace: ${ignored.stackTrace}")
         }
     }
 
