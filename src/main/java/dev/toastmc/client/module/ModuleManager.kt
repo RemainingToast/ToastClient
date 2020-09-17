@@ -7,53 +7,28 @@ import dev.toastmc.client.module.movement.*
 import dev.toastmc.client.module.player.*
 import dev.toastmc.client.module.render.*
 
-
 class ModuleManager {
+
     /**
      * Array containing the instances of all the modules
      */
-    val modules: HashSet<Module> = HashSet()
+    val modules: MutableList<Module> = ArrayList()
     var clickguiHasOpened: Boolean = false
-//    var clickGuiSettings: ClickGuiSettings? = null
 
-    init {
+    fun initMods() {
         modules.clear()
-        register(
-            AutoArmour(),
-            AntiHunger(),
-            AutoReplenish(),
-            AutoTotem(),
-            AutoTool(),
-            AutoWalk(),
-            BedAura(),
-            ClickGUI(),
-            CrystalAura(),
-            ESP(),
-            FastStop(),
-            Flight(),
-            FullBright(),
-            HUD(),
-            Jesus(),
-            KillAura(),
-            NoFall(),
-            NoFog(),
-            NoRender(),
-            PortalChat(),
-            SafeWalk(),
-            Sprint(),
-            SignCopy(),
-            Surround(),
-            Tracers(),
-            Velocity(),
-            NoEntityTrace(),
-            MiddleClickFriends(),
-            Friends()
+        register(AutoArmour(), AntiHunger(), AutoReplenish(), AutoTotem(),
+            AutoTool(), AutoWalk(), BedAura(), ClickGUI(), CrystalAura(),
+            ESP(), FastStop(), Flight(), FullBright(), HUD(), Jesus(),
+            KillAura(), NoFall(), NoFog(), NoRender(), PortalChat(), SafeWalk(),
+            Sprint(), SignCopy(), Surround(), Tracers(), Velocity(), NoEntityTrace(),
+            MiddleClickFriends(), Friends()
         )
     }
 
-    private fun register(vararg modules: Module) {
-        for (cheat in modules) {
-            this.modules.add(cheat)
+    private fun register(vararg mods: Module) {
+        for (cheat in mods) {
+            modules.add(cheat)
         }
     }
 

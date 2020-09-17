@@ -15,6 +15,7 @@ import me.zero.alpine.listener.Listener
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.gui.screen.ChatScreen
 
+
 class ToastClient : ModInitializer {
     companion object {
         val MODNAME = "Toast Client"
@@ -32,6 +33,7 @@ class ToastClient : ModInitializer {
 
 
     override fun onInitialize() {
+        MODULE_MANAGER.initMods()
         ConfigUtil.init()
         println("Config loaded successfully")
         COMMAND_MANAGER.initCommands()

@@ -40,15 +40,15 @@ public abstract class MixinCommandSuggestor {
 
     @Shadow protected abstract void show();
 
-   HUD hud = (HUD) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(HUD.class);
+//   HUD hud = (HUD) ToastClient.Companion.getMODULE_MANAGER().getModuleByClass(HUD.class);
 
     @Inject(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;canRead()Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
     public void refresh(CallbackInfo ci, String string, StringReader stringReader) {
         if(slashRequired) return;
         int i;
-        hud.setPrefixPresent(false);
+//        hud.setPrefixPresent(false);
         if(stringReader.canRead() && stringReader.peek() == ToastClient.Companion.getCMD_PREFIX().charAt(0)){
-            hud.setPrefixPresent(true);
+//            hud.setPrefixPresent(true);
             stringReader.skip();
             CommandDispatcher<CommandSource> commandDispatcher = Command.dispatcher;
             if(parse == null && MinecraftClient.getInstance().player != null) parse = commandDispatcher.parse(stringReader, MinecraftClient.getInstance().player.networkHandler.getCommandSource());

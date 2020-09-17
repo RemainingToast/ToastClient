@@ -47,6 +47,7 @@ class NoEntityTrace : Module() {
 
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
+        if (mc.player == null) return@EventHook
         val ray: HitResult? = mc.crosshairTarget
         if (render && ray != null && mc.player != null && work()) {
             if (ray.type == HitResult.Type.BLOCK) {

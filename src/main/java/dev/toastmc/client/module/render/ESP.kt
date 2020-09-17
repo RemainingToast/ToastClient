@@ -41,6 +41,7 @@ class ESP : Module(){
 
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
+        if (mc.player == null) return@EventHook
         draw3d(translate = true) {
             begin(GL_QUADS) {
                 if (renderSelf) {

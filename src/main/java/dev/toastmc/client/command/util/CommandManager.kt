@@ -1,6 +1,7 @@
 package dev.toastmc.client.command.util
 
 import dev.toastmc.client.command.*
+import org.apache.commons.lang3.CharSequenceUtils.subSequence
 
 class CommandManager {
 
@@ -26,7 +27,7 @@ class CommandManager {
             if(ignoreHelp && c.getName() == "help") continue
             str += "${c.getName().capitalize()}, "
         }
-        str.removeSuffix(",")
+        str.removeSuffix(subSequence(",", str.length - 1))
         return str
     }
 }

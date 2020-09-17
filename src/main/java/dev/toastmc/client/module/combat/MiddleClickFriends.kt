@@ -33,6 +33,7 @@ class MiddleClickFriends : Module() {
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
+        if (mc.player == null) return@EventHook
         val button = GLFW.GLFW_MOUSE_BUTTON_MIDDLE
         if(GLFW.glfwGetMouseButton(mc.window.handle, button) == 1 && !antiSpam){
             antiSpam = true

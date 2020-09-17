@@ -11,6 +11,7 @@ import net.minecraft.server.command.CommandSource
 import net.minecraft.util.Formatting
 
 class Friend : Command(name = "friend") {
+    private var friends = FriendUtil.getFriends()
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral(this.getName()){
             literal("add"){
@@ -38,12 +39,14 @@ class Friend : Command(name = "friend") {
             }
             literal("list"){
                 does {
-                    val keys = FriendUtil.getFriends().keys
-                    var str = "Your friends: ${Formatting.GREEN}"
-                    for (friend in keys){
-                        str += "$friend "
-                    }
-                    sendMessage(str, Color.GRAY)
+                    if(friends.isNotEmpty()){
+                        val keys = friends.keys
+                        var str = "Your friends: ${Formatting.GREEN}"
+                        for (friend in keys){
+                            str += "$friend "
+                        }
+                        sendMessage(str, Color.GRAY)
+                    } else sendMessage("You have no friends! ha ha ha", Color.RED)
                     0
                 }
             }

@@ -7,7 +7,6 @@ import dev.toastmc.client.module.ModuleManifest
 @ModuleManifest(
         label = "Friends",
         description = "Toggle Friends",
-        enabled = true,
         category = Category.COMBAT
 )
 class Friends : Module() {

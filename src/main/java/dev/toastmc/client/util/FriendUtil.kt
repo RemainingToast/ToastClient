@@ -46,8 +46,10 @@ object FriendUtil {
     }
 
     fun save(){
-        friendsFile.createNewFile()
-        friendsFile.writeText(gson.toJson(friends))
+        if(friends.isNotEmpty()){
+            friendsFile.createNewFile()
+            friendsFile.writeText(gson.toJson(friends))
+        }
     }
 
     fun load(){

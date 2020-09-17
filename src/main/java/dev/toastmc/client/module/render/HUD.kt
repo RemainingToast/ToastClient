@@ -10,7 +10,6 @@ import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
 import dev.toastmc.client.util.FabricReflect
 import dev.toastmc.client.util.TwoDRenderUtils
-import dev.toastmc.client.util.TwoDRenderUtils.drawHollowRect
 import dev.toastmc.client.util.getRainbow
 import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
@@ -18,14 +17,12 @@ import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import org.lwjgl.opengl.GL11
-import java.awt.Color
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -50,25 +47,26 @@ class HUD : Module() {
     var lastPacket = 0L
     var tpsNum = 20.0
     var prevTime = 0
-    var color = Color(0, 255, 0, 155)
+//    var color = Color(0, 255, 0, 155)
 
-    var prefixPresent = false
+//    var prefixPresent = false
 
     @EventHandler
     private val onOverlayEvent = Listener(EventHook<OverlayEvent> {
-        if (mc.currentScreen is ChatScreen && prefixPresent) {
-//            drawHollowRect(it.matrix, 3, mc.currentScreen!!.height - 16, mc.currentScreen!!.width - 8, 10, 1, Color(0, 255, 0, 155).rgb)
-            drawHollowRect(it.matrix, 2, mc.currentScreen!!.height - 14, mc.currentScreen!!.width - 4, 11, 1, color.rgb)
-        }
+        if (mc.player == null) return@EventHook
+//        if (mc.currentScreen is ChatScreen && prefixPresent) {
+////            drawHollowRect(it.matrix, 3, mc.currentScreen!!.height - 16, mc.currentScreen!!.width - 8, 10, 1, Color(0, 255, 0, 155).rgb)
+//            drawHollowRect(it.matrix, 2, mc.currentScreen!!.height - 14, mc.currentScreen!!.width - 4, 11, 1, color.rgb)
+//        }
         infoList.clear()
         lines.clear()
         var arrayCount = 0
         if (watermark && !mc.options.debugEnabled) lines.add(0, "Toast Client $MODVER")
         if (arraylist && !mc.options.debugEnabled) {
             for (m in MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
-            lines.sortWith(Comparator { a: String?, b: String? ->
+            lines.sortWith { a: String?, b: String? ->
                 mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
-            })
+            }
             val color: Int = getRainbow(1f, 1f, 10.0, 0).rgb
             for (s in lines) {
                 TwoDRenderUtils.drawText(it.matrix, s, 5, 5 + (arrayCount * 10), color)
@@ -138,6 +136,7 @@ class HUD : Module() {
 
     @EventHandler
     private val packetEventListener = Listener(EventHook<PacketEvent.Receive> {
+        if(mc.player == null) return@EventHook
         lastPacket = System.currentTimeMillis()
         if (it.packet is WorldTimeUpdateS2CPacket) {
             val time = System.currentTimeMillis()
@@ -149,13 +148,11 @@ class HUD : Module() {
     })
 
     override fun onEnable() {
-        super.onEnable()
         EVENT_BUS.subscribe(onOverlayEvent)
         EVENT_BUS.subscribe(packetEventListener)
     }
 
     override fun onDisable() {
-        super.onDisable()
         EVENT_BUS.unsubscribe(onOverlayEvent)
         EVENT_BUS.unsubscribe(packetEventListener)
     }

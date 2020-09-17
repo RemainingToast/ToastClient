@@ -11,7 +11,7 @@ import net.minecraft.util.Formatting
 
 class Config : Command("config") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
-        dispatcher register rootLiteral("config"){
+        dispatcher register rootLiteral(getName()){
             literal("save"){
                 does{
                     ConfigUtil.save()

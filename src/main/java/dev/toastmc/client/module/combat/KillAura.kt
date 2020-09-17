@@ -59,6 +59,7 @@ class KillAura : Module() {
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
+        if (mc.player == null) return@EventHook
         val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
         target = findTarget(reach) ?: return@EventHook
         if (target!!.removed || target!!.isDead)

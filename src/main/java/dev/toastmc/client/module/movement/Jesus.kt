@@ -30,6 +30,7 @@ class Jesus : Module() {
 
     @EventHandler
     private val onTickEvent = Listener(EventHook<TickEvent.Client.InGame> {
+        if (mc.player == null) return@EventHook
         val e = if (mc.player!!.vehicle != null) mc.player!!.vehicle else mc.player
         if (e!!.isSneaking || e.fallDistance > 3f) return@EventHook
         when {

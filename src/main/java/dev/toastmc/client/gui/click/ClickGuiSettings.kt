@@ -11,8 +11,8 @@ import java.io.FileNotFoundException
 import java.util.*
 
 open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
-    private val clickColorsFile = File("toastclient/clickguicolors.json")
-    private val clickPosFile = File("toastclient/clickguipos.json")
+    private val clickColorsFile = File("toastclient/colors.json")
+    private val clickPosFile = File("toastclient/clickgui.json")
 
     private val defaultOnTextColor = Color(255, 255, 255, 255).rgb
     private val defaultOffTextColor = Color(177, 177, 177, 255).rgb

@@ -5,6 +5,7 @@ import dev.toastmc.client.event.PacketEvent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.module.ModuleManifest
+import dev.toastmc.client.util.mc
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook
@@ -40,6 +41,7 @@ class NoRender : Module() {
 
     @EventHandler
     private val packetListener = me.zero.alpine.listener.Listener(EventHook<PacketEvent.Receive> {
+        if (mc.player == null) return@EventHook
         val packet = it.packet
         when {
             packet is ExplosionS2CPacket && explosion -> it.cancel()

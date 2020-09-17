@@ -40,6 +40,7 @@ class Tracers : Module(){
 
     @EventHandler
     val onWorldRenderEvent = Listener(EventHook<RenderEvent.World> {
+        if (mc.player == null) return@EventHook
         draw3d(translate = true) {
             begin(GL_LINE_STRIP) {
                 for (i in 0 until mc.world!!.entities!!.count()) {

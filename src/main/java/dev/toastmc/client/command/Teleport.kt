@@ -14,7 +14,7 @@ import kotlin.math.floor
 class Teleport : Command("teleport") {
     var tpThread: Thread? = null
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
-        dispatcher register rootLiteral("teleport") {
+        dispatcher register rootLiteral(getName()) {
             string("stop") {
                 does {
                     if (tpThread != null && tpThread!!.isAlive) {
@@ -28,52 +28,40 @@ class Teleport : Command("teleport") {
                 }
             }
             argument("pos", Vec3ArgumentType.vec3()){
+                does { ctx ->
+                    val vec: Vec3d = "pos" from ctx
+                    try {
+                        tpThread = Thread {
+                            try {
+                                if (mc.player == null) return@Thread
+                                val x = vec.x.toString().parseCoord(mc.player!!.x)
+                                val y = vec.y.toString().parseCoord(mc.player!!.y)
+                                val z = vec.z.toString().parseCoord(mc.player!!.z)
+                                val bpt = 100.0
+                                val totalTicks = floor(mc.player!!.pos.distanceTo(Vec3d(x, y, z)) / bpt)
+                                val moveVec = Vec3d((x - mc.player!!.x) / totalTicks, (y - mc.player!!.y) / totalTicks, (z - mc.player!!.z) / totalTicks)
+                                var tick = totalTicks
+                                while (--tick >= 0) {
+                                    Thread.sleep(50)
+                                    val newPos = mc.player!!.pos.add(moveVec)
+                                    mc.player!!.setVelocity(0.0, 0.0, 0.0)
+                                    mc.player!!.updatePosition(newPos.x, newPos.y, newPos.z)
+                                    mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionOnly(newPos.x, newPos.y, newPos.z, mc.player!!.isOnGround))
+                                }
+                                if (mc.player!!.pos.distanceTo(Vec3d(x, y, z)) > 0.0) {
+                                    Thread.sleep(50)
+                                    mc.player!!.updatePosition(x, y, z)
+                                    mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionOnly(x, y, z, mc.player!!.isOnGround))
+                                }
+                                sendMessage("Teleport Finished!", Color.GREEN)
+                            } catch (ignored: Throwable) {}
+                        }
+                        tpThread!!.start()
 
+                    } catch (ignored: Throwable) {}
+                    0
+                }
             }
-            then(float("x"){
-                then(float("y"){
-                    then(float("y"){
-                        then(float("blockspertick"){
-                            does { ctx ->
-                                val x: Float = "x" from ctx
-                                val y: Float = "y" from ctx
-                                val z: Float = "z" from ctx
-                                val bpt: Float = "blockerspertick" from ctx
-                                try {
-                                    tpThread = Thread {
-                                        try {
-                                            if (mc.player == null) return@Thread
-                                            val x = x.toString().parseCoord(mc.player!!.x)
-                                            val y = y.toString().parseCoord(mc.player!!.y)
-                                            val z = z.toString().parseCoord(mc.player!!.z)
-                                            val bpt = bpt.toDouble()
-                                            val totalTicks = floor(mc.player!!.pos.distanceTo(Vec3d(x, y, z)) / bpt)
-                                            val moveVec = Vec3d((x - mc.player!!.x) / totalTicks, (y - mc.player!!.y) / totalTicks, (z - mc.player!!.z) / totalTicks)
-                                            var tick = totalTicks
-                                            while (--tick >= 0) {
-                                                Thread.sleep(50)
-                                                val newPos = mc.player!!.pos.add(moveVec)
-                                                mc.player!!.setVelocity(0.0, 0.0, 0.0)
-                                                mc.player!!.updatePosition(newPos.x, newPos.y, newPos.z)
-                                                mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionOnly(newPos.x, newPos.y, newPos.z, mc.player!!.isOnGround))
-                                            }
-                                            if (mc.player!!.pos.distanceTo(Vec3d(x, y, z)) > 0.0) {
-                                                Thread.sleep(50)
-                                                mc.player!!.updatePosition(x, y, z)
-                                                mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionOnly(x, y, z, mc.player!!.isOnGround))
-                                            }
-                                            sendMessage("Teleport Finished!", Color.GREEN)
-                                        } catch (ignored: Throwable) {}
-                                    }
-                                    tpThread!!.start()
-
-                                } catch (ignored: Throwable) {}
-                                0
-                            }
-                        })
-                    })
-                })
-            })
         }
     }
 
