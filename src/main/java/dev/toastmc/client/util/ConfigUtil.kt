@@ -30,7 +30,11 @@ object ConfigUtil {
         save()
     }
 
-    fun getConfigTree(): ConfigBranch? {
+    fun getConfigTree(): ConfigTree? {
+        return getConfigBranch()
+    }
+
+    fun getConfigBranch(): ConfigBranch? {
         var configTree = ConfigTreeBuilder(null, "config")
         for (module in MODULE_MANAGER.modules) {
             configTree = configTree.withChild(ConfigTreeBuilder(null, module.label).applyFromPojo(module, annotationSetting).build())
@@ -57,44 +61,44 @@ object ConfigUtil {
             println("Config failed to load. StackTrace: ${ignored.stackTrace}")
         }
     }
+}
 
-    fun ConfigBranch.getBranch(name: String): ConfigBranch? {
-        return this.lookupBranch(name)
-    }
+fun ConfigBranch.getBranch(name: String): ConfigBranch? {
+    return this.lookupBranch(name)
+}
 
-    fun ConfigTree.getBranch(name: String): ConfigBranch? {
-        return this.lookupBranch(name)
-    }
+fun ConfigTree.getBranch(name: String): ConfigBranch? {
+    return this.lookupBranch(name)
+}
 
-    fun ConfigBranch.getNumber(type: NumberConfigType<*>, name: String): Any? {
-        return this.lookupLeaf(name, type.serializedType)?.value
-    }
+fun ConfigBranch.getNumber(type: NumberConfigType<*>, name: String): Any? {
+    return this.lookupLeaf(name, type.serializedType)?.value
+}
 
-    fun ConfigTree.getNumber(type: NumberConfigType<*>, name: String): Any? {
-        return this.lookupLeaf(name, type.serializedType)?.value
-    }
+fun ConfigTree.getNumber(type: NumberConfigType<*>, name: String): Any? {
+    return this.lookupLeaf(name, type.serializedType)?.value
+}
 
-    fun ConfigBranch.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Boolean? {
-        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
-    }
+fun ConfigBranch.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Boolean? {
+    return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
+}
 
-    fun ConfigTree.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Boolean? {
-        return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
-    }
+fun ConfigTree.setNumber(type: NumberConfigType<*>, name: String, newValue: BigDecimal): Boolean? {
+    return this.lookupLeaf(name, type.serializedType)?.setValue(newValue)
+}
 
-    fun ConfigBranch.getBoolean(name: String): Boolean? {
-        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
-    }
+fun ConfigBranch.getBoolean(name: String): Boolean? {
+    return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
+}
 
-    fun ConfigTree.getBoolean(name: String): Boolean? {
-        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
-    }
+fun ConfigTree.getBoolean(name: String): Boolean? {
+    return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.value
+}
 
-    fun ConfigBranch.setBoolean(name: String, newValue: Boolean): Boolean? {
-        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
-    }
+fun ConfigBranch.setBoolean(name: String, newValue: Boolean): Boolean? {
+    return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
+}
 
-    fun ConfigTree.setBoolean(name: String, newValue: Boolean): Boolean? {
-        return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
-    }
+fun ConfigTree.setBoolean(name: String, newValue: Boolean): Boolean? {
+    return this.lookupLeaf(name, ConfigTypes.BOOLEAN.serializedType)?.setValue(newValue)
 }

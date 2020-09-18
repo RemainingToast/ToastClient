@@ -958,8 +958,7 @@ object ItemUtil {
 
     @JvmStatic
     fun getItemsInShulker(item: ItemStack): List<ItemStack> {
-        val items: MutableList<ItemStack> =
-                ArrayList(Collections.nCopies(27, ItemStack(Items.AIR)))
+        val items: MutableList<ItemStack> = ArrayList(Collections.nCopies(27, ItemStack(Items.AIR)))
         val nbt = item.tag
         if (nbt != null && nbt.contains("BlockEntityTag")) {
             val nbtt = nbt.getCompound("BlockEntityTag")

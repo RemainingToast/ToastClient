@@ -106,6 +106,8 @@ class CategoryRenderer(
         this.mouseY = mouseY.toDouble()
         isClickedL = clickedL
         isClickedR = clickedR
+        var moduleTextColor: Int
+        var moduleBgColor: Int
         val catExpanded = settings.getPositions(category.toString()).expanded
         var catBgColor: Int = Color(55, 175, 0, 200).rgb
         if (isMouseOverRect(mouseX.toDouble(), mouseY.toDouble(), x, y, boxWidth, boxHeight)) {
@@ -121,11 +123,9 @@ class CategoryRenderer(
         if (catExpanded) {
             var u = 1
             for (module: Module in MODULE_MANAGER.getModulesInCategory(category)) {
-                var moduleTextColor: Int
-                var moduleBgColor: Int
                 if (module.enabled) {
                     moduleTextColor = colors.moduleOnTextColor
-                    moduleBgColor = colors.moduleOnBgColor
+                    moduleBgColor = colors.moduleOffBgColor
                 } else {
                     moduleTextColor = colors.moduleOffTextColor
                     moduleBgColor = colors.moduleOffBgColor
@@ -140,8 +140,10 @@ class CategoryRenderer(
                         isClickedR -> {
                             if (settings.getPositions(categoryString).expandedModules.contains(module.label)) {
                                 settings.getPositions(categoryString).expandedModules.remove(module.label)
+                                moduleBgColor = colors.moduleOnBgColor
                             } else {
                                 settings.getPositions(categoryString).expandedModules.add(module.label)
+                                moduleBgColor = colors.moduleOnBgColor
                             }
                             settings.savePositions()
                         }
@@ -151,16 +153,11 @@ class CategoryRenderer(
                     }
                     if(module.description.isNotEmpty()) description = Description(module.description, (x + boxWidth).roundToInt(), getYIteration(u).roundToInt(), true)
                 }
-                drawTextBox(matrixStack, xInt,
-                        getYIteration(u).roundToInt(),
-                        boxWidth,
-                        boxHeight,
-                        colors.moduleBoxColor,
-                        moduleTextColor,
-                        colors.modulePrefixColor,
-                        moduleBgColor,
-                        "",
-                        module.label)
+                if(settings.moduleExpanded(categoryString, module)) moduleBgColor = colors.moduleExpandadBgColor
+                drawTextBox(matrixStack, xInt, getYIteration(u).roundToInt(), boxWidth, boxHeight,
+                        colors.moduleBoxColor, moduleTextColor,
+                        colors.modulePrefixColor, moduleBgColor,
+                        "", module.label)
                 u++
                 for (mod in settings.getPositions(categoryString).expandedModules){
                     if(mod == module.label){

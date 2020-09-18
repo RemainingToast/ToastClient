@@ -2,6 +2,7 @@ package dev.toastmc.client.gui.click
 
 import com.google.gson.reflect.TypeToken
 import dev.toastmc.client.module.Category
+import dev.toastmc.client.module.Module
 import dev.toastmc.client.util.gson
 import dev.toastmc.client.util.mc
 import net.minecraft.client.MinecraftClient
@@ -15,7 +16,8 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     private val clickPosFile = File("toastclient/clickgui.json")
     private val defaultOnTextColor = Color(255, 255, 255, 255).rgb
     private val defaultOffTextColor = Color(177, 177, 177, 255).rgb
-    private val defaultBgColor = Color(0, 0, 0, 64).rgb
+    private val defaultOffBgColor = Color(0, 0, 0, 64).rgb
+    private val defaultOnBgColor = Color(0, 0, 0, 155).rgb
     private val defaultHoverBgColor = Color(131, 212, 252, 92).rgb
     private val defaultBoxColor = Color(0, 0, 0, 255).rgb
     private val defaultPrefixColor = Color(255, 0, 0, 255).rgb
@@ -73,6 +75,10 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         }
     }
 
+    fun moduleExpanded(cat: String, mod: Module): Boolean {
+        return getPositions(cat).expandedModules.contains(mod.label)
+    }
+
 
     open fun savePositions() {
         clickPosFile.createNewFile()
@@ -93,7 +99,7 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     }
 
     private fun setCategoryDefaults() {
-        colors.categoryBgColor = defaultBgColor
+        colors.categoryBgColor = defaultOffBgColor
         colors.categoryBoxColor = defaultBoxColor
         colors.categoryClickColor = defaultClickColor
         colors.categoryHoverBgColor = defaultHoverBgColor
@@ -114,9 +120,10 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         colors.moduleBoxColor = defaultBoxColor
         colors.moduleClickColor = defaultClickColor
         colors.moduleHoverBgColor = defaultHoverBgColor
-        colors.moduleOffBgColor = defaultBgColor
+        colors.moduleOffBgColor = defaultOffBgColor
         colors.moduleOffTextColor = defaultOffTextColor
-        colors.moduleOnBgColor = defaultBgColor
+        colors.moduleOnBgColor = defaultOnBgColor
+        colors.moduleExpandadBgColor = defaultOnBgColor
         colors.moduleOnTextColor = defaultOnTextColor
         colors.modulePrefix = " > "
         colors.modulePrefixColor = defaultPrefixColor
@@ -126,15 +133,15 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         colors.settingBoxColor = defaultBoxColor
         colors.settingClickColor = defaultClickColor
         colors.settingHoverBgColor = defaultHoverBgColor
-        colors.settingOffBgColor = defaultBgColor
+        colors.settingOffBgColor = defaultOnBgColor
         colors.settingOffTextColor = defaultOffTextColor
-        colors.settingOnBgColor = defaultBgColor
+        colors.settingOnBgColor = defaultOnBgColor
         colors.settingOnTextColor = defaultOnTextColor
         colors.settingSliderBarColor = defaultOffTextColor
         colors.settingSliderKnobColor = defaultOnTextColor
         colors.settingSliderKnobHoverColor = defaultOnTextColor
         colors.settingSliderSideNumbersColor = defaultOnTextColor
-        colors.settingPrefix = "    "
+        colors.settingPrefix = " "
         colors.settingPrefixColor = defaultPrefixColor
     }
 
@@ -168,6 +175,7 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
         var modulePrefix = ""
         var moduleOnTextColor = 0
         var moduleOnBgColor = 0
+        var moduleExpandadBgColor = 0
         var moduleOffTextColor = 0
         var moduleOffBgColor = 0
         var moduleHoverBgColor = 0

@@ -17,6 +17,8 @@ open class Module {
     @Setting(name = "Persistent")
     var persistent: Boolean = false
 
+    var settings = ConfigUtil.getConfigTree()
+
 //    @Setting(name = "Category")
     var category: Category = Category.NONE
 
