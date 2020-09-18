@@ -47,7 +47,7 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
             var x: Int = 5 + clickGuiScreen.w.times(i) + 5 * i
             if (x + clickGuiScreen.w + 30 > MinecraftClient.getInstance().window.width / 2) {
                 y += MinecraftClient.getInstance().window.height / 2 / 3
-                x = 5
+                x = 100
                 i = 0
             }
             (categoryPositions as TreeMap<String, CategorySetting>)[category.toString()] = CategorySetting(x.toDouble(), y.toDouble(), false, ArrayList())

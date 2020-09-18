@@ -30,7 +30,8 @@ import kotlin.math.roundToInt
 
 @ModuleManifest(
         label = "HUD",
-        category = Category.RENDER
+        category = Category.RENDER,
+        persistent = true
 )
 class HUD : Module() {
     @Setting(name = "Arraylist") var arraylist = true
@@ -64,9 +65,13 @@ class HUD : Module() {
         if (watermark && !mc.options.debugEnabled) lines.add(0, "Toast Client $MODVER")
         if (arraylist && !mc.options.debugEnabled) {
             for (m in MODULE_MANAGER.modules) if (m.enabled && !m.hidden) lines.add(m.label)
-            lines.sortWith { a: String?, b: String? ->
-                mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
-            }
+//            lines.sortWith { a: String?, b: String? ->
+//                mc.textRenderer.getWidth(b).compareTo(mc.textRenderer.getWidth(a))
+//            }
+            lines.sortedDescending().reversed()
+//            lines.sortBy { str ->
+//                mc.textRenderer.getWidth(str).compareTo(mc.textRenderer.getWidth(str))
+//            }
             val color: Int = getRainbow(1f, 1f, 10.0, 0).rgb
             for (s in lines) {
                 TwoDRenderUtils.drawText(it.matrix, s, 5, 5 + (arrayCount * 10), color)

@@ -4,6 +4,7 @@ import dev.toastmc.client.ToastClient.Companion.MODULE_MANAGER
 import dev.toastmc.client.gui.TwoDRenderUtils.drawTextBox
 import dev.toastmc.client.gui.TwoDRenderUtils.isMouseOverRect
 import dev.toastmc.client.gui.click.components.Description
+import dev.toastmc.client.gui.click.components.HiddenComponent
 import dev.toastmc.client.module.Category
 import dev.toastmc.client.module.Module
 import dev.toastmc.client.util.ConfigUtil
@@ -13,18 +14,19 @@ import java.awt.Color
 import kotlin.math.roundToInt
 
 class CategoryRenderer(
-    private val clickGuiScreen: ClickGuiScreen,
-    matrixStack: MatrixStack,
-    mouseX: Int,
-    mouseY: Int,
-    val category: Category,
-    clickedL: Boolean,
-    clickedR: Boolean
+        private val clickGuiScreen: ClickGuiScreen,
+        matrixStack: MatrixStack,
+        mouseX: Int,
+        mouseY: Int,
+        val category: Category,
+        clickedL: Boolean,
+        clickedR: Boolean
 ) {
     var keybindingPressed: Boolean = false
     private var keybindingModule: Module? = null
     private var isKeyPressed: Boolean = false
     var description: Description? = null
+    var hidden: HiddenComponent? = null
     private var isClickedL: Boolean
     private var isClickedR: Boolean
     var mouseX: Double
@@ -70,11 +72,11 @@ class CategoryRenderer(
         return false
     }
 
-    private val boxWidth: Int
+    val boxWidth: Int
         get() {
             return clickGuiScreen.w
         }
-    private val boxHeight: Int
+    val boxHeight: Int
         get() {
             return clickGuiScreen.h
         }
@@ -87,7 +89,7 @@ class CategoryRenderer(
             return settings.getPositions(categoryString).y
         }
 
-    private fun getYIteration(iteration: Int): Double {
+    fun getYIteration(iteration: Int): Double {
         return y + iteration + (boxHeight * iteration)
     }
 
@@ -115,7 +117,7 @@ class CategoryRenderer(
                 catBgColor = Color(55, 175, 0, 100).rgb
             }
         }
-        drawTextBox(matrixStack, xInt, yInt, boxWidth, boxHeight, colors.categoryBoxColor, colors.categoryTextColor, colors.categoryPrefixColor, catBgColor, if(catExpanded) "- " else "+ ", category.toString())
+        drawTextBox(matrixStack, xInt, yInt, boxWidth, boxHeight, colors.categoryBoxColor, colors.categoryTextColor, colors.categoryPrefixColor, catBgColor, if (catExpanded) "- " else "+ ", category.toString())
         if (catExpanded) {
             var u = 1
             for (module: Module in MODULE_MANAGER.getModulesInCategory(category)) {
@@ -150,16 +152,44 @@ class CategoryRenderer(
                     if(module.description.isNotEmpty()) description = Description(module.description, (x + boxWidth).roundToInt(), getYIteration(u).roundToInt(), true)
                 }
                 drawTextBox(matrixStack, xInt,
-                    getYIteration(u).roundToInt(),
-                    boxWidth,
-                    boxHeight,
-                    colors.moduleBoxColor,
-                    moduleTextColor,
-                    colors.modulePrefixColor,
-                    moduleBgColor,
-                    "",
-                    module.label)
+                        getYIteration(u).roundToInt(),
+                        boxWidth,
+                        boxHeight,
+                        colors.moduleBoxColor,
+                        moduleTextColor,
+                        colors.modulePrefixColor,
+                        moduleBgColor,
+                        "",
+                        module.label)
                 u++
+                for (mod in settings.getPositions(categoryString).expandedModules){
+                    if(mod == module.label){
+                        HiddenComponent().render(matrixStack, module, this, "Hidden", colors, x, mouseX.toDouble(), mouseY.toDouble(), u, isClickedL)
+                        u++
+                        var keybindBgColor = colors.settingOnBgColor
+                        var keybindText: String
+                        if (isMouseOverRect(mouseX.toDouble(), mouseY.toDouble(), x, getYIteration(u), boxWidth, boxHeight)) {
+                            keybindBgColor = colors.settingHoverBgColor
+                            if (isClickedL) {
+                                this.keybindingPressed = true
+                                this.keybindingModule = module
+                            }
+                        }
+                        if (keybindingModule === module) {
+                            keybindBgColor = colors.settingHoverBgColor
+                            keybindText = "Keybind: ..."
+                            if (!isKeyPressed) {
+                                keybindingPressed = true
+                                keybindingModule = module
+                            }
+                        } else {
+                            val key: Int = module.key
+                            keybindText = if (key == GLFW.GLFW_KEY_UNKNOWN) "Keybind: NONE" else "Keybind: " + GLFW.glfwGetKeyName(key, GLFW.glfwGetKeyScancode(key))
+                        }
+                        drawTextBox(matrixStack, xInt, getYIteration(u).roundToInt(), boxWidth, boxHeight, colors.settingBoxColor, colors.settingOnTextColor, colors.settingPrefixColor, keybindBgColor, colors.settingPrefix, keybindText)
+                        u++
+                    }
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ open class Module {
     var usage: String = ""
     var alias: Array<String> = arrayOf("")
 
-//    @Setting(name = "Persistent")
+    @Setting(name = "Persistent")
     var persistent: Boolean = false
 
 //    @Setting(name = "Category")
@@ -45,7 +45,7 @@ open class Module {
     }
 
     fun setEnabled(newEnabled: Boolean): Boolean {
-        enabled = newEnabled
+        enabled = if(!persistent) newEnabled else persistent
         if (enabled) {
             try {
                 EVENT_BUS.post(this@Module)

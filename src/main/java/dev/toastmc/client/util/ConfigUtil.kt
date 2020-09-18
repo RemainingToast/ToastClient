@@ -50,7 +50,7 @@ object ConfigUtil {
             val fis = FileInputStream(configFile)
             FiberSerialization.deserialize(getConfigTree(), fis, serializer)
             for (module in MODULE_MANAGER.modules) {
-//                if(module.enabled) module.setEnabled(true)
+                if(module.enabled) module.setEnabled(true)
             }
             fis.close()
         } catch (ignored: ValueDeserializationException){
