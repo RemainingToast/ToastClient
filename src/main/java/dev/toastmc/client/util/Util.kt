@@ -408,7 +408,7 @@ object WorldUtil {
                     if (distance < range * range) {
                         val block = BlockPos(x, y, z)
                         blocks.add(block)
-                        print("x:${i-x}, y:${j-y}, z:${k-z}\n")
+                        print("x:${i - x}, y:${j - y}, z:${k - z}\n")
                     }
                 }
             }
@@ -862,24 +862,17 @@ object ItemUtil {
 
     fun equipBestTool(blockState: BlockState) {
         var bestSlot = -1
-        var max = 0.0
+        var bestTool = -1
         for (i in 0..8) {
-            val stack = mc.player?.inventory?.getStack(i)
-            if (stack != null) {
-                if (stack.isEmpty) continue
-            }
-            var speed = stack?.getMiningSpeedMultiplier(blockState)
-            var eff: Int
-            if (speed != null) {
-                if (speed > 1) {
-                    speed += (if (EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack).also {
-                                eff = it
-                            } > 0) (eff.toDouble().pow(2.0) + 1) else 0.0).toFloat()
-                    if (speed > max) {
-                        max = speed.toDouble()
-                        bestSlot = i
-                    }
-                }
+            val itemStack = mc.player!!.inventory.getStack(i)
+            var tool = 0
+            if(itemStack.isEffectiveOn(blockState)) tool++
+            tool += round(itemStack.getMiningSpeedMultiplier(blockState)).toInt()
+            tool += EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, itemStack)
+            tool += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, itemStack)
+            if (tool > bestTool){
+                bestTool = tool
+                bestSlot = i
             }
         }
         if (bestSlot != -1) equip(bestSlot)
@@ -897,15 +890,9 @@ object ItemUtil {
                 if (stack.item is MiningToolItem || stack.item is SwordItem) {
                     // Not sure of the best way to cast stack.item as either SwordItem or MiningToolItem
                     val damage = if (stack.item is SwordItem) {
-                        (stack.item as SwordItem).attackDamage + EnchantmentHelper.getAttackDamage(
-                                stack,
-                                EntityGroup.DEFAULT
-                        ).toDouble()
+                        (stack.item as SwordItem).attackDamage + EnchantmentHelper.getAttackDamage(stack, EntityGroup.DEFAULT).toDouble()
                     } else {
-                        (stack.item as MiningToolItem).attackDamage + EnchantmentHelper.getAttackDamage(
-                                stack,
-                                EntityGroup.DEFAULT
-                        ).toDouble()
+                        (stack.item as MiningToolItem).attackDamage + EnchantmentHelper.getAttackDamage(stack, EntityGroup.DEFAULT).toDouble()
                     }
                     if (damage > maxDamage) {
                         maxDamage = damage

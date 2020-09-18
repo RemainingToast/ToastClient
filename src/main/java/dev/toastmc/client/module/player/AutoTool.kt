@@ -36,9 +36,8 @@ class AutoTool : Module(){
     @EventHandler
     private val leftClickListener = Listener(EventHook<PlayerAttackBlockEvent> {
         if (mc.player == null) return@EventHook
-        mc.world?.getBlockState(it.position)?.let { bs ->
-            equipBestTool(bs)
-        }
+        val blockState = mc.world?.getBlockState(it.position) ?: return@EventHook
+        equipBestTool(blockState)
     })
 
 

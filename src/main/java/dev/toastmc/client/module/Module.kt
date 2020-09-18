@@ -47,7 +47,7 @@ open class Module {
     }
 
     fun setEnabled(newEnabled: Boolean): Boolean {
-        enabled = if(!persistent) newEnabled else persistent
+        enabled = newEnabled
         if (enabled) {
             try {
                 EVENT_BUS.post(this@Module)

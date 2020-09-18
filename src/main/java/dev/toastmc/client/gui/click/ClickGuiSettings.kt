@@ -31,12 +31,9 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     }
 
     fun getPositions(category: String): CategorySetting {
-        var setting = categoryPositions[category]
-        if (setting == null) {
-            loadPositions()
-            setting = categoryPositions[category]
-            if (setting == null) initCategoryPositions()
-        }
+        loadPositions()
+        val setting = categoryPositions[category]
+        if (setting == null) initCategoryPositions()
         return categoryPositions[category]!!
     }
 
@@ -69,6 +66,7 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
                 return
             }
         } catch (_: FileNotFoundException) {
+            println("Failed to load GUI positions")
         } finally {
             initCategoryPositions()
             savePositions()

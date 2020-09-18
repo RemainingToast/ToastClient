@@ -30,11 +30,7 @@ object ConfigUtil {
         save()
     }
 
-    fun getConfigTree(): ConfigTree? {
-        return getConfigBranch()
-    }
-
-    fun getConfigBranch(): ConfigBranch? {
+    fun getConfigTree(): ConfigBranch? {
         var configTree = ConfigTreeBuilder(null, "config")
         for (module in MODULE_MANAGER.modules) {
             configTree = configTree.withChild(ConfigTreeBuilder(null, module.label).applyFromPojo(module, annotationSetting).build())
@@ -54,7 +50,8 @@ object ConfigUtil {
             val fis = FileInputStream(configFile)
             FiberSerialization.deserialize(getConfigTree(), fis, serializer)
             for (module in MODULE_MANAGER.modules) {
-                if(module.enabled) module.setEnabled(true)
+                if(!module.persistent) module.setEnabled(module.enabled)
+                else module.setEnabled(module.persistent)
             }
             fis.close()
         } catch (ignored: ValueDeserializationException){
