@@ -31,9 +31,12 @@ open class ClickGuiSettings(private val clickGuiScreen: ClickGuiScreen) {
     }
 
     fun getPositions(category: String): CategorySetting {
-        loadPositions()
-        val setting = categoryPositions[category]
-        if (setting == null) initCategoryPositions()
+        var setting = categoryPositions[category]
+        if (setting == null) {
+            loadPositions()
+            setting = categoryPositions[category]
+            if (setting == null) initCategoryPositions()
+        }
         return categoryPositions[category]!!
     }
 
