@@ -24,7 +24,9 @@ class ClickGUI : Module() {
     override fun onEnable() {
         if (mc.player != null) {
             if (mc.currentScreen == null) {
-                guiScreen = ClickGuiScreen(this)
+                if(guiScreen == null){
+                    guiScreen = ClickGuiScreen(this)
+                }
                 mc.openScreen(guiScreen)
                 ToastClient.MODULE_MANAGER.clickguiHasOpened = true
             }
