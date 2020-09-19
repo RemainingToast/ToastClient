@@ -1,7 +1,6 @@
 package dev.toastmc.client.module
 
 import dev.toastmc.client.module.combat.*
-import dev.toastmc.client.module.misc.Discord
 import dev.toastmc.client.module.misc.PortalChat
 import dev.toastmc.client.module.misc.SignCopy
 import dev.toastmc.client.module.movement.*
@@ -23,7 +22,7 @@ class ModuleManager {
             ESP(), FastStop(), Flight(), FullBright(), HUD(), Jesus(),
             KillAura(), NoFall(), NoFog(), NoRender(), PortalChat(), SafeWalk(),
             Sprint(), SignCopy(), Surround(), Tracers(), Velocity(), NoEntityTrace(),
-            MiddleClickFriends(), Friends(), Discord()
+            MiddleClickFriends(), Friends()
         )
     }
 
