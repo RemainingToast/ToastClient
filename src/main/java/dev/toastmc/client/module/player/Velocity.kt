@@ -17,6 +17,7 @@ import me.zero.alpine.listener.EventHook
 import me.zero.alpine.listener.Listener
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
+import kotlin.math.max
 
 @ModuleManifest(
         label = "Velocity",
@@ -27,6 +28,11 @@ import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
 class Velocity : Module() {
     @Setting(name = "Horizontal") var horizontal = 0f
     @Setting(name = "Vertical") var vertical = 0f
+    @Setting(name = "Delay (ms)") var delay = 170L
+
+    private var oldVelX = Double.NaN
+    private var oldVelY = Double.NaN
+    private var oldVelZ = Double.NaN
 
     override fun onEnable() {
         EVENT_BUS.subscribe(packetEventListener)
@@ -44,21 +50,42 @@ class Velocity : Module() {
     private val packetEventListener = Listener(EventHook<PacketEvent.Receive> {
         if (mc.player == null) return@EventHook
         if (it.era === ToastEvent.Era.PRE) {
+            oldVelX = Double.NaN
+            oldVelY = Double.NaN
+            oldVelZ = Double.NaN
             if (it.packet is EntityVelocityUpdateS2CPacket) {
                 val velocity: EntityVelocityUpdateS2CPacket = it.packet
                 if (velocity.id == mc.player!!.entityId) {
                     if (horizontal == 0f && vertical == 0f) it.cancel()
                     val xyz = velocity as IEntityVelocityUpdateS2CPacket
-                    xyz.velocityX = (xyz.velocityX * horizontal).toInt()
-                    xyz.velocityY = (xyz.velocityY * vertical).toInt()
-                    xyz.velocityZ = (xyz.velocityZ * horizontal).toInt()
+                    if (delay > 0) {
+                        oldVelX = (xyz.velocityX * horizontal) / 8000.0
+                        oldVelY = (xyz.velocityY * vertical) / 8000.0
+                        oldVelZ = (xyz.velocityZ * horizontal) / 8000.0
+                        it.cancel()
+                    } else {
+                        xyz.velocityX = (xyz.velocityX * horizontal).toInt()
+                        xyz.velocityY = (xyz.velocityY * vertical).toInt()
+                        xyz.velocityZ = (xyz.velocityZ * horizontal).toInt()
+                    }
                 }
             } else if (it.packet is ExplosionS2CPacket) {
                 if (horizontal == 0f && vertical == 0f) it.cancel()
                 val xyz = it.packet as IExplosionS2CPacket
-                xyz.playerVelocityX = xyz.playerVelocityX * horizontal
-                xyz.playerVelocityY = xyz.playerVelocityY * vertical
-                xyz.playerVelocityZ = xyz.playerVelocityZ * horizontal
+                if (delay > 0) {
+                    oldVelX = xyz.playerVelocityX.toDouble()
+                    oldVelY = xyz.playerVelocityY.toDouble()
+                    oldVelZ = xyz.playerVelocityZ.toDouble()
+                    it.cancel()
+                } else {
+                    xyz.playerVelocityX = xyz.playerVelocityX * horizontal
+                    xyz.playerVelocityY = xyz.playerVelocityY * vertical
+                    xyz.playerVelocityZ = xyz.playerVelocityZ * horizontal
+                }
+            }
+            if (delay > 0 && !oldVelX.isNaN() || !oldVelY.isNaN() || !oldVelZ.isNaN()) {
+                Thread.sleep(max(0, delay))
+                mc.player!!.setVelocity(mc.player!!.velocity.x + oldVelX, mc.player!!.velocity.y + oldVelY, mc.player!!.velocity.z + oldVelZ)
             }
         }
     })
