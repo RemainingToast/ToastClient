@@ -13,6 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      BUILD: ${{ github.run_number }}
+      SHA: ${{ github.sha }}
 
     steps:
     - uses: actions/checkout@v2
@@ -25,12 +28,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Rename the built jar
-      run: mv build/libs/toastclient-1.0.0.jar toastclient-$GITHUB_RUN_NUMBER.jar
+      run: mv build/libs/toastclient-1.0.0.jar toastclient-$BUILD.jar
     - name: Send Discord build message
       env:
         WEBHOOK: ${{ secrets.BUILD_DISCORD_WEBHOOK }}
-      run: "curl -X POST -H \"Content-Type: application/json\" -d '{\"content\": \"Build number $GITHUB_RUN_NUMBER from commit $GITHUB_SHA:\"}' \"$WEBHOOK\""
+      run: "curl -X POST -H \"Content-Type: application/json\" -d '{\"content\": \"Build number $BUILD from commit $SHA:\"}' \"$WEBHOOK\""
     - name: Upload client jar
       env:
         WEBHOOK: ${{ secrets.BUILD_DISCORD_WEBHOOK }}
-      run: "curl -F 'data=@toastclient-$GITHUB_RUN_NUMBER.jar' $WEBHOOK"
+      run: "curl -F 'data=@toastclient-$BUILD.jar' $WEBHOOK"
