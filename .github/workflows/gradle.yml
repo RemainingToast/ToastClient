@@ -36,4 +36,4 @@ jobs:
       run: |
         curl -X POST -H "Content-Type: application/json" -d "{\"content\":\"Build number $BUILD from commit $SHA:\"}" $WEBHOOK
     - name: Upload client jar
-      run: curl -F 'data=@toastclient-$BUILD.jar' $WEBHOOK
+      run: curl -F data=@toastclient-$BUILD.jar $WEBHOOK
