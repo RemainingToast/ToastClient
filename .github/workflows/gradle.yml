@@ -14,8 +14,9 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      BUILD: ${{ github.run_number }}
-      SHA: ${{ github.sha }}
+        BUILD: ${{ github.run_number }}
+        SHA: ${{ github.sha }}
+        WEBHOOK: ${{ secrets.BUILD_DISCORD_WEBHOOK }}
 
     steps:
     - uses: actions/checkout@v2
@@ -30,10 +31,6 @@ jobs:
     - name: Rename the built jar
       run: mv build/libs/toastclient-1.0.0.jar toastclient-$BUILD.jar
     - name: Send Discord build message
-      env:
-        WEBHOOK: ${{ secrets.BUILD_DISCORD_WEBHOOK }}
       run: "curl -X POST -H \"Content-Type: application/json\" -d '{\"content\": \"Build number $BUILD from commit $SHA:\"}' \"$WEBHOOK\""
     - name: Upload client jar
-      env:
-        WEBHOOK: ${{ secrets.BUILD_DISCORD_WEBHOOK }}
       run: "curl -F 'data=@toastclient-$BUILD.jar' $WEBHOOK"
