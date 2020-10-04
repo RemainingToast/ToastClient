@@ -34,6 +34,6 @@ jobs:
       run: echo $BUILD && echo " " && echo $SHA
     - name: Send Discord build message
       run: |
-        curl -X POST -H \"Content-Type: application/json\" -d '{\"content\":\"Build number $BUILD from commit $SHA:\"}' \"$WEBHOOK\"
+        curl -X POST -H "Content-Type: application/json" -d "{\"content\":\"Build number $BUILD from commit $SHA:\"}" $WEBHOOK
     - name: Upload client jar
       run: curl -F 'data=@toastclient-$BUILD.jar' $WEBHOOK
