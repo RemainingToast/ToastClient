@@ -9,6 +9,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.*
 import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL11.GL_QUADS
 import org.lwjgl.opengl.GL14
 import java.awt.Color
 import kotlin.math.ceil
@@ -148,6 +149,15 @@ open class RenderBuilder {
             action()
         } finally {
             GL11.glEnd()
+        }
+    }
+}
+
+fun drawFilledBox(box: Box, color: Color) {
+    draw3d {
+        begin(GL_QUADS){
+            color(color.red, color.green, color.blue, color.alpha)
+            box(box)
         }
     }
 }

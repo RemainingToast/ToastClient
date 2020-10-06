@@ -30,8 +30,6 @@ class ToastClient : ModInitializer {
         val EVENT_BUS: EventBus = EventManager()
     }
 
-
-
     override fun onInitialize() {
         MODULE_MANAGER.initMods()
         ConfigUtil.init()

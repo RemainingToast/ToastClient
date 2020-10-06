@@ -22,7 +22,7 @@ class ModuleManager {
             ESP(), FastStop(), Flight(), FullBright(), HUD(), Jesus(),
             KillAura(), NoFall(), NoFog(), NoRender(), PortalChat(), SafeWalk(),
             Sprint(), SignCopy(), Surround(), Tracers(), Velocity(), NoEntityTrace(),
-            MiddleClickFriends(), Friends()
+            MiddleClickFriends(), Friends(), HoleESP(), Scaffold()
         )
     }
 
