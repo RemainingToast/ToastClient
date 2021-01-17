@@ -1,7 +1,7 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.event.KeyPressEvent;
+import me.remainingtoast.toastclient.api.event.KeyPressEvent;
 import net.minecraft.client.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

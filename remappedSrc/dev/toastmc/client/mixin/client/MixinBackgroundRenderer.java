@@ -1,4 +1,4 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
 import dev.toastmc.client.module.render.NoRender;

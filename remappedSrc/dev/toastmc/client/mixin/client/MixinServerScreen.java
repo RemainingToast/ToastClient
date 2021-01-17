@@ -1,4 +1,4 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import dev.toastmc.client.gui.auth.AuthScreen;

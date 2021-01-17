@@ -1,4 +1,4 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.gui.hud.HUD;
 import net.minecraft.client.gui.hud.InGameHud;

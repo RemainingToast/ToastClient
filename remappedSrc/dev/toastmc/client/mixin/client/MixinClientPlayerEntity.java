@@ -1,10 +1,10 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.event.CloseScreenInPortalEvent;
-import dev.toastmc.client.event.InputUpdateEvent;
-import dev.toastmc.client.event.PlayerMoveEvent;
-import dev.toastmc.client.mixin.extend.ExtendedInput;
+import me.remainingtoast.toastclient.api.event.CloseScreenInPortalEvent;
+import me.remainingtoast.toastclient.api.event.InputUpdateEvent;
+import me.remainingtoast.toastclient.api.event.PlayerMoveEvent;
+import me.remainingtoast.toastclient.mixin.extend.ExtendedInput;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.input.Input;

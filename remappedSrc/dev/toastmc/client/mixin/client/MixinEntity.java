@@ -1,7 +1,7 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.event.*;
+import me.remainingtoast.toastclient.api.event.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;

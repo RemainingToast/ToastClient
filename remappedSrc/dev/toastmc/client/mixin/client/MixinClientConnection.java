@@ -1,7 +1,7 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.event.PacketEvent;
+import me.remainingtoast.toastclient.api.event.PacketEvent;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;

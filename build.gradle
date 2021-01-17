@@ -40,15 +40,20 @@ repositories {
     maven {
         url = 'https://dl.bintray.com/earthcomputer/mods'
     }
+    maven {
+        name = 'lukflug'
+        url = 'https://lukflug.github.io/maven'
+    }
 }
 
 dependencies {
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
-    compile "me.zeroeightsix:fiber:${project.fiber_version}-SNAPSHOT"
     compile "com.github.ZeroMemes:Alpine:1.9"
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
+    compile('com.lukflug:panelstudio:0.1.7')
+    compile('com.lukflug:panelstudio-mc16:0.1.7')
 }
 
 processResources {
@@ -83,11 +88,13 @@ jar {
 
 shadowJar {
     dependencies {
-        include(dependency('org.yaml:snakeyaml'))
-        include(dependency('net.jodah:typetools'))
-        include(dependency('me.zeroeightsix:fiber'))
-        include(dependency('com.github.ZeroMemes:Alpine'))
-        include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
+        include('org.yaml:snakeyaml')
+        include('net.jodah:typetools')
+        include('com.github.ZeroMemes:Alpine')
+        include('org.jetbrains.kotlin:kotlin-stdlib')
+        include('com.lukflug:panelstudio')
+        include('com.lukflug:panelstudio-mc16')
+        include('com.github.ZeroMemes:Alpine')
     }
     classifier = 'shadow'
 }

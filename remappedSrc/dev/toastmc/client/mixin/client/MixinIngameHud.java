@@ -1,7 +1,7 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.event.OverlayEvent;
+import me.remainingtoast.toastclient.api.event.OverlayEvent;
 import dev.toastmc.client.module.render.NoRender;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;

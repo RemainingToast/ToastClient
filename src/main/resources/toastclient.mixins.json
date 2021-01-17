@@ -1,7 +1,7 @@
 {
   "required": true,
   "compatibilityLevel": "JAVA_8",
-  "package": "dev.toastmc.client.mixin.client",
+  "package": "me.remainingtoast.toastclient.mixin.client",
   "client": [
       "IClientPlayerInteractionManager",
       "IEntityVelocityUpdateS2CPacket",
@@ -22,8 +22,7 @@
       "MixinItem",
       "MixinKeyboard",
       "MixinMinecraftClient",
-      "MixinPlayerEntity",
-      "MixinServerScreen"
+      "MixinPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1

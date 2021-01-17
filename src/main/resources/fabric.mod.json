@@ -15,8 +15,8 @@
 
   "environment": "client",
   "entrypoints": {
-    "main": [
-      "dev.toastmc.client.ToastClient"
+    "client": [
+      "me.remainingtoast.toastclient.ToastClient"
     ]
   },
   "mixins": [

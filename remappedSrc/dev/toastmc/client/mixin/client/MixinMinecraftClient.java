@@ -1,8 +1,8 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.event.ScreenEvent;
-import dev.toastmc.client.event.TickEvent;
+import me.remainingtoast.toastclient.api.event.ScreenEvent;
+import me.remainingtoast.toastclient.api.event.TickEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;

@@ -1,8 +1,8 @@
-package dev.toastmc.client.mixin.client;
+package me.remainingtoast.toastclient.mixin.client;
 
 import dev.toastmc.client.ToastClient;
-import dev.toastmc.client.event.ClipAtLedgeEvent;
-import dev.toastmc.client.event.PlayerAttackEntityEvent;
+import me.remainingtoast.toastclient.api.event.ClipAtLedgeEvent;
+import me.remainingtoast.toastclient.api.event.PlayerAttackEntityEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
