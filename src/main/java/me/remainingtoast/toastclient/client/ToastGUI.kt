@@ -18,17 +18,16 @@ import net.minecraft.client.MinecraftClient
 import java.awt.Color
 import java.awt.Point
 
+class ToastGUI(boolean: Boolean) : MinecraftGUI() {
 
-class ToastGUI : MinecraftGUI() {
-
-    private var  colorToggle: Toggleable = SimpleToggleable(false)
-    private var guiInterface: GUIInterface
-    private var  theme: Theme
-    private var  gui: ClickGUI
+    private var colorToggle: Toggleable = SimpleToggleable(boolean)
+    private lateinit var guiInterface: GUIInterface
+    private lateinit var theme: Theme
+    private lateinit var gui: ClickGUI
     private val WIDTH = 100
     private val HEIGHT = 12
 
-    init {
+    constructor() : this(false) {
         guiInterface = object : GUIInterface(true) {
             override fun getResourcePrefix(): String {
                 return "toastclient:gui/"

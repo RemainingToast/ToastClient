@@ -1,14 +1,15 @@
 package me.remainingtoast.toastclient.client.module
 
+import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.api.setting.type.IntegerSetting
 import me.remainingtoast.toastclient.client.ToastGUI
+import net.minecraft.client.MinecraftClient
 import java.awt.Color
 
-
-class ClickGUIModule(private var clickGui: ToastGUI) : Module("ClickGUI", Category.RENDER, Color.BLUE, 255) {
+class ClickGUIModule : Module("ClickGUI", Category.RENDER, Color.BLUE) {
 
     companion object {
         lateinit var activeColor: ColorSetting
@@ -35,7 +36,7 @@ class ClickGUIModule(private var clickGui: ToastGUI) : Module("ClickGUI", Catego
     override fun onEnable() {
         if (mc.player != null) {
             if (mc.currentScreen == null) {
-                mc.openScreen(clickGui)
+                ToastClient.CLICKGUI.enterGUI()
             }
         }
     }

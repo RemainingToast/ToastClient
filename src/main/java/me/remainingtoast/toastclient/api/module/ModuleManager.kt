@@ -32,6 +32,10 @@ class ModuleManager {
         return null
     }
 
+    fun toggleModule(module: Module){
+        module.toggle()
+    }
+
     private fun register(vararg mods: Module) {
         for (cheat in mods) {
             modules.add(cheat)

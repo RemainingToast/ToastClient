@@ -18,11 +18,10 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     private var drawn = false
     private var bind = 0
 
-    constructor(name: String, category: Category, color: Color, key: Int) {
+    constructor(name: String, category: Category, color: Color) {
         this.name = name
         this.category = category
         this.color = color
-        this.bind = key
         enabled = false
         drawn = true
     }
