@@ -15,6 +15,7 @@ import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.client.module.ClickGUIModule
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.util.math.MatrixStack
 import java.awt.Color
 import java.awt.Point
 

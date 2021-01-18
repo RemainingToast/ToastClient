@@ -5,8 +5,6 @@ import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.api.setting.type.IntegerSetting
-import me.remainingtoast.toastclient.client.ToastGUI
-import net.minecraft.client.MinecraftClient
 import java.awt.Color
 
 class ClickGUIModule : Module("ClickGUI", Category.RENDER, Color.BLUE) {
@@ -39,6 +37,7 @@ class ClickGUIModule : Module("ClickGUI", Category.RENDER, Color.BLUE) {
                 ToastClient.CLICKGUI.enterGUI()
             }
         }
+        setEnabled(false)
     }
 
     override fun onDisable() {

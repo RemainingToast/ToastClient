@@ -83,10 +83,9 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     open fun onWorldRender() {}
 
     /** Setting registry functions below!  */
-    protected open fun registerBoolean(name: String?, description: String?, value: Boolean): BooleanSetting? {
+    protected open fun registerBoolean(name: String, description: String, value: Boolean): BooleanSetting? {
         val setting = BooleanSetting(name!!, description!!, this, value)
         ToastClient.SETTING_MANAGER.addSetting(setting)
-
         return setting
     }
 
@@ -104,8 +103,8 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     }
 
     protected open fun registerDouble(
-        name: String?,
-        description: String?,
+        name: String,
+        description: String,
         value: Double,
         min: Double,
         max: Double,
@@ -123,8 +122,8 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     }
 
     protected open fun registerInteger(
-        name: String?,
-        description: String?,
+        name: String,
+        description: String,
         value: Int,
         min: Int,
         max: Int,
