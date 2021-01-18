@@ -5,4 +5,4 @@
 ![GitHub lines of code](https://tokei.rs/b1/github/RemainingToast/Toast-Client)
 ![GitHub last commit](https://img.shields.io/github/last-commit/RemainingToast/Toast-Client)
  
-If you have any questions you can get support in our [Discord](https://discord.gg/gxyWEdG).
+If you have any questions you can get support in our [Discord](https://discord.gg/FSTavmPEsh).
