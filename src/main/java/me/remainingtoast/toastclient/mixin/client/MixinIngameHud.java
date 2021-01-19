@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public class MixinIngameHud {
 
-
     @Inject(at = @At(value = "RETURN"), method = "render", cancellable = true)
     public void render(MatrixStack matrixStack, float float_1, CallbackInfo info) {
         OverlayEvent event = new OverlayEvent(matrixStack);

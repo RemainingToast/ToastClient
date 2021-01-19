@@ -96,6 +96,7 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
         var x = 10
         for (category in Category.values()) {
             if(category == Category.NONE) continue
+            if(ToastClient.MODULE_MANAGER.getModulesByCategory(category)!!.size == 0) continue
             val panel = DraggableContainer(
                 category.toString(),
                 null,
