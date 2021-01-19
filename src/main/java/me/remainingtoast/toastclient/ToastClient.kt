@@ -1,7 +1,6 @@
 package me.remainingtoast.toastclient
 
 import me.remainingtoast.toastclient.api.event.OverlayEvent
-import me.remainingtoast.toastclient.api.event.RenderEvent
 import me.remainingtoast.toastclient.api.module.ModuleManager
 import me.remainingtoast.toastclient.api.setting.SettingManager
 import me.remainingtoast.toastclient.api.util.mc

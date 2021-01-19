@@ -77,7 +77,7 @@ class ModuleManager {
     }
 
     fun onRender() {
-        modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onRender() }
+        modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onOverlayRender() }
         ToastClient.CLICKGUI.render()
     }
 

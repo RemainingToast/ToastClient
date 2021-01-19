@@ -93,7 +93,7 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
 
     open fun onUpdate() {}
 
-    open fun onRender() {}
+    open fun onOverlayRender() {}
 
     /** Setting registry functions below!  */
     protected open fun registerBoolean(name: String, description: String, value: Boolean): BooleanSetting {

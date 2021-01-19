@@ -37,7 +37,7 @@ class ArrayListModule : HUDModule("ArrayList", Point(5, 5)) {
         component = ListComponent(name, theme.panelRenderer, position, list)
     }
 
-    override fun onRender() {
+    override fun onOverlayRender() {
         list.activeModules.clear()
         for(m in ToastClient.MODULE_MANAGER.modules){
             if(m.isEnabled() && m.isDrawn() && m !is HUDModule) list.activeModules.add(m)

@@ -1,6 +1,7 @@
 package me.remainingtoast.toastclient.api.gui
 
 import com.lukflug.panelstudio.CollapsibleContainer
+import com.lukflug.panelstudio.Context
 import com.lukflug.panelstudio.DraggableContainer
 import com.lukflug.panelstudio.SettingsAnimation
 import com.lukflug.panelstudio.hud.HUDClickGUI
@@ -97,7 +98,7 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
         for (category in Category.values()) {
             if(category == Category.NONE) continue
             if(ToastClient.MODULE_MANAGER.getModulesByCategory(category)!!.size == 0) continue
-            val panel = DraggableContainer(
+            val panel = object : DraggableContainer(
                 category.toString(),
                 null,
                 theme.panelRenderer,
@@ -106,8 +107,17 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                 null,
                 Point(x, 10),
                 WIDTH
-            )
-            gui.addComponent(panel)
+            ) {
+                override fun render(context: Context) {
+                    if(category!=Category.HUD || hudEditor) super.render(context)
+                }
+                override fun handleKey(context: Context, scancode: Int) {
+                    if(category!=Category.HUD || hudEditor) super.handleKey(context,scancode)
+                }
+            }
+
+            if(category!=Category.HUD) gui.addComponent(panel)
+            else gui.addHUDComponent(panel)
             for (module in ToastClient.MODULE_MANAGER.getModulesByCategory(category)!!) {
                 val container = CollapsibleContainer(
                     module.name,
