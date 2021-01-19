@@ -15,6 +15,7 @@ class ClickGUIModule : Module("ClickGUI", Category.GUI, GLFW.GLFW_KEY_RIGHT_SHIF
         lateinit var activeColor: ColorSetting
         lateinit var inactiveColor: ColorSetting
         lateinit var backgroundColor: ColorSetting
+        lateinit var categoryBgColor: ColorSetting
         lateinit var outlineColor: ColorSetting
         lateinit var fontColor: ColorSetting
         lateinit var opacity: IntegerSetting
@@ -27,6 +28,7 @@ class ClickGUIModule : Module("ClickGUI", Category.GUI, GLFW.GLFW_KEY_RIGHT_SHIF
         activeColor = registerColor("Active Color", "The main color.", true, false, Color.RED, false)
         inactiveColor = registerColor("Inactive Color", "The color for inactive modules.", true, false, Color.BLACK, false)
         backgroundColor = registerColor("Background Color", "The background color for settings.", true, false, Color(30, 30, 30), false)
+        categoryBgColor = registerColor("Category Background Color", "Category title background color", true, false, Color.RED, false)
         outlineColor = registerColor("Outline Color", "The color for panel outlines.", true, false, Color.RED, false)
         fontColor = registerColor("Font Color", "The main text color.", true, false, Color.WHITE, false)
         opacity = registerInteger("Opacity", "The GUI opacity", 150, 0, 255, true)

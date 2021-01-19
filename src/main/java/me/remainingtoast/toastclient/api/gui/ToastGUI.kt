@@ -59,7 +59,7 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                 return MinecraftClient.getInstance().textRenderer.fontHeight + 4
             }
         }
-        theme = GameSenseTheme(
+        theme = ToastTheme(
             SettingsColorScheme(
                 ClickGUIModule.activeColor,
                 ClickGUIModule.inactiveColor,
