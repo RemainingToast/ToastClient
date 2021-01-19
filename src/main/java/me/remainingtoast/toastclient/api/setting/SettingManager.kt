@@ -8,6 +8,10 @@ import me.remainingtoast.toastclient.api.module.Module
 class SettingManager {
     var settings: ArrayList<Setting<*>> = ArrayList()
 
+    init {
+        println("SETTINGS MANAGER INITIALISED")
+    }
+
     fun getSettingsForModule(module: Module): ArrayList<Setting<*>> {
         return settings.stream().filter {
             it!!.module.javaClass.isAssignableFrom(

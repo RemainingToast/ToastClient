@@ -3,8 +3,8 @@ package me.remainingtoast.toastclient
 import me.remainingtoast.toastclient.api.module.ModuleManager
 import me.remainingtoast.toastclient.api.setting.SettingManager
 import me.remainingtoast.toastclient.api.util.mc
-import me.remainingtoast.toastclient.client.gui.ToastGUI
-import me.remainingtoast.toastclient.client.module.ClickGUIModule
+import me.remainingtoast.toastclient.api.gui.ToastGUI
+import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import net.fabricmc.api.ModInitializer
@@ -31,13 +31,6 @@ class ToastClient : ModInitializer {
 
     override fun onInitialize() {
         println("${MODNAME.toUpperCase()} $MODVER STARTING")
-
-        val clickGuiKeyBind: KeyBinding = KeyBindingHelper.registerKeyBinding(KeyBinding("key.toastclient.gui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "category.toastclient.gui"))
-        ClientTickEvents.END_CLIENT_TICK.register {
-            if (clickGuiKeyBind.wasPressed() && mc.world != null && mc.player != null) {
-                MODULE_MANAGER.toggleModule(ClickGUIModule())
-            }
-        }
 
         Runtime.getRuntime().addShutdownHook(Thread {
             println("${MODNAME.toUpperCase()} SAVING AND SHUTTING DOWN")

@@ -1,10 +1,12 @@
-package me.remainingtoast.toastclient.client.gui
+package me.remainingtoast.toastclient.api.gui
 
 import com.lukflug.panelstudio.ClickGUI
 import com.lukflug.panelstudio.CollapsibleContainer
 import com.lukflug.panelstudio.DraggableContainer
 import com.lukflug.panelstudio.SettingsAnimation
+import com.lukflug.panelstudio.hud.HUDClickGUI
 import com.lukflug.panelstudio.mc16.MinecraftGUI
+import com.lukflug.panelstudio.mc16.MinecraftHUDGUI
 import com.lukflug.panelstudio.settings.*
 import com.lukflug.panelstudio.theme.FixedDescription
 import com.lukflug.panelstudio.theme.GameSenseTheme
@@ -13,17 +15,17 @@ import com.lukflug.panelstudio.theme.Theme
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
-import me.remainingtoast.toastclient.client.module.ClickGUIModule
+import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
 import net.minecraft.client.MinecraftClient
 import java.awt.Color
 import java.awt.Point
 
-class ToastGUI(boolean: Boolean) : MinecraftGUI() {
+class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
 
     private var colorToggle: Toggleable = SimpleToggleable(boolean)
     private lateinit var guiInterface: GUIInterface
     private lateinit var theme: Theme
-    private lateinit var gui: ClickGUI
+    private lateinit var gui: HUDClickGUI
     private val WIDTH = 100
     private val HEIGHT = 12
 
@@ -58,9 +60,10 @@ class ToastGUI(boolean: Boolean) : MinecraftGUI() {
                 ClickGUIModule.opacity
             ), HEIGHT, 2, 5
         )
-        gui = ClickGUI(guiInterface, FixedDescription(Point(0, 0)))
+        gui = HUDClickGUI(guiInterface, FixedDescription(Point(0, 0)))
         var x = 10
         for (category in Category.values()) {
+            if(category.equals(Category.NONE)) continue
             val panel = DraggableContainer(
                 category.toString(),
                 null,
@@ -120,13 +123,13 @@ class ToastGUI(boolean: Boolean) : MinecraftGUI() {
                         )
                     )
                 }
-                container.addComponent(KeybindComponent(theme.componentRenderer, module))
+                container.addComponent(ToastKeybind(theme.componentRenderer, module))
             }
             x += WIDTH + 10
         }
     }
 
-    override fun getGUI(): ClickGUI {
+    override fun getHUDGUI(): HUDClickGUI {
         return gui
     }
 

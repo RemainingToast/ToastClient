@@ -13,7 +13,6 @@
       "MixinChatScreen",
       "MixinClientConnection",
       "MixinClientPlayerEntity",
-      "MixinCommandSuggestor",
       "MixinEntity",
       "MixinGameRenderer",
       "MixinIngameHud",

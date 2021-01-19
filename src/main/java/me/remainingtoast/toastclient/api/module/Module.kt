@@ -3,36 +3,42 @@ package me.remainingtoast.toastclient.api.module
 import com.lukflug.panelstudio.settings.Toggleable
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.setting.type.*
-import net.minecraft.client.MinecraftClient
 import java.awt.Color
 
 open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
 
     var name: String = ""
-    private var category: Category? = null
-    private var color: Color? = null
+    private var category: Category = Category.NONE
+    private var color: Color = Color.BLACK
 
     private var enabled = false
     private var drawn = false
     private var bind = 0
 
-    constructor(name: String, category: Category, color: Color) {
+    constructor(name: String, category: Category) {
         this.name = name
         this.category = category
-        this.color = color
         enabled = false
         drawn = true
     }
 
-    open fun setColor(newColor: Color?) {
+    constructor(name: String, category: Category, key: Int) {
+        this.name = name
+        this.category = category
+        this.bind = key
+        enabled = false
+        drawn = true
+    }
+
+    open fun setColor(newColor: Color) {
         color = newColor
     }
 
-    open fun getCategory(): Category? {
+    open fun getCategory(): Category {
         return this.category
     }
 
-    open fun getColor(): Color? {
+    open fun getColor(): Color {
         return color
     }
 
@@ -88,7 +94,7 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     open fun onWorldRender() {}
 
     /** Setting registry functions below!  */
-    protected open fun registerBoolean(name: String, description: String, value: Boolean): BooleanSetting? {
+    protected open fun registerBoolean(name: String, description: String, value: Boolean): BooleanSetting {
         val setting = BooleanSetting(name, description, this, value)
         ToastClient.SETTING_MANAGER.addSetting(setting)
         return setting
@@ -114,7 +120,7 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
             min: Double,
             max: Double,
             isLimited: Boolean
-    ): DoubleSetting? {
+    ): DoubleSetting {
         val setting = DoubleSetting(value, name, description, this, min, max, isLimited)
         ToastClient.SETTING_MANAGER.addSetting(setting)
         return setting
@@ -149,7 +155,7 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         return bind
     }
 
-    override fun getKeyName(): String? {
+    override fun getKeyName(): String {
         return KeybindSetting.getKeyName(bind)
     }
 

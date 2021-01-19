@@ -1,7 +1,10 @@
 package me.remainingtoast.toastclient.api.module
 
-import me.remainingtoast.toastclient.client.module.ClickGUIModule
+import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
+import me.remainingtoast.toastclient.client.module.render.NoRender
+import org.lwjgl.glfw.GLFW
 import java.util.*
+import java.util.function.Consumer
 import java.util.stream.Collectors
 
 class ModuleManager {
@@ -10,7 +13,8 @@ class ModuleManager {
 
     init {
         modules = ArrayList()
-        register(ClickGUIModule())
+        register(ClickGUIModule(), NoRender())
+        println("MODULE MANAGER INITIALISED")
     }
 
     fun getModulesByCategory(category: Category): ArrayList<Module>? {
@@ -33,6 +37,15 @@ class ModuleManager {
 
     fun toggleModule(module: Module){
         module.toggle()
+    }
+
+    fun toggleBind(key: Int) {
+        if (key == 0 || key == GLFW.GLFW_KEY_UNKNOWN) return
+        modules.forEach(Consumer { module: Module ->
+            if (module.getBind() == key) {
+                module.toggle()
+            }
+        })
     }
 
     private fun register(vararg mods: Module) {

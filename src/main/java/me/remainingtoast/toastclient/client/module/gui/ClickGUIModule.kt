@@ -1,4 +1,4 @@
-package me.remainingtoast.toastclient.client.module
+package me.remainingtoast.toastclient.client.module.gui
 
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
@@ -6,9 +6,10 @@ import me.remainingtoast.toastclient.api.module.Module
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.api.setting.type.IntegerSetting
 import me.remainingtoast.toastclient.api.util.mc
+import org.lwjgl.glfw.GLFW
 import java.awt.Color
 
-class ClickGUIModule : Module("ClickGUI", Category.RENDER, Color.BLUE) {
+class ClickGUIModule : Module("ClickGUI", Category.GUI, GLFW.GLFW_KEY_RIGHT_SHIFT) {
 
     companion object {
         lateinit var activeColor: ColorSetting
