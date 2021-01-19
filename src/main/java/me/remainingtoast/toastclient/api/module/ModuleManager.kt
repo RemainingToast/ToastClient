@@ -4,7 +4,6 @@ import me.remainingtoast.toastclient.client.module.ClickGUIModule
 import java.util.*
 import java.util.stream.Collectors
 
-
 class ModuleManager {
 
     var modules: MutableList<Module> = ArrayList()
@@ -27,7 +26,7 @@ class ModuleManager {
     fun <T : Module> getModuleByClass(clazz: Class<T>): Module? {
         for (current in modules) {
             if (current.javaClass == clazz) return current
-            if (current::class.isInstance(clazz)) return current as T
+            if (current::class.isInstance(clazz)) return current
         }
         return null
     }

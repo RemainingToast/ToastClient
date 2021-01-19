@@ -1,6 +1,6 @@
 package me.remainingtoast.toastclient.api.event
 
-import me.remainingtoast.toastclient.ToastClient.Companion.mc
+import me.remainingtoast.toastclient.api.util.mc
 import me.zero.alpine.event.type.Cancellable
 
 open class ToastEvent : Cancellable(){

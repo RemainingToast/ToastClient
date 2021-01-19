@@ -2,17 +2,14 @@
   "schemaVersion": 1,
   "id": "toastclient",
   "version": "${version}",
-
   "name": "Toast Client",
-  "description": "Like bread, but warmer.",
+  "description": "Like Bread Mod, But Hotter.",
   "authors": [
-    "RemainingToast", "wnuke", "Qther"
+    "RemainingToast"
   ],
   "contact": {},
-
-  "license": "CC BY-NC-ND 4.0",
+  "license": "MIT",
   "icon": "assets/toastclient/icon.png",
-
   "environment": "client",
   "entrypoints": {
     "main": [
@@ -23,10 +20,7 @@
     "toastclient.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.9.0",
+    "fabricloader": ">=0.11.0",
     "minecraft": "1.16.x"
-  },
-  "suggests": {
-    "fabritone": ">=1.6.2"
   }
 }

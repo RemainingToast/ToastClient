@@ -8,8 +8,6 @@ import java.awt.Color
 
 open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
 
-    protected val mc = MinecraftClient.getInstance()
-
     var name: String = ""
     private var category: Category? = null
     private var color: Color? = null

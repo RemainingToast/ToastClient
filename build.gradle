@@ -4,40 +4,16 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
+
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-minecraft { }
-
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
-    }
-
 repositories {
-    jcenter()
-    mavenCentral()
     maven {
         name = "jitpack.io"
         url = "https://jitpack.io"
-    }
-    maven {
-        name = 'impactdevelopment-repo'
-        url = 'https://impactdevelopment.github.io/maven/'
-    }
-    maven {
-        name = "modmuss50's repo"
-        url = "https://maven.modmuss50.me/"
-    }
-    maven {
-        name = 'spongepowered-repo'
-        url = 'http://repo.spongepowered.org/maven/'
-    }
-    maven {
-        url = 'https://dl.bintray.com/earthcomputer/mods'
     }
     maven {
         name = 'lukflug'
@@ -52,7 +28,7 @@ dependencies {
     modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     compile "com.github.ZeroMemes:Alpine:1.9"
-    compile('com.lukflug:panelstudio:0.1.7')
+    compile "com.lukflug:panelstudio:0.1.7"
 }
 
 processResources {
@@ -72,8 +48,10 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
-tasks.withType(Test) {
-    useJUnitPlatform()
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -81,18 +59,13 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
-jar {
-    from "LICENSE"
-}
-
 shadowJar {
     dependencies {
-        include('org.yaml:snakeyaml')
-        include('net.jodah:typetools')
-        include('com.github.ZeroMemes:Alpine')
-        include('org.jetbrains.kotlin:kotlin-stdlib')
-        include('com.lukflug:panelstudio')
-        include('com.github.ZeroMemes:Alpine')
+        include(dependency('org.yaml:snakeyaml'))
+        include(dependency('net.jodah:typetools'))
+        include(dependency('com.github.ZeroMemes:Alpine'))
+        include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
+        include(dependency('com.lukflug:panelstudio'))
     }
     classifier = 'shadow'
 }

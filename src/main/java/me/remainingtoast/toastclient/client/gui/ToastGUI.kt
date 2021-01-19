@@ -1,4 +1,4 @@
-package me.remainingtoast.toastclient.client
+package me.remainingtoast.toastclient.client.gui
 
 import com.lukflug.panelstudio.ClickGUI
 import com.lukflug.panelstudio.CollapsibleContainer
