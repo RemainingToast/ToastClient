@@ -15,7 +15,7 @@ public abstract class MixinCommandSuggestor {
 
     @Shadow @Final private boolean slashOptional;
 
-    @Inject(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;canRead()Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "refresh", at = @At(value = "HEAD", target = "Lcom/mojang/brigadier/StringReader;canRead()Z"), cancellable = true)
     public void refresh(CallbackInfo ci, String string, StringReader stringReader) {
         if(!slashOptional) return;
 //        int i;

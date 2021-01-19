@@ -11,11 +11,11 @@ group = project.maven_group
 
 minecraft { }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = "1.8"
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
-}
 
 repositories {
     jcenter()
@@ -53,7 +53,6 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile('com.lukflug:panelstudio:0.1.7')
-    compile('com.lukflug:panelstudio-mc16:0.1.7')
 }
 
 processResources {
@@ -93,7 +92,6 @@ shadowJar {
         include('com.github.ZeroMemes:Alpine')
         include('org.jetbrains.kotlin:kotlin-stdlib')
         include('com.lukflug:panelstudio')
-        include('com.lukflug:panelstudio-mc16')
         include('com.github.ZeroMemes:Alpine')
     }
     classifier = 'shadow'

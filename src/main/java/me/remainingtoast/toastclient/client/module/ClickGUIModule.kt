@@ -5,6 +5,7 @@ import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.api.setting.type.IntegerSetting
+import me.remainingtoast.toastclient.client.ToastGUI
 import java.awt.Color
 
 class ClickGUIModule : Module("ClickGUI", Category.RENDER, Color.BLUE) {
@@ -37,12 +38,6 @@ class ClickGUIModule : Module("ClickGUI", Category.RENDER, Color.BLUE) {
                 ToastClient.CLICKGUI.enterGUI()
             }
         }
-        setEnabled(false)
-    }
-
-    override fun onDisable() {
-        if (mc.currentScreen != null && mc.player != null) {
-            mc.openScreen(null)
-        }
+        disable()
     }
 }

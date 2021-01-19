@@ -3,7 +3,7 @@
   "id": "toastclient",
   "version": "${version}",
 
-  "name": "ToastClient",
+  "name": "Toast Client",
   "description": "Like bread, but warmer.",
   "authors": [
     "RemainingToast", "wnuke", "Qther"
