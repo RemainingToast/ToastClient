@@ -1,33 +1,35 @@
 package me.remainingtoast.toastclient.api.gui
 
-import com.lukflug.panelstudio.ClickGUI
 import com.lukflug.panelstudio.CollapsibleContainer
 import com.lukflug.panelstudio.DraggableContainer
 import com.lukflug.panelstudio.SettingsAnimation
 import com.lukflug.panelstudio.hud.HUDClickGUI
-import com.lukflug.panelstudio.mc16.MinecraftGUI
+import com.lukflug.panelstudio.hud.HUDPanel
 import com.lukflug.panelstudio.mc16.MinecraftHUDGUI
 import com.lukflug.panelstudio.settings.*
 import com.lukflug.panelstudio.theme.FixedDescription
 import com.lukflug.panelstudio.theme.GameSenseTheme
 import com.lukflug.panelstudio.theme.SettingsColorScheme
 import com.lukflug.panelstudio.theme.Theme
-import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
+import me.remainingtoast.toastclient.api.module.HUDModule
+import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
 import net.minecraft.client.MinecraftClient
 import java.awt.Color
 import java.awt.Point
 
+
 class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
 
     private var colorToggle: Toggleable = SimpleToggleable(boolean)
-    private lateinit var guiInterface: GUIInterface
+    lateinit var guiInterface: GUIInterface
     private lateinit var theme: Theme
     private lateinit var gui: HUDClickGUI
     private val WIDTH = 100
     private val HEIGHT = 12
+    private val HUD_BORDER = 2
 
     constructor() : this(false) {
         guiInterface = object : GUIInterface(true) {
@@ -38,7 +40,13 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             override fun drawString(pos: Point, s: String, c: Color) {
                 if (matrixStack == null) return
                 end()
-                MinecraftClient.getInstance().textRenderer.drawWithShadow(matrixStack, s, (pos.x + 2).toFloat(), (pos.y + 2).toFloat(), c.rgb)
+                MinecraftClient.getInstance().textRenderer.drawWithShadow(
+                    matrixStack,
+                    s,
+                    (pos.x + 2).toFloat(),
+                    (pos.y + 2).toFloat(),
+                    c.rgb
+                )
                 begin()
             }
 
@@ -61,9 +69,33 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             ), HEIGHT, 2, 5
         )
         gui = HUDClickGUI(guiInterface, FixedDescription(Point(0, 0)))
+
+        val hudToggle: Toggleable = object : Toggleable {
+            override fun toggle() {}
+            override fun isOn(): Boolean {
+                return hudEditor
+            }
+        }
+
+        for (module in ToastClient.MODULE_MANAGER.modules) {
+            if (module is HUDModule) {
+                module.populate(theme)
+                gui.addHUDComponent(
+                    HUDPanel(
+                        module.component,
+                        theme.panelRenderer,
+                        module,
+                        SettingsAnimation(ClickGUIModule.animationSpeed),
+                        hudToggle,
+                        HUD_BORDER
+                    )
+                )
+            }
+        }
+
         var x = 10
         for (category in Category.values()) {
-            if(category.equals(Category.NONE)) continue
+            if(category == Category.NONE) continue
             val panel = DraggableContainer(
                 category.toString(),
                 null,
@@ -86,44 +118,47 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                 )
                 panel.addComponent(container)
                 for (setting in ToastClient.SETTING_MANAGER.getSettingsForModule(module)) {
-                    if (setting is Toggleable) container.addComponent(
-                        BooleanComponent(
-                            setting.name,
-                            setting.description,
-                            theme.componentRenderer,
-                            setting as Toggleable
+                    when (setting) {
+                        is Toggleable -> container.addComponent(BooleanComponent(
+                                setting.name,
+                                setting.description,
+                                theme.componentRenderer,
+                                setting as Toggleable
+                            )
                         )
-                    ) else if (setting is NumberSetting) container.addComponent(
-                        NumberComponent(
-                            setting.name,
-                            setting.description,
-                            theme.componentRenderer,
-                            setting as NumberSetting,
-                            (setting as NumberSetting).minimumValue,
-                            (setting as NumberSetting).maximumValue
+                        is NumberSetting -> container.addComponent(NumberComponent(
+                                setting.name,
+                                setting.description,
+                                theme.componentRenderer,
+                                setting as NumberSetting,
+                                (setting as NumberSetting).minimumValue,
+                                (setting as NumberSetting).maximumValue
+                            )
                         )
-                    ) else if (setting is EnumSetting) container.addComponent(
-                        EnumComponent(
-                            setting.name,
-                            setting.description,
-                            theme.componentRenderer,
-                            setting as me.remainingtoast.toastclient.api.setting.type.EnumSetting
+                        is EnumSetting -> container.addComponent(EnumComponent(
+                                setting.name,
+                                setting.description,
+                                theme.componentRenderer,
+                                setting as me.remainingtoast.toastclient.api.setting.type.EnumSetting
+                            )
                         )
-                    ) else if (setting is ColorSetting) container.addComponent(
-                        ColorComponent(
-                            setting.name,
-                            setting.description,
-                            theme.containerRenderer,
-                            SettingsAnimation(ClickGUIModule.animationSpeed),
-                            theme.componentRenderer,
-                            setting,
-                            setting.alphaEnabled,
-                            setting.rainbowEnabled,
-                            colorToggle
+                        is ColorSetting -> container.addComponent(ColorComponent(
+                                setting.name,
+                                setting.description,
+                                theme.containerRenderer,
+                                SettingsAnimation(ClickGUIModule.animationSpeed),
+                                theme.componentRenderer,
+                                setting,
+                                setting.alphaEnabled,
+                                setting.rainbowEnabled,
+                                colorToggle
+                            )
                         )
-                    )
+                    }
                 }
-                container.addComponent(ToastKeybind(theme.componentRenderer, module))
+                if(module !is HUDModule){
+                    container.addComponent(ToastKeybind(theme.componentRenderer, module))
+                }
             }
             x += WIDTH + 10
         }

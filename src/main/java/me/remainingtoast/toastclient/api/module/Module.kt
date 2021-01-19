@@ -83,15 +83,17 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         setEnabled(!isEnabled())
     }
 
+    open fun getHudInfo(): String {
+        return ""
+    }
+
     protected open fun onEnable() {}
 
     protected open fun onDisable() {}
 
     open fun onUpdate() {}
 
-    open fun onGuiRender() {}
-
-    open fun onWorldRender() {}
+    open fun onRender() {}
 
     /** Setting registry functions below!  */
     protected open fun registerBoolean(name: String, description: String, value: Boolean): BooleanSetting {
@@ -100,13 +102,19 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         return setting
     }
 
+    protected open fun registerBoolean(name: String, value: Boolean): BooleanSetting {
+        val setting = BooleanSetting(name, "", this, value)
+        ToastClient.SETTING_MANAGER.addSetting(setting)
+        return setting
+    }
+
     protected open fun registerColor(
-            name: String,
-            description: String,
-            rainbowEnabled: Boolean,
-            alphaEnabled: Boolean,
-            value: Color,
-            rainbow: Boolean
+        name: String,
+        description: String,
+        rainbowEnabled: Boolean,
+        alphaEnabled: Boolean,
+        value: Color,
+        rainbow: Boolean
     ): ColorSetting {
         val setting = ColorSetting(value, rainbow, name, rainbowEnabled, alphaEnabled, description, this)
         ToastClient.SETTING_MANAGER.addSetting(setting)
@@ -114,12 +122,12 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     }
 
     protected open fun registerDouble(
-            name: String,
-            description: String,
-            value: Double,
-            min: Double,
-            max: Double,
-            isLimited: Boolean
+        name: String,
+        description: String,
+        value: Double,
+        min: Double,
+        max: Double,
+        isLimited: Boolean
     ): DoubleSetting {
         val setting = DoubleSetting(value, name, description, this, min, max, isLimited)
         ToastClient.SETTING_MANAGER.addSetting(setting)
@@ -133,12 +141,12 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     }
 
     protected open fun registerInteger(
-            name: String,
-            description: String,
-            value: Int,
-            min: Int,
-            max: Int,
-            isLimited: Boolean
+        name: String,
+        description: String,
+        value: Int,
+        min: Int,
+        max: Int,
+        isLimited: Boolean
     ): IntegerSetting {
         val setting = IntegerSetting(value, name, description, this, min, max, isLimited)
         ToastClient.SETTING_MANAGER.addSetting(setting)

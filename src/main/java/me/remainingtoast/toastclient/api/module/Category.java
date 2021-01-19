@@ -2,10 +2,11 @@ package me.remainingtoast.toastclient.api.module;
 
 public enum Category {
     COMBAT,
-    MISC,
-    MOVEMENT,
     PLAYER,
+    MOVEMENT,
+    MISC,
     RENDER,
     GUI,
+    HUD,
     NONE
 }

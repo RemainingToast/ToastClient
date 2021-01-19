@@ -1,18 +1,16 @@
 package me.remainingtoast.toastclient
 
+import me.remainingtoast.toastclient.api.event.RenderEvent
 import me.remainingtoast.toastclient.api.module.ModuleManager
 import me.remainingtoast.toastclient.api.setting.SettingManager
 import me.remainingtoast.toastclient.api.util.mc
 import me.remainingtoast.toastclient.api.gui.ToastGUI
-import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
+import me.zero.alpine.listener.EventHandler
+import me.zero.alpine.listener.EventHook
+import me.zero.alpine.listener.Listener
 import net.fabricmc.api.ModInitializer
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
-import net.minecraft.client.options.KeyBinding
-import net.minecraft.client.util.InputUtil
-import org.lwjgl.glfw.GLFW
 
 class ToastClient : ModInitializer {
 
@@ -32,8 +30,16 @@ class ToastClient : ModInitializer {
     override fun onInitialize() {
         println("${MODNAME.toUpperCase()} $MODVER STARTING")
 
+        EVENT_BUS.subscribe(onRender)
+
         Runtime.getRuntime().addShutdownHook(Thread {
             println("${MODNAME.toUpperCase()} SAVING AND SHUTTING DOWN")
         })
     }
+
+    @EventHandler
+    val onRender = Listener(EventHook<RenderEvent.World> {
+        if (mc.player == null) return@EventHook
+        MODULE_MANAGER.onRender()
+    })
 }

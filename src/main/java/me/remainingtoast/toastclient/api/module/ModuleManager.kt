@@ -1,6 +1,9 @@
 package me.remainingtoast.toastclient.api.module
 
+import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
+import me.remainingtoast.toastclient.client.module.gui.HUDEditor
+import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
 import me.remainingtoast.toastclient.client.module.render.NoRender
 import org.lwjgl.glfw.GLFW
 import java.util.*
@@ -13,7 +16,7 @@ class ModuleManager {
 
     init {
         modules = ArrayList()
-        register(ClickGUIModule(), NoRender())
+        register(ClickGUIModule(), NoRender(), ArrayListModule(), HUDEditor())
         println("MODULE MANAGER INITIALISED")
     }
 
@@ -70,6 +73,11 @@ class ModuleManager {
 
     fun onUpdate() {
         modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onUpdate() }
+    }
+
+    fun onRender() {
+        modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onRender() }
+        ToastClient.CLICKGUI.render()
     }
 
 }

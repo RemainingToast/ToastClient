@@ -3,9 +3,9 @@ package me.remainingtoast.toastclient.client.module.gui
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
+import me.remainingtoast.toastclient.api.setting.type.BooleanSetting
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.api.setting.type.IntegerSetting
-import me.remainingtoast.toastclient.api.util.mc
 import org.lwjgl.glfw.GLFW
 import java.awt.Color
 
@@ -20,6 +20,7 @@ class ClickGUIModule : Module("ClickGUI", Category.GUI, GLFW.GLFW_KEY_RIGHT_SHIF
         lateinit var opacity: IntegerSetting
         lateinit var animationSpeed: IntegerSetting
         lateinit var scrollSpeed: IntegerSetting
+        lateinit var showHUD: BooleanSetting
     }
 
     init {
@@ -31,14 +32,11 @@ class ClickGUIModule : Module("ClickGUI", Category.GUI, GLFW.GLFW_KEY_RIGHT_SHIF
         opacity = registerInteger("Opacity", "The GUI opacity", 150, 0, 255, true)
         animationSpeed = registerInteger("Animation Speed", "The speed for GUI animations.", 200, 0, 1000, true)
         scrollSpeed = registerInteger("Scroll Speed", "The speed for GUI scrolling", 10, 1, 20, true)
+        showHUD = registerBoolean("Show HUD", true)
     }
 
     override fun onEnable() {
-        if (mc.player != null) {
-            if (mc.currentScreen == null) {
-                ToastClient.CLICKGUI.enterGUI()
-            }
-        }
+        ToastClient.CLICKGUI.enterGUI()
         disable()
     }
 }
