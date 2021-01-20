@@ -1,0 +1,46 @@
+package me.remainingtoast.toastclient.api.command.type
+
+import com.mojang.brigadier.StringReader
+import me.remainingtoast.toastclient.api.module.Module
+import com.mojang.brigadier.arguments.ArgumentType
+import com.mojang.brigadier.context.CommandContext
+import com.mojang.brigadier.exceptions.CommandSyntaxException
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
+import com.mojang.brigadier.suggestion.Suggestions
+import com.mojang.brigadier.suggestion.SuggestionsBuilder
+import me.remainingtoast.toastclient.ToastClient
+import me.remainingtoast.toastclient.api.util.lit
+import net.minecraft.command.CommandSource
+import java.util.concurrent.CompletableFuture
+
+class ModuleArgumentType<Module>(private val clazz: Class<Module>) : ArgumentType<Module> {
+
+    val modules = ToastClient.MODULE_MANAGER.modules
+
+    @Throws(CommandSyntaxException::class)
+    override fun parse(reader: StringReader): Module {
+        val string = reader.readUnquotedString()
+        try {
+            return clazz.cast(modules.filter { clazz.isInstance(it) }.first { it.name.equals(string, ignoreCase = true) })
+        } catch (e: NoSuchElementException) {
+            throw INVALID_MODULE_EXCEPTION.create(string)
+        }
+    }
+
+    override fun <S> listSuggestions(context: CommandContext<S>, builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
+        return CommandSource.suggestMatching(
+            modules.filter { clazz.isInstance(it) }.map { it.name },
+            builder
+        )
+    }
+
+    override fun getExamples(): Collection<String> {
+        return EXAMPLES
+    }
+
+    companion object {
+        private val EXAMPLES: Collection<String> = listOf("AutoTotem", "NoRender")
+        val INVALID_MODULE_EXCEPTION = DynamicCommandExceptionType { mod -> lit("Unknown Module '$mod'") }
+        fun getModule(): ModuleArgumentType<Module> = ModuleArgumentType(Module::class.java)
+    }
+}

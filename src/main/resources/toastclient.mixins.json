@@ -7,12 +7,14 @@
     "IEntityVelocityUpdateS2CPacket",
     "IExplosionS2CPacket",
     "ISignBlockEntity",
+    "MixinAbstractClientPlayerEntity",
     "MixinAbstractSignBlock",
     "MixinBackgroundRenderer",
     "MixinBossBarHud",
     "MixinChatScreen",
     "MixinClientConnection",
     "MixinClientPlayerEntity",
+    "MixinCommandSuggestor",
     "MixinEntity",
     "MixinGameRenderer",
     "MixinIngameHud",
@@ -25,8 +27,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "MixinAbstractClientPlayerEntity"
-  ]
+  }
 }

@@ -5,7 +5,7 @@ import java.util.stream.Collectors
 import me.remainingtoast.toastclient.api.module.Module
 
 
-class SettingManager {
+object SettingManager {
     var settings: ArrayList<Setting<*>> = ArrayList()
 
     init {

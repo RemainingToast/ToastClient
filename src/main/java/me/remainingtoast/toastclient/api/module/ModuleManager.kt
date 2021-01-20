@@ -11,7 +11,7 @@ import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Collectors
 
-class ModuleManager {
+object ModuleManager {
 
     var modules: MutableList<Module> = ArrayList()
 

@@ -1,5 +1,6 @@
 package me.remainingtoast.toastclient
 
+import me.remainingtoast.toastclient.api.command.CommandManager
 import  me.remainingtoast.toastclient.api.event.OverlayEvent
 import me.remainingtoast.toastclient.api.module.ModuleManager
 import me.remainingtoast.toastclient.api.setting.SettingManager
@@ -17,8 +18,9 @@ class ToastClient : ModInitializer {
     companion object {
         val MODNAME = "Toast Client"
         val MODVER = "2.0.1"
-        val SETTING_MANAGER = SettingManager()
-        val MODULE_MANAGER = ModuleManager()
+        val SETTING_MANAGER = SettingManager
+        val MODULE_MANAGER = ModuleManager
+        val COMMAND_MANAGER = CommandManager
         val CLICKGUI = ToastGUI()
 
         var CMD_PREFIX = "."
@@ -30,6 +32,7 @@ class ToastClient : ModInitializer {
     override fun onInitialize() {
         println("${MODNAME.toUpperCase()} $MODVER STARTING")
 
+        COMMAND_MANAGER.init()
         EVENT_BUS.subscribe(onRender)
 
         Runtime.getRuntime().addShutdownHook(Thread {
