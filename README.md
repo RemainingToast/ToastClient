@@ -6,4 +6,4 @@
  
 If you have any questions you can get support in our [Discord](https://discord.gg/gxyWEdG). ![Discord](https://img.shields.io/discord/668416925671489547)
 
-If you are interested in contributing create a [fork](https://github.com/RemainingToast/toastclient/dev) and complete something from [here](https://github.com/RemainingToast/toastclient/projects/1).
+If you are interested in contributing create a [fork](https://github.com/RemainingToast/toastclient/tree/dev) and complete something from [here](https://github.com/RemainingToast/toastclient/projects/1).
