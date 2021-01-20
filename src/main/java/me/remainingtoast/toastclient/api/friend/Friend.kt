@@ -1,4 +1,5 @@
 package me.remainingtoast.toastclient.api.friend
 
-class Friend {
-}
+import java.util.*
+
+data class Friend(var name: String, var uuid: UUID) {}

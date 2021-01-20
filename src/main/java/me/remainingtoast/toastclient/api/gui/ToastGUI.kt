@@ -9,16 +9,17 @@ import com.lukflug.panelstudio.hud.HUDPanel
 import com.lukflug.panelstudio.mc16.MinecraftHUDGUI
 import com.lukflug.panelstudio.settings.*
 import com.lukflug.panelstudio.theme.FixedDescription
-import com.lukflug.panelstudio.theme.GameSenseTheme
 import com.lukflug.panelstudio.theme.SettingsColorScheme
 import com.lukflug.panelstudio.theme.Theme
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.HUDModule
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
+import me.remainingtoast.toastclient.api.util.font.ToastFont
 import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
 import net.minecraft.client.MinecraftClient
 import java.awt.Color
+import java.awt.Font
 import java.awt.Point
 
 
@@ -41,6 +42,7 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             override fun drawString(pos: Point, s: String, c: Color) {
                 if (matrixStack == null) return
                 end()
+//                ToastFont(Font("Serif", 0, 14), s).draw((pos.x + 2).toFloat(), (pos.y + 2).toFloat(), c)
                 MinecraftClient.getInstance().textRenderer.drawWithShadow(
                     matrixStack,
                     s,

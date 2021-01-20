@@ -5,6 +5,7 @@ import me.remainingtoast.toastclient.client.module.combat.AutoTotem
 import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
 import me.remainingtoast.toastclient.client.module.gui.HUDEditor
 import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
+import me.remainingtoast.toastclient.client.module.render.Capes
 import me.remainingtoast.toastclient.client.module.render.NoRender
 import org.lwjgl.glfw.GLFW
 import java.util.*
@@ -17,7 +18,7 @@ class ModuleManager {
 
     init {
         modules = ArrayList()
-        register(ClickGUIModule(), NoRender(), ArrayListModule(), HUDEditor(), AutoTotem())
+        register(ClickGUIModule(), NoRender(), ArrayListModule(), HUDEditor(), AutoTotem(), Capes)
         println("MODULE MANAGER INITIALISED")
     }
 
