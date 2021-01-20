@@ -12,19 +12,11 @@ import net.minecraft.network.packet.s2c.play.ExperienceOrbSpawnS2CPacket
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
 import net.minecraft.network.packet.s2c.play.LightUpdateS2CPacket
 
-class NoRender : Module("NoRender", Category.RENDER) {
+object NoRender : Module("NoRender", Category.RENDER) {
 
-    companion object {
-        lateinit var explosion: BooleanSetting
-        lateinit var skylight: BooleanSetting
-        lateinit var xp: BooleanSetting
-    }
-
-    init {
-        explosion = registerBoolean("Explosions", "I.E TNT, End Crystals", true)
-        skylight = registerBoolean("Skylight", "Cancels Light Updates", false)
-        xp = registerBoolean("XP", "Hide XP Orbs", false)
-    }
+    var explosion: BooleanSetting = registerBoolean("Explosions", "I.E TNT, End Crystals", true)
+    var skylight: BooleanSetting = registerBoolean("Skylight", "Cancels Light Updates", false)
+    var xp: BooleanSetting = registerBoolean("XP", "Hide XP Orbs", false)
 
     override fun onEnable() {
         EVENT_BUS.subscribe(packetListener)

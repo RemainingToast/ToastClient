@@ -2,7 +2,8 @@ package me.remainingtoast.toastclient.api.gui;
 
 import com.lukflug.panelstudio.theme.ColorScheme;
 import com.lukflug.panelstudio.theme.GameSenseTheme;
-import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule;
+import me.remainingtoast.toastclient.client.module.client.ClickGUIModule;
+import me.remainingtoast.toastclient.client.module.client.Colors;
 
 import java.awt.*;
 
@@ -23,7 +24,7 @@ public class ToastTheme extends GameSenseTheme {
 
         @Override
         public Color getMainColor (boolean focus, boolean active) {
-            Color color = ClickGUIModule.categoryBgColor.getValue();
+            Color color = Colors.INSTANCE.getCategoryBgColor().getValue();
             if (level==0 && active) return new Color(color.getRed(),color.getGreen(),color.getBlue(),getColorScheme().getOpacity());
             return super.getMainColor(focus,active);
         }

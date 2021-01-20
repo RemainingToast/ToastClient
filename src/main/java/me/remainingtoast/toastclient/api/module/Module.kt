@@ -15,9 +15,19 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     private var drawn = false
     private var bind = 0
 
+    private var alwaysEnabled = false
+
     constructor(name: String, category: Category) {
         this.name = name
         this.category = category
+        enabled = false
+        drawn = true
+    }
+
+    constructor(name: String, category: Category, bool: Boolean) {
+        this.name = name
+        this.category = category
+        this.alwaysEnabled = bool
         enabled = false
         drawn = true
     }
@@ -172,6 +182,6 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     }
 
     override fun isOn(): Boolean {
-        return enabled
+        return if(alwaysEnabled) true else enabled
     }
 }

@@ -6,7 +6,7 @@ public enum Category {
     MOVEMENT,
     MISC,
     RENDER,
-    GUI,
+    CLIENT,
     HUD,
     NONE
 }

@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.screen.slot.SlotActionType
 
-class AutoTotem : Module("AutoTotem", Category.COMBAT) {
+object AutoTotem : Module("AutoTotem", Category.COMBAT) {
 
     var totems = 0
     var totemsTotal = 0

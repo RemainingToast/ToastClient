@@ -15,11 +15,10 @@ import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.HUDModule
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
-import me.remainingtoast.toastclient.api.util.font.ToastFont
-import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
+import me.remainingtoast.toastclient.client.module.client.ClickGUIModule
+import me.remainingtoast.toastclient.client.module.client.Colors
 import net.minecraft.client.MinecraftClient
 import java.awt.Color
-import java.awt.Font
 import java.awt.Point
 
 
@@ -63,12 +62,12 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
         }
         theme = ToastTheme(
             SettingsColorScheme(
-                ClickGUIModule.activeColor,
-                ClickGUIModule.inactiveColor,
-                ClickGUIModule.backgroundColor,
-                ClickGUIModule.outlineColor,
-                ClickGUIModule.fontColor,
-                ClickGUIModule.opacity
+                Colors.activeColor,
+                Colors.inactiveColor,
+                Colors.backgroundColor,
+                Colors.outlineColor,
+                Colors.fontColor,
+                Colors.opacity
             ), HEIGHT, 2, 5
         )
         gui = HUDClickGUI(guiInterface, FixedDescription(Point(0, 0)))

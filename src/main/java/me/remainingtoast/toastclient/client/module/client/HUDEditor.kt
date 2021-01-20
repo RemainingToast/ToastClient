@@ -1,10 +1,10 @@
-package me.remainingtoast.toastclient.client.module.gui
+package me.remainingtoast.toastclient.client.module.client
 
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
 
-class HUDEditor : Module("HUDEditor", Category.GUI) {
+object HUDEditor : Module("HUDEditor", Category.CLIENT) {
 
     override fun onEnable() {
         ToastClient.CLICKGUI.enterHUDEditor()

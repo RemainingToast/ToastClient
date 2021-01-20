@@ -1,9 +1,8 @@
 package me.remainingtoast.toastclient.api.module
 
 import me.remainingtoast.toastclient.ToastClient
+import me.remainingtoast.toastclient.client.module.client.*
 import me.remainingtoast.toastclient.client.module.combat.AutoTotem
-import me.remainingtoast.toastclient.client.module.gui.ClickGUIModule
-import me.remainingtoast.toastclient.client.module.gui.HUDEditor
 import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
 import me.remainingtoast.toastclient.client.module.render.Capes
 import me.remainingtoast.toastclient.client.module.render.NoRender
@@ -18,7 +17,7 @@ class ModuleManager {
 
     init {
         modules = ArrayList()
-        register(ClickGUIModule(), NoRender(), ArrayListModule(), HUDEditor(), AutoTotem(), Capes)
+        register(ClickGUIModule, NoRender, ArrayListModule, HUDEditor, AutoTotem, Capes, Colors, FriendModule, Font)
         println("MODULE MANAGER INITIALISED")
     }
 

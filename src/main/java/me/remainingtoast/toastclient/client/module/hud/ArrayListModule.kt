@@ -16,22 +16,14 @@ import java.awt.Color.RGBtoHSB
 import java.awt.Point
 import java.util.*
 
-class ArrayListModule : HUDModule("ArrayList", Point(5, 5)) {
+object ArrayListModule : HUDModule("ArrayList", Point(5, 5)) {
 
     override lateinit var component: FixedComponent
     private var list: ModuleList = ModuleList()
 
-    companion object {
-        lateinit var color: ColorSetting
-        lateinit var sortUp: BooleanSetting
-        lateinit var sortRight: BooleanSetting
-    }
-
-    init {
-        sortUp = registerBoolean("Sort Up", true);
-        sortRight = registerBoolean("Sort Right", false);
-        color = registerColor("Color", "Array List Color", true, false, Color.RED, false)
-    }
+    var color: ColorSetting = registerColor("Color", "Array List Color", true, false, Color.RED, false)
+    var sortUp: BooleanSetting = registerBoolean("Sort Up", true)
+    var sortRight: BooleanSetting = registerBoolean("Sort Right", false)
 
     override fun populate(theme: Theme) {
         component = ListComponent(name, theme.panelRenderer, position, list)
