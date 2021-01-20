@@ -2,6 +2,7 @@ package me.remainingtoast.toastclient.mixin.client;
 
 import me.remainingtoast.toastclient.ToastClient;
 import me.remainingtoast.toastclient.api.event.OverlayEvent;
+import me.remainingtoast.toastclient.client.module.render.NoRender;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +19,12 @@ public class MixinIngameHud {
         ToastClient.EVENT_BUS.post(event);
         if (event.isCancelled())
             info.cancel();
+    }
+
+    @Inject(at = @At("HEAD"), method = "renderPumpkinOverlay()V", cancellable = true)
+    private void onRenderPumpkinOverlay(CallbackInfo ci) {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getPumpkin().getValue())
+            ci.cancel();
     }
 
 }

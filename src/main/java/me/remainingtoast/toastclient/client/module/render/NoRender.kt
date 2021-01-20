@@ -14,9 +14,17 @@ import net.minecraft.network.packet.s2c.play.LightUpdateS2CPacket
 
 object NoRender : Module("NoRender", Category.RENDER) {
 
-    var explosion: BooleanSetting = registerBoolean("Explosions", "I.E TNT, End Crystals", true)
-    var skylight: BooleanSetting = registerBoolean("Skylight", "Cancels Light Updates", false)
-    var xp: BooleanSetting = registerBoolean("XP", "Hide XP Orbs", false)
+    var explosion: BooleanSetting = registerBoolean("Explosions",true)
+    var totem: BooleanSetting = registerBoolean("Totem",  true)
+    var fire: BooleanSetting = registerBoolean("Fire", false)
+    var underwater: BooleanSetting = registerBoolean("Underwater", false)
+    var nausea: BooleanSetting = registerBoolean("Nausea", false)
+    var bossbar: BooleanSetting = registerBoolean("BossBar", false)
+    var pumpkin: BooleanSetting = registerBoolean("Pumpkin", false)
+    var blindness: BooleanSetting = registerBoolean("Blindness", false)
+    var hurtcam: BooleanSetting = registerBoolean("Hurtcam", false)
+    var skylight: BooleanSetting = registerBoolean("Skylight", false)
+    var xp: BooleanSetting = registerBoolean("XP", false)
 
     override fun onEnable() {
         EVENT_BUS.subscribe(packetListener)
