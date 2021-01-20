@@ -12,7 +12,8 @@ object CapeUtil {
     fun getCapes() {
         uuids.clear()
         try {
-            val url = URL("https://gist.githubusercontent.com/RemainingToast/09cfe3ee622517c1905da71a5d447f7c/raw/fbaad0153cfcf01ffe36c439fc7f23fab3c1855e/capes")
+            val str = "https://raw.githubusercontent.com/RemainingToast/toastclient/dev/src/main/resources/assets/toastclient/capes/users.txt"
+            val url = URL(str)
             val br = BufferedReader(InputStreamReader(url.openStream()))
             val capes = br.readLines()
             println("All Cape Owners: $capes")
