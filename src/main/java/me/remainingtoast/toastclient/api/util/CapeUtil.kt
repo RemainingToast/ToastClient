@@ -7,18 +7,24 @@ import java.util.*
 
 object CapeUtil {
 
-    var capeTxt = "https://raw.githubusercontent.com/RemainingToast/toastclient/dev/cape-uuids.txt"
     var uuids: MutableList<UUID> = ArrayList()
 
-    init {
+    fun getCapes() {
+        uuids.clear()
         try {
-            val url = URL(capeTxt)
+            val url = URL("https://gist.githubusercontent.com/RemainingToast/09cfe3ee622517c1905da71a5d447f7c/raw/fbaad0153cfcf01ffe36c439fc7f23fab3c1855e/capes")
             val br = BufferedReader(InputStreamReader(url.openStream()))
-            val line: String = ""
-            while (line == br.readLine()){
-                uuids.add(UUID.fromString(line))
+            val capes = br.readLines()
+            println("All Cape Owners: $capes")
+            for (c in capes){
+                val id = UUID.fromString(c)
+                if (id != null){
+                    uuids.add(id)
+                }
             }
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+
+        }
     }
 
     fun hasCape(uuid: UUID): Boolean {

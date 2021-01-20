@@ -2,6 +2,7 @@ package me.remainingtoast.toastclient.api.util
 
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
+import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -11,6 +12,8 @@ val mc = MinecraftClient.getInstance()
 fun lit(string: String): LiteralText {
     return LiteralText(string)
 }
+
+data class ToastPlayer(var name: String, var uuid: UUID)
 
 class Vector2f(var x: Float, var y: Float) {
 

@@ -29,11 +29,11 @@ public abstract class MixinAbstractClientPlayerEntity {
                         cir.setReturnValue(new Identifier("toastclient", "capes/old_mojang.png"));
                         return;
                     }
-                    case MINECON_2013:{
+                    case MINECON2013:{
                         cir.setReturnValue(new Identifier("toastclient", "capes/minecon_2013.png"));
                         return;
                     }
-                    case MINECON_2016: {
+                    case MINECON2016: {
                         cir.setReturnValue(new Identifier("toastclient", "capes/minecon_2016.png"));
                         return;
                     }
