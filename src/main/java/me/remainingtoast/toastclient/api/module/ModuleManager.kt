@@ -2,9 +2,11 @@ package me.remainingtoast.toastclient.api.module
 
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.client.module.client.*
+import me.remainingtoast.toastclient.client.module.combat.AutoArmour
 import me.remainingtoast.toastclient.client.module.combat.AutoTotem
 import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
 import me.remainingtoast.toastclient.client.module.movement.SafeWalk
+import me.remainingtoast.toastclient.client.module.player.MCF
 import me.remainingtoast.toastclient.client.module.player.NoEntityTrace
 import me.remainingtoast.toastclient.client.module.render.Capes
 import me.remainingtoast.toastclient.client.module.render.FullBright
@@ -22,9 +24,9 @@ object ModuleManager {
     init {
         modules = ArrayList()
         register(
-            ClickGUIModule, NoRender, ArrayListModule,
+            ClickGUIModule, NoRender, ArrayListModule, MCF,
             HUDEditor, AutoTotem, Capes, Colors, FriendModule,
-            Font, FullBright, SafeWalk, NoEntityTrace, NoFog
+            Font, FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour
         )
         println("MODULE MANAGER INITIALISED")
     }

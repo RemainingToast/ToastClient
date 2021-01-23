@@ -29,6 +29,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile "com.lukflug:panelstudio:${project.panelstudio_version}"
+    modCompile "com.lukflug:panelstudio-mc16:0.1.9"
 }
 
 processResources {
@@ -66,6 +67,7 @@ shadowJar {
         include(dependency('com.github.ZeroMemes:Alpine'))
         include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
         include(dependency('com.lukflug:panelstudio'))
+        include(dependency('com.lukflug:panelstudio-mc16'))
     }
     classifier = 'shadow'
 }

@@ -151,7 +151,7 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                                 setting.name,
                                 setting.description,
                                 theme.componentRenderer,
-                                setting as me.remainingtoast.toastclient.api.setting.type.EnumSetting
+                                setting as EnumSetting
                             )
                         )
                         is ColorSetting -> container.addComponent(ColorComponent(

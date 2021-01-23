@@ -16,7 +16,7 @@ object CapeUtil {
             val url = URL(str)
             val br = BufferedReader(InputStreamReader(url.openStream()))
             val capes = br.readLines()
-            println("All Cape Owners: $capes")
+//            println("All Cape Owners: $capes")
             for (c in capes){
                 val id = UUID.fromString(c)
                 if (id != null){
