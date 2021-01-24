@@ -23,10 +23,9 @@ object ModuleManager {
 
     init {
         modules = ArrayList()
-        register(
-            ClickGUIModule, NoRender, ArrayListModule, MCF,
-            HUDEditor, AutoTotem, Capes, Colors, FriendModule,
-            Font, FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour
+        register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
+                NoRender, ArrayListModule, MCF, AutoTotem, Capes,
+                FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour
         )
         println("MODULE MANAGER INITIALISED")
     }

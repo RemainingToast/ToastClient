@@ -23,7 +23,9 @@
     "MixinItem",
     "MixinKeyboard",
     "MixinMinecraftClient",
-    "MixinPlayerEntity"
+    "MixinPlayerEntity",
+    "MixinTitleScreen",
+    "MixinLivingEntityRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -17,7 +17,10 @@ import me.remainingtoast.toastclient.api.module.HUDModule
 import me.remainingtoast.toastclient.api.setting.type.ColorSetting
 import me.remainingtoast.toastclient.client.module.client.ClickGUIModule
 import me.remainingtoast.toastclient.client.module.client.Colors
+import me.remainingtoast.toastclient.client.module.client.Font
 import net.minecraft.client.MinecraftClient
+import net.minecraft.text.LiteralText
+import net.minecraft.util.Identifier
 import java.awt.Color
 import java.awt.Point
 
@@ -41,13 +44,13 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             override fun drawString(pos: Point, s: String, c: Color) {
                 if (matrixStack == null) return
                 end()
-//                ToastFont(Font("Serif", 0, 14), s).draw((pos.x + 2).toFloat(), (pos.y + 2).toFloat(), c)
+                val text = LiteralText(s).styled { style -> style.withFont(Font.getFontFromType(Font.fontType.value)) }
                 MinecraftClient.getInstance().textRenderer.drawWithShadow(
-                    matrixStack,
-                    s,
-                    (pos.x + 2).toFloat(),
-                    (pos.y + 2).toFloat(),
-                    c.rgb
+                        matrixStack,
+                        text,
+                        (pos.x + 2).toFloat(),
+                        (pos.y + 2).toFloat(),
+                        c.rgb
                 )
                 begin()
             }
@@ -61,14 +64,14 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             }
         }
         theme = ToastTheme(
-            SettingsColorScheme(
-                Colors.activeColor,
-                Colors.inactiveColor,
-                Colors.backgroundColor,
-                Colors.outlineColor,
-                Colors.fontColor,
-                Colors.opacity
-            ), HEIGHT, 2, 5
+                SettingsColorScheme(
+                        Colors.activeColor,
+                        Colors.inactiveColor,
+                        Colors.backgroundColor,
+                        Colors.outlineColor,
+                        Colors.fontColor,
+                        Colors.opacity
+                ), HEIGHT, 2, 5
         )
         gui = HUDClickGUI(guiInterface, FixedDescription(Point(0, 0)))
 
@@ -83,14 +86,14 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             if (module is HUDModule) {
                 module.populate(theme)
                 gui.addHUDComponent(
-                    HUDPanel(
-                        module.component,
-                        theme.panelRenderer,
-                        module,
-                        SettingsAnimation(ClickGUIModule.animationSpeed),
-                        hudToggle,
-                        HUD_BORDER
-                    )
+                        HUDPanel(
+                                module.component,
+                                theme.panelRenderer,
+                                module,
+                                SettingsAnimation(ClickGUIModule.animationSpeed),
+                                hudToggle,
+                                HUD_BORDER
+                        )
                 )
             }
         }
@@ -100,20 +103,20 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             if(category == Category.NONE) continue
             if(ToastClient.MODULE_MANAGER.getModulesByCategory(category)!!.size == 0) continue
             val panel = object : DraggableContainer(
-                category.toString(),
-                null,
-                theme.panelRenderer,
-                SimpleToggleable(false),
-                SettingsAnimation(ClickGUIModule.animationSpeed),
-                null,
-                Point(x, 10),
-                WIDTH
+                    category.toString(),
+                    null,
+                    theme.panelRenderer,
+                    SimpleToggleable(false),
+                    SettingsAnimation(ClickGUIModule.animationSpeed),
+                    null,
+                    Point(x, 10),
+                    WIDTH
             ) {
                 override fun render(context: Context) {
                     if(category!=Category.HUD || hudEditor) super.render(context)
                 }
                 override fun handleKey(context: Context, scancode: Int) {
-                    if(category!=Category.HUD || hudEditor) super.handleKey(context,scancode)
+                    if(category!=Category.HUD || hudEditor) super.handleKey(context, scancode)
                 }
             }
 
@@ -121,12 +124,12 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
             else gui.addHUDComponent(panel)
             for (module in ToastClient.MODULE_MANAGER.getModulesByCategory(category)!!) {
                 val container = CollapsibleContainer(
-                    module.name,
-                    null,
-                    theme.containerRenderer,
-                    SimpleToggleable(false),
-                    SettingsAnimation(ClickGUIModule.animationSpeed),
-                    module
+                        module.name,
+                        null,
+                        theme.containerRenderer,
+                        SimpleToggleable(false),
+                        SettingsAnimation(ClickGUIModule.animationSpeed),
+                        module
                 )
                 panel.addComponent(container)
                 for (setting in ToastClient.SETTING_MANAGER.getSettingsForModule(module)) {
@@ -136,7 +139,7 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                                 setting.description,
                                 theme.componentRenderer,
                                 setting as Toggleable
-                            )
+                        )
                         )
                         is NumberSetting -> container.addComponent(NumberComponent(
                                 setting.name,
@@ -145,14 +148,14 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                                 setting as NumberSetting,
                                 (setting as NumberSetting).minimumValue,
                                 (setting as NumberSetting).maximumValue
-                            )
+                        )
                         )
                         is EnumSetting -> container.addComponent(EnumComponent(
                                 setting.name,
                                 setting.description,
                                 theme.componentRenderer,
                                 setting as EnumSetting
-                            )
+                        )
                         )
                         is ColorSetting -> container.addComponent(ColorComponent(
                                 setting.name,
@@ -164,7 +167,7 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                                 setting.alphaEnabled,
                                 setting.rainbowEnabled,
                                 colorToggle
-                            )
+                        )
                         )
                     }
                 }
