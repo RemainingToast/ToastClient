@@ -16,4 +16,5 @@ public class MixinLivingEntityRenderer<T extends LivingEntity> {
     private void hasLabel(T livingEntity, CallbackInfoReturnable<Boolean> cir) {
         if (livingEntity instanceof DummyClientPlayerEntity || MinecraftClient.getInstance().currentScreen instanceof TitleScreen) cir.setReturnValue(false);
     }
+
 }

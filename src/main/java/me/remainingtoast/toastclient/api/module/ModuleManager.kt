@@ -8,10 +8,7 @@ import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
 import me.remainingtoast.toastclient.client.module.movement.SafeWalk
 import me.remainingtoast.toastclient.client.module.player.MCF
 import me.remainingtoast.toastclient.client.module.player.NoEntityTrace
-import me.remainingtoast.toastclient.client.module.render.Capes
-import me.remainingtoast.toastclient.client.module.render.FullBright
-import me.remainingtoast.toastclient.client.module.render.NoFog
-import me.remainingtoast.toastclient.client.module.render.NoRender
+import me.remainingtoast.toastclient.client.module.render.*
 import org.lwjgl.glfw.GLFW
 import java.util.*
 import java.util.function.Consumer
@@ -24,7 +21,7 @@ object ModuleManager {
     init {
         modules = ArrayList()
         register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
-                NoRender, ArrayListModule, MCF, AutoTotem, Capes,
+                NoRender, ArrayListModule, MCF, AutoTotem, Capes, NameTags,
                 FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour
         )
         println("MODULE MANAGER INITIALISED")
