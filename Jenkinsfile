@@ -17,15 +17,17 @@ pipeline {
       archiveArtifacts artifacts: "toastclient-fabric-${env.BUILD_NUMBER}.jar", fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
       script {
         def artifactUrl = env.BUILD_URL + "artifact/"
-	def msg = "**Branch:** " + env.BRANCH_NAME + "\n"
+	    def msg = "**Branch:** " + env.BRANCH_NAME + "\n"
         msg += "**Status:** " + currentBuild.currentResult.toLowerCase() + "\n"
         msg += "**Changes:** \n"
+        msg += "```\n"
         if (!currentBuild.changeSets.isEmpty()) {
             currentBuild.changeSets.first().getLogs().each {
-                msg += "- `" + it.getCommitId().substring(0, 8) + "` *" + it.getComment().substring(0, it.getComment().length()-1) + "*\n"
+                msg += "+ " + it.getComment().substring(0, it.getComment().length()-1) + "\n"
             }
+            msg += "```"
         } else {
-            msg += "no changes for this run\n"
+            msg += "No Changes```\n"
         }
 
         if (msg.length() > 1024) msg.take(msg.length() - 1024)

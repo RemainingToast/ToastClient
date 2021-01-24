@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "toastclient:roboto.ttf",
+      "shift": [0, 0],
+      "size": 12,
+      "oversample": 20
+    }
+  ]
+}
