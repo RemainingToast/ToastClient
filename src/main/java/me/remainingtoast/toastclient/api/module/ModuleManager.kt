@@ -3,6 +3,7 @@ package me.remainingtoast.toastclient.api.module
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.client.module.client.*
 import me.remainingtoast.toastclient.client.module.combat.AutoArmour
+import me.remainingtoast.toastclient.client.module.combat.AutoRespawn
 import me.remainingtoast.toastclient.client.module.combat.AutoTotem
 import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
 import me.remainingtoast.toastclient.client.module.movement.SafeWalk
@@ -22,7 +23,8 @@ object ModuleManager {
         modules = ArrayList()
         register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
                 NoRender, ArrayListModule, MCF, AutoTotem, Capes, NameTags,
-                FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour
+                FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
+                CustomChat
         )
         println("MODULE MANAGER INITIALISED")
     }
@@ -30,23 +32,6 @@ object ModuleManager {
     fun getModulesByCategory(category: Category): ArrayList<Module>? {
         return modules.stream().filter { module: Module -> module.getCategory() == category }
             .collect(Collectors.toCollection { ArrayList() })
-    }
-
-    fun getModuleByName(name: String): Module? {
-        return modules.stream().filter { module: Module -> module.name == name }
-            .findFirst().orElse(null)
-    }
-
-    fun <T : Module> getModuleByClass(clazz: Class<T>): Module? {
-        for (current in modules) {
-            if (current.javaClass == clazz) return current
-            if (current::class.isInstance(clazz)) return current
-        }
-        return null
-    }
-
-    fun toggleModule(module: Module){
-        module.toggle()
     }
 
     fun toggleBind(key: Int) {
@@ -62,20 +47,6 @@ object ModuleManager {
         for (cheat in mods) {
             modules.add(cheat)
         }
-    }
-
-    fun addModule(module: Module?) {
-        if (!modules.contains(module)) {
-            modules.add(module!!)
-        }
-    }
-
-    fun removeModule(module: Module?) {
-        modules.remove(module)
-    }
-
-    fun isModuleEnabled(module: Module): Boolean {
-        return module.isEnabled()
     }
 
     fun onUpdate() {

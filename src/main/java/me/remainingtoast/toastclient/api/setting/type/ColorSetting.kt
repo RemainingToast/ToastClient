@@ -55,4 +55,13 @@ class ColorSetting(value: Color, private var rainbow: Boolean, name: String, des
     override fun setRainbow(value: Boolean) {
         rainbow = value
     }
+
+    fun toInteger(): Int {
+        return value.rgb and 0xFFFFFF + (if (rainbow) 1 else 0) * 0x1000000
+    }
+
+    fun fromInteger(number: Int) {
+        value = Color(number and 0xFFFFFF)
+        rainbow = number and 0x1000000 != 0
+    }
 }

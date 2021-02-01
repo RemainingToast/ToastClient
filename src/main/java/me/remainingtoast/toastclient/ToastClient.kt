@@ -1,7 +1,10 @@
 package me.remainingtoast.toastclient
 
 import me.remainingtoast.toastclient.api.command.CommandManager
-import  me.remainingtoast.toastclient.api.event.OverlayEvent
+import me.remainingtoast.toastclient.api.config.LoadConfig
+import me.remainingtoast.toastclient.api.config.SaveConfig
+import me.remainingtoast.toastclient.api.event.OverlayEvent
+import me.remainingtoast.toastclient.api.event.TickEvent
 import me.remainingtoast.toastclient.api.module.ModuleManager
 import me.remainingtoast.toastclient.api.setting.SettingManager
 import me.remainingtoast.toastclient.api.util.mc
@@ -30,14 +33,17 @@ class ToastClient : ModInitializer {
     }
 
     override fun onInitialize() {
-        println("${MODNAME.toUpperCase()} $MODVER STARTING")
-
         COMMAND_MANAGER.init()
         EVENT_BUS.subscribe(onRender)
-
+        EVENT_BUS.subscribe(onUpdate)
+        SaveConfig.init()
+        LoadConfig.init()
         Runtime.getRuntime().addShutdownHook(Thread {
+            SaveConfig.saveEverything()
             println("${MODNAME.toUpperCase()} SAVING AND SHUTTING DOWN")
         })
+
+        println("${MODNAME.toUpperCase()} $MODVER STARTING")
     }
 
     @EventHandler
@@ -45,5 +51,11 @@ class ToastClient : ModInitializer {
         if (mc.player == null) return@EventHook
         MODULE_MANAGER.onRender()
         CLICKGUI.render()
+    })
+
+    @EventHandler
+    val onUpdate = Listener(EventHook<TickEvent.Client.InGame> {
+        if (mc.player == null) return@EventHook
+        ModuleManager.onUpdate()
     })
 }

@@ -16,7 +16,6 @@ object MCF : Module("MCF", Category.PLAYER) {
     var antiSpam = false
 
     override fun onUpdate() {
-        if (mc.player == null) return
         val button = GLFW.GLFW_MOUSE_BUTTON_MIDDLE
         if(GLFW.glfwGetMouseButton(mc.window.handle, button) == 1 && !antiSpam){
             antiSpam = true

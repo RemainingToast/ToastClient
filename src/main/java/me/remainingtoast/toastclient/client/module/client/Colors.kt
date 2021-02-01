@@ -16,9 +16,4 @@ object Colors : Module("Colors", Category.CLIENT, true) {
     var fontColor: ColorSetting = registerColor("Font Color", "The main text color.", true, true, Color.WHITE, false)
     var opacity: IntegerSetting = registerInteger("Opacity", "The GUI opacity", 201, 0, 255, true)
 
-//    override fun setEnabled(newVal: Boolean) {
-//        super.setEnabled(true)
-//    }
-
-
 }
