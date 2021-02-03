@@ -23,6 +23,7 @@ object FullBright : Module("FullBright", Category.RENDER) {
     }
 
     override fun onEnable() {
+        if (mc.player == null) return
         previousGamma = mc.options.gamma
         mc.player!!.addStatusEffect(StatusEffectInstance(StatusEffects.NIGHT_VISION, 42069, 42069))
     }

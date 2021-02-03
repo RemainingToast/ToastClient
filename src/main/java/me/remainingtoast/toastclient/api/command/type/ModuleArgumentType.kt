@@ -1,21 +1,21 @@
 package me.remainingtoast.toastclient.api.command.type
 
 import com.mojang.brigadier.StringReader
-import me.remainingtoast.toastclient.api.module.Module
 import com.mojang.brigadier.arguments.ArgumentType
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
-import me.remainingtoast.toastclient.ToastClient
+import me.remainingtoast.toastclient.api.module.Module
+import me.remainingtoast.toastclient.api.module.ModuleManager
 import me.remainingtoast.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture
 
 class ModuleArgumentType<Module>(private val clazz: Class<Module>) : ArgumentType<Module> {
 
-    val modules = ToastClient.MODULE_MANAGER.modules
+    val modules = ModuleManager.modules
 
     @Throws(CommandSyntaxException::class)
     override fun parse(reader: StringReader): Module {

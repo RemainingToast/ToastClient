@@ -2,25 +2,25 @@ package me.remainingtoast.toastclient.client.module.client
 
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.setting.type.EnumSetting
+import me.remainingtoast.toastclient.api.setting.Setting.ListSetting
 import net.minecraft.util.Identifier
 
 object Font : Module("Font", Category.CLIENT, true) {
 
-    enum class FontType {
-        MINECRAFT,
-        ROBOTO
-    }
+    private val fonts = arrayListOf (
+        "MINECRAFT",
+        "ROBOTO"
+    )
 
-    var fontType: EnumSetting<FontType> = registerEnum(FontType.MINECRAFT, "Style", "Style of Font")
+    var fontType: ListSetting = registerList("Style", "Style of Font", fonts, 0)
 
-    fun getFontFromType(type: FontType): Identifier{
-        return when (type){
-            FontType.MINECRAFT -> {
-                Identifier("minecraft", "default")
-            }
-            FontType.ROBOTO -> {
+    fun getFontFromType(index: Int): Identifier{
+        return when (index) {
+            1 -> {
                 Identifier("toastclient", "roboto")
+            }
+            else -> {
+                Identifier("minecraft", "default")
             }
         }
     }

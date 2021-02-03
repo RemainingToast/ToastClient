@@ -24,6 +24,7 @@
     "MixinKeyboard",
     "MixinMinecraftClient",
     "MixinPlayerEntity",
+    "MixinSharedConstants",
     "MixinTitleScreen",
     "MixinLivingEntityRenderer",
     "MixinEntityRenderer"
