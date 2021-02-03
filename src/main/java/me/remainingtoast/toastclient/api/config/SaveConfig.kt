@@ -1,40 +1,28 @@
 package me.remainingtoast.toastclient.api.config
 
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import com.google.gson.JsonPrimitive
-import me.remainingtoast.toastclient.api.module.Category
+import kotlinx.serialization.encodeToString
+import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.setting.SettingManager
-import me.remainingtoast.toastclient.api.setting.Type
-import java.io.File
+import me.remainingtoast.toastclient.api.module.ModuleManager.modules
+import me.remainingtoast.toastclient.api.setting.Setting.*
+import net.minecraft.client.MinecraftClient
+import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.io.FileOutputStream
-
-import java.io.OutputStreamWriter
-import java.nio.charset.StandardCharsets
-import me.remainingtoast.toastclient.api.setting.Setting
-import me.remainingtoast.toastclient.api.setting.type.*
-import java.io.IOException
 import java.util.*
-import me.remainingtoast.toastclient.api.module.ModuleManager
-import me.remainingtoast.toastclient.api.module.ModuleManager.modules
 
 
 /**
  * Original @author Hoosiers
  * @since 10/15/2020
  * Rewritten into Fabric/Kotlin @author RemainingToast
+ * Rewritten to use kotlinx.serialization instead of gson @author Vonr/Qther, only method logic from Hoosiers remains
  * @since 01/02/2021
  * @see https://github.com/IUDevman/gamesense-client/blob/master/src/main/java/com/gamesense/api/config/SaveConfig.java
  **/
 object SaveConfig {
 
-    val gson = GsonBuilder().setPrettyPrinting().create()
-
-    val mainDirectory = "toastclient/"
+    val mainDirectory = "${MinecraftClient.getInstance().runDirectory.canonicalPath}/toastclient/"
     val moduleDirectory = "modules/"
 
     fun init() {
@@ -45,12 +33,13 @@ object SaveConfig {
     }
 
     fun registerFiles(location: String, name: String) {
-        if (!Files.exists(Paths.get("$mainDirectory$location$name.json"))) {
-            Files.createFile(Paths.get("$mainDirectory$location$name.json"))
+        val pathString = "$mainDirectory$location$name.json"
+        if (!Files.exists(Paths.get(pathString))) {
+            Files.createFile(Paths.get(pathString))
         } else {
-            val file = File("$mainDirectory$location$name.json")
+            val file = File(pathString)
             file.delete()
-            Files.createFile(Paths.get("$mainDirectory$location$name.json"))
+            Files.createFile(Paths.get(pathString))
         }
     }
 
@@ -62,37 +51,21 @@ object SaveConfig {
                 e.printStackTrace()
             }
         }
+        println("Finished saving modules.")
     }
 
-    fun registerModule(module: Module){
+    fun registerModule(module: Module) {
         registerFiles(moduleDirectory, module.name)
-        val fileOutputStreamWriter = OutputStreamWriter(
-            FileOutputStream("$mainDirectory$moduleDirectory${module.name}.json"),
-            StandardCharsets.UTF_8
-        )
-
-        val moduleObject = JsonObject()
-        val settingObject = JsonObject()
-
-        moduleObject.add("Module", JsonPrimitive(module.name))
-
-        for (s in SettingManager.getSettingsForModule(module)){
-            when (s.getType()){
-                Type.BOOLEAN -> settingObject.add(s.configName, JsonPrimitive((s as BooleanSetting).value))
-                Type.INTEGER -> settingObject.add(s.configName, JsonPrimitive((s as IntegerSetting).value))
-                Type.DOUBLE -> settingObject.add(s.configName, JsonPrimitive((s as DoubleSetting).value))
-                Type.COLOR -> settingObject.add(s.configName, JsonPrimitive((s as ColorSetting).toInteger()))
-                Type.ENUM -> settingObject.add(s.configName, JsonPrimitive((s as EnumSetting).value.toString()))
-            }
+        val path = "$mainDirectory$moduleDirectory${module.name}.json"
+        println("Attempting to save ${module.name} to $path")
+        try {
+            val writer = FileWriter(File(path))
+            writer.write(ToastClient.JSON.encodeToString<Module>(module))
+            writer.close()
+        } catch (e: IOException) {
+            println("Could not save ${module.name} to $path")
+            e.printStackTrace()
         }
-
-        moduleObject.add("Settings", settingObject)
-        moduleObject.add("Enabled", JsonPrimitive(module.isEnabled()))
-        moduleObject.add("Drawn", JsonPrimitive(module.isDrawn()))
-        moduleObject.add("Bind", JsonPrimitive(module.key))
-        val str = gson.toJson(JsonParser().parse(moduleObject.toString()))
-        fileOutputStreamWriter.write(str)
-        fileOutputStreamWriter.close()
     }
 
 

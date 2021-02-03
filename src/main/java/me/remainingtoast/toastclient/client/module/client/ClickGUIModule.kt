@@ -3,11 +3,8 @@ package me.remainingtoast.toastclient.client.module.client
 import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.setting.type.BooleanSetting
-import me.remainingtoast.toastclient.api.setting.type.ColorSetting
-import me.remainingtoast.toastclient.api.setting.type.IntegerSetting
+import me.remainingtoast.toastclient.api.setting.Setting.IntegerSetting
 import org.lwjgl.glfw.GLFW
-import java.awt.Color
 
 object ClickGUIModule : Module("ClickGUI", Category.CLIENT, GLFW.GLFW_KEY_RIGHT_SHIFT) {
 

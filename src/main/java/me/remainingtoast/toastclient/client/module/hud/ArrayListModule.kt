@@ -4,11 +4,11 @@ import com.lukflug.panelstudio.FixedComponent
 import com.lukflug.panelstudio.hud.HUDList
 import com.lukflug.panelstudio.hud.ListComponent
 import com.lukflug.panelstudio.theme.Theme
-import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.HUDModule
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.setting.type.BooleanSetting
-import me.remainingtoast.toastclient.api.setting.type.ColorSetting
+import me.remainingtoast.toastclient.api.module.ModuleManager
+import me.remainingtoast.toastclient.api.setting.Setting
+import me.remainingtoast.toastclient.api.setting.Setting.BooleanSetting
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Formatting
 import java.awt.Color
@@ -21,7 +21,7 @@ object ArrayListModule : HUDModule("ArrayList", Point(5, 5)) {
     override lateinit var component: FixedComponent
     private var list: ModuleList = ModuleList()
 
-    var color: ColorSetting = registerColor("Color", "Array List Color", true, false, Color.RED, false)
+    var color: Setting.ColorSetting = registerColor("Color", "Array List Color", Color.RED, false, false, true)
     var sortUp: BooleanSetting = registerBoolean("Sort Up", true)
     var sortRight: BooleanSetting = registerBoolean("Sort Right", false)
 
@@ -31,7 +31,7 @@ object ArrayListModule : HUDModule("ArrayList", Point(5, 5)) {
 
     override fun onOverlayRender() {
         list.activeModules.clear()
-        for(m in ToastClient.MODULE_MANAGER.modules){
+        for(m in ModuleManager.modules){
             if(m.isEnabled() && m.isDrawn() && m !is HUDModule) list.activeModules.add(m)
         }
         list.activeModules.sortWith(Comparator.comparing { module: Module -> MinecraftClient.getInstance().textRenderer.getWidth("${module.name+Formatting.GRAY} ${module.getHudInfo()}")})

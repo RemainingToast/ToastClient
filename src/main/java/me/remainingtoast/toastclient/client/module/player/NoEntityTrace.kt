@@ -2,7 +2,7 @@ package me.remainingtoast.toastclient.client.module.player
 
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.setting.type.BooleanSetting
+import me.remainingtoast.toastclient.api.setting.Setting.BooleanSetting
 import me.remainingtoast.toastclient.api.util.mc
 import net.minecraft.item.PickaxeItem
 

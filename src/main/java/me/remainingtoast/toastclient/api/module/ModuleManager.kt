@@ -12,12 +12,11 @@ import me.remainingtoast.toastclient.client.module.player.NoEntityTrace
 import me.remainingtoast.toastclient.client.module.render.*
 import org.lwjgl.glfw.GLFW
 import java.util.*
-import java.util.function.Consumer
 import java.util.stream.Collectors
 
 object ModuleManager {
 
-    var modules: MutableList<Module> = ArrayList()
+    var modules: ArrayList<Module> = ArrayList()
 
     init {
         modules = ArrayList()
@@ -36,11 +35,9 @@ object ModuleManager {
 
     fun toggleBind(key: Int) {
         if (key == 0 || key == GLFW.GLFW_KEY_UNKNOWN) return
-        modules.forEach(Consumer { module: Module ->
-            if (module.getBind() == key) {
-                module.toggle()
-            }
-        })
+        modules.filter { it.getBind() == key }.forEach {
+            it.toggle()
+        }
     }
 
     private fun register(vararg mods: Module) {

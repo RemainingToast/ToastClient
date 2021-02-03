@@ -4,7 +4,7 @@ import me.remainingtoast.toastclient.ToastClient.Companion.EVENT_BUS
 import me.remainingtoast.toastclient.api.event.PacketEvent
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.setting.type.BooleanSetting
+import me.remainingtoast.toastclient.api.setting.Setting.BooleanSetting
 import me.remainingtoast.toastclient.api.util.mc
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.EventHook

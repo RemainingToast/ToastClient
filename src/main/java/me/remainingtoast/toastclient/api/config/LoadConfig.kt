@@ -1,47 +1,47 @@
 package me.remainingtoast.toastclient.api.config
 
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import kotlinx.serialization.decodeFromString
+import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.module.ModuleManager.modules
-import me.remainingtoast.toastclient.api.setting.SettingManager
-import me.remainingtoast.toastclient.api.setting.Type
-import me.remainingtoast.toastclient.api.setting.type.*
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
+import me.remainingtoast.toastclient.api.module.ModuleManager
+import me.remainingtoast.toastclient.api.setting.Setting.*
+import me.remainingtoast.toastclient.client.module.client.ClickGUIModule
+import net.minecraft.client.MinecraftClient
+import net.minecraft.util.math.MathHelper
+import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 
 
 /**
  * Original @author Hoosiers
  * @since 10/15/2020
  * Rewritten into Fabric/Kotlin @author RemainingToast
+ * Rewritten to use kotlinx.serialization instead of gson @author Vonr/Qther, only method logic from Hoosiers remains
  * @since 01/02/2021
  * @see https://github.com/IUDevman/gamesense-client/blob/master/src/main/java/com/gamesense/api/config/LoadConfig.java
  **/
 object LoadConfig {
 
-    val mainDirectory = "toastclient/"
+    val mainDirectory = "${MinecraftClient.getInstance().runDirectory.canonicalPath}/toastclient/"
     val moduleDirectory = "modules/"
 
     fun init(){
         try {
             loadConfig()
         } catch (e: IOException){
-
+            e.printStackTrace()
         }
     }
 
     fun loadConfig(){
         loadModules()
-
     }
 
     fun loadModules() {
         val moduleLocation: String = mainDirectory + moduleDirectory
-        for (module in modules) {
+        for (module in ModuleManager.modules) {
             try {
                 loadModuleDirect(moduleLocation, module)
             } catch (e: IOException) {
@@ -53,32 +53,52 @@ object LoadConfig {
 
     @Throws(IOException::class)
     fun loadModuleDirect(moduleLocation: String, module: Module) {
-        if (!Files.exists(Paths.get(moduleLocation + module.name + ".json"))) {
+        val fileLoc = moduleLocation + module.name + ".json"
+        if (!Files.exists(Paths.get(fileLoc))) {
             return
         }
-        val inputStream: InputStream = Files.newInputStream(Paths.get(moduleLocation + module.name + ".json"))
-        val moduleObject: JsonObject = JsonParser().parse(InputStreamReader(inputStream)).asJsonObject
-        if (moduleObject["Module"] == null) {
-            return
-        }
-        val settingObject = moduleObject["Settings"].asJsonObject
-        for (setting in SettingManager.getSettingsForModule(module)) {
-            val dataObject = settingObject[setting.configName]
-            if (dataObject != null && dataObject.isJsonPrimitive) {
-                when (setting.getType()) {
-                    Type.BOOLEAN -> (setting as BooleanSetting).value = dataObject.asBoolean
-                    Type.INTEGER -> (setting as IntegerSetting).value = dataObject.asInt
-                    Type.DOUBLE -> (setting as DoubleSetting).value = dataObject.asDouble
-                    Type.COLOR -> (setting as ColorSetting).fromInteger(dataObject.asInt)
-                    Type.ENUM -> (setting as EnumSetting).run {
-                        if(value.toString() != dataObject.asString) this.increment()
+        val reader = BufferedReader(FileReader(fileLoc))
+        val text = reader.readText()
+        reader.close()
+        if (text.isNotEmpty()) {
+            val decodedModule = ToastClient.JSON.decodeFromString<Module>(text)
+//            module.settings = decodedModule.settings
+            for (setting in module.settings) {
+                for (decodedSetting in decodedModule.settings) {
+                    if (setting.name != decodedSetting.name) continue
+                    when (setting) {
+                        is BooleanSetting -> {
+                            setting.value = (decodedSetting as BooleanSetting).value
+                        }
+                        is KeybindSetting -> {
+                            setting.value = (decodedSetting as KeybindSetting).value
+                        }
+                        is IntegerSetting -> {
+                            setting.value = MathHelper.clamp((decodedSetting as IntegerSetting).value, setting.min, setting.max)
+                        }
+                        is DoubleSetting -> {
+                            setting.value = MathHelper.clamp((decodedSetting as DoubleSetting).value, setting.min, setting.max)
+                        }
+                        is ListSetting -> {
+                            var index = (decodedSetting as ListSetting).index
+                            val size = setting.list.size
+                            while (size < index) index -= size
+                            setting.index = index
+                        }
+                        is ColorSetting -> {
+                            val typedSetting = decodedSetting as ColorSetting
+                            setting.value = typedSetting.value
+                            setting.alphaEnabled = typedSetting.alphaEnabled
+                            setting.rainbow = typedSetting.rainbow
+                            setting.rainbowEnabled = typedSetting.rainbowEnabled
+                        }
                     }
+                    break
                 }
             }
+            module.setBind(decodedModule.getBind())
+            module.setDrawn(decodedModule.isDrawn())
+            module.setEnabled(module != ClickGUIModule && decodedModule.isEnabled())
         }
-        if(moduleObject["Enabled"].asBoolean) module.enable()
-        module.setDrawn(moduleObject["Drawn"].asBoolean)
-        module.setBind(moduleObject["Bind"].asInt)
-        inputStream.close()
     }
 }

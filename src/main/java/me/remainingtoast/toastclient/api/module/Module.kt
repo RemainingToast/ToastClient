@@ -1,15 +1,21 @@
 package me.remainingtoast.toastclient.api.module
 
 import com.lukflug.panelstudio.settings.Toggleable
-import me.remainingtoast.toastclient.ToastClient
-import me.remainingtoast.toastclient.api.setting.type.*
+import kotlinx.serialization.Serializable
+import me.remainingtoast.toastclient.api.config.CustomSerializers
+import me.remainingtoast.toastclient.api.setting.Setting
+import me.remainingtoast.toastclient.api.setting.Setting.*
 import java.awt.Color
+import java.util.*
 
+@Serializable
 open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
 
     var name: String = ""
     private var category: Category = Category.NONE
+    @Serializable(with = CustomSerializers.ColorSerializer::class)
     private var color: Color = Color.BLACK
+    var settings: ArrayList<Setting> = ArrayList()
 
     private var enabled = false
     private var drawn = false
@@ -65,12 +71,14 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
     }
 
     open fun setEnabled(newVal: Boolean) {
-        this.enabled = newVal
-        if (newVal) {
-            onEnable()
-        } else {
-            onDisable()
+        if (newVal != this.enabled) {
+            if (newVal) {
+                onEnable()
+            } else {
+                onDisable()
+            }
         }
+        this.enabled = newVal
     }
 
     open fun isDrawn(): Boolean {
@@ -107,27 +115,27 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
 
     /** Setting registry functions below!  */
     protected open fun registerBoolean(name: String, description: String, value: Boolean): BooleanSetting {
-        val setting = BooleanSetting(name, description, this, value)
-        ToastClient.SETTING_MANAGER.addSetting(setting)
+        val setting = BooleanSetting(name, description, value)
+        settings.add(setting)
         return setting
     }
 
     protected open fun registerBoolean(name: String, value: Boolean): BooleanSetting {
-        val setting = BooleanSetting(name, "", this, value)
-        ToastClient.SETTING_MANAGER.addSetting(setting)
+        val setting = BooleanSetting(name, "", value)
+        settings.add(setting)
         return setting
     }
 
     protected open fun registerColor(
         name: String,
         description: String,
-        rainbowEnabled: Boolean,
-        alphaEnabled: Boolean,
         value: Color,
-        rainbow: Boolean
+        alphaEnabled: Boolean,
+        rainbow: Boolean,
+        rainbowEnabled: Boolean
     ): ColorSetting {
-        val setting = ColorSetting(value, rainbow, name, rainbowEnabled, alphaEnabled, description, this)
-        ToastClient.SETTING_MANAGER.addSetting(setting)
+        val setting = ColorSetting(name, description, value, alphaEnabled, rainbow, rainbowEnabled)
+        settings.add(setting)
         return setting
     }
 
@@ -139,14 +147,14 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         max: Double,
         isLimited: Boolean
     ): DoubleSetting {
-        val setting = DoubleSetting(value, name, description, this, min, max, isLimited)
-        ToastClient.SETTING_MANAGER.addSetting(setting)
+        val setting = DoubleSetting(name, description, value, min, max, isLimited)
+        settings.add(setting)
         return setting
     }
 
-    protected open fun <T : Enum<T>> registerEnum(value: T, name: String, description: String): EnumSetting<T> {
-        val setting: EnumSetting<T> = EnumSetting<T>(value, name, description, this)
-        ToastClient.SETTING_MANAGER.addSetting(setting)
+    protected open fun registerList(name: String, description: String, list: List<String>, index: Int): ListSetting {
+        val setting: ListSetting = ListSetting(name, description, list, index)
+        settings.add(setting)
         return setting
     }
 
@@ -158,14 +166,14 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         max: Int,
         isLimited: Boolean
     ): IntegerSetting {
-        val setting = IntegerSetting(value, name, description, this, min, max, isLimited)
-        ToastClient.SETTING_MANAGER.addSetting(setting)
+        val setting = IntegerSetting(name, description, value, min, max, isLimited)
+        settings.add(setting)
         return setting
     }
 
     protected open fun registerKeybind(name: String, description: String, value: Int): KeybindSetting {
-        val setting: KeybindSetting = KeybindSetting(value, name, description, this)
-        ToastClient.SETTING_MANAGER.addSetting(setting)
+        val setting: KeybindSetting = KeybindSetting(name, description, value)
+        settings.add(setting)
         return setting
     }
 

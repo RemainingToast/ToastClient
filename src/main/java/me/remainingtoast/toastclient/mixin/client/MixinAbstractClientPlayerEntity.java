@@ -14,16 +14,16 @@ public abstract class MixinAbstractClientPlayerEntity {
     @Inject(method = "getCapeTexture", at = @At("HEAD"), cancellable = true)
     public void getCapeTexture(CallbackInfoReturnable<Identifier> cir){
         if(Capes.INSTANCE.isEnabled()){
-            switch (Capes.INSTANCE.getCapeType().getValue()){
-                case OLD_MOJANG: {
+            switch (Capes.INSTANCE.getCapeType().getIndex()){
+                case 0: {
                     cir.setReturnValue(new Identifier("toastclient", "capes/old_mojang.png"));
                     return;
                 }
-                case MINECON2013:{
+                case 1:{
                     cir.setReturnValue(new Identifier("toastclient", "capes/minecon_2013.png"));
                     return;
                 }
-                case MINECON2016: {
+                case 2: {
                     cir.setReturnValue(new Identifier("toastclient", "capes/minecon_2016.png"));
                     return;
                 }

@@ -1,12 +1,14 @@
 package me.remainingtoast.toastclient.mixin.client;
 
 import me.remainingtoast.toastclient.ToastClient;
+import me.remainingtoast.toastclient.api.config.SaveConfig;
 import me.remainingtoast.toastclient.api.event.ScreenEvent;
 import me.remainingtoast.toastclient.api.event.TickEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.crash.CrashReport;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -30,6 +31,7 @@ dependencies {
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile "com.lukflug:panelstudio:${project.panelstudio_version}"
     modCompile "com.lukflug:panelstudio-mc16:0.1.9"
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
 }
 
 processResources {
@@ -68,6 +70,7 @@ shadowJar {
         include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
         include(dependency('com.lukflug:panelstudio'))
         include(dependency('com.lukflug:panelstudio-mc16'))
+        include(dependency('org.jetbrains.kotlinx:kotlinx-serialization-json'))
     }
     classifier = 'shadow'
 }

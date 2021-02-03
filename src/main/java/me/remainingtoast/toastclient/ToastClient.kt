@@ -1,14 +1,14 @@
 package me.remainingtoast.toastclient
 
+import kotlinx.serialization.json.Json
 import me.remainingtoast.toastclient.api.command.CommandManager
 import me.remainingtoast.toastclient.api.config.LoadConfig
 import me.remainingtoast.toastclient.api.config.SaveConfig
 import me.remainingtoast.toastclient.api.event.OverlayEvent
 import me.remainingtoast.toastclient.api.event.TickEvent
-import me.remainingtoast.toastclient.api.module.ModuleManager
-import me.remainingtoast.toastclient.api.setting.SettingManager
-import me.remainingtoast.toastclient.api.util.mc
 import me.remainingtoast.toastclient.api.gui.ToastGUI
+import me.remainingtoast.toastclient.api.module.ModuleManager
+import me.remainingtoast.toastclient.api.util.mc
 import me.zero.alpine.bus.EventBus
 import me.zero.alpine.bus.EventManager
 import me.zero.alpine.listener.EventHandler
@@ -21,10 +21,11 @@ class ToastClient : ModInitializer {
     companion object {
         val MODNAME = "Toast Client"
         val MODVER = "2.0.1"
-        val SETTING_MANAGER = SettingManager
-        val MODULE_MANAGER = ModuleManager
-        val COMMAND_MANAGER = CommandManager
         val CLICKGUI = ToastGUI()
+        val JSON = Json {
+            ignoreUnknownKeys = true
+            prettyPrint = true
+        }
 
         var CMD_PREFIX = "."
 
@@ -33,23 +34,27 @@ class ToastClient : ModInitializer {
     }
 
     override fun onInitialize() {
-        COMMAND_MANAGER.init()
+        println(mc.runDirectory.canonicalPath)
+        CommandManager.init()
         EVENT_BUS.subscribe(onRender)
         EVENT_BUS.subscribe(onUpdate)
-        SaveConfig.init()
         LoadConfig.init()
-        Runtime.getRuntime().addShutdownHook(Thread {
-            SaveConfig.saveEverything()
-            println("${MODNAME.toUpperCase()} SAVING AND SHUTTING DOWN")
-        })
+        SaveConfig.init()
+        SaveConfig.saveEverything()
 
+        Runtime.getRuntime().addShutdownHook(object : Thread() {
+            override fun run() {
+                println("${MODNAME.toUpperCase()} SAVING AND SHUTTING DOWN")
+                SaveConfig.saveEverything()
+            }
+        })
         println("${MODNAME.toUpperCase()} $MODVER STARTING")
     }
 
     @EventHandler
     val onRender = Listener(EventHook<OverlayEvent> {
         if (mc.player == null) return@EventHook
-        MODULE_MANAGER.onRender()
+        ModuleManager.onRender()
         CLICKGUI.render()
     })
 

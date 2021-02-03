@@ -1,6 +1,7 @@
 package me.remainingtoast.toastclient.mixin.client;
 
 import me.remainingtoast.toastclient.ToastClient;
+import me.remainingtoast.toastclient.api.module.ModuleManager;
 import net.minecraft.client.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,7 +13,7 @@ public class MixinKeyboard {
     @Inject(at = @At("HEAD"), method = "onKey", cancellable = true)
     public void onKey(long window, int key, int scancode, int i, int j, CallbackInfo ci) {
         if(i == 1){
-            ToastClient.Companion.getMODULE_MANAGER().toggleBind(key);
+            ModuleManager.INSTANCE.toggleBind(key);
             ToastClient.Companion.getCLICKGUI().handleKeyEvent(scancode);
         }
     }

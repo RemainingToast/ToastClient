@@ -2,7 +2,7 @@ package me.remainingtoast.toastclient.client.module.combat
 
 import me.remainingtoast.toastclient.api.module.Category
 import me.remainingtoast.toastclient.api.module.Module
-import me.remainingtoast.toastclient.api.setting.type.DoubleSetting
+import me.remainingtoast.toastclient.api.setting.Setting.DoubleSetting
 import me.remainingtoast.toastclient.api.util.TimerUtil
 import me.remainingtoast.toastclient.api.util.mc
 import net.minecraft.client.gui.screen.DeathScreen
