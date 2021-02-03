@@ -31,7 +31,8 @@ dependencies {
     compile "com.github.ZeroMemes:Alpine:1.9"
     compile "com.lukflug:panelstudio:${project.panelstudio_version}"
     modCompile "com.lukflug:panelstudio-mc16:0.1.9"
-    compile "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+    modImplementation "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.0.1"
+    modImplementation "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.0.1"
 }
 
 processResources {
@@ -70,7 +71,8 @@ shadowJar {
         include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
         include(dependency('com.lukflug:panelstudio'))
         include(dependency('com.lukflug:panelstudio-mc16'))
-        include(dependency('org.jetbrains.kotlinx:kotlinx-serialization-json'))
+        include(dependency('org.jetbrains.kotlinx:kotlinx-serialization-core-jvm'))
+        include(dependency('org.jetbrains.kotlinx:kotlinx-serialization-json-jvm'))
     }
     classifier = 'shadow'
 }
