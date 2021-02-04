@@ -4,7 +4,7 @@ import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.client.module.client.*
 import me.remainingtoast.toastclient.client.module.combat.AutoArmour
 import me.remainingtoast.toastclient.client.module.combat.AutoRespawn
-import me.remainingtoast.toastclient.client.module.combat.AutoTotem
+import me.remainingtoast.toastclient.client.module.combat.Offhand
 import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
 import me.remainingtoast.toastclient.client.module.movement.SafeWalk
 import me.remainingtoast.toastclient.client.module.player.MCF
@@ -21,7 +21,7 @@ object ModuleManager {
     init {
         modules = ArrayList()
         register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
-                NoRender, ArrayListModule, MCF, AutoTotem, Capes, NameTags,
+                NoRender, ArrayListModule, MCF, Offhand, Capes, NameTags,
                 FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
                 CustomChat
         )
