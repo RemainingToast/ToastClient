@@ -5,6 +5,7 @@ import me.remainingtoast.toastclient.client.module.client.*
 import me.remainingtoast.toastclient.client.module.combat.AutoArmour
 import me.remainingtoast.toastclient.client.module.combat.AutoRespawn
 import me.remainingtoast.toastclient.client.module.combat.AutoTotem
+import me.remainingtoast.toastclient.client.module.combat.KillAura
 import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
 import me.remainingtoast.toastclient.client.module.movement.SafeWalk
 import me.remainingtoast.toastclient.client.module.player.MCF
@@ -23,7 +24,7 @@ object ModuleManager {
         register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
                 NoRender, ArrayListModule, MCF, AutoTotem, Capes, NameTags,
                 FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
-                CustomChat
+                CustomChat, KillAura
         )
         println("MODULE MANAGER INITIALISED")
     }

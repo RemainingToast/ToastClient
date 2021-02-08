@@ -22,6 +22,7 @@ class ToastClient : ModInitializer {
         val MODNAME = "Toast Client"
         val MODVER = "2.0.1"
         val CLICKGUI = ToastGUI()
+        val DIRECTORY = mc.runDirectory.canonicalPath;
         val JSON = Json {
             ignoreUnknownKeys = true
             prettyPrint = true
@@ -34,7 +35,6 @@ class ToastClient : ModInitializer {
     }
 
     override fun onInitialize() {
-        println(mc.runDirectory.canonicalPath)
         CommandManager.init()
         EVENT_BUS.subscribe(onRender)
         EVENT_BUS.subscribe(onUpdate)
