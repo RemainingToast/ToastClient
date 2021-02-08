@@ -146,7 +146,6 @@ sealed class Setting {
         }
 
         override fun increment() {
-            ++index
             index = (index + 1) % list.size
             value = list[index]
         }
