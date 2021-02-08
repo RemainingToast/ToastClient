@@ -34,8 +34,8 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         this.name = name
         this.category = category
         this.alwaysEnabled = alwaysEnabled
-        enabled = false
-        drawn = true
+        enabled = true
+        drawn = false
     }
 
     constructor(name: String, category: Category, alwaysEnabled: Boolean, drawnBoolean: Boolean) {
