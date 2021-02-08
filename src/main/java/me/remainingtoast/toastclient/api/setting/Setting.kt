@@ -82,7 +82,7 @@ sealed class Setting {
         }
 
         override fun getNumber(): Double {
-            return value ?: 0.0
+            return value
         }
 
         override fun getPrecision(): Int {

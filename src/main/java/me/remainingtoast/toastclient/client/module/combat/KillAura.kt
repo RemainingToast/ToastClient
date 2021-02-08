@@ -21,7 +21,7 @@ import net.minecraft.util.math.Vec3d
 object KillAura : Module("KillAura", Category.COMBAT) {
 
     val reach = registerDouble("Reach", "",4.5, 1.0, 5.0, false)
-    val rotate = registerBoolean("Rotate", true)
+//    val rotate = registerBoolean("Rotate", true)
     val autoSwitch = registerBoolean("AutoSwitch", false)
     val ignoreEating = registerBoolean("IgnoreEating", true)
     val players = registerBoolean("Players", true)

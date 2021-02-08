@@ -16,7 +16,7 @@ import java.awt.Color.RGBtoHSB
 import java.awt.Point
 import java.util.*
 
-object ArrayListModule : HUDModule("ArrayList", Point(5, 5)) {
+object ArrayListModule : HUDModule("ArrayList", Point(5, 50)) {
 
     override lateinit var component: FixedComponent
     private var list: ModuleList = ModuleList()

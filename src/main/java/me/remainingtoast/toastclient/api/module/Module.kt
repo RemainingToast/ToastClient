@@ -30,12 +30,29 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         drawn = true
     }
 
-    constructor(name: String, category: Category, bool: Boolean) {
+    constructor(name: String, category: Category, alwaysEnabled: Boolean) {
         this.name = name
         this.category = category
-        this.alwaysEnabled = bool
+        this.alwaysEnabled = alwaysEnabled
         enabled = false
         drawn = true
+    }
+
+    constructor(name: String, category: Category, alwaysEnabled: Boolean, drawnBoolean: Boolean) {
+        this.name = name
+        this.category = category
+        this.alwaysEnabled = alwaysEnabled
+        enabled = false
+        drawn = drawnBoolean
+    }
+
+    constructor(name: String, category: Category, alwaysEnabled: Boolean, key: Int, drawnBoolean: Boolean) {
+        this.name = name
+        this.category = category
+        this.alwaysEnabled = alwaysEnabled
+        this.bind = key
+        enabled = false
+        drawn = drawnBoolean
     }
 
     constructor(name: String, category: Category, key: Int) {
