@@ -5,7 +5,7 @@ import me.remainingtoast.toastclient.api.module.Module
 import me.remainingtoast.toastclient.api.setting.Setting.ListSetting
 import net.minecraft.util.Identifier
 
-object Font : Module("Font", Category.CLIENT, true) {
+object Font : Module("Font", Category.CLIENT, true, false) {
 
     private val fonts = arrayListOf (
         "MINECRAFT",

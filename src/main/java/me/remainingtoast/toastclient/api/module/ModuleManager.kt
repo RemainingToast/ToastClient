@@ -4,8 +4,11 @@ import me.remainingtoast.toastclient.ToastClient
 import me.remainingtoast.toastclient.client.module.client.*
 import me.remainingtoast.toastclient.client.module.combat.*
 import me.remainingtoast.toastclient.client.module.hud.ArrayListModule
+import me.remainingtoast.toastclient.client.module.misc.PortalChat
+import me.remainingtoast.toastclient.client.module.movement.Jesus
 import me.remainingtoast.toastclient.client.module.movement.NoFall
 import me.remainingtoast.toastclient.client.module.movement.SafeWalk
+import me.remainingtoast.toastclient.client.module.movement.Sprint
 import me.remainingtoast.toastclient.client.module.player.AntiHunger
 import me.remainingtoast.toastclient.client.module.player.MCF
 import me.remainingtoast.toastclient.client.module.player.NoEntityTrace
@@ -13,6 +16,7 @@ import me.remainingtoast.toastclient.client.module.render.*
 import org.lwjgl.glfw.GLFW
 import java.util.*
 import java.util.stream.Collectors
+import kotlin.Comparator
 
 object ModuleManager {
 
@@ -23,8 +27,10 @@ object ModuleManager {
         register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
                 NoRender, ArrayListModule, MCF, AutoTotem, Capes, NameTags,
                 FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
-                CustomChat, KillAura, AntiKnockback, NoFall, AntiHunger
+                CustomChat, KillAura, AntiKnockback, NoFall, AntiHunger, Sprint, Jesus,
+                PortalChat
         )
+        Collections.sort(modules, Comparator.comparing(Module::name))
         println("MODULE MANAGER INITIALISED")
     }
 

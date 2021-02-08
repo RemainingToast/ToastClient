@@ -118,6 +118,10 @@ open class Module : com.lukflug.panelstudio.settings.KeybindSetting,Toggleable {
         setEnabled(!isEnabled())
     }
 
+    fun toggleDrawn(){
+        setDrawn(!isDrawn())
+    }
+
     open fun getHudInfo(): String {
         return ""
     }
