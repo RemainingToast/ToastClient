@@ -1,5 +1,5 @@
 
-# Toast Client 2.0
+## Toast Client 2.0
 [![Download](https://img.shields.io/github/downloads/RemainingToast/toastclient/total?color=green&label=total%20downloads)](https://github.com/RemainingToast/toastclient/releases/)
 [![Discord](https://img.shields.io/discord/668416925671489547)](https://discord.gg/gxyWEdG)
 ![GitHub lines of code](https://tokei.rs/b1/github/RemainingToast/toastclient)
