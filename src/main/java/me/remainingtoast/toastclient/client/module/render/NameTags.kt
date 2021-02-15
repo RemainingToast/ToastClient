@@ -14,8 +14,8 @@ import net.minecraft.util.Formatting
 
 object NameTags : Module("NameTags", Category.RENDER){
 
-    fun renderNameTag(entity: Entity, name: String, matrixStack: MatrixStack, vertexConsumerProvider: VertexConsumerProvider?, int_1: Int) {
-        var name = name
+    fun renderNameTag(entity: Entity, str: String, matrixStack: MatrixStack, vertexConsumerProvider: VertexConsumerProvider?, int_1: Int) {
+        var name = str
         val distance: Double = MinecraftClient.getInstance().entityRenderDispatcher.getSquaredDistanceToCamera(entity)
         if (entity is LivingEntity) {
             if(entity is PlayerEntity){

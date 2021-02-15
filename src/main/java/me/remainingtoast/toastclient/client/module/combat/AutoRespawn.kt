@@ -22,12 +22,9 @@ object AutoRespawn : Module("AutoRespawn", Category.COMBAT) {
 
     override fun onUpdate() {
         if(mc.currentScreen != null){
-            println("Current screen isnt null")
-            if(timer.isDelayComplete(delay.value!!.toLong() * 1000L)){
-                println("Delay complete")
+             if(timer.isDelayComplete(delay.value.toLong() * 1000L)){
                 timer.setLastMS()
                 if(mc.currentScreen is DeathScreen){
-                    println("Respawn cock head")
                     mc.player!!.requestRespawn()
                     mc.openScreen(null)
                 }

@@ -9,7 +9,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.command.CommandSource
 import net.minecraft.util.Formatting
 
-object ToggleModule : Command("Toggle") {
+object Toggle : Command("Toggle") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral("toggle") {
             argument("module", ModuleArgumentType.getModule()){

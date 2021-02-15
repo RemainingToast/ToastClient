@@ -6,6 +6,7 @@ import me.remainingtoast.toastclient.api.module.Module
 import me.remainingtoast.toastclient.api.module.ModuleManager
 import me.remainingtoast.toastclient.api.setting.Setting.*
 import me.remainingtoast.toastclient.client.module.client.ClickGUIModule
+import me.remainingtoast.toastclient.client.module.client.HUDEditor
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.MathHelper
 import java.io.*
@@ -98,7 +99,7 @@ object LoadConfig {
             }
             module.setBind(decodedModule.getBind())
             module.setDrawn(decodedModule.isDrawn())
-            module.setEnabled(module != ClickGUIModule && decodedModule.isEnabled())
+            module.setEnabled(module != ClickGUIModule && module != HUDEditor && decodedModule.isEnabled())
         }
     }
 }

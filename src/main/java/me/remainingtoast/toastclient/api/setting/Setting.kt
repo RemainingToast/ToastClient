@@ -82,7 +82,7 @@ sealed class Setting {
         }
 
         override fun getNumber(): Double {
-            return value ?: 0.0
+            return value
         }
 
         override fun getPrecision(): Int {
@@ -146,8 +146,7 @@ sealed class Setting {
         }
 
         override fun increment() {
-            ++index
-            while (list.size < index) index -= list.size
+            index = (index + 1) % list.size
             value = list[index]
         }
     }

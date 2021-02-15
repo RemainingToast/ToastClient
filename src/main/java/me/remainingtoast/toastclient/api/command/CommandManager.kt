@@ -1,7 +1,10 @@
 package me.remainingtoast.toastclient.api.command
 
-import me.remainingtoast.toastclient.client.command.ToggleModule
+import me.remainingtoast.toastclient.client.command.Drawn
+import me.remainingtoast.toastclient.client.command.Toggle
 import org.apache.commons.lang3.CharSequenceUtils.subSequence
+import java.util.*
+
 
 object CommandManager {
 
@@ -12,10 +15,12 @@ object CommandManager {
      */
     fun init() {
         commands.clear()
-        commands.add(ToggleModule)
+        commands.add(Drawn)
+        commands.add(Toggle)
         commands.forEach {
             it.register(Command.dispatcher)
         }
+        Collections.sort(commands, Comparator.comparing(Command::label))
         println("COMMAND MANAGER INITIALISED")
     }
 

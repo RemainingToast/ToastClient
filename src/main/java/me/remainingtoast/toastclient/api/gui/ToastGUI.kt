@@ -20,6 +20,7 @@ import me.remainingtoast.toastclient.client.module.client.Colors
 import me.remainingtoast.toastclient.client.module.client.Font
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
+import net.minecraft.util.Identifier
 import java.awt.Color
 import java.awt.Point
 
@@ -40,10 +41,21 @@ class ToastGUI(boolean: Boolean) : MinecraftHUDGUI() {
                 return "toastclient:gui/"
             }
 
+            fun getFontFromType(index: Int): Identifier {
+                return when (index) {
+                    1 -> {
+                        Identifier("toastclient", "roboto")
+                    }
+                    else -> {
+                        Identifier("minecraft", "default")
+                    }
+                }
+            }
+
             override fun drawString(pos: Point, s: String, c: Color) {
                 if (matrixStack == null) return
                 end()
-                val text = LiteralText(s).styled { style -> style.withFont(Font.getFontFromType(Font.fontType.index)) }
+                val text = LiteralText(s).styled { style -> style.withFont(getFontFromType(Font.fontType.index)) }
                 MinecraftClient.getInstance().textRenderer.drawWithShadow(
                         matrixStack,
                         text,

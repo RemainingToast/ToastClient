@@ -51,16 +51,14 @@ object SaveConfig {
                 e.printStackTrace()
             }
         }
-        println("Finished saving modules.")
     }
 
     fun registerModule(module: Module) {
         registerFiles(moduleDirectory, module.name)
         val path = "$mainDirectory$moduleDirectory${module.name}.json"
-        println("Attempting to save ${module.name} to $path")
         try {
             val writer = FileWriter(File(path))
-            writer.write(ToastClient.JSON.encodeToString<Module>(module))
+            writer.write(ToastClient.JSON.encodeToString(module))
             writer.close()
         } catch (e: IOException) {
             println("Could not save ${module.name} to $path")

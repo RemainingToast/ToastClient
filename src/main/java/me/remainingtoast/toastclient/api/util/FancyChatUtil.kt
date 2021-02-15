@@ -89,7 +89,7 @@ object FancyChatUtil {
 
     // TODO: find a easier way to do this
     private val classicLetters: Map<String, String>
-        private get() =// TODO: find a easier way to do this
+        get() =// TODO: find a easier way to do this
             Stream.of(
                 arrayOf("0", "０"),
                 arrayOf("1", "１"),
