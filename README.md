@@ -5,6 +5,10 @@
 ![GitHub lines of code](https://tokei.rs/b1/github/RemainingToast/toastclient)
 ![GitHub last commit](https://img.shields.io/github/last-commit/RemainingToast/toastclient)
 
+### Gui Preview (Modules as of v2.0.1)
+<img alt="PNG" src="https://cdn.discordapp.com/attachments/798081157618204672/808979930393477120/unknown.png" />
+
+
 ### Installing
 *I recommend using [multimc](https://multimc.org/) as it makes installing Fabric much easier.*
 
