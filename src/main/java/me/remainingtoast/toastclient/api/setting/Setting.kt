@@ -132,7 +132,7 @@ sealed class Setting {
     data class ListSetting(
         override val name: String,
         override val description: String = "",
-        val list: List<String>,
+        var list: List<String>,
         var index: Int,
     ) :
         Setting(), com.lukflug.panelstudio.settings.EnumSetting {

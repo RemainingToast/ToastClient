@@ -25,7 +25,7 @@ object ModuleManager {
     init {
         modules = ArrayList()
         register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
-                NoRender, ArrayListModule, MCF, AutoTotem, Capes, NameTags,
+                NoRender, ArrayListModule, MCF, Offhand, Capes, NameTags,
                 FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
                 CustomChat, KillAura, AntiKnockback, NoFall, AntiHunger, Sprint, Jesus,
                 PortalChat
