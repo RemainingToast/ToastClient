@@ -22,53 +22,53 @@ import java.util.*
  **/
 object SaveConfig {
 
-    val mainDirectory = "${MinecraftClient.getInstance().runDirectory.canonicalPath}/toastclient/"
-    val moduleDirectory = "modules/"
-
-    fun init() {
-        try {
-            if(!Files.exists(Paths.get(mainDirectory))) Files.createDirectories(Paths.get(mainDirectory))
-            if(!Files.exists(Paths.get(mainDirectory + moduleDirectory))) Files.createDirectories(Paths.get(
-                mainDirectory + moduleDirectory))
-        } catch (e: IOException) {}
-    }
-
-    fun registerFiles(location: String, name: String) {
-        val pathString = "$mainDirectory$location$name.json"
-        if (!Files.exists(Paths.get(pathString))) {
-            Files.createFile(Paths.get(pathString))
-        } else {
-            val file = File(pathString)
-            file.delete()
-            Files.createFile(Paths.get(pathString))
-        }
-    }
-
-    fun saveModules() {
-        for (module in modules) {
-            try {
-                registerModule(module)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    fun registerModule(module: Module) {
-        registerFiles(moduleDirectory, module.name)
-        val path = "$mainDirectory$moduleDirectory${module.name}.json"
-        try {
-            val writer = FileWriter(File(path))
-            writer.write(ToastClient.JSON.encodeToString(module))
-            writer.close()
-        } catch (e: IOException) {
-            println("Could not save ${module.name} to $path")
-            e.printStackTrace()
-        }
-    }
-
-
-    fun saveEverything(){
-        saveModules()
-    }
+//    val mainDirectory = "${MinecraftClient.getInstance().runDirectory.canonicalPath}/toastclient/"
+//    val moduleDirectory = "modules/"
+//
+//    fun init() {
+//        try {
+//            if(!Files.exists(Paths.get(mainDirectory))) Files.createDirectories(Paths.get(mainDirectory))
+//            if(!Files.exists(Paths.get(mainDirectory + moduleDirectory))) Files.createDirectories(Paths.get(
+//                mainDirectory + moduleDirectory))
+//        } catch (e: IOException) {}
+//    }
+//
+//    fun registerFiles(location: String, name: String) {
+//        val pathString = "$mainDirectory$location$name.json"
+//        if (!Files.exists(Paths.get(pathString))) {
+//            Files.createFile(Paths.get(pathString))
+//        } else {
+//            val file = File(pathString)
+//            file.delete()
+//            Files.createFile(Paths.get(pathString))
+//        }
+//    }
+//
+//    fun saveModules() {
+//        for (module in modules) {
+//            try {
+//                registerModule(module)
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
+//
+//    fun registerModule(module: Module) {
+//        registerFiles(moduleDirectory, module.name)
+//        val path = "$mainDirectory$moduleDirectory${module.name}.json"
+//        try {
+//            val writer = FileWriter(File(path))
+//            writer.write(ToastClient.JSON.encodeToString(module))
+//            writer.close()
+//        } catch (e: IOException) {
+//            println("Could not save ${module.name} to $path")
+//            e.printStackTrace()
+//        }
+//    }
+//
+//
+//    fun saveEverything(){
+//        saveModules()
+//    }
 }

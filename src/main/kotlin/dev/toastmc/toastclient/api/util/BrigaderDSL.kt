@@ -1,4 +1,4 @@
-package me.remainingtoast.toastclient.api.util
+package dev.toastmc.toastclient.api.util
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.*

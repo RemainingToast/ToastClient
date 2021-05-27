@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.api.util.font;
 
-import me.remainingtoast.toastclient.api.util.Vector2f;
+import dev.toastmc.toastclient.api.util.Vector2f;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

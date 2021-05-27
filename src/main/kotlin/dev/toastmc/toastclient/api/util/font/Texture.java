@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.api.util.font;
 
-import me.remainingtoast.toastclient.api.util.Vector2f;
+import dev.toastmc.toastclient.api.util.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 

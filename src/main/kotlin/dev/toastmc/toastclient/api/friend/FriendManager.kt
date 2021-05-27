@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.api.friend
 
-import me.remainingtoast.toastclient.api.util.ToastPlayer
+import dev.toastmc.toastclient.api.util.ToastPlayer
 import net.minecraft.entity.player.PlayerEntity
 import java.util.*
 import java.util.function.Consumer

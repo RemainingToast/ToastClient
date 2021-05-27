@@ -1,5 +1,14 @@
 package dev.toastmc.toastclient.api.module
 
+import dev.toastmc.toastclient.impl.module.client.*
+import dev.toastmc.toastclient.impl.module.combat.*
+import dev.toastmc.toastclient.impl.module.hud.*
+import dev.toastmc.toastclient.impl.module.misc.*
+import dev.toastmc.toastclient.impl.module.movement.*
+import dev.toastmc.toastclient.impl.module.player.*
+import dev.toastmc.toastclient.impl.module.render.*
+
+import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
 import java.util.*
 import java.util.stream.Collectors
@@ -11,25 +20,28 @@ object ModuleManager {
 
     init {
         modules = ArrayList()
-//        register(ClickGUIModule, Colors, Font, FriendModule, HUDEditor,
-//                NoRender, ArrayListModule, MCF, Offhand, Capes, NameTags,
-//                FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
-//                CustomChat, KillAura, AntiKnockback, NoFall, AntiHunger, Sprint, Jesus,
-//                PortalChat
-//        )
-        Collections.sort(modules, Comparator.comparing(Module::name))
+        register(Font, FriendModule, NoRender, MCF, Offhand, Capes, NameTags,
+                FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
+                CustomChat, KillAura, AntiKnockback, NoFall, AntiHunger, Sprint, Jesus,
+                PortalChat
+        )
+        Collections.sort(modules, Comparator.comparing(Module::getName))
         println("MODULE MANAGER INITIALISED")
     }
 
     fun getModulesByCategory(category: Module.Category): ArrayList<Module>? {
-        return modules.stream().filter { module: Module -> module.getCategory() == category }
-            .collect(Collectors.toCollection { ArrayList() })
+        return modules.stream().filter {
+                module: Module -> module.getCategory() == category
+        }.collect(Collectors.toCollection { ArrayList() })
     }
 
-    fun toggleBind(key: Int) {
-        if (key == 0 || key == GLFW.GLFW_KEY_UNKNOWN) return
-        modules.filter { it.getBind() == key }.forEach {
-            it.toggle()
+    fun onKeyRelease(window: Long, keyCode: Int, scancode: Int) {
+        for (mod in modules) {
+            if (mod.getKey() === InputUtil.fromKeyCode(keyCode, scancode)) {
+                if (GLFW.glfwGetKey(window, keyCode) == 0) {
+                    mod.toggle()
+                }
+            }
         }
     }
 
@@ -43,9 +55,8 @@ object ModuleManager {
         modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onUpdate() }
     }
 
-    fun onRender() {
-        modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onOverlayRender() }
-//        ToastClient.CLICKGUI.render()
+    fun onHUDRender() {
+        modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onHUDRender() }
     }
 
 }

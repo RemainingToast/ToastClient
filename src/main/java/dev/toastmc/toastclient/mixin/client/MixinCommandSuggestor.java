@@ -5,6 +5,8 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.suggestion.Suggestions;
 import dev.toastmc.toastclient.ToastClient;
+import dev.toastmc.toastclient.api.command.Command;
+import dev.toastmc.toastclient.api.command.CommandManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.CommandSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -38,19 +40,19 @@ public abstract class MixinCommandSuggestor {
     public void refresh(CallbackInfo ci, String string, StringReader stringReader) {
 //        if(!slashOptional) return;
         int i;
-        if(stringReader.canRead() && stringReader.peek() == ToastClient.CMD_PREFIX.charAt(0)){
+        if(stringReader.canRead() && stringReader.peek() == CommandManager.prefix.charAt(0)){
             stringReader.skip();
-//            CommandDispatcher<CommandSource> commandDispatcher = Command.dispatcher;
-//            if(parse == null && MinecraftClient.getInstance().player != null) parse = commandDispatcher.parse(stringReader, MinecraftClient.getInstance().player.networkHandler.getCommandSource());
-//            i = textField.getCursor();
-//            if (i >= 1 && (!completingSuggestions)) {
-//                pendingSuggestions = commandDispatcher.getCompletionSuggestions(parse, i);
-//                pendingSuggestions.thenRun(() -> {
-//                    if (pendingSuggestions.isDone()) {
-//                        show();
-//                    }
-//                });
-//            }
+            CommandDispatcher<CommandSource> commandDispatcher = Command.dispatcher;
+            if(parse == null && MinecraftClient.getInstance().player != null) parse = commandDispatcher.parse(stringReader, MinecraftClient.getInstance().player.networkHandler.getCommandSource());
+            i = textField.getCursor();
+            if (i >= 1 && (!completingSuggestions)) {
+                pendingSuggestions = commandDispatcher.getCompletionSuggestions(parse, i);
+                pendingSuggestions.thenRun(() -> {
+                    if (pendingSuggestions.isDone()) {
+                        show();
+                    }
+                });
+            }
             ci.cancel();
         }
     }
