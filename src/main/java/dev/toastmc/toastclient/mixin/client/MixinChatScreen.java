@@ -18,8 +18,11 @@ public class MixinChatScreen {
 
     @Shadow protected TextFieldWidget chatField;
 
-    @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
-    public void sendMessage(ChatScreen screen, String message) {
+    @Redirect(
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"),
+            method = {"keyPressed"}
+    )
+    private void on(ChatScreen screen, String message) {
         if(message.startsWith(CommandManager.prefix) && MinecraftClient.getInstance().player != null){
             MinecraftClient.getInstance().inGameHud.getChatHud().addToMessageHistory(message);
             message = message.substring(1);

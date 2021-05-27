@@ -23,14 +23,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinAbstractSignBlock {
 
 
-    @Inject(method = "onUse", at = @At("HEAD"))
-    public void onSignUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"onUse"}
+    )
+    private void on(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         if (player.isSneaking()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof SignBlockEntity) {
                 SignBlockEntity signBlockEntity = (SignBlockEntity) blockEntity;
                 Text[] lines = ((ISignBlockEntity)signBlockEntity).getText();
                 StringBuilder textToCopy = new StringBuilder();
+
                 for (Text text : lines) {
                     String rowString = text.getString();
                     if (!rowString.isEmpty()) {
@@ -38,6 +42,7 @@ public class MixinAbstractSignBlock {
                         textToCopy.append("\n");
                     }
                 }
+
                 MinecraftClient.getInstance().keyboard.setClipboard(textToCopy.toString());
                 player.sendMessage(new LiteralText("Sign copied.").formatted(Formatting.GREEN),false);
             }

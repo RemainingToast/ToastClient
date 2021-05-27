@@ -10,8 +10,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class MixinAbstractClientPlayerEntity {
 
-    @Inject(method = "getCapeTexture", at = @At("HEAD"), cancellable = true)
-    public void getCapeTexture(CallbackInfoReturnable<Identifier> cir){
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"getCapeTexture"},
+            cancellable = true
+    )
+    private void on(CallbackInfoReturnable<Identifier> cir){
+//        TODO: Better™ Capes
 //        if(Capes.INSTANCE.isEnabled()){
 //            switch (Capes.INSTANCE.getCapeType().getIndex()){
 //                case 0: {

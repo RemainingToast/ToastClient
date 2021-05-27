@@ -13,8 +13,13 @@ public class MixinSharedConstants {
      * @author Morgz
      * Makes you able to "chat" § etc (normally "illegal" characters)
      */
-    @Inject(method = "isValidChar", at = @At(value = "HEAD"), cancellable = true)
-    private static void isValidChar(CallbackInfoReturnable<Boolean> info) {
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"isValidChar"},
+            cancellable = true
+    )
+    private static void on(CallbackInfoReturnable<Boolean> info) {
         info.setReturnValue(true);
     }
+
 }

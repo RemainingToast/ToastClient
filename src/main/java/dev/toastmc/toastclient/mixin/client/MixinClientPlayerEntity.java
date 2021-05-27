@@ -1,6 +1,9 @@
 package dev.toastmc.toastclient.mixin.client;
 
 import dev.toastmc.toastclient.ToastClient;
+import dev.toastmc.toastclient.api.events.CloseScreenInPortalEvent;
+import dev.toastmc.toastclient.api.events.InputUpdateEvent;
+import dev.toastmc.toastclient.api.events.PlayerMoveEvent;
 import dev.toastmc.toastclient.mixin.extend.ExtendedInput;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -17,30 +20,39 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPlayerEntity.class)
 public class MixinClientPlayerEntity {
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;tick(Z)V"))
-    public void tick(Input input, boolean bl) {
-        Input prev = ((ExtendedInput) input).copy(); // Create a copy of the previous input state
-        input.tick(bl); // Update the current one
-//        InputUpdateEvent ev = new InputUpdateEvent(prev, input); // fire an event to notify the (potential) change in input
-//        ToastClient.EVENT_BUS.post(ev);
-//        if (ev.isCancelled()) ((ExtendedInput) input).update(prev); // revert to old when event is cancelled
-        // we don't need to mutate input again as any listener that did mutate it, mutated the one minecraft uses
+    @Redirect(
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;tick(Z)V"),
+            method = {"tickMovement"}
+    )
+    private void on(Input input, boolean bl) {
+        Input prev = ((ExtendedInput) input).copy();
+        input.tick(bl);
+        InputUpdateEvent ev = new InputUpdateEvent(prev, input);
+        ToastClient.INSTANCE.getEventBus().post(ev);
+        if (ev.isCancelled()) ((ExtendedInput) input).update(prev);
     }
 
-    @Redirect(method = "updateNausea", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;openScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
-    public void openScreen(MinecraftClient client, Screen screen) {
-//        CloseScreenInPortalEvent event = new CloseScreenInPortalEvent(screen);
-//        ToastClient.EVENT_BUS.post(event);
-//        if (!event.isCancelled()) {
-//            client.openScreen(screen);
-//        }
+    @Redirect(
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;openScreen(Lnet/minecraft/client/gui/screen/Screen;)V"),
+            method = {"updateNausea"}
+    )
+    private void on(MinecraftClient client, Screen screen) {
+        CloseScreenInPortalEvent event = new CloseScreenInPortalEvent(screen);
+        ToastClient.INSTANCE.getEventBus().post(event);
+        if (!event.isCancelled()) {
+            client.openScreen(screen);
+        }
     }
 
-    @Inject(method = "move", cancellable = true, at = @At("HEAD"))
-    public void move(MovementType type, Vec3d vec, CallbackInfo info) {
-//        PlayerMoveEvent event = new PlayerMoveEvent(type, vec);
-//        ToastClient.EVENT_BUS.post(event);
-//        if (event.isCancelled()) info.cancel();
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"move"},
+            cancellable = true
+    )
+    private void on(MovementType type, Vec3d vec, CallbackInfo info) {
+        PlayerMoveEvent event = new PlayerMoveEvent(type, vec);
+        ToastClient.INSTANCE.getEventBus().post(event);
+        if (event.isCancelled()) info.cancel();
     }
 
 }

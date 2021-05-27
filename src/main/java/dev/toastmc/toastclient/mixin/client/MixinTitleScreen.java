@@ -17,8 +17,11 @@ public class MixinTitleScreen {
     @Mutable
     @Shadow @Final private static Identifier EDITION_TITLE_TEXTURE;
 
-    @Inject(method = "render", at = @At("RETURN"))
-    private void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        this.EDITION_TITLE_TEXTURE = new Identifier("toastclient", "edition.png");
+    @Inject(
+            at = {@At("RETURN")},
+            method = {"render"}
+    )
+    private void on(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        EDITION_TITLE_TEXTURE = new Identifier("toastclient", "edition.png");
     }
 }

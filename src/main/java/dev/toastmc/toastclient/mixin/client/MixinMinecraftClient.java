@@ -1,5 +1,8 @@
 package dev.toastmc.toastclient.mixin.client;
 
+import dev.toastmc.toastclient.ToastClient;
+import dev.toastmc.toastclient.api.events.ScreenEvent;
+import dev.toastmc.toastclient.api.events.TickEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -19,31 +22,37 @@ public abstract class MixinMinecraftClient {
 
     @Shadow public ClientPlayerEntity player;
 
-    @Inject(method = "tick", at = @At(value = "INVOKE"), cancellable = true)
-    public void tick(CallbackInfo info) {
-//        TickEvent.Client event;
-//        if (player != null && world != null) {
-//           event = new TickEvent.Client.InGame();
-//        } else {
-//            event = new TickEvent.Client.OutOfGame();
-//        }
-//        ToastClient.EVENT_BUS.post(event);
-//        if (event.isCancelled()) info.cancel();
+    @Inject(
+            at = {@At(value = "INVOKE")},
+            method = {"tick"},
+            cancellable = true
+    )
+    private void on(CallbackInfo info) {
+        TickEvent.Client event;
+        if (player != null && world != null) {
+           event = new TickEvent.Client.InGame();
+        } else {
+            event = new TickEvent.Client.OutOfGame();
+        }
+        ToastClient.INSTANCE.getEventBus().post(event);
+        if (event.isCancelled()) info.cancel();
     }
 
-    @ModifyVariable(method = "openScreen", at = @At("HEAD"))
+    @ModifyVariable(
+            at = @At("HEAD"),
+            method = {"openScreen"}
+    )
     private Screen openScreen(Screen screen) {
-//        ScreenEvent.Closed closedEvent = new ScreenEvent.Closed(MinecraftClient.getInstance().currentScreen);
-//        ToastClient.EVENT_BUS.post(closedEvent);
-//        if (closedEvent.isCancelled()) {
-//            return MinecraftClient.getInstance().currentScreen;
-//        }
-//        ScreenEvent.Displayed displayedEvent = new ScreenEvent.Displayed(screen);
-//        ToastClient.EVENT_BUS.post(displayedEvent);
-//        if (displayedEvent.isCancelled()) {
-//            return MinecraftClient.getInstance().currentScreen;
-//        }
-//        return displayedEvent.getScreen();
-        return screen;
+        ScreenEvent.Closed closedEvent = new ScreenEvent.Closed(MinecraftClient.getInstance().currentScreen);
+        ToastClient.INSTANCE.getEventBus().post(closedEvent);
+        if (closedEvent.isCancelled()) {
+            return MinecraftClient.getInstance().currentScreen;
+        }
+        ScreenEvent.Displayed displayedEvent = new ScreenEvent.Displayed(screen);
+        ToastClient.INSTANCE.getEventBus().post(displayedEvent);
+        if (displayedEvent.isCancelled()) {
+            return MinecraftClient.getInstance().currentScreen;
+        }
+        return displayedEvent.getScreen();
     }
 }

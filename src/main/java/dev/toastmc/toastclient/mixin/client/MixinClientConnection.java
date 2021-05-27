@@ -1,5 +1,7 @@
 package dev.toastmc.toastclient.mixin.client;
 
+import dev.toastmc.toastclient.ToastClient;
+import dev.toastmc.toastclient.api.events.PacketEvent;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
@@ -14,40 +16,39 @@ import java.util.concurrent.Future;
 @Mixin(ClientConnection.class)
 public class MixinClientConnection {
 
-    @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
-    private static void handlePacket(Packet<?> packet, PacketListener listener, CallbackInfo info) {
-//        PacketEvent.Receive receive = new PacketEvent.Receive(packet);
-//        ToastClient.EVENT_BUS.post(receive);
-//        if (receive.isCancelled())
-//            info.cancel();
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"handlePacket"},
+            cancellable = true
+    )
+    private static void on(Packet<?> packet, PacketListener listener, CallbackInfo info) {
+        PacketEvent.Receive receive = new PacketEvent.Receive(packet);
+        ToastClient.INSTANCE.getEventBus().post(receive);
+        if (receive.isCancelled())
+            info.cancel();
     }
 
-    @Inject(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
-    public void send(Packet<?> packet, GenericFutureListener<? extends java.util.concurrent.Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
-//        PacketEvent.Send ep = new PacketEvent.Send(packet);
-//        ToastClient.EVENT_BUS.post(ep);
-//        if (ep.isCancelled()) ci.cancel();
-//        if (packet instanceof ChatMessageC2SPacket) {
-//            ChatMessageC2SPacket packet2 = (ChatMessageC2SPacket) packet;
-//            if (packet2.getChatMessage().startsWith(ToastClient.Companion.getCMD_PREFIX())) {
-//                String cmd = packet2.getChatMessage().replaceFirst(ToastClient.Companion.getCMD_PREFIX(), "").toLowerCase();
-//                if (packet2.getChatMessage().contains(" ")) {
-//                    cmd = cmd.split(" ")[0];
-//                }
-//                String[] args = packet2.getChatMessage().toLowerCase().replaceFirst(ToastClient.Companion.getCMD_PREFIX() + cmd, "").split(" ");
-//                String[] betterArgs = Arrays.copyOfRange(args, 1, args.length);
-//                System.out.println("cmd: " + cmd + ", args: " + Arrays.toString(betterArgs));
-//                ToastClient.Companion.getCOMMAND_MANAGER().executeCmd(cmd, betterArgs);
-//                ci.cancel();
-//            }
-//        }
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V"},
+            cancellable = true
+    )
+    private void on(Packet<?> packet, GenericFutureListener<? extends java.util.concurrent.Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
+        PacketEvent.Send send = new PacketEvent.Send(packet);
+        ToastClient.INSTANCE.getEventBus().post(send);
+        if (send.isCancelled())
+            ci.cancel();
     }
 
-    @Inject(method = "sendImmediately", at = @At("HEAD"), cancellable = true)
-    private void sendImmediately(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, CallbackInfo info) {
-//        PacketEvent.Send send = new PacketEvent.Send(packet);
-//        ToastClient.EVENT_BUS.post(send);
-//        if (send.isCancelled())
-//            info.cancel();
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"sendImmediately"},
+            cancellable = true
+    )
+    private void on1(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, CallbackInfo info) {
+        PacketEvent.Send send = new PacketEvent.Send(packet);
+        ToastClient.INSTANCE.getEventBus().post(send);
+        if (send.isCancelled())
+            info.cancel();
     }
 }

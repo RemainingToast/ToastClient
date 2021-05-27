@@ -8,11 +8,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface IEntityVelocityUpdateS2CPacket {
 
     @Accessor
-    int getID();
-    @Accessor
-    void setID(int id);
-
-    @Accessor
     int getVelocityX();
     @Accessor
     int getVelocityY();

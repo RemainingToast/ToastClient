@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.suggestion.Suggestions;
-import dev.toastmc.toastclient.ToastClient;
 import dev.toastmc.toastclient.api.command.Command;
 import dev.toastmc.toastclient.api.command.CommandManager;
 import net.minecraft.client.MinecraftClient;
@@ -34,11 +33,13 @@ public abstract class MixinCommandSuggestor {
 
     @Shadow protected abstract void show();
 
-    @Shadow @Final private boolean slashOptional;
-
-    @Inject(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;canRead()Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    public void refresh(CallbackInfo ci, String string, StringReader stringReader) {
-//        if(!slashOptional) return;
+    @Inject(
+            at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;canRead()Z"),
+            method = {"refresh"},
+            locals = LocalCapture.CAPTURE_FAILHARD,
+            cancellable = true
+    )
+    public void on(CallbackInfo ci, String string, StringReader stringReader) {
         int i;
         if(stringReader.canRead() && stringReader.peek() == CommandManager.prefix.charAt(0)){
             stringReader.skip();
