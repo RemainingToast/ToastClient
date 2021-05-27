@@ -3,8 +3,6 @@ package dev.toastmc.toastclient.api.setting;
 import dev.toastmc.toastclient.api.module.Module;
 import dev.toastmc.toastclient.api.setting.types.*;
 import dev.toastmc.toastclient.api.util.ToastColor;
-import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -76,6 +74,8 @@ public class Setting<T> {
         this.value = value;
     }
 
+    public boolean setValueFromString(String value) { return false; }
+
     public void setPriority(int priority) {
         this.priority = priority;
     }
@@ -124,7 +124,7 @@ public class Setting<T> {
         }
 
         public double getValue() {
-            return this.value;
+            return value;
         }
 
         public int getIntValue() { return (int) this.value; }
@@ -170,6 +170,16 @@ public class Setting<T> {
             return 2;
         }
 
+        @Override
+        public boolean setValueFromString(String value) {
+            try {
+                setValue(java.lang.Double.parseDouble(value));
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
         public Double onChanged(Consumer<Double> listener){
             setChangedListener(listener);
             return this;
@@ -196,6 +206,16 @@ public class Setting<T> {
             this.value = value;
             setValue(this);
             changed();
+        }
+
+        @Override
+        public boolean setValueFromString(String value) {
+            try {
+                setValue(java.lang.Boolean.parseBoolean(value));
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         }
 
         @Override
@@ -241,6 +261,16 @@ public class Setting<T> {
              changed();
         }
 
+        @Override
+        public boolean setValueFromString(String value) {
+            try {
+                setValue(value);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
         public List<String> getModes() {
             return modes;
         }
@@ -258,7 +288,7 @@ public class Setting<T> {
 
         @Override
         public String getValueName() {
-            return this.value.toString();
+            return this.value;
         }
 
         public Mode onChanged(Consumer<Mode> listener){
@@ -289,6 +319,16 @@ public class Setting<T> {
             this.rainbow = rainbow;
             this.value = value;
             changed();
+        }
+
+        @Override
+        public boolean setValueFromString(String value) {
+            try {
+                setValue(Color.getColor(value));
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         }
 
         public int toInteger() {

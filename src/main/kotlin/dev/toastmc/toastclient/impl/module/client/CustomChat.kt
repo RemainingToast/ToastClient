@@ -1,7 +1,11 @@
 package dev.toastmc.toastclient.impl.module.client
 
+import dev.toastmc.toastclient.api.command.CommandManager
+import dev.toastmc.toastclient.api.events.PacketEvent
 import dev.toastmc.toastclient.api.module.Module
+import me.remainingtoast.toastclient.api.util.FancyChatUtil
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
+import org.quantumclient.energy.Subscribe
 import java.util.*
 
 object CustomChat : Module("CustomChat", Category.CLIENT) {
@@ -30,35 +34,35 @@ object CustomChat : Module("CustomChat", Category.CLIENT) {
         isMadeByCustomChat = true
     }
 
-//    @EventHandler
-//    private val packetListener = me.zero.alpine.listener.Listener(EventHook<PacketEvent.Receive> {
-//        if (mc.player == null) return@EventHook
-//        if (it.packet is ChatMessageC2SPacket){
-//            val chatMessage = it.packet.chatMessage
-//            if ((chatMessage.startsWith(ToastClient.CMD_PREFIX) || chatMessage.startsWith("/")) && !commands.value) return@EventHook
-//            suffix = when (separator.index){
-//                0 -> " ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
-//                1 -> " | ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
-//                2 -> " < ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ >"
-//                else -> ""
-//            }
-//            if(fancyChat.value){
-//                var fancyMsg = when (fancyChatType.index){
-//                    0 -> FancyChatUtil.retardChat(chatMessage)
-//                    1 -> FancyChatUtil.classicFancy(chatMessage)
-//                    2 -> FancyChatUtil.spaces(chatMessage)
-//                    else -> chatMessage
-//                }
-//                isMadeByCustomChat = !isMadeByCustomChat
-//                if(isMadeByCustomChat) return@EventHook
-//                it.cancel()
-//                mc.player!!.sendChatMessage(fancyMsg + suffix)
-//            } else {
-//                isMadeByCustomChat = !isMadeByCustomChat
-//                if(isMadeByCustomChat) return@EventHook
-//                it.cancel()
-//                mc.player!!.sendChatMessage(chatMessage + suffix)
-//            }
-//        }
-//    })
+    @Subscribe
+    fun on(event: PacketEvent.Receive) {
+        if (mc.player == null) return
+        if (event.packet is ChatMessageC2SPacket){
+            val chatMessage = event.packet.chatMessage
+            if ((chatMessage.startsWith(CommandManager.prefix) || chatMessage.startsWith("/")) && !commands.value) return
+            suffix = when (separator.value){
+                "none" -> " ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
+                "default" -> " | ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
+                "brackets" -> " < ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ >"
+                else -> " ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
+            }
+            if(fancyChat.value){
+                val fancyMsg = when (fancyChatType.value){
+                    "Retard" -> FancyChatUtil.retardChat(chatMessage)
+                    "Classic" -> FancyChatUtil.classicFancy(chatMessage)
+                    "Fancy" -> FancyChatUtil.spaces(chatMessage)
+                    else -> chatMessage
+                }
+                isMadeByCustomChat = !isMadeByCustomChat
+                if(isMadeByCustomChat) return
+                event.cancel()
+                mc.player!!.sendChatMessage(fancyMsg + suffix)
+            } else {
+                isMadeByCustomChat = !isMadeByCustomChat
+                if(isMadeByCustomChat) return
+                event.cancel()
+                mc.player!!.sendChatMessage(chatMessage + suffix)
+            }
+        }
+    }
 }

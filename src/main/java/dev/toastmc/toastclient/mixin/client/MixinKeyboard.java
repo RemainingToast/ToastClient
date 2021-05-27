@@ -1,9 +1,9 @@
 package dev.toastmc.toastclient.mixin.client;
 
-import dev.toastmc.toastclient.ToastClient;
 import dev.toastmc.toastclient.api.command.CommandManager;
 import dev.toastmc.toastclient.api.module.ModuleManager;
 import net.minecraft.client.Keyboard;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,8 +22,8 @@ public class MixinKeyboard {
     private void on(long window, int keyInt, int scancode, int i, int j, CallbackInfo ci) {
         String key = GLFW.glfwGetKeyName(keyInt, scancode);
         if(key != null && key.equals(CommandManager.prefix)){
-            if(ToastClient.Companion.getInstance().getMc().currentScreen == null) {
-                ToastClient.Companion.getInstance().getMc().openScreen(new ChatScreen(CommandManager.prefix));
+            if(MinecraftClient.getInstance().currentScreen == null) {
+               MinecraftClient.getInstance().openScreen(new ChatScreen(""));
             }
         } else {
             ModuleManager.INSTANCE.onKeyRelease(window, keyInt, scancode);

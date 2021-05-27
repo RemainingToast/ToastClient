@@ -24,9 +24,6 @@ interface IToastClient {
     val logger: Logger
     get() = LogManager.getLogger(clientName)
 
-    val eventBus: EventBus
-    get() = EventBus()
-
     val gson: Gson
     get() = GsonBuilder().setPrettyPrinting().create()
 

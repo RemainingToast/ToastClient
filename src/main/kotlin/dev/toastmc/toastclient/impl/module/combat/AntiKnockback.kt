@@ -18,7 +18,6 @@ object AntiKnockback : Module("AntiKnockback", Category.COMBAT) {
     val vertical = number("Vertical%", 0.0, 0.0,100.0)
     val delay = number("Delay(MS)",170.0, 0.0, 1000.0)
 
-
     private var oldVelX = Double.NaN
     private var oldVelY = Double.NaN
     private var oldVelZ = Double.NaN

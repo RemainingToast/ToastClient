@@ -1,6 +1,7 @@
 package dev.toastmc.toastclient.api.module
 
 import dev.toastmc.toastclient.IToastClient
+import dev.toastmc.toastclient.ToastClient
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.setting.Setting.*
 import dev.toastmc.toastclient.api.setting.Setting.Boolean
@@ -26,11 +27,11 @@ open class Module(private var name: String, private var category: Category) : IT
     }
 
     protected open fun onEnable() {
-        eventBus.register(this)
+        ToastClient.eventBus.register(this)
     }
 
     protected open fun onDisable() {
-        eventBus.unregister(this)
+        ToastClient.eventBus.unregister(this)
     }
 
     open fun onUpdate() {

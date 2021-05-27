@@ -9,9 +9,9 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.command.CommandSource
 import net.minecraft.util.Formatting
 
-object Toggle : Command("Toggle") {
+object ToggleCommand : Command("toggle") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
-        dispatcher register rootLiteral("toggle") {
+        dispatcher register rootLiteral(label) {
             argument("module", ModuleArgumentType.getModule()){
                 does { ctx ->
                     val mod: Module = "module" from ctx
@@ -21,7 +21,7 @@ object Toggle : Command("Toggle") {
                 }
             }
             does{
-                println("ree")
+                println("Something didn't go right.")
                 0
             }
         }

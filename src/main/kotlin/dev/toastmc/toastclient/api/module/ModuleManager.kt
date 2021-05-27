@@ -1,5 +1,7 @@
 package dev.toastmc.toastclient.api.module
 
+import dev.toastmc.toastclient.IToastClient
+import dev.toastmc.toastclient.ToastClient
 import dev.toastmc.toastclient.api.events.OverlayEvent
 import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.*
@@ -17,18 +19,22 @@ import java.util.*
 import java.util.stream.Collectors
 import kotlin.Comparator
 
-object ModuleManager {
+object ModuleManager : IToastClient {
 
     var modules: ArrayList<Module> = ArrayList()
 
     init {
         modules = ArrayList()
-        register(Font, FriendModule, NoRender, MCF, Offhand, Capes, NameTags,
+        register(
+            Font, FriendModule, NoRender, MCF, Offhand, Capes, NameTags,
                 FullBright, SafeWalk, NoEntityTrace, NoFog, AutoArmour, AutoRespawn,
                 CustomChat, KillAura, AntiKnockback, NoFall, AntiHunger, Sprint, Jesus,
                 PortalChat
         )
         Collections.sort(modules, Comparator.comparing(Module::getName))
+
+        ToastClient.eventBus.register(this)
+
         println("MODULE MANAGER INITIALISED")
     }
 
@@ -49,8 +55,8 @@ object ModuleManager {
     }
 
     private fun register(vararg mods: Module) {
-        for (cheat in mods) {
-            modules.add(cheat)
+        for (mod in mods) {
+            modules.add(mod)
         }
     }
 

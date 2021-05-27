@@ -9,9 +9,9 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.command.CommandSource
 import net.minecraft.util.Formatting
 
-object Drawn : Command("Drawn") {
+object DrawCommand : Command("drawn") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
-        dispatcher register rootLiteral("draw") {
+        dispatcher register rootLiteral(label) {
             argument("module", ModuleArgumentType.getModule()){
                 does { ctx ->
                     val mod: Module = "module" from ctx

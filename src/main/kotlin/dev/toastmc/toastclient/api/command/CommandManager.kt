@@ -1,8 +1,8 @@
 package dev.toastmc.toastclient.api.command
 
-import dev.toastmc.toastclient.impl.command.Drawn
-import dev.toastmc.toastclient.impl.command.Toggle
-import org.apache.commons.lang3.CharSequenceUtils.subSequence
+import dev.toastmc.toastclient.impl.command.DrawCommand
+import dev.toastmc.toastclient.impl.command.SettingsCommand
+import dev.toastmc.toastclient.impl.command.ToggleCommand
 import java.util.*
 
 
@@ -17,8 +17,9 @@ object CommandManager {
      */
     fun init() {
         commands.clear()
-        commands.add(Drawn)
-        commands.add(Toggle)
+        commands.add(DrawCommand)
+        commands.add(ToggleCommand)
+        commands.add(SettingsCommand)
         commands.forEach {
             it.register(Command.dispatcher)
         }
@@ -26,13 +27,13 @@ object CommandManager {
         println("COMMAND MANAGER INITIALISED")
     }
 
-    fun commandsToString(ignoreHelp: Boolean): String {
-        var str = ""
-        for (c in commands){
-            if(ignoreHelp && c.getName() == "help") continue
-            str += "${c.getName().capitalize()}, "
-        }
-        str.removeSuffix(subSequence(",", str.length - 1))
-        return str
-    }
+//    fun commandsToString(ignoreHelp: Boolean): String {
+//        var str = ""
+//        for (c in commands){
+//            if(ignoreHelp && c.getName() == "help") continue
+//            str += "${c.getName().capitalize()}, "
+//        }
+//        str.removeSuffix(subSequence(",", str.length - 1))
+//        return str
+//    }
 }
