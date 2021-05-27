@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.mixin.client;
 
-import dev.toastmc.toastclient.impl.module.misc.ExtraTooltip;
+import dev.toastmc.toastclient.impl.module.misc.ExtraTooltips;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -23,44 +23,44 @@ import static dev.toastmc.toastclient.api.util.UtilKt.lit;
 public abstract class MixinItem {
 
     @Inject(
-            at = {@At("HEAD")},
+            at = {@At("RETURN")},
             method = {"appendTooltip(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/item/TooltipContext;)V"}
     )
     private void on(ItemStack stack, World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
-        if(ExtraTooltip.INSTANCE.isEnabled()) {
+        if(ExtraTooltips.INSTANCE.isEnabled()) {
             if (stack.getItem() instanceof ToolItem) {
                 if (Screen.hasShiftDown()) {
                     ToolItem tool = (ToolItem) stack.getItem();
                     ToolMaterial material = tool.getMaterial();
                     if (tool instanceof MiningToolItem) {
-                        tooltip.add(lit("Harvest Level: " + material.getMiningLevel()).formatted(Formatting.GRAY));
+                        tooltip.add(lit("Harvest Level: " + Formatting.GREEN + material.getMiningLevel()).formatted(Formatting.GRAY));
                         int efficiency = EnchantmentHelper.get(stack).getOrDefault(Enchantments.EFFICIENCY, 0);
                         int efficiencyModifier = efficiency > 0 ? (efficiency * efficiency) + 1 : 0;
-                        MutableText speedText = lit("Harvest Speed: " + material.getMiningSpeedMultiplier() + efficiencyModifier).formatted(Formatting.GRAY);
+                        MutableText speedText = lit("Harvest Speed: " + Formatting.GREEN + material.getMiningSpeedMultiplier() + efficiencyModifier).formatted(Formatting.GRAY);
                         if (efficiency > 0) {
-                            speedText.append(lit(" (+" + efficiencyModifier + ")").formatted(Formatting.WHITE));
+                            speedText.append(lit(" (+" + efficiencyModifier + ")").formatted(Formatting.DARK_GREEN));
                         }
                         tooltip.add(speedText);
                     }
-                    tooltip.add(lit("Enchantability: " + material.getEnchantability()).formatted(Formatting.GRAY));
-                    tooltip.add(lit("Max Durability: " + tool.getMaxDamage()).formatted(Formatting.GRAY));
+                    tooltip.add(lit("Enchantability: " + Formatting.GREEN + material.getEnchantability()).formatted(Formatting.GRAY));
+                    tooltip.add(lit("Max Durability: " + Formatting.GREEN + tool.getMaxDamage()).formatted(Formatting.GRAY));
                 } else {
-                    tooltip.add(lit("Press SHIFT for stats").formatted(Formatting.GRAY));
+                    tooltip.add(lit(Formatting.GRAY + "Press " + Formatting.GREEN + "SHIFT" + Formatting.GRAY + " for stats"));
                 }
             } else if (stack.getItem() instanceof ArmorItem) {
                 if (Screen.hasShiftDown()) {
                     ArmorItem armor = (ArmorItem) stack.getItem();
                     ArmorMaterial material = armor.getMaterial();
-                    tooltip.add(lit("Enchantability: " + material.getEnchantability()).formatted(Formatting.GRAY));
-                    tooltip.add(lit("Max Durability: " + armor.getMaxDamage()).formatted(Formatting.GRAY));
+                    tooltip.add(lit("Enchantability: " + Formatting.GREEN + material.getEnchantability()).formatted(Formatting.GRAY));
+                    tooltip.add(lit("Max Durability: " + Formatting.GREEN + armor.getMaxDamage()).formatted(Formatting.GRAY));
                 } else {
-                    tooltip.add(lit("Press SHIFT for stats").formatted(Formatting.GRAY));
+                    tooltip.add(lit(Formatting.GRAY + "Press " + Formatting.GREEN + "SHIFT" + Formatting.GRAY + " for stats"));
                 }
             } else if (stack.isDamageable()) {
                 if (Screen.hasShiftDown()) {
-                    tooltip.add(lit("Max Durability: " + stack.getMaxDamage()).formatted(Formatting.GRAY));
+                    tooltip.add(lit("Max Durability: " + Formatting.GREEN + stack.getMaxDamage()).formatted(Formatting.GRAY));
                 } else {
-                    tooltip.add(lit("Press SHIFT for stats").formatted(Formatting.GRAY));
+                    tooltip.add(lit(Formatting.GRAY + "Press " + Formatting.GREEN + "SHIFT" + Formatting.GRAY + " for stats"));
                 }
             }
         }

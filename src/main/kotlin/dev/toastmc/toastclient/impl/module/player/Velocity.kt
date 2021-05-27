@@ -12,7 +12,7 @@ import org.quantumclient.energy.Era
 import org.quantumclient.energy.Subscribe
 import kotlin.math.max
 
-object AntiVelocity : Module("AntiVelocity", Category.PLAYER) {
+object Velocity : Module("Velocity", Category.PLAYER) {
 
     val horizontal = number("Horizontal", 0.0,0.0,100.0)
     val vertical = number("Vertical", 0.0, 0.0,100.0)

@@ -3,14 +3,13 @@
   "id": "toastclient",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "ToastClient",
+  "description": "Like bread, but warmer...",
   "authors": [
-    "Me!"
+    "RemainingToast"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/RemainingToast/ToastClient"
   },
 
   "license": "CC0-1.0",

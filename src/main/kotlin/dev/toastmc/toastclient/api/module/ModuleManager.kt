@@ -13,7 +13,7 @@ import dev.toastmc.toastclient.impl.module.combat.KillAura
 import dev.toastmc.toastclient.impl.module.combat.Offhand
 import dev.toastmc.toastclient.impl.module.misc.ExtraSign
 import dev.toastmc.toastclient.impl.module.misc.ExtraTab
-import dev.toastmc.toastclient.impl.module.misc.ExtraTooltip
+import dev.toastmc.toastclient.impl.module.misc.ExtraTooltips
 import dev.toastmc.toastclient.impl.module.misc.PortalChat
 import dev.toastmc.toastclient.impl.module.movement.*
 import dev.toastmc.toastclient.impl.module.player.*
@@ -35,7 +35,7 @@ object ModuleManager : IToastClient {
             AutoWalk,
             ExtraSign,
             ExtraTab,
-            ExtraTooltip,
+            ExtraTooltips,
             Font,
             FastUtil,
             FriendModule,
@@ -50,7 +50,7 @@ object ModuleManager : IToastClient {
             NoFog,
             CustomChat,
             KillAura,
-            AntiVelocity,
+            Velocity,
             NoFall,
             AntiHunger,
             Sprint,
