@@ -1,7 +1,7 @@
 {
   "required": true,
   "compatibilityLevel": "JAVA_8",
-  "package": "me.remainingtoast.toastclient.mixin.client",
+  "package": "dev.toastmc.toastclient.mixin.client",
   "client": [
     "IClientPlayerInteractionManager",
     "IEntityVelocityUpdateS2CPacket",

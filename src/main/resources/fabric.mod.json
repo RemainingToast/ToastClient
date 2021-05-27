@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "toastclient",
   "version": "${version}",
 
   "name": "Example Mod",
@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleModKt::init"
+      "dev.toastmc.toastclient.ToastClient"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "toastclient.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.8.7",
