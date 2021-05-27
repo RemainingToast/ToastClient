@@ -20,7 +20,7 @@ public class MixinIngameHud {
     )
     private void on(MatrixStack matrixStack, float float_1, CallbackInfo info) {
         OverlayEvent event = new OverlayEvent(matrixStack);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (event.isCancelled())
             info.cancel();
     }

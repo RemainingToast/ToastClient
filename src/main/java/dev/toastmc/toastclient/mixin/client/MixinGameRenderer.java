@@ -59,7 +59,7 @@ public class MixinGameRenderer {
     )
     private void on(MatrixStack matrices, Camera camera, float tickDelta, CallbackInfo ci) {
         RenderEvent.World event = new RenderEvent.World(tickDelta, matrices, camera);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (event.isCancelled()) ci.cancel();
     }
 

@@ -1,5 +1,7 @@
 package dev.toastmc.toastclient.api.module
 
+import dev.toastmc.toastclient.api.events.OverlayEvent
+import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.*
 import dev.toastmc.toastclient.impl.module.combat.*
 import dev.toastmc.toastclient.impl.module.hud.*
@@ -10,6 +12,7 @@ import dev.toastmc.toastclient.impl.module.render.*
 
 import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
+import org.quantumclient.energy.Subscribe
 import java.util.*
 import java.util.stream.Collectors
 import kotlin.Comparator
@@ -51,12 +54,14 @@ object ModuleManager {
         }
     }
 
-    fun onUpdate() {
-        modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onUpdate() }
+    @Subscribe
+    fun on(event: TickEvent.Client.InGame) {
+        modules.stream().filter { mod: Module -> mod.isEnabled() }.forEach { mod: Module -> mod.onUpdate() }
     }
 
-    fun onHUDRender() {
-        modules.stream().filter { obj: Module -> obj.isEnabled() }.forEach { obj: Module -> obj.onHUDRender() }
+    @Subscribe
+    fun on(event: OverlayEvent) {
+        modules.stream().filter { mod: Module -> mod.isEnabled() }.forEach { mod: Module -> mod.onHUDRender() }
     }
 
 }

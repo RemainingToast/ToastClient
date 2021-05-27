@@ -21,7 +21,7 @@ public class MixinPlayerEntity {
     )
     private void on(Entity entity, CallbackInfo info) {
         PlayerAttackEntityEvent event = new PlayerAttackEntityEvent(entity);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (info.isCancelled()) {
             info.cancel();
         }
@@ -34,7 +34,7 @@ public class MixinPlayerEntity {
     )
     private void on(CallbackInfoReturnable<Boolean> cir) {
         ClipAtLedgeEvent event = new ClipAtLedgeEvent((PlayerEntity) (Object) this, false);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         cir.setReturnValue(event.getClip());
     }
 }

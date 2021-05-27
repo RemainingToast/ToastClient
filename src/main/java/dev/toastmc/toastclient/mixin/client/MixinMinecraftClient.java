@@ -34,7 +34,7 @@ public abstract class MixinMinecraftClient {
         } else {
             event = new TickEvent.Client.OutOfGame();
         }
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (event.isCancelled()) info.cancel();
     }
 
@@ -44,12 +44,12 @@ public abstract class MixinMinecraftClient {
     )
     private Screen openScreen(Screen screen) {
         ScreenEvent.Closed closedEvent = new ScreenEvent.Closed(MinecraftClient.getInstance().currentScreen);
-        ToastClient.INSTANCE.getEventBus().post(closedEvent);
+        ToastClient.Companion.getEventBus().post(closedEvent);
         if (closedEvent.isCancelled()) {
             return MinecraftClient.getInstance().currentScreen;
         }
         ScreenEvent.Displayed displayedEvent = new ScreenEvent.Displayed(screen);
-        ToastClient.INSTANCE.getEventBus().post(displayedEvent);
+        ToastClient.Companion.getEventBus().post(displayedEvent);
         if (displayedEvent.isCancelled()) {
             return MinecraftClient.getInstance().currentScreen;
         }

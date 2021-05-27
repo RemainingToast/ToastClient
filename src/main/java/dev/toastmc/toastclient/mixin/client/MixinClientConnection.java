@@ -23,7 +23,7 @@ public class MixinClientConnection {
     )
     private static void on(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         PacketEvent.Receive receive = new PacketEvent.Receive(packet);
-        ToastClient.INSTANCE.getEventBus().post(receive);
+        ToastClient.Companion.getEventBus().post(receive);
         if (receive.isCancelled())
             info.cancel();
     }
@@ -35,7 +35,7 @@ public class MixinClientConnection {
     )
     private void on(Packet<?> packet, GenericFutureListener<? extends java.util.concurrent.Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
         PacketEvent.Send send = new PacketEvent.Send(packet);
-        ToastClient.INSTANCE.getEventBus().post(send);
+        ToastClient.Companion.getEventBus().post(send);
         if (send.isCancelled())
             ci.cancel();
     }
@@ -47,7 +47,7 @@ public class MixinClientConnection {
     )
     private void on1(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, CallbackInfo info) {
         PacketEvent.Send send = new PacketEvent.Send(packet);
-        ToastClient.INSTANCE.getEventBus().post(send);
+        ToastClient.Companion.getEventBus().post(send);
         if (send.isCancelled())
             info.cancel();
     }

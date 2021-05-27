@@ -31,7 +31,7 @@ public abstract class MixinEntity  {
     )
     private void on(Entity entity, double x, double y, double z) {
         EntityEvent.EntityCollision event = new EntityEvent.EntityCollision(entity, x, y, z);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (event.isCancelled()) return;
         entity.addVelocity(event.getX(), event.getY(), event.getZ());
     }
@@ -43,7 +43,7 @@ public abstract class MixinEntity  {
     private Vec3d on(FluidState fluidState, BlockView world, BlockPos pos) {
         Vec3d vec = fluidState.getVelocity(world, pos);
         MoveEntityFluidEvent event = new MoveEntityFluidEvent(((Entity) (Object) this), vec);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         return event.isCancelled() ? Vec3d.ZERO : event.getMovement();
     }
 
@@ -55,7 +55,7 @@ public abstract class MixinEntity  {
     private void on(CallbackInfoReturnable<Float> cir) {
         float returnValue = cir.getReturnValue();
         EntityVelocityMultiplierEvent event = new EntityVelocityMultiplierEvent((Entity) (Object) this, returnValue);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (!event.isCancelled() && event.getMultiplier() != returnValue) {
             cir.setReturnValue(event.getMultiplier());
         }
@@ -68,7 +68,7 @@ public abstract class MixinEntity  {
     )
     private void on(double cursorDeltaX, double cursorDeltaY, CallbackInfo ci) {
         UpdateLookEvent event = new UpdateLookEvent(cursorDeltaX, cursorDeltaY);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (event.isCancelled()) ci.cancel();
     }
 

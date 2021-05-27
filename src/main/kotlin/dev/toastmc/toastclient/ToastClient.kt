@@ -4,7 +4,12 @@ import dev.toastmc.toastclient.api.command.CommandManager
 import net.fabricmc.api.ModInitializer
 import org.quantumclient.energy.EventBus
 
-object ToastClient : ModInitializer, IToastClient {
+class ToastClient : ModInitializer, IToastClient {
+
+    companion object {
+        val instance = ToastClient()
+        val eventBus = instance.eventBus
+    }
 
     override fun onInitialize() {
         val start = System.currentTimeMillis()

@@ -22,8 +22,8 @@ public class MixinKeyboard {
     private void on(long window, int keyInt, int scancode, int i, int j, CallbackInfo ci) {
         String key = GLFW.glfwGetKeyName(keyInt, scancode);
         if(key != null && key.equals(CommandManager.prefix)){
-            if(ToastClient.INSTANCE.getMc().currentScreen == null) {
-                ToastClient.INSTANCE.getMc().openScreen(new ChatScreen(CommandManager.prefix));
+            if(ToastClient.Companion.getInstance().getMc().currentScreen == null) {
+                ToastClient.Companion.getInstance().getMc().openScreen(new ChatScreen(CommandManager.prefix));
             }
         } else {
             ModuleManager.INSTANCE.onKeyRelease(window, keyInt, scancode);

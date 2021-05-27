@@ -28,7 +28,7 @@ public class MixinClientPlayerEntity {
         Input prev = ((ExtendedInput) input).copy();
         input.tick(bl);
         InputUpdateEvent ev = new InputUpdateEvent(prev, input);
-        ToastClient.INSTANCE.getEventBus().post(ev);
+        ToastClient.Companion.getEventBus().post(ev);
         if (ev.isCancelled()) ((ExtendedInput) input).update(prev);
     }
 
@@ -38,7 +38,7 @@ public class MixinClientPlayerEntity {
     )
     private void on(MinecraftClient client, Screen screen) {
         CloseScreenInPortalEvent event = new CloseScreenInPortalEvent(screen);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (!event.isCancelled()) {
             client.openScreen(screen);
         }
@@ -51,7 +51,7 @@ public class MixinClientPlayerEntity {
     )
     private void on(MovementType type, Vec3d vec, CallbackInfo info) {
         PlayerMoveEvent event = new PlayerMoveEvent(type, vec);
-        ToastClient.INSTANCE.getEventBus().post(event);
+        ToastClient.Companion.getEventBus().post(event);
         if (event.isCancelled()) info.cancel();
     }
 
