@@ -1,20 +1,23 @@
 package dev.toastmc.toastclient.api.util
 
-import dev.toastmc.toastclient.IToastClient
+import dev.toastmc.toastclient.ToastClient
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
-import org.quantumclient.energy.EventBus
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-
-
 val mc = MinecraftClient.getInstance()
 
 fun lit(string: String): LiteralText {
     return LiteralText(string)
+}
+
+fun message(text: Text) {
+    mc.player!!.sendMessage(text, false)
 }
 
 data class ToastPlayer(var name: String, var uuid: UUID)

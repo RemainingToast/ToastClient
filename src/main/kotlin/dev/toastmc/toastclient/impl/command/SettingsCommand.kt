@@ -8,11 +8,9 @@ import dev.toastmc.toastclient.api.command.type.SettingArgumentType
 import dev.toastmc.toastclient.api.command.type.SettingValueArgumentType
 import dev.toastmc.toastclient.api.module.Module
 import dev.toastmc.toastclient.api.setting.Setting
-import dev.toastmc.toastclient.api.util.argument
-import dev.toastmc.toastclient.api.util.does
-import dev.toastmc.toastclient.api.util.register
-import dev.toastmc.toastclient.api.util.rootLiteral
+import dev.toastmc.toastclient.api.util.*
 import net.minecraft.command.CommandSource
+import net.minecraft.util.Formatting
 
 object SettingsCommand : Command("set") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
@@ -30,10 +28,11 @@ object SettingsCommand : Command("set") {
                             val module = it.getArgument("module", Module::class.java) as Module
                             val setting = it.getArgument("setting", Setting::class.java) as Setting<*>
                             val stringValue = it.getArgument("value", String::class.java) as String
-//                            println(module)
-//                            println(setting)
-//                            println(stringValue)
-                            setting.setValueFromString(stringValue)
+                            if(setting.setValueFromString(stringValue)){
+                                val moduleName = "${Formatting.DARK_GRAY}[${Formatting.DARK_GREEN}${module.getName()}${Formatting.DARK_GRAY}]${Formatting.GRAY}"
+                                val settingString = "${Formatting.GREEN}${setting.name}${Formatting.GRAY} to ${Formatting.GREEN.toString() + stringValue}"
+                                message(lit("$prefix $moduleName Successfully set $settingString"))
+                            }
                             0
                         }
                     }

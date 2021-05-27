@@ -16,7 +16,8 @@ object ToggleCommand : Command("toggle") {
                 does { ctx ->
                     val mod: Module = "module" from ctx
                     mod.toggle()
-                    MinecraftClient.getInstance().player!!.sendMessage(lit("Toggled ${mod.getName()}${if (!mod.isEnabled()) Formatting.RED.toString() + " OFF" else Formatting.GREEN.toString() + " ON"}").formatted(Formatting.GRAY), false)
+                    val moduleName = "${Formatting.DARK_GRAY}[${Formatting.DARK_GREEN}${mod.getName()}${Formatting.DARK_GRAY}]${Formatting.GRAY}"
+                    message(lit("$prefix $moduleName Successfully ${if (mod.isEnabled()) Formatting.GREEN.toString() + "ENABLED" else Formatting.RED.toString() + "DISABLED"}").formatted(Formatting.GRAY))
                     0
                 }
             }

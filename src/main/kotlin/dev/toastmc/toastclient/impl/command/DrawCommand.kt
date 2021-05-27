@@ -16,9 +16,8 @@ object DrawCommand : Command("drawn") {
                 does { ctx ->
                     val mod: Module = "module" from ctx
                     mod.toggleDrawn()
-                    MinecraftClient.getInstance().player!!
-                        .sendMessage(lit("${mod.getName()} now being ${if (!mod.isDrawn()) Formatting.RED.toString() + " HIDDEN" else Formatting.GREEN.toString() + " DRAWN"}")
-                            .formatted(Formatting.GRAY), false)
+                    val moduleName = "${Formatting.DARK_GRAY}[${Formatting.DARK_GREEN}${mod.getName()}${Formatting.DARK_GRAY}]${Formatting.GRAY}"
+                    message(lit("$prefix $moduleName Successfully ${if (!mod.isDrawn()) Formatting.RED.toString() + "HIDDEN" else Formatting.GREEN.toString() + "DRAWN"}").formatted(Formatting.GRAY))
                     0
                 }
             }
