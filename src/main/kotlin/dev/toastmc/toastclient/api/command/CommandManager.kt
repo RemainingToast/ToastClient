@@ -1,39 +1,42 @@
 package dev.toastmc.toastclient.api.command
 
+import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.impl.command.DrawCommand
-import dev.toastmc.toastclient.impl.command.SettingsCommand
+import dev.toastmc.toastclient.impl.command.FakePlayerCommand
+import dev.toastmc.toastclient.impl.command.SetCommand
 import dev.toastmc.toastclient.impl.command.ToggleCommand
 import java.util.*
 
+object CommandManager : IToastClient {
 
-object CommandManager {
-
-    @JvmField var prefix = "."
+    @JvmField
+    var prefix = "."
 
     var commands: MutableList<Command> = ArrayList()
 
-    /**
-     * Loads and initializes all of the commands
-     */
     fun init() {
+        register(
+            DrawCommand,
+            FakePlayerCommand,
+            SetCommand,
+            ToggleCommand
+        )
+
+        logger.info("Finished loading ${commands.size} commands")
+    }
+
+    private fun register(vararg commandList: Command) {
         commands.clear()
-        commands.add(DrawCommand)
-        commands.add(ToggleCommand)
-        commands.add(SettingsCommand)
+
+        for (command in commandList) {
+            commands.add(command)
+        }
+
         commands.forEach {
             it.register(Command.dispatcher)
         }
+
         Collections.sort(commands, Comparator.comparing(Command::label))
-        println("COMMAND MANAGER INITIALISED")
     }
 
-//    fun commandsToString(ignoreHelp: Boolean): String {
-//        var str = ""
-//        for (c in commands){
-//            if(ignoreHelp && c.getName() == "help") continue
-//            str += "${c.getName().capitalize()}, "
-//        }
-//        str.removeSuffix(subSequence(",", str.length - 1))
-//        return str
-//    }
 }

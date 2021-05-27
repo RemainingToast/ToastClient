@@ -3,6 +3,7 @@ package dev.toastmc.toastclient.api.setting;
 import dev.toastmc.toastclient.api.module.Module;
 import dev.toastmc.toastclient.api.setting.types.*;
 import dev.toastmc.toastclient.api.util.ToastColor;
+import dev.toastmc.toastclient.api.util.UtilKt;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -72,6 +73,10 @@ public class Setting<T> {
 
     public void setValue(T value) {
         this.value = value;
+    }
+
+    public String getStringValue() {
+        return "";
     }
 
     public boolean setValueFromString(String value) { return false; }
@@ -175,9 +180,14 @@ public class Setting<T> {
             try {
                 setValue(java.lang.Double.parseDouble(value));
                 return true;
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 return false;
             }
+        }
+
+        @Override
+        public String getStringValue() {
+            return String.valueOf(value);
         }
 
         public Double onChanged(Consumer<Double> listener){
@@ -210,12 +220,14 @@ public class Setting<T> {
 
         @Override
         public boolean setValueFromString(String value) {
-            try {
-                setValue(java.lang.Boolean.parseBoolean(value));
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
+            boolean bool = java.lang.Boolean.parseBoolean(value);
+            setValue(bool);
+            return bool;
+        }
+
+        @Override
+        public String getStringValue() {
+            return String.valueOf(value);
         }
 
         @Override
@@ -263,12 +275,17 @@ public class Setting<T> {
 
         @Override
         public boolean setValueFromString(String value) {
-            try {
-                setValue(value);
+            if(modes.stream().anyMatch(value::equalsIgnoreCase)) {
+                setValue(UtilKt.capitalize(value));
                 return true;
-            } catch (Exception e) {
+            } else {
                 return false;
             }
+        }
+
+        @Override
+        public String getStringValue() {
+            return value;
         }
 
         public List<String> getModes() {
@@ -324,11 +341,16 @@ public class Setting<T> {
         @Override
         public boolean setValueFromString(String value) {
             try {
-                setValue(Color.getColor(value));
+                setValue(Color.decode(value));
                 return true;
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 return false;
             }
+        }
+
+        @Override
+        public String getStringValue() {
+            return String.valueOf(value);
         }
 
         public int toInteger() {

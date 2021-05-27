@@ -26,7 +26,7 @@ public class MixinKeyboard {
                MinecraftClient.getInstance().openScreen(new ChatScreen(""));
             }
         } else {
-            ModuleManager.INSTANCE.onKeyRelease(window, keyInt, scancode);
+            ModuleManager.INSTANCE.onKey(window, keyInt, scancode);
         }
     }
 }

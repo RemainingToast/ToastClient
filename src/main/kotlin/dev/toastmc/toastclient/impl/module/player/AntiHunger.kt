@@ -12,8 +12,8 @@ object AntiHunger : Module("AntiHunger", Category.PLAYER) {
         if (mc.player == null) return
         if (event.packet is PlayerMoveC2SPacket) {
             if (mc.isInSingleplayer) {
-                mc.player!!.hungerManager.foodLevel = 20
-                mc.player!!.hungerManager.setSaturationLevelClient(5.0f)
+                mc.player!!.hungerManager.add(20, 5.0f)
+                mc.player!!.hungerManager.update(mc.player)
                 return
             }
             event.cancel()

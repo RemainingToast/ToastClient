@@ -1,5 +1,6 @@
 package dev.toastmc.toastclient.mixin.client;
 
+import dev.toastmc.toastclient.impl.module.misc.ExtraSign;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -28,7 +29,7 @@ public class MixinAbstractSignBlock {
             method = {"onUse"}
     )
     private void on(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (player.isSneaking()) {
+        if (player.isSneaking() && ExtraSign.INSTANCE.isEnabled()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof SignBlockEntity) {
                 SignBlockEntity signBlockEntity = (SignBlockEntity) blockEntity;

@@ -16,6 +16,7 @@
     "MixinClientPlayerEntity",
     "MixinCommandSuggestor",
     "MixinEntity",
+    "MixinEntityRenderer",
     "MixinGameRenderer",
     "MixinIngameHud",
     "MixinInGameOverlayRenderer",
@@ -25,10 +26,14 @@
     "MixinMinecraftClient",
     "MixinPlayerEntity",
     "MixinSharedConstants",
-    "MixinTitleScreen",
-    "MixinEntityRenderer"
+    "MixinTitleScreen"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "IChatHud",
+    "IMinecraftClient",
+    "MixinPlayerListHud"
+  ]
 }

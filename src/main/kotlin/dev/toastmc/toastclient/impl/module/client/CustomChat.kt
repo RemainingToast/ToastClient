@@ -26,8 +26,8 @@ object CustomChat : Module("CustomChat", Category.CLIENT) {
 
     var separator = mode(
         "Separator",
-        "none",
-        "none", "default", "brackets"
+        "None",
+        "None", "Default", "Brackets"
     )
 
     override fun onEnable() {
@@ -41,9 +41,9 @@ object CustomChat : Module("CustomChat", Category.CLIENT) {
             val chatMessage = event.packet.chatMessage
             if ((chatMessage.startsWith(CommandManager.prefix) || chatMessage.startsWith("/")) && !commands.value) return
             suffix = when (separator.value){
-                "none" -> " ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
-                "default" -> " | ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
-                "brackets" -> " < ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ >"
+                "None" -> " ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
+                "Default" -> " | ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
+                "Brackets" -> " < ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ >"
                 else -> " ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
             }
             if(fancyChat.value){

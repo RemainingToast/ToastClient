@@ -13,11 +13,11 @@ open class ToastClient : ModInitializer, IToastClient {
     override fun onInitialize() {
         val start = System.currentTimeMillis()
 
-        logger.info("$nameVersion has started initializing...")
+        logger.info("Started loading $nameVersion")
 
         CommandManager.init()
 
-        logger.info("$nameVersion has finished initialization (${System.currentTimeMillis() - start}ms)")
+        logger.info("Finished loading $nameVersion (${System.currentTimeMillis() - start}ms)")
     }
 
 }
