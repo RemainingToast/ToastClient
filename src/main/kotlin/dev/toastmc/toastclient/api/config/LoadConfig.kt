@@ -1,103 +1,74 @@
 package dev.toastmc.toastclient.api.config
 
-import dev.toastmc.toastclient.ToastClient
-import kotlinx.serialization.decodeFromString
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.module.Module
 import dev.toastmc.toastclient.api.module.ModuleManager
+import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.setting.Setting.*
-import net.minecraft.client.MinecraftClient
-import net.minecraft.util.math.MathHelper
-import java.io.*
+import dev.toastmc.toastclient.api.setting.SettingManager
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
-
 
 /**
- * Original @author Hoosiers
- * @since 10/15/2020
- * Rewritten into Fabric/Kotlin @author RemainingToast
- * Rewritten to use kotlinx.serialization instead of gson @author Vonr/Qther, only method logic from Hoosiers remains
- * @since 01/02/2021
- * @see https://github.com/IUDevman/gamesense-client/blob/master/src/main/java/com/gamesense/api/config/LoadConfig.java
+ * @author Hoosiers
  **/
-object LoadConfig {
+object LoadConfig : IToastClient {
 
-//    val mainDirectory = "${MinecraftClient.getInstance().runDirectory.canonicalPath}/toastclient/"
-//    val moduleDirectory = "modules/"
-//
-//    fun init(){
-//        try {
-//            loadConfig()
-//        } catch (e: IOException){
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    fun loadConfig(){
-//        loadModules()
-//    }
-//
-//    fun loadModules() {
-//        val moduleLocation: String = mainDirectory + moduleDirectory
-//        for (module in ModuleManager.modules) {
-//            try {
-//                loadModuleDirect(moduleLocation, module)
-//            } catch (e: IOException) {
-//                println(module.name)
-//                e.printStackTrace()
-//            }
-//        }
-//    }
-//
-//    @Throws(IOException::class)
-//    fun loadModuleDirect(moduleLocation: String, module: Module) {
-//        val fileLoc = moduleLocation + module.name + ".json"
-//        if (!Files.exists(Paths.get(fileLoc))) {
-//            return
-//        }
-//        val reader = BufferedReader(FileReader(fileLoc))
-//        val text = reader.readText()
-//        reader.close()
-//        if (text.isNotEmpty()) {
-//            val decodedModule = ToastClient.JSON.decodeFromString<Module>(text)
-////            module.settings = decodedModule.settings
-//            for (setting in module.settings) {
-//                for (decodedSetting in decodedModule.settings) {
-//                    if (setting.name != decodedSetting.name) continue
-//                    when (setting) {
-//                        is BooleanSetting -> {
-//                            setting.value = (decodedSetting as BooleanSetting).value
-//                        }
-////                        is KeybindSetting -> {
-////                            setting.value = (decodedSetting as KeybindSetting).value
-////                        }
-//                        is IntegerSetting -> {
-//                            setting.value = MathHelper.clamp((decodedSetting as IntegerSetting).value, setting.min, setting.max)
-//                        }
-//                        is DoubleSetting -> {
-//                            setting.value = MathHelper.clamp((decodedSetting as DoubleSetting).value, setting.min, setting.max)
-//                        }
-//                        is ListSetting -> {
-//                            var index = (decodedSetting as ListSetting).index
-//                            val size = setting.list.size
-//                            while (size < index) index -= size
-//                            setting.index = index
-//                        }
-//                        is ColorSetting -> {
-//                            val typedSetting = decodedSetting as ColorSetting
-////                            setting.value = typedSetting.value
-//                            setting.alphaEnabled = typedSetting.alphaEnabled
-////                            setting.rainbow = typedSetting.rainbow
-//                            setting.rainbowEnabled = typedSetting.rainbowEnabled
-//                        }
-//                    }
-//                    break
-//                }
-//            }
-//            module.setBind(decodedModule.getBind())
-//            module.setDrawn(decodedModule.isDrawn())
-////            module.setEnabled(module != ClickGUIModule && module != HUDEditor && decodedModule.isEnabled())
-//        }
-//    }
+    private val mainDirectory = "${mc.runDirectory.canonicalPath}/toastclient/"
+    private const val moduleDirectory = "modules/"
+
+    fun init(){
+        try {
+            loadModules()
+        } catch (e: IOException){
+
+        }
+    }
+
+    fun loadModules() {
+        val moduleLocation: String = mainDirectory + moduleDirectory
+        for (module in ModuleManager.modules) {
+            try {
+                loadModuleDirect(moduleLocation, module)
+            } catch (e: IOException) {
+                println(module.getName())
+                e.printStackTrace()
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    fun loadModuleDirect(moduleLocation: String, module: Module) {
+        if (!Files.exists(Paths.get(moduleLocation + module.getName() + ".json"))) {
+            return
+        }
+        val inputStream: InputStream = Files.newInputStream(Paths.get(moduleLocation + module.getName() + ".json"))
+        val moduleObject: JsonObject = JsonParser().parse(InputStreamReader(inputStream)).asJsonObject
+        if (moduleObject["Module"] == null) {
+            return
+        }
+        val settingObject = moduleObject["Settings"].asJsonObject
+        for (setting in SettingManager.getSettingsForMod(module)) {
+            val dataObject = settingObject[setting.configName]
+            if (dataObject != null && dataObject.isJsonPrimitive) {
+                when (setting.type) {
+                    Type.BOOLEAN -> (setting as Setting.Boolean).value = dataObject.asBoolean
+                    Type.DOUBLE -> (setting as Setting.Double).value = dataObject.asDouble
+                    Type.COLOR -> (setting as ColorSetting).fromInteger(dataObject.asInt)
+                    Type.MODE -> (setting as Mode).run {
+                        if(value.toString() != dataObject.asString) this.increment()
+                    }
+                }
+            }
+        }
+        if(moduleObject["Enabled"].asBoolean) module.enable()
+        module.setDrawn(moduleObject["Drawn"].asBoolean)
+//        module.setBind(moduleObject["Bind"].asInt)
+        inputStream.close()
+    }
 }

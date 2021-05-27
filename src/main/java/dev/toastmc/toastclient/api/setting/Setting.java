@@ -102,12 +102,11 @@ public class Setting<T> {
     }
 
     public enum Type {
-        DOUBLE,
-        BIND,
         BOOLEAN,
-        MODE,
+        DOUBLE,
         GROUP,
-        COLOR
+        COLOR,
+        MODE
     }
 
     public static class Double extends Setting<Double> implements NumberSetting {
