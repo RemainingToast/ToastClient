@@ -9,13 +9,11 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import dev.toastmc.toastclient.api.module.Module
-import dev.toastmc.toastclient.api.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.setting.SettingManager
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture
-import java.util.function.Function
 
 class SettingArgumentType(
     dependantType: ArgumentType<Module>,
@@ -56,7 +54,7 @@ class SettingArgumentType(
             return this
         }
         return CommandSource.suggestMatching(
-            SettingManager.getSettingsForMod(module).filter { !it.name.equals(module.getName(), true) }.map { it.name.quoteIfNecessary() },
+            SettingManager.getSettingsForMod(module).map { it.name.quoteIfNecessary() },
             builder
         )
     }

@@ -28,9 +28,7 @@ public class SettingManager {
     }
 
     public static List<Setting<?>> getSettingsForMod(final Module parent) {
-        List<Setting<?>> output = settings.stream().filter(s -> s.getParent().equals(parent)).collect(Collectors.toList());
-        output.sort(Comparator.comparingInt(Setting::getPriority));
-        return output;
+        return settings.stream().filter(s -> s.getParent().equals(parent)).sorted(Comparator.comparingInt(Setting::getPriority)).collect(Collectors.toList());
     }
 
     public static List<Setting<?>> getSettingsByCategory(final Module.Category faxCategory) {

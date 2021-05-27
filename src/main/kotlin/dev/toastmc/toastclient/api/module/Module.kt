@@ -22,10 +22,6 @@ open class Module(private var name: String, private var category: Category) : IT
 
     private var persistent = false
 
-    init {
-        SettingManager.addSetting(Boolean(name, this, drawn))
-    }
-
     protected open fun onEnable() {
         ToastClient.eventBus.register(this)
     }

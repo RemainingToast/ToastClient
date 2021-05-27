@@ -15,29 +15,21 @@ object FakePlayerCommand : Command("fakeplayer") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral(label) {
             does {
-                spawnFakePlayer()
+                var spawned = false
+                spawned = if(!spawned) {
+                    val fakePlayer = OtherClientPlayerEntity(mc.world, mc.player!!.gameProfile)
+                    fakePlayer.copyPositionAndRotation(mc.player)
+                    fakePlayer.setHeadYaw(mc.player!!.headYaw)
+                    fakePlayer.inventory.clone(mc.player!!.inventory);
+                    mc.world!!.addEntity(42069, fakePlayer)
+                    true
+                } else {
+                    mc.world!!.removeEntity(42069)
+                    false
+                }
                 message("$prefix Fake Player has been ${if(spawned) "${Formatting.GREEN}SPAWNED" else "${Formatting.RED}REMOVED" }")
                 0
             }
         }
     }
-
-    private var spawned = false
-
-    private fun spawnFakePlayer(){
-        if (mc.world != null && mc.player != null) {
-            spawned = if(!spawned) {
-                val fakePlayer = OtherClientPlayerEntity(mc.world, mc.player!!.gameProfile)
-                fakePlayer.copyPositionAndRotation(mc.player)
-                fakePlayer.setHeadYaw(mc.player!!.headYaw)
-                fakePlayer.inventory.clone(mc.player!!.inventory);
-                mc.world!!.addEntity(42069, fakePlayer)
-                true
-            } else {
-                mc.world!!.removeEntity(42069)
-                false
-            }
-        }
-    }
-
 }
