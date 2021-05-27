@@ -12,4 +12,5 @@ pluginManagement {
         id 'fabric-loom' version loom_version
         id "org.jetbrains.kotlin.jvm" version kotlin_version
     }
+
 }

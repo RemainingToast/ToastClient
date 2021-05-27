@@ -1,26 +1,37 @@
 {
   "schemaVersion": 1,
-  "id": "toastclient",
+  "id": "modid",
   "version": "${version}",
-  "name": "Toast Client",
-  "description": "Like Bread Mod, But Hotter.",
+
+  "name": "Example Mod",
+  "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "RemainingToast"
+    "Me!"
   ],
-  "contact": {},
-  "license": "MIT",
-  "icon": "assets/toastclient/icon.png",
-  "environment": "client",
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
   "entrypoints": {
     "main": [
-      "me.remainingtoast.toastclient.ToastClient"
+      "net.fabricmc.example.ExampleModKt::init"
     ]
   },
   "mixins": [
-    "toastclient.mixins.json"
+    "modid.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.0",
+    "fabricloader": ">=0.8.7",
+    "fabric": "*",
+    "fabric-language-kotlin": "*",
     "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
   }
 }
