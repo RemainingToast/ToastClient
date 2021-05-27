@@ -1,16 +1,22 @@
-# Fabric Example Mod - Kotlin
-![Gradle build](https://github.com/natanfudge/fabric-example-mod-kotlin/workflows/Gradle%20build/badge.svg)
-## Setup
+## Toast Client b2.1
+[![Download](https://img.shields.io/github/downloads/RemainingToast/toastclient/total?color=green&label=total%20downloads)](https://github.com/RemainingToast/toastclient/releases/)
+[![Discord](https://img.shields.io/discord/801552028504555550)](https://discord.gg/fvSKpbtQAV)
+![GitHub lines of code](https://tokei.rs/b1/github/RemainingToast/toastclient)
+![GitHub last commit](https://img.shields.io/github/last-commit/RemainingToast/toastclient)
 
-0. Create a new mod repository by pressing the "Use this template" button and clone the created repository.
+### Installing
+*I recommend using [multimc](https://multimc.org/) as it makes installing Fabric much easier.*
 
-1. Import build.gradle file with IntelliJ IDEA
+1. Download the latest version [here](https://github.com/RemainingToast/toastclient/releases/)
+2. After you are done [installing fabric](https://fabricmc.net/wiki/install)
+3. Put `toastclient.jar` inside `.minecraft/mods/`
+4. Launch Minecraft
 
-2. Edit build.gradle and mod.json to suit your needs.
-    * The "mixins" object can be removed from mod.json if you do not need to use mixins.
-    * Please replace all occurences of "modid" with your own mod ID - sometimes, a different string may also suffice.
-3. Run!
+Note (By Default):
+* ClickGui Key is `RSHIFT`
+* Command Prefix is `.`
 
-## License
+### Credits 
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+* Command System based off [KAMI's](https://github.com/zeroeightysix/KAMI/) implementation of Brigdier
+* Config System based off [GameSense's](https://github.com/IUDevman/gamesense-client)
