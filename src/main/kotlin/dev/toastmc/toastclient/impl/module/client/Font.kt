@@ -35,7 +35,7 @@ object Font : Module("Font", Category.CLIENT) {
                 update()
             }
 
-            TwoDRenderUtil.drawText(
+            TwoDRenderUtil.drawCustomText(
                 event.matrix,
                 renderer!!,
                 clientName,
@@ -45,7 +45,7 @@ object Font : Module("Font", Category.CLIENT) {
                 ToastColor.rainbow()
             )
 
-            TwoDRenderUtil.drawText(
+            TwoDRenderUtil.drawCustomText(
                 event.matrix,
                 renderer!!,
                 version,

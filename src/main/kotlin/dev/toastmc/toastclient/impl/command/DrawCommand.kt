@@ -8,7 +8,7 @@ import dev.toastmc.toastclient.api.util.*
 import net.minecraft.command.CommandSource
 import net.minecraft.util.Formatting
 
-object DrawCommand : Command("drawn") {
+object DrawCommand : Command("draw") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral(label) {
             argument("module", ModuleArgumentType.getModule()){

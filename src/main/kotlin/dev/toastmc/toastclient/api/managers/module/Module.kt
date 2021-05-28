@@ -30,6 +30,10 @@ open class Module(private var name: String, private var category: Category) : IT
         ToastClient.eventBus.unregister(this)
     }
 
+    protected open fun onToggle() {
+
+    }
+
     open fun onUpdate() {
 
     }
@@ -79,6 +83,7 @@ open class Module(private var name: String, private var category: Category) : IT
 
     open fun toggle() {
         setEnabled(!isEnabled())
+        onToggle()
     }
 
     open fun toggleDrawn(){
@@ -90,7 +95,11 @@ open class Module(private var name: String, private var category: Category) : IT
     }
 
     open fun setKey(key: InputUtil.Key) {
-        this.key = key;
+        this.key = key
+    }
+
+    open fun setKey(key: Int, scancode: Int) {
+        this.key = InputUtil.fromKeyCode(key, scancode)
     }
 
     open fun getCategory(): Category {

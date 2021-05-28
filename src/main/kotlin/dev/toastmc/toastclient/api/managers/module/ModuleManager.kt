@@ -4,6 +4,7 @@ import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.ToastClient
 import dev.toastmc.toastclient.api.events.OverlayEvent
 import dev.toastmc.toastclient.api.events.TickEvent
+import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import dev.toastmc.toastclient.impl.module.client.CustomChat
 import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
@@ -33,6 +34,7 @@ object ModuleManager : IToastClient {
             AutoArmour,
             AutoRespawn,
             AutoWalk,
+            ClickGUI,
             ExtraSign,
             ExtraTab,
             ExtraTooltips,
