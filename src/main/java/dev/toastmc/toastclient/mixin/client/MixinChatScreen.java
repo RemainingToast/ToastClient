@@ -27,10 +27,7 @@ public class MixinChatScreen {
             message = message.substring(1);
             try {
                 Command.dispatcher.execute(message, MinecraftClient.getInstance().player.networkHandler.getCommandSource());
-            } catch (CommandSyntaxException e){
-//                UtilKt.sendMessage(e.getMessage(), Color.RED);
-            }
-            System.out.println(message);
+            } catch (CommandSyntaxException ignored){ }
         } else screen.sendMessage(message);
     }
 }

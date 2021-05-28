@@ -3,6 +3,8 @@ package dev.toastmc.toastclient.impl.module.player
 import dev.toastmc.toastclient.api.managers.FriendManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.lit
+import dev.toastmc.toastclient.api.util.message
+import dev.toastmc.toastclient.impl.command.FriendCommand
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.Formatting
 import net.minecraft.util.hit.EntityHitResult
@@ -21,12 +23,18 @@ object MCF : Module("MCF", Category.PLAYER) {
                 val hitResult = mc.crosshairTarget
                 val entityHitResult = hitResult as EntityHitResult
                 val entity = entityHitResult.entity
-                val name = entity.displayName.string
-                val uuid = entity.uuid
+
                 if (entity is PlayerEntity){
-                    println("You middle clicked $name their uuid is $uuid")
-                    if (FriendManager.isFriend(uuid)) FriendManager.removeFriend(name, uuid) else FriendManager.addFriend(name, uuid)
-                    mc.player!!.sendMessage(lit("Friend: \"$name\" ${if (FriendManager.isFriend(uuid)) "added" else "removed"}").formatted(if (FriendManager.isFriend(uuid)) Formatting.GREEN else Formatting.RED), false)
+                    val name = entity.displayName.string
+
+                    if (FriendManager.isFriend(entity)) {
+                        FriendManager.removeFriend(entity)
+                        message(lit("${FriendCommand.prefix} $name has been ${Formatting.RED}removed${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
+                    }
+                    else {
+                        FriendManager.addFriend(entity)
+                        message(lit("${FriendCommand.prefix} $name has been ${Formatting.GREEN}added${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
+                    }
                 }
             }
         } else if (GLFW.glfwGetMouseButton(mc.window.handle, button) == 0){

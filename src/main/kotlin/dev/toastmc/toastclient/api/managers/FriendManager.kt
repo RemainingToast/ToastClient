@@ -71,8 +71,8 @@ object FriendManager {
         friends.add(ToastPlayer(name, uuid))
     }
 
-    fun addFriend(player: GameProfile) {
-        friends.add(ToastPlayer(player.name, player.id))
+    fun addFriend(player: ToastPlayer) {
+        friends.add(player)
     }
 
     fun addFriend(player: PlayerEntity) {
@@ -85,6 +85,10 @@ object FriendManager {
 
     fun removeFriend(player: PlayerEntity) {
         friends.remove(ToastPlayer(player.displayName.string, player.uuid))
+    }
+
+    fun removeFriend(player: ToastPlayer) {
+        friends.remove(player)
     }
 
     fun removeFriend(player: GameProfile) {

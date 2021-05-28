@@ -6,6 +6,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import dev.toastmc.toastclient.api.managers.FriendManager
 import dev.toastmc.toastclient.api.managers.command.Command
+import dev.toastmc.toastclient.api.managers.command.type.FriendArgumentType
 import dev.toastmc.toastclient.api.util.*
 import dev.toastmc.toastclient.mixin.client.IEntitySelector
 import net.minecraft.client.network.PlayerListEntry
@@ -55,7 +56,7 @@ object FriendCommand : Command("friend") {
                                 text?.append(friend)
                             }
                         }
-                        message(lit("$prefix You are friends with: ").append(text).formatted(Formatting.GRAY))
+                        message(lit("$prefix Friends: ").append(text).formatted(Formatting.GRAY))
                     }
                     0
                 }
@@ -63,17 +64,17 @@ object FriendCommand : Command("friend") {
             literal("add") {
                 then(
                     createFriendArgument(
-                        Function { entry: PlayerListEntry ->
-                            if (FriendManager.isFriend(entry.profile.name)) {
+                        Function { entry: ToastPlayer ->
+                            if (FriendManager.isFriend(entry.name) || entry.uuid == mc.player!!.uuid) {
                                 return@Function FAILED_EXCEPTION.create(
                                     "That player is already your friend!"
                                 )
                             }
                             null
                         },
-                        { entry: PlayerListEntry, _: CommandSource ->
-                            FriendManager.addFriend(entry.profile)
-                            message(lit("$prefix ${entry.profile.name} has been ${Formatting.GREEN}added${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
+                        { entry: ToastPlayer, _: CommandSource ->
+                            FriendManager.addFriend(entry)
+                            message(lit("$prefix ${entry.name} has been ${Formatting.GREEN}added${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
                             0
                         }
                     )
@@ -81,18 +82,18 @@ object FriendCommand : Command("friend") {
             }
             literal("remove") {
                 then(
-                    createFriendArgument(
-                        Function { entry: PlayerListEntry ->
-                            if (!FriendManager.isFriend(entry.profile.name)) {
+                    removeFriendArgument(
+                        Function { entry: ToastPlayer ->
+                            if (!FriendManager.isFriend(entry.name)) {
                                 return@Function FAILED_EXCEPTION.create(
                                     "That player isn't your friend!"
                                 )
                             }
                             null
                         },
-                        { entry: PlayerListEntry, _: CommandSource ->
-                            FriendManager.removeFriend(entry.profile)
-                            message(lit("$prefix ${entry.profile.name} has been ${Formatting.RED}removed${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
+                        { entry: ToastPlayer, _: CommandSource ->
+                            FriendManager.removeFriend(entry)
+                            message(lit("$prefix ${entry.name} has been ${Formatting.RED}removed${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
                             0
                         }
                     )
@@ -103,14 +104,10 @@ object FriendCommand : Command("friend") {
 
     private val FAILED_EXCEPTION = DynamicCommandExceptionType { o: Any -> lit(o.toString()) }
 
-    private fun createFriendArgument(
-        fail: Function<PlayerListEntry, CommandSyntaxException?>,
-        function: BiFunction<PlayerListEntry, CommandSource, Int>,
+    private fun createFriendArgument(fail: Function<ToastPlayer, CommandSyntaxException?>,
+                                     function: BiFunction<ToastPlayer, CommandSource, Int>,
     ): RequiredArgumentBuilder<CommandSource, EntitySelector> {
-        return RequiredArgumentBuilder.argument<CommandSource, EntitySelector>(
-            "friend",
-            EntityArgumentType.player()
-        )
+        return RequiredArgumentBuilder.argument<CommandSource, EntitySelector>("friend", EntityArgumentType.player())
             .executes { ctx ->
                 val selector: EntitySelector = "friend" from ctx
                 val optionalPlayer =
@@ -125,14 +122,38 @@ object FriendCommand : Command("friend") {
                         }.findAny()
                 if (optionalPlayer.isPresent) {
                     val entry = optionalPlayer.get()
-                    val e = fail.apply(entry)
+                    val e = fail.apply(ToastPlayer(entry.profile.name, entry.profile.id))
                     if (e != null) {
                         throw e
                     }
-                    return@executes function.apply(entry, ctx.source as CommandSource)
+                    return@executes function.apply(ToastPlayer(entry.profile.name, entry.profile.id), ctx.source as CommandSource)
                 } else { // TODO: Process offline players
                     throw FAILED_EXCEPTION.create("Couldn't find that player.")
                 }
             }
+    }
+
+    private fun removeFriendArgument(fail: Function<ToastPlayer, CommandSyntaxException?>,
+                                     function: BiFunction<ToastPlayer, CommandSource, Int>,
+    ): RequiredArgumentBuilder<CommandSource, ToastPlayer> {
+        return RequiredArgumentBuilder.argument<CommandSource, ToastPlayer>("friend", FriendArgumentType.friend())
+            .executes { ctx ->
+                val selector: ToastPlayer = "friend" from ctx
+                val optionalFriend = FriendManager.friends.stream()
+                    .filter {
+                        return@filter it.name.equals(selector.name, true) || it.uuid == selector.uuid
+                    }
+                    .findAny()
+                if(optionalFriend.isPresent){
+                    val friend = optionalFriend.get()
+                    val e = fail.apply(friend)
+                    if (e != null) {
+                        throw e
+                    }
+                    return@executes function.apply(friend, ctx.source as CommandSource)
+                } else { // TODO: Process offline players
+                   throw FAILED_EXCEPTION.create("Couldn't find that player.")
+            }
+        }
     }
 }

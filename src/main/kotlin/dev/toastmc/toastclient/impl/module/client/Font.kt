@@ -54,6 +54,6 @@ object Font : Module("Font", Category.CLIENT) {
                 dropShadow.value,
                 ToastColor.rainbow()
             )
-        }
+        } else return
     }
 }
