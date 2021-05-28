@@ -8,11 +8,13 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import dev.toastmc.toastclient.api.setting.Setting
-import dev.toastmc.toastclient.api.setting.SettingManager
 import dev.toastmc.toastclient.api.util.lit
-import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture
 
+/**
+ * @author 086
+ * Modified for my client base
+ */
 class SettingValueArgumentType(
     dependantType: ArgumentType<Setting<*>>,
     dependantArgument: String,
@@ -22,6 +24,7 @@ class SettingValueArgumentType(
     dependantArgument,
     shift
 ) {
+
     @Throws(CommandSyntaxException::class)
     override fun parse(reader: StringReader): String {
         val setting = findDependencyValue(reader)
@@ -39,7 +42,7 @@ class SettingValueArgumentType(
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
         val setting = findDependencyValue(context, Setting::class.java)
-        return builder.buildFuture()
+        return builder.suggest(setting.stringValue).buildFuture()
     }
 
     companion object {

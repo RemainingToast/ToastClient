@@ -13,6 +13,10 @@ import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture
 
+/**
+ * @author 086
+ * Modified for my client base
+ */
 class ModuleArgumentType<Module>(private val clazz: Class<Module>) : ArgumentType<Module> {
 
     val modules = ModuleManager.modules

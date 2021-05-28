@@ -5,11 +5,16 @@ import com.mojang.brigadier.arguments.ArgumentType
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 
+/**
+ * @author 086
+ * Modified for my client base
+ */
 abstract class DependantArgumentType<T, D>(
     private val dependantType: ArgumentType<D>,
     private val dependantArgument: String,
     private val shiftWords: Int
 ) : ArgumentType<T> {
+
     @Throws(CommandSyntaxException::class)
     protected fun findDependencyValue(reader: StringReader?): D {
         val copy = StringReader(reader)

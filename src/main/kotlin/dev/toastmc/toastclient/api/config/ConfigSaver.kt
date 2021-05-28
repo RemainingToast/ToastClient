@@ -20,10 +20,6 @@ import java.nio.charset.StandardCharsets
 **/
 object ConfigSaver {
 
-    fun init() {
-        ConfigUtil.initLocations()
-    }
-
     fun saveModules() {
         for (module in ModuleManager.modules) {
             try {

@@ -13,8 +13,7 @@ object ConfigUtil : IToastClient {
     const val moduleDirectory = "modules/"
 
     fun init() {
-        ConfigSaver.init()
-        ConfigLoader.init()
+        initLocations()
         loadEverything()
     }
 
@@ -26,17 +25,6 @@ object ConfigUtil : IToastClient {
     fun saveEverything() {
         ConfigSaver.saveModules()
         FriendManager.saveFriends()
-
-        logger.info("$nameVersion saved and quit successfully.")
-    }
-
-    fun initLocations() {
-        try {
-            if(!Files.exists(Paths.get(mainDirectory)))
-                Files.createDirectories(Paths.get(mainDirectory))
-            if(!Files.exists(Paths.get(mainDirectory + moduleDirectory)))
-                Files.createDirectories(Paths.get(mainDirectory + moduleDirectory))
-        } catch (ignore: IOException) {}
     }
 
     fun registerFile(location: String) {
@@ -48,4 +36,14 @@ object ConfigUtil : IToastClient {
             Files.createFile(path)
         }
     }
+
+    fun initLocations() {
+        try {
+            if(!Files.exists(Paths.get(mainDirectory)))
+                Files.createDirectories(Paths.get(mainDirectory))
+            if(!Files.exists(Paths.get(mainDirectory + moduleDirectory)))
+                Files.createDirectories(Paths.get(mainDirectory + moduleDirectory))
+        } catch (ignore: IOException) {}
+    }
+
 }

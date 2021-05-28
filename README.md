@@ -18,5 +18,6 @@ Note (By Default):
 
 ### Credits 
 
-* Command System based off [KAMI's](https://github.com/zeroeightysix/KAMI/) implementation of Brigdier
+* ALL the [Contributors](https://github.com/RemainingToast/ToastClient/graphs/contributors)
+* Command System based off [KAMI's](https://github.com/zeroeightysix/KAMI/)
 * Config System based off [GameSense's](https://github.com/IUDevman/gamesense-client)

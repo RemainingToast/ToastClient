@@ -109,6 +109,8 @@ public class Setting<T> {
         MODE
     }
 
+
+
     public static class Double extends Setting<Double> implements NumberSetting {
 
         private double value;

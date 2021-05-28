@@ -18,10 +18,6 @@ import java.nio.file.Paths
  **/
 object ConfigLoader {
 
-    fun init(){
-        loadModules()
-    }
-
     fun loadModules() {
         try {
             for (module in ModuleManager.modules) {

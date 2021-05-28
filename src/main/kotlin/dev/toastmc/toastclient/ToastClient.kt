@@ -22,6 +22,7 @@ open class ToastClient : ModInitializer, IToastClient {
 
         Runtime.getRuntime().addShutdownHook(Thread {
             ConfigUtil.saveEverything()
+            logger.info("$nameVersion saved and quit successfully.")
         })
 
         logger.info("Finished loading $nameVersion (${System.currentTimeMillis() - start}ms)")

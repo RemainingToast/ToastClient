@@ -15,6 +15,10 @@ import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture
 
+/**
+ * @author 086
+ * Modified for my client base
+ */
 class SettingArgumentType(
     dependantType: ArgumentType<Module>,
     dependantArgument: String,
