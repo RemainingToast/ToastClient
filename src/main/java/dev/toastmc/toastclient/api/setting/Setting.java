@@ -173,7 +173,7 @@ public class Setting<T> {
 
         @Override
         public int getPrecision() {
-            return 2;
+            return 1;
         }
 
         @Override
@@ -301,11 +301,6 @@ public class Setting<T> {
             int modeIndex = modes.indexOf(value);
             modeIndex = (modeIndex + 1) % modes.size();
             setValue(modes.get(modeIndex));
-        }
-
-        @Override
-        public String getValueName() {
-            return this.value;
         }
 
         public Mode onChanged(Consumer<Mode> listener){

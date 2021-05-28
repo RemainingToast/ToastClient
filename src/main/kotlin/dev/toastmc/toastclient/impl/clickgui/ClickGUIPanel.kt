@@ -8,7 +8,15 @@ import dev.toastmc.toastclient.api.setting.SettingManager
 import dev.toastmc.toastclient.api.util.TwoDRenderUtil
 import net.minecraft.client.util.math.MatrixStack
 import java.awt.Rectangle
+import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.math.roundToInt
+
+
+
+
+
+
 
 class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : IToastClient {
 
@@ -24,6 +32,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     private var mouseX = 0.0
     private var mouseY = 0.0
 
+    private var dragging = false
     private var clickedOnce = false
     private var rightClicked = false
     private var leftClicked = false
@@ -71,13 +80,18 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
             leftClicked = false
             rightClicked  = false
             clickedOnce = false
+            dragging = false
         }
     }
 
     fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, dragX: Double, dragY: Double) {
-        if (button == 0 && hovering) {
-            this.x += dragX
-            this.y += dragY
+        if (button == 0) {
+            this.dragging = true
+
+            if(hovering) {
+                this.x += dragX
+                this.y += dragY
+            }
         }
     }
 
@@ -203,6 +217,11 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, if (hovering) -0x66ff0100 else -0x7fff0100)
         TwoDRenderUtil.drawText(matrices, setting.name, rect.x + 2, rect.y, -0x1)
         TwoDRenderUtil.drawText(matrices, setting.stringValue, rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5, rect.y, -0x1)
+
+        if(hovering && (dragging || leftClicked)) {
+            val percent: Int = ((mouseX - x) * 100 / (width - 2)).roundToInt()
+            setting.value = clamp(round(percent * ((setting.max - setting.min) / 100) + setting.min, setting.precision), setting.min, setting.max)
+        }
     }
 
     private fun drawMode(matrices: MatrixStack, mode: Setting.Mode) {
@@ -217,6 +236,16 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         if (hovering && leftClicked) {
             mode.increment()
         }
+    }
+
+    private fun round(value: Double, places: Int): Double {
+        var bd = BigDecimal(value)
+        bd = bd.setScale(places, RoundingMode.HALF_UP)
+        return bd.toDouble()
+    }
+
+    fun clamp(value: Double, min: Double, max: Double): Double {
+        return min.coerceAtLeast(max.coerceAtMost(value))
     }
 
     private fun hover(mouseX: Double, mouseY: Double, rect: Rectangle): Boolean {

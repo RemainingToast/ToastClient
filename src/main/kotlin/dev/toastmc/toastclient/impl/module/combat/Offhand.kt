@@ -55,14 +55,14 @@ object Offhand : Module("OffHand", Category.COMBAT) {
             }
         }
 
-        val doneSomething: Result = if (gapple.value && defaultItem.valueName == "GAPPLE") {
+        val doneSomething: Result = if (gapple.value && defaultItem.toggled("GAPPLE")) {
             switchOffhand(Items.ENCHANTED_GOLDEN_APPLE, gapples)
-        } else if (crystal.value && defaultItem.valueName == "CRYSTAL") {
+        } else if (crystal.value && defaultItem.toggled("CRYSTAL")) {
             switchOffhand(Items.END_CRYSTAL, crystals)
         } else {
             val crystalEntities = mc.world!!.entities.filterIsInstance<EndCrystalEntity>()
             if (
-                (totem.value && defaultItem.valueName == "TOTEM") &&
+                (totem.value && defaultItem.toggled("TOTEM")) &&
                 mc.player!!.health <= totemHealth.value &&
                 (!crystalCheck.value || mc.world!!.players.any {
                     it.pos.distanceTo(mc.player!!.pos) < playerRange.value && crystalEntities.any { e ->
