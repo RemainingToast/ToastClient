@@ -2,7 +2,6 @@ package dev.toastmc.toastclient.api.config
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.module.Module
 import dev.toastmc.toastclient.api.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
@@ -17,29 +16,18 @@ import java.nio.file.Paths
 /**
  * @author Hoosiers
  **/
-object LoadConfig : IToastClient {
-
-    private val mainDirectory = "${mc.runDirectory.canonicalPath}/toastclient/"
-    private const val moduleDirectory = "modules/"
+object ConfigLoader {
 
     fun init(){
-        try {
-            loadModules()
-        } catch (e: IOException){
-
-        }
+        loadModules()
     }
 
     fun loadModules() {
-        val moduleLocation: String = mainDirectory + moduleDirectory
-        for (module in ModuleManager.modules) {
-            try {
-                loadModuleDirect(moduleLocation, module)
-            } catch (e: IOException) {
-                println(module.getName())
-                e.printStackTrace()
+        try {
+            for (module in ModuleManager.modules) {
+                loadModuleDirect(ConfigUtil.mainDirectory + ConfigUtil.moduleDirectory, module)
             }
-        }
+        } catch (ignore: IOException) { }
     }
 
     @Throws(IOException::class)

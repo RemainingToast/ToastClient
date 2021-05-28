@@ -219,9 +219,8 @@ public class Setting<T> {
 
         @Override
         public boolean setValueFromString(String value) {
-            boolean bool = java.lang.Boolean.parseBoolean(value);
-            setValue(bool);
-            return bool;
+            setValue(java.lang.Boolean.parseBoolean(value));
+            return true;
         }
 
         @Override

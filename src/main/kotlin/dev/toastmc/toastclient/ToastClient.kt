@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient
 
 import dev.toastmc.toastclient.api.command.CommandManager
-import dev.toastmc.toastclient.api.config.ConfigManager
+import dev.toastmc.toastclient.api.config.ConfigUtil
 import net.fabricmc.api.ModInitializer
 import org.quantumclient.energy.EventBus
 
@@ -18,11 +18,10 @@ open class ToastClient : ModInitializer, IToastClient {
 
         CommandManager.init()
 
-        ConfigManager.init()
+        ConfigUtil.init()
 
         Runtime.getRuntime().addShutdownHook(Thread {
-            ConfigManager.saveEverything()
-            logger.info("$nameVersion saved and quit successfully.")
+            ConfigUtil.saveEverything()
         })
 
         logger.info("Finished loading $nameVersion (${System.currentTimeMillis() - start}ms)")

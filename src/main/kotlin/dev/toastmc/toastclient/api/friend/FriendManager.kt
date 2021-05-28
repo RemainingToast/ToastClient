@@ -1,7 +1,15 @@
 package dev.toastmc.toastclient.api.friend
 
+import com.google.gson.reflect.TypeToken
+import dev.toastmc.toastclient.api.config.ConfigUtil
+import dev.toastmc.toastclient.api.config.ConfigUtil.mainDirectory
 import dev.toastmc.toastclient.api.util.ToastPlayer
 import net.minecraft.entity.player.PlayerEntity
+import java.io.FileOutputStream
+import java.io.FileReader
+import java.io.IOException
+import java.io.OutputStreamWriter
+import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.function.Consumer
 import kotlin.collections.ArrayList
@@ -72,5 +80,28 @@ object FriendManager {
 
     fun removeFriend(player: PlayerEntity) {
         friends.remove(ToastPlayer(player.displayName.string, player.uuid))
+    }
+
+    fun saveFriends() {
+        ConfigUtil.registerFile("friends")
+
+        val fileOutputStreamWriter = OutputStreamWriter(
+            FileOutputStream("${mainDirectory}friends.json"),
+            StandardCharsets.UTF_8
+        )
+
+        fileOutputStreamWriter.write(ConfigUtil.gson.toJson(friends))
+        fileOutputStreamWriter.close()
+    }
+
+    fun loadFriends() {
+        try {
+            val reader = FileReader("${mainDirectory}friends.json")
+            val type = object : TypeToken<MutableList<ToastPlayer>>() {}.type
+
+            this.friends = ConfigUtil.gson.fromJson(reader, type)
+        } catch (e: IOException) {
+
+        }
     }
 }

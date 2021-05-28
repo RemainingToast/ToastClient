@@ -12,10 +12,11 @@ import net.minecraft.util.Formatting
 
 object FakePlayerCommand : Command("fakeplayer") {
 
+    private var spawned = false
+
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral(label) {
             does {
-                var spawned = false
                 spawned = if(!spawned) {
                     val fakePlayer = OtherClientPlayerEntity(mc.world, mc.player!!.gameProfile)
                     fakePlayer.copyPositionAndRotation(mc.player)
