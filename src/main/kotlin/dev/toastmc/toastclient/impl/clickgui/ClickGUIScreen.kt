@@ -18,7 +18,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")) {
         var x = 20
         for (category in Module.Category.values()) {
             if(category == Module.Category.NONE) continue
-            panels.putIfAbsent(category, ClickGUIPanel(category, x, 20))
+            panels.putIfAbsent(category, ClickGUIPanel(category, x.toDouble(), 20.0))
             x += 93
         }
     }
@@ -71,7 +71,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")) {
 
     override fun mouseMoved(mouseX: Double, mouseY: Double) {
         for (panel in panels.values) {
-//            panel.updateMousePos(mouseX, mouseY)
+            panel.updateMousePos(mouseX, mouseY)
         }
     }
 

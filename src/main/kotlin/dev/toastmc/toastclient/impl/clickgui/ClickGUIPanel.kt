@@ -5,8 +5,9 @@ import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.util.TwoDRenderUtil
 import net.minecraft.client.util.math.MatrixStack
 import java.awt.Rectangle
+import kotlin.math.roundToInt
 
-class ClickGUIPanel(category: Module.Category, var x: Int, var y: Int) {
+class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) {
 
     var width = 90
     var height = 12
@@ -22,7 +23,7 @@ class ClickGUIPanel(category: Module.Category, var x: Int, var y: Int) {
 
     private val hovering: Boolean
         get() {
-            return hover(mouseX, mouseY, Rectangle(x, y, width, height))
+            return hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt(), width, height))
         }
 
     init {
@@ -36,17 +37,19 @@ class ClickGUIPanel(category: Module.Category, var x: Int, var y: Int) {
         leftClicked: Boolean,
         rightClicked: Boolean
     ) {
-        this.mouseX = mouseX
-        this.mouseY = mouseY
-
         drawCategory(matrices, category, mouseX, mouseY, leftClicked, rightClicked)
     }
 
     fun updatePosition(dragX: Double, dragY: Double) {
         if (hovering) {
-            this.x = x + dragX.toInt()
-            this.y = y + dragY.toInt()
+            this.x += dragX
+            this.y += dragY
         }
+    }
+
+    fun updateMousePos(mouseX: Double, mouseY: Double){
+        this.mouseX = mouseX
+        this.mouseY = mouseY
     }
 
     private fun drawCategory(
@@ -57,16 +60,14 @@ class ClickGUIPanel(category: Module.Category, var x: Int, var y: Int) {
         leftClicked: Boolean,
         rightClicked: Boolean
     ) {
-//        val hovering = hover(mouseX, mouseY, Rectangle(x, y, width, height))
-
         level = 1
 
         TwoDRenderUtil.drawCenteredTextBox(
             matrices,
             category.name,
             Rectangle(
-                x,
-                y,
+                x.roundToInt(),
+                y.roundToInt(),
                 width,
                 height
             ),
@@ -87,8 +88,8 @@ class ClickGUIPanel(category: Module.Category, var x: Int, var y: Int) {
         }
         TwoDRenderUtil.drawHollowRect(
             matrices,
-            x - 2,
-            y - 2,
+            (x - 2).roundToInt(),
+            (y - 2).roundToInt(),
             width,
             level + height * level,
             1,
