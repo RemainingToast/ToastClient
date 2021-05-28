@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.combat
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.client.gui.screen.ingame.InventoryScreen
 import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.item.Item

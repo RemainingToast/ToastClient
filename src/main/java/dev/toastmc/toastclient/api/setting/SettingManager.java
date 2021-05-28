@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.api.setting;
 
-import dev.toastmc.toastclient.api.module.Module;
+import dev.toastmc.toastclient.api.managers.module.Module;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -2,11 +2,11 @@ package dev.toastmc.toastclient.impl.command
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.ArgumentType
-import dev.toastmc.toastclient.api.command.Command
-import dev.toastmc.toastclient.api.command.type.ModuleArgumentType
-import dev.toastmc.toastclient.api.command.type.SettingArgumentType
-import dev.toastmc.toastclient.api.command.type.SettingValueArgumentType
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.command.Command
+import dev.toastmc.toastclient.api.managers.command.type.ModuleArgumentType
+import dev.toastmc.toastclient.api.managers.command.type.SettingArgumentType
+import dev.toastmc.toastclient.api.managers.command.type.SettingValueArgumentType
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.util.*
 import net.minecraft.command.CommandSource

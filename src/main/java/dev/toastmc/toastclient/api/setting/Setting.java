@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.api.setting;
 
-import dev.toastmc.toastclient.api.module.Module;
+import dev.toastmc.toastclient.api.managers.module.Module;
 import dev.toastmc.toastclient.api.setting.types.*;
 import dev.toastmc.toastclient.api.util.ToastColor;
 import dev.toastmc.toastclient.api.util.UtilKt;

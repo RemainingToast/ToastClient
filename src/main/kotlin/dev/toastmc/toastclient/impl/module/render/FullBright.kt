@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.render
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import java.util.*

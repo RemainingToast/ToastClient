@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.module
+package dev.toastmc.toastclient.api.managers.module
 
 import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.ToastClient

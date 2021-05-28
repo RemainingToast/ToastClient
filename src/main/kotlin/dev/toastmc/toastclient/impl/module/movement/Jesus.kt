@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.movement
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.WorldUtil.isFluid
 import net.minecraft.util.math.BlockPos
 

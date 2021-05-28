@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.movement
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 
 object NoFall : Module("NoFall", Category.MOVEMENT) {

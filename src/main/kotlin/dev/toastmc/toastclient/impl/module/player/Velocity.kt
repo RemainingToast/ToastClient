@@ -3,7 +3,7 @@ package dev.toastmc.toastclient.impl.module.player
 import dev.toastmc.toastclient.api.events.EntityEvent
 import dev.toastmc.toastclient.api.events.MoveEntityFluidEvent
 import dev.toastmc.toastclient.api.events.PacketEvent
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.mixin.client.IEntityVelocityUpdateS2CPacket
 import dev.toastmc.toastclient.mixin.client.IExplosionS2CPacket
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket

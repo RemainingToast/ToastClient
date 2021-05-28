@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.command
 
 import com.mojang.brigadier.CommandDispatcher
-import dev.toastmc.toastclient.api.command.Command
+import dev.toastmc.toastclient.api.managers.command.Command
 import dev.toastmc.toastclient.api.util.does
 import dev.toastmc.toastclient.api.util.message
 import dev.toastmc.toastclient.api.util.register

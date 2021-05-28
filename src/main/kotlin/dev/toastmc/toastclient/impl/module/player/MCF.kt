@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.player
 
-import dev.toastmc.toastclient.api.friend.FriendManager
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.FriendManager
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.Formatting

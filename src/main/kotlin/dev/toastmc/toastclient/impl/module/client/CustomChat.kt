@@ -1,12 +1,11 @@
 package dev.toastmc.toastclient.impl.module.client
 
-import dev.toastmc.toastclient.api.command.CommandManager
+import dev.toastmc.toastclient.api.managers.command.CommandManager
 import dev.toastmc.toastclient.api.events.PacketEvent
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import me.remainingtoast.toastclient.api.util.FancyChatUtil
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import org.quantumclient.energy.Subscribe
-import java.util.*
 
 object CustomChat : Module("CustomChat", Category.CLIENT) {
 

@@ -1,7 +1,6 @@
 package dev.toastmc.toastclient.impl.module.player
 
-import dev.toastmc.toastclient.api.module.Module
-import dev.toastmc.toastclient.api.setting.types.BooleanSetting
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.item.PickaxeItem
 
 object NoEntityTrace : Module("NoEntityTrace", Category.PLAYER) {

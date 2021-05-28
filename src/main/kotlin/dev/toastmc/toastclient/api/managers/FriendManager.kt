@@ -1,6 +1,7 @@
-package dev.toastmc.toastclient.api.friend
+package dev.toastmc.toastclient.api.managers
 
 import com.google.gson.reflect.TypeToken
+import com.mojang.authlib.GameProfile
 import dev.toastmc.toastclient.api.config.ConfigUtil
 import dev.toastmc.toastclient.api.config.ConfigUtil.mainDirectory
 import dev.toastmc.toastclient.api.util.ToastPlayer
@@ -70,6 +71,10 @@ object FriendManager {
         friends.add(ToastPlayer(name, uuid))
     }
 
+    fun addFriend(player: GameProfile) {
+        friends.add(ToastPlayer(player.name, player.id))
+    }
+
     fun addFriend(player: PlayerEntity) {
         friends.add(ToastPlayer(player.displayName.string, player.uuid))
     }
@@ -80,6 +85,10 @@ object FriendManager {
 
     fun removeFriend(player: PlayerEntity) {
         friends.remove(ToastPlayer(player.displayName.string, player.uuid))
+    }
+
+    fun removeFriend(player: GameProfile) {
+        friends.remove(ToastPlayer(player.name, player.id))
     }
 
     fun saveFriends() {
@@ -99,7 +108,7 @@ object FriendManager {
             val reader = FileReader("${mainDirectory}friends.json")
             val type = object : TypeToken<MutableList<ToastPlayer>>() {}.type
 
-            this.friends = ConfigUtil.gson.fromJson(reader, type)
+            friends = ConfigUtil.gson.fromJson(reader, type)
         } catch (e: IOException) {
 
         }

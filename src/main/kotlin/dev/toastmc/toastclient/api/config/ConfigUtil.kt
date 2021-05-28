@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.api.config
 
 import dev.toastmc.toastclient.IToastClient
-import dev.toastmc.toastclient.api.friend.FriendManager
+import dev.toastmc.toastclient.api.managers.FriendManager
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths

@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.command.type
+package dev.toastmc.toastclient.api.managers.command.type
 
 import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.arguments.ArgumentType

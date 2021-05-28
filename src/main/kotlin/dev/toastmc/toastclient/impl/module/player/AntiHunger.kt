@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.player
 
 import dev.toastmc.toastclient.api.events.PacketEvent
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import org.quantumclient.energy.Subscribe
 

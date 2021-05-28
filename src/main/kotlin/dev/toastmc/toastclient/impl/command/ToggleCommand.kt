@@ -1,11 +1,10 @@
 package dev.toastmc.toastclient.impl.command
 
 import com.mojang.brigadier.CommandDispatcher
-import dev.toastmc.toastclient.api.command.Command
-import dev.toastmc.toastclient.api.command.type.ModuleArgumentType
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.command.Command
+import dev.toastmc.toastclient.api.managers.command.type.ModuleArgumentType
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.*
-import net.minecraft.client.MinecraftClient
 import net.minecraft.command.CommandSource
 import net.minecraft.util.Formatting
 

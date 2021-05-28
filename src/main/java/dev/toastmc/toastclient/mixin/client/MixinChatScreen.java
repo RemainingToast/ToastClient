@@ -2,9 +2,8 @@ package dev.toastmc.toastclient.mixin.client;
 
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.toastmc.toastclient.ToastClient;
-import dev.toastmc.toastclient.api.command.Command;
-import dev.toastmc.toastclient.api.command.CommandManager;
+import dev.toastmc.toastclient.api.managers.command.Command;
+import dev.toastmc.toastclient.api.managers.command.CommandManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;

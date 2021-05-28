@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.command
+package dev.toastmc.toastclient.api.managers.command
 
 import com.mojang.brigadier.CommandDispatcher
 import dev.toastmc.toastclient.IToastClient

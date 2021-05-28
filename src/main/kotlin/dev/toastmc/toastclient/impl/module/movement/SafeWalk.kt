@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.movement
 
 import dev.toastmc.toastclient.api.events.ClipAtLedgeEvent
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import org.quantumclient.energy.Subscribe
 
 object SafeWalk : Module("SafeWalk", Category.MOVEMENT) {

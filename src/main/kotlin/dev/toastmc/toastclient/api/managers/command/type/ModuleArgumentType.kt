@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.command.type
+package dev.toastmc.toastclient.api.managers.command.type
 
 import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.arguments.ArgumentType
@@ -7,8 +7,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
-import dev.toastmc.toastclient.api.module.Module
-import dev.toastmc.toastclient.api.module.ModuleManager
+import dev.toastmc.toastclient.api.managers.module.Module
+import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture

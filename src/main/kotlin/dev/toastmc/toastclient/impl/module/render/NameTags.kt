@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.render
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.VertexConsumerProvider

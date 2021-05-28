@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.combat
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import me.remainingtoast.toastclient.api.util.TimerUtil
 import net.minecraft.client.gui.screen.DeathScreen
 

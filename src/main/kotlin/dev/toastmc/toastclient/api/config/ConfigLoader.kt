@@ -2,8 +2,8 @@ package dev.toastmc.toastclient.api.config
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import dev.toastmc.toastclient.api.module.Module
-import dev.toastmc.toastclient.api.module.ModuleManager
+import dev.toastmc.toastclient.api.managers.module.Module
+import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.setting.Setting.*
 import dev.toastmc.toastclient.api.setting.SettingManager

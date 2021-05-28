@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.misc
 
-import dev.toastmc.toastclient.api.friend.FriendManager
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.FriendManager
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.ToastColor
 import net.minecraft.client.network.PlayerListEntry
 import net.minecraft.scoreboard.Team

@@ -1,10 +1,7 @@
-package dev.toastmc.toastclient.api.command
+package dev.toastmc.toastclient.api.managers.command
 
 import dev.toastmc.toastclient.IToastClient
-import dev.toastmc.toastclient.impl.command.DrawCommand
-import dev.toastmc.toastclient.impl.command.FakePlayerCommand
-import dev.toastmc.toastclient.impl.command.SetCommand
-import dev.toastmc.toastclient.impl.command.ToggleCommand
+import dev.toastmc.toastclient.impl.command.*
 import java.util.*
 
 object CommandManager : IToastClient {
@@ -18,6 +15,7 @@ object CommandManager : IToastClient {
         register(
             DrawCommand,
             FakePlayerCommand,
+            FriendCommand,
             SetCommand,
             ToggleCommand
         )

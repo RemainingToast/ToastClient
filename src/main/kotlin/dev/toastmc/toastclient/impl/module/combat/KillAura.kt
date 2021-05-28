@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.combat
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.ItemUtil.equipBestWeapon
 import me.remainingtoast.toastclient.api.util.DamageUtil
 import me.remainingtoast.toastclient.api.util.EntityUtil

@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.combat
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.enchantment.ProtectionEnchantment
 import net.minecraft.entity.EquipmentSlot

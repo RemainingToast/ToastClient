@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.render
 
 import dev.toastmc.toastclient.api.events.PacketEvent
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import net.minecraft.network.packet.s2c.play.ExperienceOrbSpawnS2CPacket
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
 import net.minecraft.network.packet.s2c.play.LightUpdateS2CPacket

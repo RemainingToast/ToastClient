@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.module.player
 
-import dev.toastmc.toastclient.api.module.Module
+import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.mixin.client.IMinecraftClient
 import net.minecraft.item.Items
 

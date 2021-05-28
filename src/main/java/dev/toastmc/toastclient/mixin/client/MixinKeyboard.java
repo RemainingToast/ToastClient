@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.mixin.client;
 
-import dev.toastmc.toastclient.api.command.CommandManager;
-import dev.toastmc.toastclient.api.module.ModuleManager;
+import dev.toastmc.toastclient.api.managers.command.CommandManager;
+import dev.toastmc.toastclient.api.managers.module.ModuleManager;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;

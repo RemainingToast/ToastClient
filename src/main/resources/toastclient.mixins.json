@@ -33,6 +33,7 @@
   },
   "mixins": [
     "IChatHud",
+    "IEntitySelector",
     "IMinecraftClient",
     "MixinPlayerListHud"
   ]
