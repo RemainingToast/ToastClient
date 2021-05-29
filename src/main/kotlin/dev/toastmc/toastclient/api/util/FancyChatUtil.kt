@@ -1,10 +1,11 @@
-package me.remainingtoast.toastclient.api.util
+package dev.toastmc.toastclient.api.util
 
 import java.util.*
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
 object FancyChatUtil {
+
     fun rainbowText(text: String): String {
         val colors = arrayOf("&c", "&6", "&e", "&a", "&b", "&9", "&d")
         val result = arrayOf("")
@@ -65,15 +66,6 @@ object FancyChatUtil {
         }
         return finalString.toString()
     }
-
-    //    public static String grammar(String text) {
-    //        String newText = StringUtil.capitalize(text);
-    //        if (newText.endsWith("?") || newText.endsWith(".") || newText.endsWith("!")) {
-    //            return newText;
-    //        } else {
-    //            return newText+".";
-    //        }
-    //    }
 
     fun getValueFromKey(map: Map<String, String>, key: String, caseSensitive: Boolean): String? {
         var valueFound: String? = null

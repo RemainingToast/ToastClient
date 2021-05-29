@@ -1,5 +1,6 @@
 package dev.toastmc.toastclient.mixin.client;
 
+import dev.toastmc.toastclient.api.util.TextUtilKt;
 import dev.toastmc.toastclient.impl.module.misc.ExtraSign;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
@@ -18,8 +19,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static dev.toastmc.toastclient.api.util.UtilKt.lit;
 
 @Mixin(AbstractSignBlock.class)
 public class MixinAbstractSignBlock {
@@ -45,7 +44,7 @@ public class MixinAbstractSignBlock {
                 }
 
                 MinecraftClient.getInstance().keyboard.setClipboard(textToCopy.toString().replaceAll("\\s+$", ""));
-                player.sendMessage(lit("Copied sign to clipboard.").formatted(Formatting.GREEN),true);
+                player.sendMessage(TextUtilKt.lit("Copied sign to clipboard.").formatted(Formatting.GREEN),true);
             }
         }
     }

@@ -2,8 +2,8 @@ package dev.toastmc.toastclient.api.setting;
 
 import dev.toastmc.toastclient.api.managers.module.Module;
 import dev.toastmc.toastclient.api.setting.types.*;
+import dev.toastmc.toastclient.api.util.TextUtilKt;
 import dev.toastmc.toastclient.api.util.ToastColor;
-import dev.toastmc.toastclient.api.util.UtilKt;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,14 +15,16 @@ public class Setting<T> {
 
     private final String name;
     private final String configName;
+
     private final Module parent;
     private final Module.Category faxCategory;
     private final Type type;
+
     private boolean hidden;
     private boolean grouped;
+
     private Consumer<T> changedListener;
     private T value;
-    private int priority;
 
     public Setting(
             final String name,
@@ -36,7 +38,6 @@ public class Setting<T> {
         this.faxCategory = faxCategory;
         this.hidden = false;
         this.grouped = false;
-        this.priority = 0;
     }
 
     public String getName() {
@@ -81,14 +82,6 @@ public class Setting<T> {
 
     public boolean setValueFromString(String value) { return false; }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
     public boolean isHidden() {
         return hidden;
     }
@@ -103,27 +96,49 @@ public class Setting<T> {
 
     public enum Type {
         BOOLEAN,
-        DOUBLE,
+        NUMBER,
         GROUP,
         COLOR,
         MODE
     }
 
-
-
-    public static class Double extends Setting<Double> implements NumberSetting {
+    public static class Number extends Setting<Number> implements NumberSetting {
 
         private double value;
         private final double min;
         private final double max;
 
-        public Double(
+        public Number(
                 final String name,
                 final Module parent,
                 final double value,
                 final double min,
                 final double max) {
-            super(name, parent, parent.getCategory(), Type.DOUBLE);
+            super(name, parent, parent.getCategory(), Type.NUMBER);
+            this.value = value;
+            this.min = min;
+            this.max = max;
+        }
+
+        public Number(
+                final String name,
+                final Module parent,
+                final int value,
+                final int min,
+                final int max) {
+            super(name, parent, parent.getCategory(), Type.NUMBER);
+            this.value = value;
+            this.min = min;
+            this.max = max;
+        }
+
+        public Number(
+                final String name,
+                final Module parent,
+                final float value,
+                final float min,
+                final float max) {
+            super(name, parent, parent.getCategory(), Type.NUMBER);
             this.value = value;
             this.min = min;
             this.max = max;
@@ -133,9 +148,13 @@ public class Setting<T> {
             return value;
         }
 
-        public int getIntValue() { return (int) this.value; }
+        public int getIntValue() {
+            return (int) this.value;
+        }
 
-        public float getFloatValue() { return (float) this.value; }
+        public float getFloatValue() {
+            return (float) this.value;
+        }
 
         public void setValue(final double value) {
             this.value = value;
@@ -173,7 +192,7 @@ public class Setting<T> {
 
         @Override
         public int getPrecision() {
-            return 1;
+            return 0;
         }
 
         @Override
@@ -191,7 +210,7 @@ public class Setting<T> {
             return String.valueOf(value);
         }
 
-        public Double onChanged(Consumer<Double> listener){
+        public Number onChanged(Consumer<Number> listener){
             setChangedListener(listener);
             return this;
         }
@@ -276,7 +295,7 @@ public class Setting<T> {
         @Override
         public boolean setValueFromString(String value) {
             if(modes.stream().anyMatch(value::equalsIgnoreCase)) {
-                setValue(UtilKt.capitalize(value));
+                setValue(TextUtilKt.capitalize(value));
                 return true;
             } else {
                 return false;
@@ -417,94 +436,4 @@ public class Setting<T> {
             return expanded;
         }
     }
-
-//    public static class KeyBind extends Setting<KeyBind> implements KeySetting {
-//
-//        private final Module module;
-//
-//        public KeyBind(final Module parent) {
-//            super("Bind", parent, parent.getCategory(), Type.BIND);
-//            this.module = parent;
-//        }
-//
-//        @Override
-//        public int getPriority() {
-//            return 1;
-//        }
-//
-//        @Override
-//        public InputUtil.Key getKey() {
-//            return module.getKey();
-//        }
-//
-//        @Override
-//        public String getKeyName() {
-//            switch (module.key.getCode()) {
-//                case GLFW.GLFW_KEY_UNKNOWN: return "NONE";
-//                case GLFW.GLFW_KEY_ESCAPE: return "ESC";
-//                case GLFW.GLFW_KEY_PRINT_SCREEN: return "PRINTSCRN";
-//                case GLFW.GLFW_KEY_PAUSE: return "PAUSE";
-//                case GLFW.GLFW_KEY_INSERT: return "INSERT";
-//                case GLFW.GLFW_KEY_DELETE: return "DELETE";
-//                case GLFW.GLFW_KEY_HOME: return "HOME";
-//                case GLFW.GLFW_KEY_PAGE_UP: return "PAGE UP";
-//                case GLFW.GLFW_KEY_PAGE_DOWN: return "PAGE DOWN";
-//                case GLFW.GLFW_KEY_END: return "END";
-//                case GLFW.GLFW_KEY_TAB: return "TAB";
-//                case GLFW.GLFW_KEY_LEFT_CONTROL: return "LCTRL";
-//                case GLFW.GLFW_KEY_RIGHT_CONTROL: return "RCTRL";
-//                case GLFW.GLFW_KEY_LEFT_ALT: return "LALT";
-//                case GLFW.GLFW_KEY_RIGHT_ALT: return "RALT";
-//                case GLFW.GLFW_KEY_LEFT_SHIFT: return "LSHIFT";
-//                case GLFW.GLFW_KEY_RIGHT_SHIFT: return "RSHIFT";
-//                case GLFW.GLFW_KEY_UP: return "UP";
-//                case GLFW.GLFW_KEY_DOWN: return "DOWN";
-//                case GLFW.GLFW_KEY_LEFT: return "LEFT";
-//                case GLFW.GLFW_KEY_RIGHT: return "RIGHT";
-//                case GLFW.GLFW_KEY_APOSTROPHE: return "APOSTROPHE";
-//                case GLFW.GLFW_KEY_BACKSPACE: return "BACKSPACE";
-//                case GLFW.GLFW_KEY_CAPS_LOCK: return "CAPSLOCK";
-//                case GLFW.GLFW_KEY_MENU: return "MENU";
-//                case GLFW.GLFW_KEY_LEFT_SUPER: return "LSUPER";
-//                case GLFW.GLFW_KEY_RIGHT_SUPER: return "RSUPER";
-//                case GLFW.GLFW_KEY_ENTER: return "ENTER";
-//                case GLFW.GLFW_KEY_NUM_LOCK: return "NUMLOCK";
-//                case GLFW.GLFW_KEY_SPACE: return "SPACE";
-//                case GLFW.GLFW_KEY_F1: return "F1";
-//                case GLFW.GLFW_KEY_F2: return "F2";
-//                case GLFW.GLFW_KEY_F3: return "F3";
-//                case GLFW.GLFW_KEY_F4: return "F4";
-//                case GLFW.GLFW_KEY_F5: return "F5";
-//                case GLFW.GLFW_KEY_F6: return "F6";
-//                case GLFW.GLFW_KEY_F7: return "F7";
-//                case GLFW.GLFW_KEY_F8: return "F8";
-//                case GLFW.GLFW_KEY_F9: return "F9";
-//                case GLFW.GLFW_KEY_F10: return "F10";
-//                case GLFW.GLFW_KEY_F11: return "F11";
-//                case GLFW.GLFW_KEY_F12: return "F12";
-//                case GLFW.GLFW_KEY_F13: return "F13";
-//                case GLFW.GLFW_KEY_F14: return "F14";
-//                case GLFW.GLFW_KEY_F15: return "F15";
-//                case GLFW.GLFW_KEY_F16: return "F16";
-//                case GLFW.GLFW_KEY_F17: return "F17";
-//                case GLFW.GLFW_KEY_F18: return "F18";
-//                case GLFW.GLFW_KEY_F19: return "F19";
-//                case GLFW.GLFW_KEY_F20: return "F20";
-//                case GLFW.GLFW_KEY_F21: return "F21";
-//                case GLFW.GLFW_KEY_F22: return "F22";
-//                case GLFW.GLFW_KEY_F23: return "F23";
-//                case GLFW.GLFW_KEY_F24: return "F24";
-//                case GLFW.GLFW_KEY_F25: return "F25";
-//                default:
-//                    String keyName = GLFW.glfwGetKeyName(module.key.getCode(), -1);
-//                    if (keyName == null) return "NONE";
-//                    return keyName.toUpperCase();
-//            }
-//        }
-//
-//        @Override
-//        public void setKey(InputUtil.Key key) {
-//            module.setKey(key);
-//        }
-//    }
 }

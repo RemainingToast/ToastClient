@@ -5,11 +5,11 @@ import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
 import dev.toastmc.toastclient.api.config.ConfigUtil.mainDirectory
 import dev.toastmc.toastclient.api.config.ConfigUtil.moduleDirectory
+import dev.toastmc.toastclient.api.managers.SettingManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.setting.Setting.*
-import dev.toastmc.toastclient.api.setting.SettingManager
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStreamWriter
@@ -46,7 +46,7 @@ object ConfigSaver {
         for (s in SettingManager.getSettingsForMod(module)){
             when (s.type){
                 Type.BOOLEAN -> settingObject.add(s.configName, JsonPrimitive((s as Setting.Boolean).value))
-                Type.DOUBLE -> settingObject.add(s.configName, JsonPrimitive((s as Setting.Double).value))
+                Type.NUMBER -> settingObject.add(s.configName, JsonPrimitive((s as Setting.Number).value))
                 Type.COLOR -> settingObject.add(s.configName, JsonPrimitive((s as ColorSetting).toInteger()))
                 Type.MODE -> settingObject.add(s.configName, JsonPrimitive((s as Mode).value.toString()))
             }

@@ -1,6 +1,5 @@
-package me.remainingtoast.toastclient.api.util
+package dev.toastmc.toastclient.api.util
 
-import net.minecraft.client.MinecraftClient
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.DamageUtil
 import net.minecraft.entity.Entity
@@ -14,10 +13,9 @@ import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Difficulty
 import net.minecraft.world.explosion.Explosion
-import java.util.HashMap
+import java.util.*
 
 object DamageUtil {
-    private val mc: MinecraftClient = MinecraftClient.getInstance()
     private val damageCache: HashMap<Entity, Float> = HashMap()
 
     fun getExplosionDamage(basePos: BlockPos, target: LivingEntity): Float {

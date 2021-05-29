@@ -2,11 +2,11 @@ package dev.toastmc.toastclient.api.config
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import dev.toastmc.toastclient.api.managers.SettingManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.setting.Setting.*
-import dev.toastmc.toastclient.api.setting.SettingManager
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -42,7 +42,7 @@ object ConfigLoader {
             if (dataObject != null && dataObject.isJsonPrimitive) {
                 when (setting.type) {
                     Type.BOOLEAN -> (setting as Setting.Boolean).value = dataObject.asBoolean
-                    Type.DOUBLE -> (setting as Setting.Double).value = dataObject.asDouble
+                    Type.NUMBER -> (setting as Setting.Number).value = dataObject.asDouble
                     Type.COLOR -> (setting as ColorSetting).fromInteger(dataObject.asInt)
                     Type.MODE -> (setting as Mode).run {
                         if(value.toString() != dataObject.asString) this.increment()

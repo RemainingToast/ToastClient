@@ -1,10 +1,10 @@
 package dev.toastmc.toastclient.impl.clickgui
 
 import dev.toastmc.toastclient.IToastClient
+import dev.toastmc.toastclient.api.managers.SettingManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
-import dev.toastmc.toastclient.api.setting.SettingManager
 import dev.toastmc.toastclient.api.util.TwoDRenderUtil
 import net.minecraft.client.util.math.MatrixStack
 import java.awt.Rectangle
@@ -172,7 +172,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     private fun drawSetting(matrices: MatrixStack, setting: Setting<*>) {
         when (setting.type) {
             Setting.Type.BOOLEAN -> return drawBoolean(matrices, setting as Setting.Boolean)
-            Setting.Type.DOUBLE -> return drawSlider(matrices, setting as Setting.Double)
+            Setting.Type.NUMBER -> return drawSlider(matrices, setting as Setting.Number)
             Setting.Type.MODE -> return drawMode(matrices, setting as Setting.Mode)
             else -> return
         }
@@ -202,7 +202,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         }
     }
 
-    private fun drawSlider(matrices: MatrixStack, setting: Setting.Double) {
+    private fun drawSlider(matrices: MatrixStack, setting: Setting.Number) {
         val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
         val hovering = hover(mouseX, mouseY, rect)
 

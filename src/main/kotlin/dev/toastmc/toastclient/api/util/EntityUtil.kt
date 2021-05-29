@@ -1,6 +1,5 @@
-package me.remainingtoast.toastclient.api.util
+package dev.toastmc.toastclient.api.util
 
-import net.minecraft.client.MinecraftClient
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.Saddleable
@@ -53,7 +52,6 @@ object EntityUtil {
                 (e is Saddleable && e.isSaddled)
     }
 
-    private val mc = MinecraftClient.getInstance()
     private fun lookPacket(yaw: Double, pitch: Double) {
         if (mc.player == null) return
         mc.player!!.networkHandler.sendPacket(

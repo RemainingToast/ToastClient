@@ -1,13 +1,13 @@
-package dev.toastmc.toastclient.impl.module.client
+package dev.toastmc.toastclient.impl.module.misc
 
-import dev.toastmc.toastclient.api.managers.command.CommandManager
 import dev.toastmc.toastclient.api.events.PacketEvent
+import dev.toastmc.toastclient.api.managers.command.CommandManager
 import dev.toastmc.toastclient.api.managers.module.Module
-import me.remainingtoast.toastclient.api.util.FancyChatUtil
+import dev.toastmc.toastclient.api.util.FancyChatUtil
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import org.quantumclient.energy.Subscribe
 
-object CustomChat : Module("CustomChat", Category.CLIENT) {
+object CustomChat : Module("CustomChat", Category.MISC) {
 
     var isMadeByCustomChat = false
 

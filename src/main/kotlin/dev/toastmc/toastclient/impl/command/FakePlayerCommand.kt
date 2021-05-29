@@ -17,6 +17,7 @@ object FakePlayerCommand : Command("fakeplayer") {
     override fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher register rootLiteral(label) {
             does {
+                //TODO take UUID/name argument to customise fakeplayer
                 spawned = if(!spawned) {
                     val fakePlayer = OtherClientPlayerEntity(mc.world, mc.player!!.gameProfile)
                     fakePlayer.copyPositionAndRotation(mc.player)

@@ -1,5 +1,7 @@
 package dev.toastmc.toastclient.api.util
 
+import dev.toastmc.toastclient.ToastClient
+import dev.toastmc.toastclient.api.events.ChunkEvent
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -18,6 +20,7 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Heightmap
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
+import org.quantumclient.energy.Subscribe
 import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Collectors
@@ -200,17 +203,17 @@ object WorldUtil {
         return blocks.contains(this)
     }
 
-//    @EventHandler
-//    val onChunkEvent = Listener(EventHook<ChunkEvent> {
-//        if (mc.world!!.isChunkLoaded(it.chunk!!.pos.startX, it.chunk.pos.startZ))
-//            loadedChunks.add(it.chunk)
-//        else
-//            loadedChunks.remove(it.chunk)
-//    })
-//
-//    init {
-//        ToastClient.EVENT_BUS.subscribe(onChunkEvent)
-//    }
+    @Subscribe
+    fun on(event: ChunkEvent) {
+        if (mc.world!!.isChunkLoaded(event.chunk!!.pos.startX, event.chunk.pos.startZ))
+            loadedChunks.add(event.chunk)
+        else
+            loadedChunks.remove(event.chunk)
+    }
+
+    init {
+        ToastClient.eventBus.register(this)
+    }
 
     fun getSphere(loc: BlockPos, r: Int, h: Int, hollow: Boolean, sphere: Boolean, plus_y: Int): List<BlockPos> {
         val circleblocks: ArrayList<BlockPos> = ArrayList()

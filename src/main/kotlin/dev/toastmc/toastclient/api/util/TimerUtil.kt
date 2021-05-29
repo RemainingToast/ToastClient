@@ -1,4 +1,4 @@
-package me.remainingtoast.toastclient.api.util
+package dev.toastmc.toastclient.api.util
 
 class TimerUtil {
 

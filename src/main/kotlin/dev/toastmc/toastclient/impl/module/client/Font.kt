@@ -18,8 +18,8 @@ object Font : Module("Font", Category.CLIENT) {
         update()
     }
 
-    var watermarkX = number("WatermarkX", 15.0, 0.0, 2000.0)
-    var watermarkY = number("WatermarkY", 15.0, 0.0, 2000.0)
+    var watermarkX = number("WatermarkX", 15, 0, 2000)
+    var watermarkY = number("WatermarkY", 15, 0, 2000)
 
     var renderer: FontRenderer? = null
 

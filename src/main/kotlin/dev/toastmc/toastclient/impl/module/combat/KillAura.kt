@@ -2,8 +2,8 @@ package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.ItemUtil.equipBestWeapon
-import me.remainingtoast.toastclient.api.util.DamageUtil
-import me.remainingtoast.toastclient.api.util.EntityUtil
+import dev.toastmc.toastclient.api.util.DamageUtil
+import dev.toastmc.toastclient.api.util.EntityUtil
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items

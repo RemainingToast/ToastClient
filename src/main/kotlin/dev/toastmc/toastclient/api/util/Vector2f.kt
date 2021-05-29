@@ -1,41 +1,12 @@
 package dev.toastmc.toastclient.api.util
 
-import dev.toastmc.toastclient.ToastClient
-import dev.toastmc.toastclient.mixin.client.IChatHud
-import net.minecraft.client.MinecraftClient
-import net.minecraft.text.LiteralText
-import net.minecraft.text.Text
-import net.minecraft.util.Formatting
-import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.sqrt
-
-val mc = MinecraftClient.getInstance()
-
-fun lit(string: String): LiteralText {
-    return LiteralText(string)
-}
-
-fun message(text: Text) {
-    if (mc.player != null) (mc.inGameHud.chatHud as IChatHud).callAddMessage(text, 5932)
-}
-
-fun message(str: String) {
-    message(lit(str))
-}
-
-fun capitalize(str: String): String {
-    return if (str.isEmpty()) { str }
-    else str.substring(0, 1).toUpperCase() + str.substring(1)
-}
-
-data class ToastPlayer(var name: String, var uuid: UUID)
 
 class Vector2f(var x: Float, var y: Float) {
 
     fun length(): Float {
-        return sqrt((x * x + y * y).toDouble()).toFloat()
+        return kotlin.math.sqrt((x * x + y * y).toDouble()).toFloat()
     }
 
     fun max(): Float {
@@ -63,10 +34,7 @@ class Vector2f(var x: Float, var y: Float) {
         val rad = Math.toRadians(angle.toDouble())
         val cos = cos(rad)
         val sin = sin(rad)
-        return Vector2f(
-            (x * cos - y * sin).toFloat(), (x * sin + y
-                    * cos).toFloat()
-        )
+        return Vector2f((x * cos - y * sin).toFloat(), (x * sin + y * cos).toFloat())
     }
 
     fun add(r: Vector2f): Vector2f {
@@ -125,5 +93,4 @@ class Vector2f(var x: Float, var y: Float) {
         return this
     }
 }
-
 
