@@ -20,8 +20,6 @@ open class Module(private var name: String, private var category: Category) : IT
 
     private var key = InputUtil.UNKNOWN_KEY
 
-    private var persistent = false
-
     protected open fun onEnable() {
         ToastClient.eventBus.register(this)
     }
@@ -71,14 +69,6 @@ open class Module(private var name: String, private var category: Category) : IT
 
     open fun setDrawn(drawn: kotlin.Boolean) {
         this.drawn = drawn
-    }
-
-    open fun isPersistent(): kotlin.Boolean {
-        return persistent
-    }
-
-    open fun setPersistent(persistent: kotlin.Boolean) {
-        this.persistent = persistent
     }
 
     open fun toggle() {
@@ -147,6 +137,12 @@ open class Module(private var name: String, private var category: Category) : IT
     }
 
     enum class Category {
-        COMBAT, PLAYER, MOVEMENT, MISC, RENDER, CLIENT, NONE
+        COMBAT,
+        PLAYER,
+        MOVEMENT,
+        MISC,
+        RENDER,
+        CLIENT,
+        NONE
     }
 }

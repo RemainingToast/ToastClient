@@ -1,16 +1,13 @@
 package dev.toastmc.toastclient.impl.module.client
 
 import dev.toastmc.toastclient.api.managers.module.Module
-import dev.toastmc.toastclient.api.util.ToastColor
 import dev.toastmc.toastclient.impl.clickgui.ClickGUIScreen
 
 object ClickGUI : Module("ClickGUI", Category.CLIENT) {
 
-    private var hue = number("Hue", 100, 0, 360)
-    private var saturation = number("Saturation",100, 0, 100)
-    private var brightness = number("Brightness",100, 0, 100)
-
     private val GUI = ClickGUIScreen()
+
+//    var color = color("", ToastColor(1234, true))
 
     init {
         setKey(344, -1)
@@ -24,21 +21,7 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT) {
                 mc.openScreen(GUI)
             }
             disable()
-        } else {
-//            GUI.onClose()
         }
-    }
-
-    fun getMainColor(): ToastColor {
-        return ToastColor.fromHSB(hue.floatValue, saturation.floatValue, brightness.floatValue)
-    }
-
-    fun getModuleColor(): ToastColor {
-        return ToastColor(0x50000000, true)
-    }
-
-    fun getAccentColor(): ToastColor {
-        return ToastColor(50, 50, 50, 200)
     }
 
 }

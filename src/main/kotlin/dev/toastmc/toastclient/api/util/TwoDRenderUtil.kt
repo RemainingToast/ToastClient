@@ -128,47 +128,6 @@ object TwoDRenderUtil {
         bufferBuilder.vertex(matrix, xEnd.toFloat(), yEnd.toFloat(), z.toFloat()).color(k, l, m, j).next()
     }
 
-    fun drawCenteredString(
-        matrices: MatrixStack,
-        text: String,
-        centerX: Int,
-        y: Int,
-        color: Int,
-    ) {
-        mc.textRenderer!!.drawWithShadow(matrices, text, (centerX - mc.textRenderer!!.getWidth(text) / 2).toFloat(), y.toFloat(), color)
-    }
-
-    fun drawCenteredText(
-        matrices: MatrixStack,
-        text: Text,
-        centerX: Int,
-        y: Int,
-        color: Int,
-    ) {
-        val orderedText = text.asOrderedText()
-        mc.textRenderer!!.drawWithShadow(matrices, orderedText, (centerX - mc.textRenderer!!.getWidth(orderedText) / 2).toFloat(), y.toFloat(), color)
-    }
-
-    fun drawStringWithShadow(
-        matrices: MatrixStack,
-        text: String,
-        x: Int,
-        y: Int,
-        color: Int,
-    ) {
-        mc.textRenderer!!.drawWithShadow(matrices, text, x.toFloat(), y.toFloat(), color)
-    }
-
-    fun drawTextWithShadow(
-        matrices: MatrixStack,
-        text: Text,
-        x: Int,
-        y: Int,
-        color: Int,
-    ) {
-        mc.textRenderer!!.drawWithShadow(matrices, text, x.toFloat(), y.toFloat(), color)
-    }
-
     fun drawRect(matrices: MatrixStack, rect: Rectangle, color: Int) {
         startSmooth()
         fill(matrices, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, color)
@@ -177,6 +136,49 @@ object TwoDRenderUtil {
 
     fun drawRect(matrices: MatrixStack, x: Int, y: Int, width: Int, height: Int, color: Int) {
         drawRect(matrices, Rectangle(x, y, width, height), color)
+    }
+
+    fun drawHollowRect(matrices: MatrixStack, x: Int, y: Int, width: Int, height: Int, lineWidth: Int, color: Int) {
+        drawRect(matrices, x - lineWidth, y - lineWidth, width + lineWidth * 2, lineWidth, color) // top line
+        drawRect(matrices, x - lineWidth, y, lineWidth, height, color) // left line
+        drawRect(matrices, x - lineWidth, y + height, width + lineWidth * 2, lineWidth, color) // bottom line
+        drawRect(matrices, x + width, y, lineWidth, height, color) // right line
+    }
+
+    fun drawText(matrices: MatrixStack, text: Text, x: Int, y: Int, color: Int) {
+        mc.textRenderer.drawWithShadow(
+            matrices,
+            text,
+            x.toFloat(),
+            y.toFloat(),
+            color
+        )
+//        matrices.push()
+//        matrices.pop()
+    }
+
+    fun drawCenteredText(matrices: MatrixStack, text: Text, centerX: Int, y: Int, color: Int) {
+        mc.textRenderer.drawWithShadow(
+            matrices,
+            text,
+            centerX - mc.textRenderer.getWidth(text) / 2.toFloat(),
+            y.toFloat(),
+            color
+        )
+//        matrices.push()
+//        matrices.pop()
+    }
+
+    fun drawCenteredYText(matrices: MatrixStack, text: Text, x: Int, centerY: Int, color: Int) {
+        mc.textRenderer.drawWithShadow(
+            matrices,
+            text,
+            x.toFloat(),
+            centerY - mc.textRenderer.fontHeight / 2f,
+            color
+        )
+//        matrices.push()
+//        matrices.pop()
     }
 
     fun drawCenteredTextBox(matrices: MatrixStack, text: String, rect: Rectangle, bgColor: Int, textColor: Int) {
@@ -192,7 +194,7 @@ object TwoDRenderUtil {
 
     fun drawTextBox(matrices: MatrixStack, text: String, rect: Rectangle, bgColor: Int, textColor: Int) {
         drawRect(matrices, rect.x - 2, rect.y - 2, rect.width, rect.height, bgColor)
-        drawStringWithShadow(matrices, text, rect.x, rect.y, textColor)
+        drawText(matrices, lit(text), rect.x, rect.y, textColor)
     }
 
     fun startSmooth() {

@@ -2,11 +2,13 @@ package dev.toastmc.toastclient.api.util;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import java.awt.*;
+
 public class ToastColor extends java.awt.Color {
 
     public static ToastColor rainbow() {
         float hue = (System.currentTimeMillis() % (320 * 32)) / (320f * 32);
-        return new ToastColor(ToastColor.fromHSB(hue, 1, 1));
+        return new ToastColor(ToastColor.fromHSB(hue, 1, 1, 255));
     }
 
     private static final long serialVersionUID = 1L;
@@ -35,8 +37,9 @@ public class ToastColor extends java.awt.Color {
         super(color.getRed(),color.getGreen(),color.getBlue(),a);
     }
 
-    public static ToastColor fromHSB(float hue, float saturation, float brightness) {
-        return new ToastColor(java.awt.Color.getHSBColor(hue,saturation,brightness));
+    public static ToastColor fromHSB(float hue, float saturation, float brightness, int alpha) {
+        Color hsbColor = java.awt.Color.getHSBColor(hue,saturation,brightness);
+        return new ToastColor(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), alpha);
     }
 
     public float getHue() {
@@ -49,6 +52,14 @@ public class ToastColor extends java.awt.Color {
 
     public float getBrightness() {
         return RGBtoHSB(getRed(),getGreen(),getBlue(),null)[2];
+    }
+
+    public int getABGRPackedInt() {
+        int i = -1;
+        try {
+            i = Integer.parseInt("0x" + Integer.toHexString(getRGB()));
+        } catch (NumberFormatException ignored) { }
+        return i;
     }
 
     public void glColor() {
