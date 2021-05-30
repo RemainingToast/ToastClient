@@ -262,7 +262,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawBoolean(matrices: MatrixStack, bool: Setting.Boolean) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + height * level).roundToInt() - 1, width - 10, height)
+        val rect = Rectangle((x + 3).roundToInt(), (y + height * level).roundToInt(), width - 10, height)
         val hovering = hover(mouseX, mouseY, rect)
 
         if(hovering)
@@ -280,13 +280,9 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     private fun drawSlider(matrices: MatrixStack, setting: Setting.Number) {
         val rect = Rectangle((x + 3).roundToInt(), (y + height * level).roundToInt(), width - 10, height)
         val hovering = hover(mouseX, mouseY, rect)
-
         val progress = ((setting.value - setting.min) / (setting.max - setting.min) * rect.width).toInt()
 
-        if (setting.value != setting.min) {
-            TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, progress - 2, rect.height, -0x7fff0100)
-        }
-
+        if (setting.value != setting.min) TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, progress - 2, rect.height, -0x7fff0100)
         TwoDRenderUtil.drawRect(matrices, rect.x - 2 + progress, rect.y, rect.width - progress, rect.height, if (hovering) -0x80000000 else 0x50000000)
         TwoDRenderUtil.drawText(matrices, lit(setting.name), rect.x + 2, rect.y, -0x1)
         TwoDRenderUtil.drawText(matrices, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5, rect.y, -0x1)
@@ -346,7 +342,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         return bd.toDouble()
     }
 
-    fun clamp(value: Double, min: Double, max: Double): Double {
+    private fun clamp(value: Double, min: Double, max: Double): Double {
         return min.coerceAtLeast(max.coerceAtMost(value))
     }
 
