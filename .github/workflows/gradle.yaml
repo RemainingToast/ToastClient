@@ -27,6 +27,6 @@ jobs:
           name: toastclient
           path: build/libs/toastclient-$BUILD.jar
       - name: Send Discord Message
-        run: COMMITMESSAGE=`git log --pretty=format:'%s'` && UPDATEMSG=\ New\ Dev\ Build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"Dev Builds\", \"content\":\"$UPDATEMSG\"}" $DISCORD_WEBHOOK
+        run: COMMITMESSAGE=`git log --pretty=format:'%s'` && UPDATEMSG=\ New\ Dev\ Build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"Dev Builds\", \"content\":\"$UPDATEMSG\"}" $WEBHOOK
       - name: Upload Jar to Discord
         run: curl -F data=@toastclient-$BUILD.jar $WEBHOOK
