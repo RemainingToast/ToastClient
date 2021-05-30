@@ -1,71 +1,67 @@
 package dev.toastmc.toastclient.api.util
 
+import org.lwjgl.glfw.GLFW
+
 object KeyUtil {
-    val keys = LinkedHashMap<String, Int>()
 
-    fun isNumeric(str: String): Boolean {
-        try {
-            str.toInt()
-        } catch (nfe: NumberFormatException) {
-            return false
+    fun getKeyName(key: Int): String {
+        return when (key) {
+            GLFW.GLFW_KEY_UNKNOWN -> "NONE"
+            GLFW.GLFW_KEY_ESCAPE -> "ESC"
+            GLFW.GLFW_KEY_PRINT_SCREEN -> "PRINT"
+            GLFW.GLFW_KEY_PAUSE -> "PAUSE"
+            GLFW.GLFW_KEY_INSERT -> "INSERT"
+            GLFW.GLFW_KEY_DELETE -> "DELETE"
+            GLFW.GLFW_KEY_HOME -> "HOME"
+            GLFW.GLFW_KEY_PAGE_UP -> "PAGE UP"
+            GLFW.GLFW_KEY_PAGE_DOWN -> "PAGE DOWN"
+            GLFW.GLFW_KEY_END -> "END"
+            GLFW.GLFW_KEY_TAB -> "TAB"
+            GLFW.GLFW_KEY_LEFT_CONTROL -> "LCTRL"
+            GLFW.GLFW_KEY_RIGHT_CONTROL -> "RCTRL"
+            GLFW.GLFW_KEY_LEFT_ALT -> "LALT"
+            GLFW.GLFW_KEY_RIGHT_ALT -> "RALT"
+            GLFW.GLFW_KEY_LEFT_SHIFT -> "LSHIFT"
+            GLFW.GLFW_KEY_RIGHT_SHIFT -> "RSHIFT"
+            GLFW.GLFW_KEY_UP -> "UP"
+            GLFW.GLFW_KEY_DOWN -> "DOWN"
+            GLFW.GLFW_KEY_LEFT -> "LEFT"
+            GLFW.GLFW_KEY_RIGHT -> "RIGHT"
+            GLFW.GLFW_KEY_APOSTROPHE -> "APOSTROPHE"
+            GLFW.GLFW_KEY_BACKSPACE -> "BACKSPACE"
+            GLFW.GLFW_KEY_CAPS_LOCK -> "CAPSLOCK"
+            GLFW.GLFW_KEY_MENU -> "MENU"
+            GLFW.GLFW_KEY_LEFT_SUPER -> "LSUPER"
+            GLFW.GLFW_KEY_RIGHT_SUPER -> "RSUPER"
+            GLFW.GLFW_KEY_ENTER -> "ENTER"
+            GLFW.GLFW_KEY_NUM_LOCK -> "NUMLOCK"
+            GLFW.GLFW_KEY_SPACE -> "SPACE"
+            GLFW.GLFW_KEY_F1 -> "F1"
+            GLFW.GLFW_KEY_F2 -> "F2"
+            GLFW.GLFW_KEY_F3 -> "F3"
+            GLFW.GLFW_KEY_F4 -> "F4"
+            GLFW.GLFW_KEY_F5 -> "F5"
+            GLFW.GLFW_KEY_F6 -> "F6"
+            GLFW.GLFW_KEY_F7 -> "F7"
+            GLFW.GLFW_KEY_F8 -> "F8"
+            GLFW.GLFW_KEY_F9 -> "F9"
+            GLFW.GLFW_KEY_F10 -> "F10"
+            GLFW.GLFW_KEY_F11 -> "F11"
+            GLFW.GLFW_KEY_F12 -> "F12"
+            GLFW.GLFW_KEY_F13 -> "F13"
+            GLFW.GLFW_KEY_F14 -> "F14"
+            GLFW.GLFW_KEY_F15 -> "F15"
+            GLFW.GLFW_KEY_F16 -> "F16"
+            GLFW.GLFW_KEY_F17 -> "F17"
+            GLFW.GLFW_KEY_F18 -> "F18"
+            GLFW.GLFW_KEY_F19 -> "F19"
+            GLFW.GLFW_KEY_F20 -> "F20"
+            GLFW.GLFW_KEY_F21 -> "F21"
+            GLFW.GLFW_KEY_F22 -> "F22"
+            GLFW.GLFW_KEY_F23 -> "F23"
+            GLFW.GLFW_KEY_F24 -> "F24"
+            GLFW.GLFW_KEY_F25 -> "F25"
+            else -> (GLFW.glfwGetKeyName(key, -1) ?: return "NONE").toUpperCase()
         }
-        return true
-    }
-
-    fun getKeyCode(char: String): Int {
-        if (char.length != 1) return -1;
-        return keys.getValue(char.toUpperCase())
-    }
-
-    init {
-//        keys["!"] =
-        keys[" "] = 32
-        keys["'"] = 39
-        keys[","] = 44
-        keys["-"] = 45
-        keys["."] = 46
-        keys["/"] = 47
-        keys["0"] = 48
-        keys["1"] = 49
-        keys["2"] = 50
-        keys["3"] = 51
-        keys["4"] = 52
-        keys["5"] = 53
-        keys["6"] = 54
-        keys["7"] = 55
-        keys["8"] = 56
-        keys["9"] = 57
-        keys[";"] = 59
-        keys["="] = 61
-        keys["A"] = 65
-        keys["B"] = 66
-        keys["C"] = 67
-        keys["D"] = 68
-        keys["E"] = 69
-        keys["F"] = 70
-        keys["G"] = 71
-        keys["H"] = 72
-        keys["I"] = 73
-        keys["J"] = 74
-        keys["K"] = 75
-        keys["L"] = 76
-        keys["M"] = 77
-        keys["N"] = 78
-        keys["O"] = 79
-        keys["P"] = 80
-        keys["Q"] = 81
-        keys["R"] = 82
-        keys["S"] = 83
-        keys["T"] = 84
-        keys["U"] = 85
-        keys["V"] = 86
-        keys["W"] = 87
-        keys["X"] = 88
-        keys["Y"] = 89
-        keys["Z"] = 90
-        keys["`"] = 192
-        keys["["] = 219
-        keys["\\"] = 220
-        keys["]"] = 221
     }
 }

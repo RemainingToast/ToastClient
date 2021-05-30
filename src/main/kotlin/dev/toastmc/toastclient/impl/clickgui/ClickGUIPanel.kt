@@ -5,17 +5,15 @@ import dev.toastmc.toastclient.api.managers.SettingManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
+import dev.toastmc.toastclient.api.util.KeyUtil
 import dev.toastmc.toastclient.api.util.TwoDRenderUtil
+import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import net.minecraft.client.util.math.MatrixStack
+import org.lwjgl.glfw.GLFW
 import java.awt.Rectangle
 import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.math.roundToInt
-
-
-
-
-
 
 
 class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : IToastClient {
@@ -27,7 +25,11 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     var categoryExpanded = false
     var modsExpanded: HashMap<Module, Boolean> = java.util.HashMap<Module, Boolean>()
 
-    private var level = 0
+    var keybinding = false
+    var keyPressed = false
+    var keybindingModule: Module? = null
+
+    private var level = 1
 
     private var mouseX = 0.0
     private var mouseY = 0.0
@@ -44,18 +46,6 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
 
     init {
         this.category = category
-    }
-
-    fun render(matrices: MatrixStack, mouseX: Double, mouseY: Double) {
-        this.mouseX = mouseX
-        this.mouseY = mouseY
-
-        drawCategory(matrices, category)
-
-        if(this.clickedOnce) {
-            this.leftClicked = false
-            this.rightClicked = false
-        }
     }
 
     fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {
@@ -95,15 +85,45 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         }
     }
 
-    private fun drawCategory(matrices: MatrixStack, category: Module.Category) {
-        level = 1
+    fun keyPressed(key: Int) {
+        if(keybinding) {
+            if(key == -1) return
+            else if (key == GLFW.GLFW_KEY_BACKSPACE || key == GLFW.GLFW_KEY_DELETE) keybindingModule!!.setKey(key, -1)
+            this.keyPressed = true
+        } else keybinding = true
+    }
 
+    fun render(matrices: MatrixStack, mouseX: Double, mouseY: Double) {
+        this.mouseX = mouseX
+        this.mouseY = mouseY
+
+        drawCategory(matrices, category)
+
+        if(this.clickedOnce) {
+            this.leftClicked = false
+            this.rightClicked = false
+        }
+    }
+
+    private fun drawCategory(matrices: MatrixStack, category: Module.Category) {
         TwoDRenderUtil.drawCenteredTextBox(
             matrices,
             category.name,
             Rectangle(x.roundToInt(), y.roundToInt(), width, height),
             if (hovering) -0x66ff0100 else -0x7fff0100,
             -0x1
+        )
+
+        /**
+         * level is 1 when it reaches this point
+         * and if I run it after the for loop drawing modules the level is correct but the rect is drawn over the modules..
+         */
+        TwoDRenderUtil.drawRect(
+            matrices,
+            Rectangle(x.roundToInt() - 2, y.roundToInt() + height - 1, width,
+                if(categoryExpanded) level + height * level else height / 2
+            ),
+            -0x80000000
         )
 
         if (hovering) {
@@ -118,16 +138,16 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
             }
         }
 
-        // Outline
-        TwoDRenderUtil.drawHollowRect(matrices, (x - 2).roundToInt(), (y - 2).roundToInt(), width, level + height * level, 1, -0x7fff0100)
+        this.level = 1
     }
 
     private fun drawModule(matrices: MatrixStack, mod: Module) {
-        val hoveringMod = hover(mouseX, mouseY, iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level))
+        val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
+        val hovering = hover(mouseX, mouseY, rect)
 
         modsExpanded.putIfAbsent(mod, false)
 
-        if (hoveringMod) {
+        if (hovering) {
             if (leftClicked) {
                 mod.toggle()
             }
@@ -136,8 +156,10 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
             }
         }
 
-        val bgColor = if (mod.isEnabled()) if (hoveringMod) -0x66ff0100 else -0x7fff0100 else if (hoveringMod) -0x80000000 else 0x50000000
-        val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
+        val bgColor = if (mod.isEnabled())
+            if (hovering) -0x66ff0100 else -0x7fff0100
+        else
+            if (hovering) -0x80000000 else 0x50000000
 
         TwoDRenderUtil.drawTextBox(matrices, mod.getName(), rect, bgColor, -0x1)
         level++
@@ -165,6 +187,10 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
                         }
                     }
                 }
+                if(module == mod) {
+                    drawKeybinding(matrices, mod)
+                    level++
+                }
             }
         }
     }
@@ -174,28 +200,63 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
             Setting.Type.BOOLEAN -> return drawBoolean(matrices, setting as Setting.Boolean)
             Setting.Type.NUMBER -> return drawSlider(matrices, setting as Setting.Number)
             Setting.Type.MODE -> return drawMode(matrices, setting as Setting.Mode)
+            Setting.Type.COLOR -> return drawColorPicker(matrices, setting as Setting.ColorSetting)
             else -> return
+        }
+    }
+
+    private fun drawKeybinding(matrices: MatrixStack, mod: Module) {
+        val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
+        val hovering = hover(mouseX, mouseY, rect)
+        val str = if(keybindingModule == mod) "Bind: ..." else "Bind: " + KeyUtil.getKeyName(mod.getKey().code)
+
+        TwoDRenderUtil.drawTextBox(matrices, str, rect, -1, -1)
+
+        if(hovering && leftClicked) {
+            this.keybinding = true
+            this.keybindingModule = mod
+        }
+
+        if(keybindingModule == mod) {
+            if(!keyPressed) {
+                keybinding = true
+                keybindingModule = mod
+            }
         }
     }
 
     private fun drawGroup(matrices: MatrixStack, group: Setting.Group) {
         val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
+        val hovering = hover(mouseX, mouseY, rect)
         val str = if (group.isExpanded) "_" else "..."
 
-        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, if (hover(mouseX, mouseY, rect)) -0x66ff0100 else -0x7fff0100)
-        TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, -0x7fff0100)
-        TwoDRenderUtil.drawText(matrices, group.name, rect.x + 2, rect.y, -0x1)
-        TwoDRenderUtil.drawText(matrices, str, rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y, -0x1)
+        TwoDRenderUtil.drawRect(
+            matrices,
+            rect.x, rect.y - 2, rect.width - 2, rect.height,
+            if (hovering) ClickGUI.getMainColor().brighter().rgb else ClickGUI.getMainColor().rgb
+        )
+
+        TwoDRenderUtil.drawRect(
+            matrices,
+            rect.x - 2, rect.y - 3, 2, rect.height + 1,
+            ClickGUI.getMainColor().rgb
+        )
+        TwoDRenderUtil.drawStringWithShadow(matrices, group.name, rect.x + 2, rect.y, -0x1)
+        TwoDRenderUtil.drawStringWithShadow(matrices, str, rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y, -0x1)
+
+        if(hovering && rightClicked) {
+            group.isExpanded = !group.isExpanded
+        }
     }
 
     private fun drawBoolean(matrices: MatrixStack, bool: Setting.Boolean) {
         val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
         val hovering = hover(mouseX, mouseY, rect)
-        val color = if (bool.value) if (hovering) -0x66ff0100 else -0x7fff0100 else if (hovering) -0x80000000 else 0x50000000
+        val color = if (bool.value) if (hovering) ClickGUI.getMainColor().brighter().rgb else ClickGUI.getMainColor().rgb else if (hovering) ClickGUI.getModuleColor().brighter().rgb else ClickGUI.getModuleColor().rgb
 
         TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, color)
-        TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, -0x7fff0100)
-        TwoDRenderUtil.drawText(matrices, bool.name, rect.x + 2, rect.y, -0x1)
+        TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, ClickGUI.getMainColor().rgb)
+        TwoDRenderUtil.drawStringWithShadow(matrices, bool.name, rect.x + 2, rect.y, -0x1)
 
         if (hovering && leftClicked) {
             bool.value = !bool.value
@@ -215,8 +276,8 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
 
         TwoDRenderUtil.drawRect(matrices, rect.x - 2 + progress, rect.y - 2, rect.width - progress, rect.height, if (hovering) -0x80000000 else 0x50000000)
         TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, if (hovering) -0x66ff0100 else -0x7fff0100)
-        TwoDRenderUtil.drawText(matrices, setting.name, rect.x + 2, rect.y, -0x1)
-        TwoDRenderUtil.drawText(matrices, setting.stringValue, rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5, rect.y, -0x1)
+        TwoDRenderUtil.drawStringWithShadow(matrices, setting.name, rect.x + 2, rect.y, -0x1)
+        TwoDRenderUtil.drawStringWithShadow(matrices, setting.stringValue, rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5, rect.y, -0x1)
 
         if(hovering && (dragging || leftClicked)) {
             val percent: Int = ((mouseX - x) * 100 / (width - 2)).roundToInt()
@@ -230,12 +291,38 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
 
         TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, if (hovering) -0x80000000 else 0x50000000)
         TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, if (hovering) -0x66ff0100 else -0x7fff0100)
-        TwoDRenderUtil.drawText(matrices, mode.name, rect.x + 2, rect.y, -0x1)
-        TwoDRenderUtil.drawText(matrices, mode.stringValue, rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1)
+        TwoDRenderUtil.drawStringWithShadow(matrices, mode.name, rect.x + 2, rect.y, -0x1)
+        TwoDRenderUtil.drawStringWithShadow(matrices, mode.stringValue, rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1)
 
         if (hovering && leftClicked) {
             mode.increment()
         }
+    }
+
+    private fun drawColorPicker(matrices: MatrixStack, colorSetting: Setting.ColorSetting) {
+//        val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
+//
+//        val hue = colorSetting.value.hue
+//        val saturation = colorSetting.value.saturation
+//        val brightness = colorSetting.value.brightness
+//
+//        val colorA = ToastColor.fromHSB(hue, 0f, 1f)
+//        val colorB = ToastColor.fromHSB(hue, 1f, 1f)
+//
+//        TwoDRenderUtil.fillRect(rect, colorA, colorB, colorB, colorA)
+//
+//        val colorC = ToastColor(0, 0, 0, 0)
+//        val colorD = ToastColor(0, 0, 0)
+//
+//        TwoDRenderUtil.fillRect(rect, colorC, colorC, colorD, colorD)
+//
+//        val p = Point((x + hue * width).roundToInt(), (y + height - saturation * height).roundToInt())
+//
+//        val fontColor = ToastColor(-0x1)
+//
+//        TwoDRenderUtil.fillRect(Rectangle(p.x, p.y - 2, 1, 2 * 2 + 1), fontColor, fontColor, fontColor, fontColor)
+//        TwoDRenderUtil.fillRect(Rectangle(p.x - 2, p.y, 2 * 2 + 1, 1), fontColor, fontColor, fontColor, fontColor)
+
     }
 
     private fun round(value: Double, places: Int): Double {

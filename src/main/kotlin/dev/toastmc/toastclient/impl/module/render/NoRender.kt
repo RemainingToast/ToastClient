@@ -13,13 +13,23 @@ object NoRender : Module("NoRender", Category.RENDER) {
     var totem = bool("Totem",  true)
     var fire = bool("Fire", false)
     var underwater = bool("Underwater", false)
+
+    var group1 = group("Group1", explosion, totem, fire, underwater)
+
     var nausea = bool("Nausea", false)
     var bossbar = bool("BossBar", false)
     var pumpkin = bool("Pumpkin", false)
     var blindness = bool("Blindness", false)
+
+    var group2 = group("Group2", nausea, bossbar, pumpkin, blindness)
+
     var hurtcam = bool("Hurtcam", false)
     var skylight = bool("Skylight", false)
     var xp = bool("XP", false)
+
+    var group3 = group("Group3", hurtcam, skylight, xp)
+
+    var textGroup = group("TestGroup", group1, group2, group3)
 
     @Subscribe
     fun on(event: PacketEvent.Receive) {

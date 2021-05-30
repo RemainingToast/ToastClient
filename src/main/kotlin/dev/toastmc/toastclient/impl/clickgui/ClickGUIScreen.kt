@@ -1,14 +1,19 @@
 package dev.toastmc.toastclient.impl.clickgui
 
+import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.lit
+import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
+import org.lwjgl.glfw.GLFW
 import java.util.*
 
-class ClickGUIScreen : Screen(lit("ClickGUI")) {
+class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
 
     private val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
+
+    var keybindingCategory: ClickGUIPanel? = null
 
     init {
         var x = 20
@@ -23,6 +28,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")) {
     override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
         for (panel in panels.values) {
             panel.render(matrices, mouseX.toDouble(), mouseY.toDouble())
+            keybindingCategory = if (panel.keybinding) panel else null
         }
     }
 
@@ -43,6 +49,17 @@ class ClickGUIScreen : Screen(lit("ClickGUI")) {
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
         for (panel in panels.values) {
             panel.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+        }
+        return false
+    }
+
+    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+        if(keyCode != GLFW.GLFW_KEY_UNKNOWN) {
+            if(keyCode in arrayOf(GLFW.GLFW_KEY_ESCAPE, ClickGUI.getKey().code)) {
+                ClickGUI.toggle()
+            } else {
+                keybindingCategory?.keyPressed(keyCode)
+            }
         }
         return false
     }
