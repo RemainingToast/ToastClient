@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient
 
-import dev.toastmc.toastclient.api.managers.command.CommandManager
 import dev.toastmc.toastclient.api.config.ConfigUtil
+import dev.toastmc.toastclient.api.managers.command.CommandManager
 import net.fabricmc.api.ModInitializer
 import org.quantumclient.energy.EventBus
 
@@ -27,5 +27,4 @@ open class ToastClient : ModInitializer, IToastClient {
 
         logger.info("Finished loading $nameVersion (${System.currentTimeMillis() - start}ms)")
     }
-
 }
