@@ -25,7 +25,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: toastclient-${{ github.run_number }}
-          path: build/libs/
+          path: build/libs/toastclient-2.1.jar
       - uses: nelonoel/branch-name@v1.0.1
       - name: Send Discord build message
         run: |
