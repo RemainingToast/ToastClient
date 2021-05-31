@@ -7,7 +7,7 @@
 ### Installing
 *I recommend using [multimc](https://multimc.org/) as it makes installing Fabric much easier.*
 
-1. Download the latest version [here](https://github.com/RemainingToast/toastclient/releases/)
+1. Download the latest release [here](https://github.com/RemainingToast/toastclient/releases/)
 2. After you are done [installing fabric](https://fabricmc.net/wiki/install)
 3. Put `toastclient.jar` inside `.minecraft/mods/`
 4. Launch Minecraft
