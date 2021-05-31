@@ -28,8 +28,8 @@ jobs:
         with:
           name: toastclient-$BUILD
           path: build/libs/toastclient-2.1.jar
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Send Discord build message
-        uses: nelonoel/branch-name@v1.0.1
         run: |
           COMMITMESSAGE=`git log --pretty=format:'-\`%h\` %s' -5 --reverse` &&
           curl -H "Content-Type:application/json" -X POST -d "{\"content\":null,\"embeds\":[{\"title\":\"toastclient-$BUILD.jar\",\"url\":\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"color\":1487872,\"fields\":[{\"name\":\"Changes:\",\"value\":\"$COMMITMESSAGE\"},{\"name\":\"Artifact:\",\"value\":\"- [toastclient-$BUILD.jar](https://nightly.link/$GITHUB_REPOSITORY/workflows/gradle.yaml/$BRANCH_NAME)\"}]}],\"username\":\"Dev Builds\"}" $WEBHOOK
