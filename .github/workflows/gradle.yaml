@@ -8,7 +8,6 @@ jobs:
     env:
       BUILD: ${{ github.run_number }}
       SHA: ${{ github.sha }}
-      WEBHOOK: ${{ secrets.BUILD_WEBHOOK }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
@@ -27,6 +26,6 @@ jobs:
           name: toastclient
           path: build/libs/toastclient-$BUILD.jar
       - name: Send Discord Message
-        run: COMMITMESSAGE=`git log --pretty=format:'%s'` && UPDATEMSG=\ New\ Dev\ Build\ [$GITHUB_RUN_ID]!\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"Dev Builds\", \"content\":\"$UPDATEMSG\"}" $WEBHOOK
+        run: COMMITMESSAGE=`git log --pretty=format:'%s'` && UPDATEMSG=\ New\ Dev\ Build\ \`[$GITHUB_RUN_ID]!\`\ Changelog:\ \`\`\`$COMMITMESSAGE\`\`\` && curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"Dev Builds\", \"content\":\"$UPDATEMSG\"}" ${{ secrets.BUILD_WEBHOOK }}
       - name: Upload Jar to Discord
-        run: curl -F data=@toastclient-$BUILD.jar $WEBHOOK
+        run: curl -F data=@toastclient-$BUILD.jar ${{ secrets.BUILD_WEBHOOK }}
