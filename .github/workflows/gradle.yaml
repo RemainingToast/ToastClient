@@ -1,7 +1,6 @@
 name: Build and Upload to Discord
 
-on: [push, pull_request]
-
+on: [push]
 
 jobs:
   build:
@@ -29,6 +28,5 @@ jobs:
       - name: Send Discord build message
         run: |
           COMMITMESSAGE=`git log --pretty=format:'-\`%h\` %s' -5 --reverse` &&
-          curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"Dev Builds\", \"content\":\"$COMMITMESSAGE\"}" $WEBHOOK
-      - name: Upload client jar
-        run: curl -F data=@toastclient-$BUILD.jar $WEBHOOK
+          curl -H "Content-Type:application/json" -X POST -d "{\"content\":null,\"embeds\":[{\"title\":\"toastclient-$BUILD.jar\",\"url\":\"https://github.com/RemainingToast/ToastClient\",\"color\":null,\"fields\":[{\"name\":\"Changes:\",\"value\":\"$COMMITMESSAGE\"},{\"name\":\"Artifact:\",\"value\":\"-[toastclient-$BUILD.jar]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)\"}]}],\"username\":\"Dev Builds\"}" $WEBHOOK &&
+          curl -F data=@toastclient-$BUILD.jar $WEBHOOK
