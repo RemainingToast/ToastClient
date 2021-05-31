@@ -14,7 +14,7 @@
 
 Note (By Default):
 * ClickGui Key is `RSHIFT`
-* Command Prefix is `.`
+* Command Prefix is `.` (`.help` for all commands)
 
 ### Credits 
 
