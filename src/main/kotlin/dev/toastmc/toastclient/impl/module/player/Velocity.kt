@@ -18,6 +18,8 @@ object Velocity : Module("Velocity", Category.PLAYER) {
     val vertical = number("Vertical", 0.0, 0.0,100.0)
     val delay = number("Delay",170.0, 0.0, 1000.0)
 
+    var group1 = group("Group1", horizontal, vertical, delay)
+
     private var oldVelX = Double.NaN
     private var oldVelY = Double.NaN
     private var oldVelZ = Double.NaN
@@ -59,6 +61,7 @@ object Velocity : Module("Velocity", Category.PLAYER) {
                     xyz.playerVelocityZ = (xyz.playerVelocityZ * horizontal.value).toFloat()
                 }
             }
+
             if (delay.value > 0 && !oldVelX.isNaN() || !oldVelY.isNaN() || !oldVelZ.isNaN()) {
                 Thread.sleep(max(0L, delay.value.toLong()))
                 mc.player!!.setVelocity(mc.player!!.velocity.x + oldVelX, mc.player!!.velocity.y + oldVelY, mc.player!!.velocity.z + oldVelZ)
@@ -73,6 +76,7 @@ object Velocity : Module("Velocity", Category.PLAYER) {
                 event.cancel()
                 return
             }
+
             event.x = event.x * horizontal.value
             event.y = 0.0
             event.z = event.z * horizontal.value

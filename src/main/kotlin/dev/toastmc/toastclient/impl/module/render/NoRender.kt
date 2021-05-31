@@ -29,8 +29,6 @@ object NoRender : Module("NoRender", Category.RENDER) {
 
     var group3 = group("Group3", hurtcam, skylight, xp)
 
-    var textGroup = group("TestGroup", group1, group2, group3)
-
     @Subscribe
     fun on(event: PacketEvent.Receive) {
         if (mc.player == null) return

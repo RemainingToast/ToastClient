@@ -220,7 +220,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawKeybinding(matrices: MatrixStack, mod: Module) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + height * level).roundToInt(), width - 10, height)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height)
         val hovering = hover(mouseX, mouseY, rect)
 
         if(hovering)
@@ -247,14 +247,14 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawGroup(matrices: MatrixStack, group: Setting.Group) {
-        val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height)
         val hovering = hover(mouseX, mouseY, rect)
         val str = if (group.isExpanded) "_" else "..."
+        val i = if (group.isExpanded) 1 else 0
 
-        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if (hovering) -0x66ff0100 else -0x7fff0100)
-//        TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, if (hovering) -0x66ff0100 else -0x7fff0100)
-        TwoDRenderUtil.drawText(matrices, lit(group.name), rect.x + 2, rect.y, -0x1)
-        TwoDRenderUtil.drawText(matrices, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y, -0x1)
+        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height - i, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+        TwoDRenderUtil.drawCenteredYText(matrices, lit(group.name), rect.x + 2, rect.y + (rect.height / 2), -0x1)
+        TwoDRenderUtil.drawCenteredYText(matrices, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y + (rect.height / 2), -0x1)
 
         if(hovering && rightClicked) {
             group.isExpanded = !group.isExpanded
@@ -262,15 +262,14 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawBoolean(matrices: MatrixStack, bool: Setting.Boolean) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + height * level).roundToInt(), width - 10, height)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
+        val i = if (bool.isGrouped) 1 else 0
+        val t = if (bool.isGrouped) 2 else 0
 
-        if(hovering)
-            TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(bool.enabled()) MAIN_COLOR_HOVER else HOVER_COLOR)
-        if(bool.enabled())
-            TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
-
-        TwoDRenderUtil.drawCenteredYText(matrices, lit(bool.name), rect.x + 4, rect.y + (rect.height / 2), -0x1)
+        if(hovering) TwoDRenderUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(bool.enabled()) MAIN_COLOR_HOVER else HOVER_COLOR)
+        if(bool.enabled()) TwoDRenderUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+        TwoDRenderUtil.drawCenteredYText(matrices, lit(bool.name), rect.x + 4 + t, rect.y + (rect.height / 2) - i, -0x1)
 
         if (hovering && leftClicked) {
             bool.value = !bool.value
@@ -278,14 +277,18 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawSlider(matrices: MatrixStack, setting: Setting.Number) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + height * level).roundToInt(), width - 10, height)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
-        val progress = ((setting.value - setting.min) / (setting.max - setting.min) * rect.width).toInt()
+        val i = if (setting.isGrouped) 1 else 0
+        val t = if (setting.isGrouped) 2 else 0
+        val progress = ((setting.value - setting.min) / (setting.max - setting.min) * (rect.width - (t * 2))).toInt()
 
-        if (setting.value != setting.min) TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, progress - 2, rect.height, -0x7fff0100)
-        TwoDRenderUtil.drawRect(matrices, rect.x - 2 + progress, rect.y, rect.width - progress, rect.height, if (hovering) -0x80000000 else 0x50000000)
-        TwoDRenderUtil.drawText(matrices, lit(setting.name), rect.x + 2, rect.y, -0x1)
-        TwoDRenderUtil.drawText(matrices, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5, rect.y, -0x1)
+        if (setting.value != setting.min)
+            TwoDRenderUtil.drawRect(matrices, rect.x + t, rect.y - i, progress, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+        if (hovering)
+            TwoDRenderUtil.drawRect(matrices, rect.x + progress + t, rect.y - i, rect.width - progress - (t * 2), rect.height, HOVER_COLOR)
+        TwoDRenderUtil.drawCenteredYText(matrices, lit(setting.name), rect.x + 2 + t, rect.y + (rect.height / 2), -0x1)
+        TwoDRenderUtil.drawCenteredYText(matrices, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5 + t,rect.y + (rect.height / 2), -0x1)
 
         if(hovering && (dragging || leftClicked)) {
             setting.value = clamp(
@@ -297,11 +300,10 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawMode(matrices: MatrixStack, mode: Setting.Mode) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt(), width - 10, height)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt(), width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
 
         TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, if (hovering) -0x80000000 else 0x50000000)
-        TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 3, 2, rect.height + 1, if (hovering) -0x66ff0100 else -0x7fff0100)
         TwoDRenderUtil.drawText(matrices, lit(mode.name), rect.x + 2, rect.y, -0x1)
         TwoDRenderUtil.drawText(matrices, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1)
 

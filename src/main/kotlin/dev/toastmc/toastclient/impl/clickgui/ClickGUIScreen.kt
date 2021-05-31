@@ -21,7 +21,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
             if(category == Module.Category.NONE) continue
 
             panels.putIfAbsent(category, ClickGUIPanel(category, x.toDouble(), 20.0))
-            x += 93
+            x += 103
         }
     }
 
