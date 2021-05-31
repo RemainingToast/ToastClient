@@ -21,15 +21,13 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Rename the built jar
-        run: mv build/libs/toastclient-2.1.jar toastclient-$BUILD.jar
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: toastclient-$BUILD
-          path: build/libs/toastclient-$BUILD.jar
+          path: build/libs/
       - uses: nelonoel/branch-name@v1.0.1
       - name: Send Discord build message
         run: |
           COMMITMESSAGE=`git log --pretty=format:'-\`%h\` %s' -5 --reverse` &&
-          curl -H "Content-Type:application/json" -X POST -d "{\"content\":null,\"embeds\":[{\"title\":\"toastclient-$BUILD.jar\",\"url\":\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"color\":1487872,\"fields\":[{\"name\":\"Changes:\",\"value\":\"$COMMITMESSAGE\"},{\"name\":\"Artifact:\",\"value\":\"- [toastclient-$BUILD.jar](https://nightly.link/$GITHUB_REPOSITORY/workflows/gradle.yaml/$BRANCH_NAME)\"}]}],\"username\":\"Dev Builds\"}" $WEBHOOK
+          curl -H "Content-Type:application/json" -X POST -d "{\"content\":null,\"embeds\":[{\"title\":\"toastclient-$BUILD.jar\",\"url\":\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"color\":1487872,\"fields\":[{\"name\":\"Changes:\",\"value\":\"$COMMITMESSAGE\"},{\"name\":\"Artifact:\",\"value\":\"- [toastclient-$BUILD.jar](https://nightly.link/$GITHUB_REPOSITORY/workflows/gradle.yaml/$BRANCH_NAME)\"}]}],\"username\":\"Github Actions\",\"avatar_url\":\"https://www.2b2t.com.au/assets/github.jpeg\"}" $WEBHOOK
