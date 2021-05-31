@@ -23,11 +23,13 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Rename the built jar
+        run: mv build/libs/toastclient-1.0.0.jar toastclient-$BUILD.jar
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: toastclient-${{ github.run_number }}
-          path: build/libs/toastclient-2.1.jar
+          path: build/libs/toastclient-${{ github.run_number }}.jar
       - uses: nelonoel/branch-name@v1.0.1
       - name: Send Discord build message
         run: |
