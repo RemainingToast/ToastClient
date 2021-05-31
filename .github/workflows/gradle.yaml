@@ -10,7 +10,7 @@ jobs:
     env:
       BUILD: ${{ github.run_number }}
       SHA: ${{ github.sha }}
-      WEBHOOK: ${{ secrets.BUILD_WEBHOOK }}
+      WEBHOOK: ${{ secrets.BUILD_DISCORD_WEBHOOK }}
 
     steps:
       - uses: actions/checkout@v2
@@ -28,6 +28,7 @@ jobs:
         run: echo $BUILD && echo " " && echo $SHA
       - name: Send Discord build message
         run: |
-          curl -X POST -H "Content-Type: application/json" -d "{\"content\":\"Build number $BUILD from commit $SHA:\"}" $WEBHOOK
+          COMMITMESSAGE=`git log --pretty=format:'-\`%h\` %s' -5 --reverse` &&
+          curl -H "Content-Type:application/json" -X POST -d "{\"username\":\"Dev Builds\", \"content\":\"$COMMITMESSAGE\"}" $WEBHOOK
       - name: Upload client jar
         run: curl -F data=@toastclient-$BUILD.jar $WEBHOOK
