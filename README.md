@@ -16,6 +16,7 @@ Note (By Default):
 * ClickGui Key is `RSHIFT`
 * Command Prefix is `.` (`.help` for all commands)
 
+
 ### Credits 
 
 * ALL the [Contributors](https://github.com/RemainingToast/ToastClient/graphs/contributors)
