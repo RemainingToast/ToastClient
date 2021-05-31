@@ -1,4 +1,4 @@
-name: Build and Upload to Discord
+name: Build and Upload Development Artifact to Discord
 
 on: [push]
 
@@ -23,11 +23,11 @@ jobs:
         run: ./gradlew build
       - name: Rename the built jar
         run: mv build/libs/toastclient-2.1.jar toastclient-$BUILD.jar
-      - name: Upload artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: toastclient-$BUILD
-          path: build/libs/toastclient-2.1.jar
+          path: build/libs/toastclient-$BUILD.jar
       - uses: nelonoel/branch-name@v1.0.1
       - name: Send Discord build message
         run: |
