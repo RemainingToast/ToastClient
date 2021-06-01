@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "toastclient",
   "version": "${version}",
-
   "name": "ToastClient",
   "description": "Like bread, but warmer...",
   "authors": [
@@ -11,10 +10,8 @@
   "contact": {
     "sources": "https://github.com/RemainingToast/ToastClient"
   },
-
   "license": "CC0-1.0",
   "icon": "assets/toastclient/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -25,12 +22,12 @@
     "toastclient.mixins.json"
   ],
   "depends": {
+    "fabric-language-kotlin": "*",
     "fabricloader": ">=0.8.7",
-    "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.16.x",
+    "fabric": "*"
   },
   "suggests": {
-    "fabric-language-kotlin": "*",
     "flamingo": "*"
   }
 }

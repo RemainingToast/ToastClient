@@ -128,6 +128,10 @@ open class Module(private var name: String, private var category: Category) : IT
         return SettingManager.addSetting(Mode(name, this, value, modes)) as Mode
     }
 
+    protected open fun color(name: String, color: Int): ColorSetting {
+        return SettingManager.addSetting(ColorSetting(name, this, false, ToastColor(color, true))) as ColorSetting
+    }
+
     protected open fun color(name: String, color: ToastColor): ColorSetting {
         return SettingManager.addSetting(ColorSetting(name, this, false, color)) as ColorSetting
     }

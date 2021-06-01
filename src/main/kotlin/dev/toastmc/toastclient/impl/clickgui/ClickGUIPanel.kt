@@ -10,6 +10,7 @@ import dev.toastmc.toastclient.api.util.TwoDRenderUtil
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.client.util.math.MatrixStack
 import org.lwjgl.glfw.GLFW
+import org.lwjgl.opengl.GL11
 import java.awt.Rectangle
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -102,6 +103,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
                 keybindingModule!!.setKey(key, -1)
             }
             this.keyPressed = true
+            this.keybinding = false
         } else keybinding = true
     }
 
@@ -132,12 +134,14 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         )
 
         // Background
+        val bgHeight = if(categoryExpanded) level() + height * level() - (height + 2) else height / 2 - 2
+
         TwoDRenderUtil.drawRect(
             matrices,
             x.roundToInt() - 2,
-            y.roundToInt() + catHeight - 4,
+            y.roundToInt() - 4 + catHeight,
             width,
-            if(categoryExpanded) level() + height * level() - (height - 4) else height / 2 - 4,
+            bgHeight,
             BACKGROUND_COLOR
         )
 
@@ -155,7 +159,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawModule(matrices: MatrixStack, mod: Module) {
-        val rect = iteration(Rectangle(x.roundToInt() + 2, y.roundToInt() - 2, width - 4, height), level)
+        val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt() - 6, width - 4, height), level)
         val hovering = hover(mouseX, mouseY, rect)
 
         modsExpanded.putIfAbsent(mod, false)
@@ -174,7 +178,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         else
             if (hovering) HOVER_COLOR else INACTIVE_COLOR
 
-        TwoDRenderUtil.drawRect(matrices, rect.x - 2, rect.y - 2, rect.width, rect.height, bgColor)
+        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, bgColor)
         TwoDRenderUtil.drawText(matrices, lit(mod.getName()), rect.x + 1, rect.y + 1, -0x1)
         level++
 
@@ -220,7 +224,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawKeybinding(matrices: MatrixStack, mod: Module) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height)
         val hovering = hover(mouseX, mouseY, rect)
 
         if(hovering)
@@ -234,8 +238,8 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         }
 
         if(hovering && leftClicked) {
-            this.keybinding = true
-            this.keybindingModule = mod
+            keybinding = true
+            keybindingModule = mod
         }
 
         if(keybindingModule == mod) {
@@ -247,7 +251,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawGroup(matrices: MatrixStack, group: Setting.Group) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height)
         val hovering = hover(mouseX, mouseY, rect)
         val str = if (group.isExpanded) "_" else "..."
         val i = if (group.isExpanded) 1 else 0
@@ -262,7 +266,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawBoolean(matrices: MatrixStack, bool: Setting.Boolean) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height + 1)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
         val i = if (bool.isGrouped) 1 else 0
         val t = if (bool.isGrouped) 2 else 0
@@ -277,7 +281,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawSlider(matrices: MatrixStack, setting: Setting.Number) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 4, width - 10, height + 1)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
         val i = if (setting.isGrouped) 1 else 0
         val t = if (setting.isGrouped) 2 else 0
@@ -300,10 +304,10 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawMode(matrices: MatrixStack, mode: Setting.Mode) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt(), width - 10, height + 1)
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
 
-        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, if (hovering) -0x80000000 else 0x50000000)
+//        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, if (hovering) -0x80000000 else 0x50000000)
         TwoDRenderUtil.drawText(matrices, lit(mode.name), rect.x + 2, rect.y, -0x1)
         TwoDRenderUtil.drawText(matrices, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1)
 
@@ -313,8 +317,18 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawColorPicker(matrices: MatrixStack, colorSetting: Setting.ColorSetting) {
-//        val rect = iteration(Rectangle(x.roundToInt(), y.roundToInt(), width, height), level)
-//
+        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height + 1)
+        GL11.glEnable(GL11.GL_BLEND)
+
+        TwoDRenderUtil.drawRect(matrices, rect.x + 2, rect.y + 2, rect.x + rect.width, rect.y + 14, 0xA6222222.toInt());
+        TwoDRenderUtil.drawRect(matrices,rect.x + 2, rect.y + 2, rect.x + rect.width, rect.y + 14, colorSetting.toInteger());
+        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y + 2, rect.x + 6, rect.y + 12, 0xBF444444.toInt());
+
+        matrices.push()
+        matrices.scale(1f, 1f,0.5f)
+        matrices.pop()
+
+    //
 //        val hue = colorSetting.value.hue
 //        val saturation = colorSetting.value.saturation
 //        val brightness = colorSetting.value.brightness

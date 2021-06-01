@@ -7,7 +7,7 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT) {
 
     private val GUI = ClickGUIScreen()
 
-//    var color = color("", ToastColor(1234, true))
+//    var color = color("", -0x7fff0100)
 
     init {
         setKey(344, -1)

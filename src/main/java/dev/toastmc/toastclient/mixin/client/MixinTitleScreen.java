@@ -1,5 +1,7 @@
 package dev.toastmc.toastclient.mixin.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import dev.toastmc.toastclient.api.util.GLSLSandboxShader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.RotatingCubeMapRenderer;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -58,5 +60,8 @@ public class MixinTitleScreen {
                 width,
                 height
         );
+//        TODO: Fix Shaders
+//        GLSLSandboxShader shader = GLSLSandboxShader.mandelbrotShader();
+//        if(shader != null) shader.useShader(width, height, mouseX, mouseY, delta);
     }
 }

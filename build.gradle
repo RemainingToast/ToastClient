@@ -19,19 +19,14 @@ repositories {
 }
 
 dependencies {
-    //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
-
-//    modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
-
-    implementation 'com.github.QuantumClient:Energy:1.0'
+    compile "com.github.QuantumClient:Energy:${project.events_version}"
 }
 
 processResources {
@@ -50,18 +45,18 @@ processResources {
 tasks.withType(JavaCompile) {
     it.options.encoding = "UTF-8"
 
-    // The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
-	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
-	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 8
+    def targetVersion = 8
 	if (JavaVersion.current().isJava9Compatible()) {
 		 it.options.release = targetVersion
 	}
 }
 
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
     from sourceSets.main.allSource
@@ -72,7 +67,6 @@ shadowJar {
         include(dependency('org.yaml:snakeyaml'))
         include(dependency('net.jodah:typetools'))
         include(dependency('com.github.QuantumClient:Energy'))
-        include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
     }
     classifier = 'shadow'
 }
@@ -83,5 +77,8 @@ remapJar {
     input = file("build/libs/${archivesBaseName}-${version}-shadow.jar")
 }
 
-
-compileKotlin.kotlinOptions.jvmTarget = "1.8"
+compileKotlin {
+    kotlinOptions {
+        languageVersion = "1.4"
+    }
+}
