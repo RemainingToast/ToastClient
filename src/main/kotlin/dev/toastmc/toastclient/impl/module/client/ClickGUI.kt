@@ -1,22 +1,23 @@
 package dev.toastmc.toastclient.impl.module.client
 
 import dev.toastmc.toastclient.api.managers.module.Module
-import dev.toastmc.toastclient.impl.clickgui.ClickGUIScreen
+import dev.toastmc.toastclient.impl.gui.click.ClickGUIScreen
 
 object ClickGUI : Module("ClickGUI", Category.CLIENT) {
 
-    private val GUI = ClickGUIScreen()
+    @JvmStatic
+    val SCREEN = ClickGUIScreen()
 
     init {
         setKey(344, -1)
     }
 
     override fun onToggle() {
-        if (isEnabled() && (mc.currentScreen == null || mc.currentScreen!! == GUI)) {
-            if (mc.currentScreen != null && mc.currentScreen!! == GUI) {
+        if (isEnabled() && (mc.currentScreen == null || mc.currentScreen!! == SCREEN)) {
+            if (mc.currentScreen != null && mc.currentScreen!! == SCREEN) {
                 mc.openScreen(null)
             } else {
-                mc.openScreen(GUI)
+                mc.openScreen(SCREEN)
             }
             disable()
         }

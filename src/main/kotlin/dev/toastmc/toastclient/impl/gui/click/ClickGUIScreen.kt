@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.impl.clickgui
+package dev.toastmc.toastclient.impl.gui.click
 
 import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.managers.module.Module
