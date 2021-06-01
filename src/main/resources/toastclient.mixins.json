@@ -1,11 +1,14 @@
 {
   "required": true,
   "compatibilityLevel": "JAVA_8",
-  "package": "me.remainingtoast.toastclient.mixin.client",
+  "package": "dev.toastmc.toastclient.mixin.client",
   "client": [
+    "IChatHud",
     "IClientPlayerInteractionManager",
+    "IEntitySelector",
     "IEntityVelocityUpdateS2CPacket",
     "IExplosionS2CPacket",
+    "IMinecraftClient",
     "ISignBlockEntity",
     "MixinAbstractClientPlayerEntity",
     "MixinAbstractSignBlock",
@@ -16,6 +19,7 @@
     "MixinClientPlayerEntity",
     "MixinCommandSuggestor",
     "MixinEntity",
+    "MixinEntityRenderer",
     "MixinGameRenderer",
     "MixinIngameHud",
     "MixinInGameOverlayRenderer",
@@ -24,9 +28,9 @@
     "MixinKeyboard",
     "MixinMinecraftClient",
     "MixinPlayerEntity",
+    "MixinPlayerListHud",
     "MixinSharedConstants",
-    "MixinTitleScreen",
-    "MixinEntityRenderer"
+    "MixinTitleScreen"
   ],
   "injectors": {
     "defaultRequire": 1
