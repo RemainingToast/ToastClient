@@ -6,7 +6,6 @@ import org.lwjgl.glfw.GLFW
 
 object ClickGUI : Module("ClickGUI", Category.CLIENT) {
 
-    @JvmStatic
     val SCREEN = ClickGUIScreen()
 
     init {

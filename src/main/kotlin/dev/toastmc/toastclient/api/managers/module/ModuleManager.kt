@@ -26,7 +26,7 @@ object ModuleManager : IToastClient {
 
     var modules: ArrayList<Module> = ArrayList()
 
-    init {
+    fun init() {
         register(
             AutoArmour,
             AutoRespawn,
@@ -97,6 +97,7 @@ object ModuleManager : IToastClient {
     @Subscribe
     fun on(event: OverlayEvent) {
         modules.stream().filter { mod: Module -> mod.isEnabled() }.forEach { mod: Module -> mod.onHUDRender() }
+        HUDEditor.SCREEN.getComponents().filter { c -> c.enabled }.forEach { c -> c.render(event.matrix) }
     }
 
 }
