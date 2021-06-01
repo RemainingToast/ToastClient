@@ -9,9 +9,8 @@ import kotlin.math.roundToInt
 object Watermark : HUDComponent("Watermark", 5.0, 5.0) {
 
     init {
-        width = mc.textRenderer.getWidth(clientName)
+        width = mc.textRenderer.getWidth(lit(clientName))
         height = mc.textRenderer.fontHeight
-        enabled = true
     }
 
     override fun render(matrices: MatrixStack) {

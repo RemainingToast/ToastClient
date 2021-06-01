@@ -129,9 +129,7 @@ object TwoDRenderUtil {
     }
 
     fun drawRect(matrices: MatrixStack, rect: Rectangle, color: Int) {
-        startSmooth()
         fill(matrices, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, color)
-        endSmooth()
     }
 
     fun drawRect(matrices: MatrixStack, x: Int, y: Int, width: Int, height: Int, color: Int) {
@@ -153,8 +151,8 @@ object TwoDRenderUtil {
             y.toFloat(),
             color
         )
-//        matrices.push()
-//        matrices.pop()
+        matrices.push()
+        matrices.pop()
     }
 
     fun drawCenteredText(matrices: MatrixStack, text: Text, centerX: Int, y: Int, color: Int) {
@@ -165,8 +163,8 @@ object TwoDRenderUtil {
             y.toFloat(),
             color
         )
-//        matrices.push()
-//        matrices.pop()
+        matrices.push()
+        matrices.pop()
     }
 
     fun drawCenteredYText(matrices: MatrixStack, text: Text, x: Int, centerY: Int, color: Int) {
@@ -177,8 +175,8 @@ object TwoDRenderUtil {
             centerY - mc.textRenderer.fontHeight / 2f,
             color
         )
-//        matrices.push()
-//        matrices.pop()
+        matrices.push()
+        matrices.pop()
     }
 
     fun drawCenteredTextBox(matrices: MatrixStack, text: String, rect: Rectangle, bgColor: Int, textColor: Int) {
