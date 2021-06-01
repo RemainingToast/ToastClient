@@ -1,23 +1,22 @@
 package dev.toastmc.toastclient.impl.module.client
 
 import dev.toastmc.toastclient.api.managers.module.Module
-import dev.toastmc.toastclient.impl.gui.click.ClickGUIScreen
+import dev.toastmc.toastclient.impl.gui.hud.HUDEditorScreen
 import org.lwjgl.glfw.GLFW
 
-object ClickGUI : Module("ClickGUI", Category.CLIENT) {
+object HUDEditor : Module("HUDEditor", Category.CLIENT) {
 
-    @JvmStatic
-    val SCREEN = ClickGUIScreen()
+    val SCREEN = HUDEditorScreen()
 
     init {
-        setKey(GLFW.GLFW_KEY_RIGHT_SHIFT, -1)
+        setKey(GLFW.GLFW_KEY_LEFT, -1)
     }
 
     override fun onToggle() {
         if (isEnabled() && (
                     mc.currentScreen == null ||
                     mc.currentScreen!! == SCREEN ||
-                    mc.currentScreen!! == HUDEditor.SCREEN)
+                    mc.currentScreen!! == ClickGUI.SCREEN)
         ) {
             if (mc.currentScreen != null && mc.currentScreen!! == SCREEN) {
                 mc.openScreen(null)
@@ -27,4 +26,5 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT) {
             disable()
         }
     }
+
 }

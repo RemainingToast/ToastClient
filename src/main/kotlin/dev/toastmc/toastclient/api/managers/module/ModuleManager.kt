@@ -7,6 +7,7 @@ import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
+import dev.toastmc.toastclient.impl.module.client.HUDEditor
 import dev.toastmc.toastclient.impl.module.combat.AutoArmour
 import dev.toastmc.toastclient.impl.module.combat.AutoRespawn
 import dev.toastmc.toastclient.impl.module.combat.KillAura
@@ -31,6 +32,7 @@ object ModuleManager : IToastClient {
             AutoRespawn,
             AutoWalk,
             ClickGUI,
+            HUDEditor,
             ExtraSign,
             ExtraTab,
             ExtraTooltips,
