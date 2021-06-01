@@ -2,25 +2,32 @@
   "schemaVersion": 1,
   "id": "toastclient",
   "version": "${version}",
-  "name": "Toast Client",
-  "description": "Like Bread Mod, But Hotter.",
+  "name": "ToastClient",
+  "description": "Like bread, but warmer...",
   "authors": [
     "RemainingToast"
   ],
-  "contact": {},
-  "license": "MIT",
+  "contact": {
+    "sources": "https://github.com/RemainingToast/ToastClient"
+  },
+  "license": "CC0-1.0",
   "icon": "assets/toastclient/icon.png",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
     "main": [
-      "me.remainingtoast.toastclient.ToastClient"
+      "dev.toastmc.toastclient.ToastClient"
     ]
   },
   "mixins": [
     "toastclient.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.0",
-    "minecraft": "1.16.x"
+    "fabric-language-kotlin": "*",
+    "fabricloader": ">=0.8.7",
+    "minecraft": "1.16.x",
+    "fabric": "*"
+  },
+  "suggests": {
+    "flamingo": "*"
   }
 }
