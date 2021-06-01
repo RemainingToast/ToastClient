@@ -15,6 +15,7 @@ open class ToastClient : ModInitializer, IToastClient {
         val start = System.currentTimeMillis()
 
         logger.info("Started loading $nameVersion")
+        
 
         CommandManager.init()
 
