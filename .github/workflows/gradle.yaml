@@ -34,7 +34,7 @@ jobs:
       - name: Send Discord build message
         run: |
           COMMITMESSAGE="$(git log --pretty=format:'- \`%h\` %s\n' -1 --reverse)" &&
-          (curl -H "Content-Type:application/json" -X POST -d '
+          (curl "$WEBHOOK" -H "Content-Type:application/json" -X POST -d '
           {
           	"content": null,
           	"embeds": [
@@ -58,4 +58,4 @@ jobs:
           		}
           	]
           }
-          ' "$WEBHOOK")
+          ')
