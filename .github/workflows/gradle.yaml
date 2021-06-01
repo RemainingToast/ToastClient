@@ -33,5 +33,5 @@ jobs:
       - uses: nelonoel/branch-name@v1.0.1
       - name: Send Discord build message
         run: |
-          COMMITMESSAGE="${git log --pretty=format:'\- \\`%h\\` %s\n' -5 --reverse}" && echo $COMMITMESSAGE &&
+          COMMITMESSAGE="$(git log --pretty=format:'\- \\`%h\\` %s\n' -5 --reverse)" && echo $COMMITMESSAGE &&
           curl -H "Content-Type:application/json" -X POST -d "{\'content\':null,\"embeds\":[{\"title\":\"Build $BUILD\",\"description\":\"**Branch:** $BRANCH_NAME\\n**Changes:**\\n$COMMITMESSAGE\",\"url\":\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"color\":1487872,\"fields\":[{\"name\":\"Artifacts:\",\"value\":\"- [toastclient-$BUILD.zip](https://nightly.link/$GITHUB_REPOSITORY/workflows/gradle.yaml/$BRANCH_NAME/toastclient-$BUILD.zip)\"}],\"footer\":{\"text\":\"$GITHUB_REPOSITORY\"},\"thumbnail\":{\"url\":\"https://www.2b2t.com.au/assets/toast.png\"}}]}" $WEBHOOK
