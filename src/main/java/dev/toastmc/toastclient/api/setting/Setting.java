@@ -341,7 +341,7 @@ public class Setting<T> {
 
         public ToastColor getValue() {
             if (rainbow) {
-                return ToastColor.fromHSB((System.currentTimeMillis()%(360*32))/(360f * 32),1,1, value.getAlpha());
+                return ToastColor.Companion.fromHSB((System.currentTimeMillis()%(360*32))/(360f * 32),1,1, value.getAlpha());
             }
             return this.value;
         }

@@ -10,7 +10,6 @@ import dev.toastmc.toastclient.api.util.TwoDRenderUtil
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.client.util.math.MatrixStack
 import org.lwjgl.glfw.GLFW
-import org.lwjgl.opengl.GL11
 import java.awt.Rectangle
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -134,7 +133,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         )
 
         // Background
-        val bgHeight = if(categoryExpanded) level() + height * level() - (height + 2) else height / 2 - 2
+        val bgHeight = if(categoryExpanded) level() + height * level() - (height - 2) else height / 2 - 2
 
         TwoDRenderUtil.drawRect(
             matrices,
@@ -179,7 +178,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
             if (hovering) HOVER_COLOR else INACTIVE_COLOR
 
         TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, bgColor)
-        TwoDRenderUtil.drawText(matrices, lit(mod.getName()), rect.x + 1, rect.y + 1, -0x1)
+        TwoDRenderUtil.drawText(matrices, lit(mod.getName()), rect.x + 3, rect.y + 3, -0x1)
         level++
 
         for ((module, expanded) in modsExpanded) {
@@ -317,39 +316,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     }
 
     private fun drawColorPicker(matrices: MatrixStack, colorSetting: Setting.ColorSetting) {
-        val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height + 1)
-        GL11.glEnable(GL11.GL_BLEND)
-
-        TwoDRenderUtil.drawRect(matrices, rect.x + 2, rect.y + 2, rect.x + rect.width, rect.y + 14, 0xA6222222.toInt());
-        TwoDRenderUtil.drawRect(matrices,rect.x + 2, rect.y + 2, rect.x + rect.width, rect.y + 14, colorSetting.toInteger());
-        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y + 2, rect.x + 6, rect.y + 12, 0xBF444444.toInt());
-
-        matrices.push()
-        matrices.scale(1f, 1f,0.5f)
-        matrices.pop()
-
-    //
-//        val hue = colorSetting.value.hue
-//        val saturation = colorSetting.value.saturation
-//        val brightness = colorSetting.value.brightness
-//
-//        val colorA = ToastColor.fromHSB(hue, 0f, 1f)
-//        val colorB = ToastColor.fromHSB(hue, 1f, 1f)
-//
-//        TwoDRenderUtil.fillRect(rect, colorA, colorB, colorB, colorA)
-//
-//        val colorC = ToastColor(0, 0, 0, 0)
-//        val colorD = ToastColor(0, 0, 0)
-//
-//        TwoDRenderUtil.fillRect(rect, colorC, colorC, colorD, colorD)
-//
-//        val p = Point((x + hue * width).roundToInt(), (y + height - saturation * height).roundToInt())
-//
-//        val fontColor = ToastColor(-0x1)
-//
-//        TwoDRenderUtil.fillRect(Rectangle(p.x, p.y - 2, 1, 2 * 2 + 1), fontColor, fontColor, fontColor, fontColor)
-//        TwoDRenderUtil.fillRect(Rectangle(p.x - 2, p.y, 2 * 2 + 1, 1), fontColor, fontColor, fontColor, fontColor)
-
+        //TODO
     }
 
     private fun round(value: Double, places: Int): Double {

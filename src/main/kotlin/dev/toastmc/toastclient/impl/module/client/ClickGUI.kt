@@ -7,8 +7,6 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT) {
 
     private val GUI = ClickGUIScreen()
 
-//    var color = color("", -0x7fff0100)
-
     init {
         setKey(344, -1)
     }
@@ -23,5 +21,4 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT) {
             disable()
         }
     }
-
 }
