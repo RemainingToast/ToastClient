@@ -104,7 +104,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
             width,
             height * 2,
             1,
-            -0x6
+            -0x000000
         )
 
         if (hoverButton && leftClicked) {
