@@ -1,6 +1,7 @@
 package dev.toastmc.toastclient.impl.gui.hud
 
 import dev.toastmc.toastclient.api.util.lit
+import dev.toastmc.toastclient.impl.gui.hud.components.Totems
 import dev.toastmc.toastclient.impl.gui.hud.components.Watermark
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
@@ -12,6 +13,7 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
 
     init {
         components.add(Watermark)
+        components.add(Totems)
     }
 
     override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {

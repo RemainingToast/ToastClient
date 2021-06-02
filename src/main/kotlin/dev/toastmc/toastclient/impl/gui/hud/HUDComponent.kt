@@ -2,6 +2,7 @@ package dev.toastmc.toastclient.impl.gui.hud
 
 import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.util.TwoDRenderUtil
+import dev.toastmc.toastclient.api.util.mc
 import net.minecraft.client.util.math.MatrixStack
 import java.awt.Color
 import java.awt.Rectangle
@@ -9,8 +10,9 @@ import kotlin.math.roundToInt
 
 open class HUDComponent(var name: String, var x: Double, var y: Double) : IToastClient {
 
-    var enabled = false
+    constructor(name: String, snapPoint: SnapPoint) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble())
 
+    var enabled = false
     var width = 0
     var height = 0
 
@@ -121,6 +123,29 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
 
     private fun hover(mouseX: Double, mouseY: Double, rect: Rectangle): Boolean {
         return mouseX >= rect.x && mouseX <= rect.width + rect.x && mouseY >= rect.y && mouseY <= rect.height + rect.y
+    }
+
+    enum class SnapPoint(var x: Int, var y: Int) {
+        TOP_RIGHT(
+            mc.window.scaledWidth - 2,
+            2
+        ),
+        TOP_LEFT(
+            2,
+            2
+        ),
+        BOTTOM_RIGHT(
+            mc.window.scaledWidth - 2,
+            mc.window.scaledHeight - 2
+        ),
+        BOTTOM_LEFT(
+            2,
+            mc.window.scaledHeight - 2
+        ),
+        NONE(
+            -1,
+            -1
+        );
     }
 
 }

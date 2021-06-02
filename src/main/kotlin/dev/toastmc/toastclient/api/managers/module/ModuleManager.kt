@@ -8,10 +8,7 @@ import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
 import dev.toastmc.toastclient.impl.module.client.HUDEditor
-import dev.toastmc.toastclient.impl.module.combat.AutoArmour
-import dev.toastmc.toastclient.impl.module.combat.AutoRespawn
-import dev.toastmc.toastclient.impl.module.combat.KillAura
-import dev.toastmc.toastclient.impl.module.combat.Offhand
+import dev.toastmc.toastclient.impl.module.combat.*
 import dev.toastmc.toastclient.impl.module.misc.*
 import dev.toastmc.toastclient.impl.module.movement.*
 import dev.toastmc.toastclient.impl.module.player.*
@@ -31,6 +28,7 @@ object ModuleManager : IToastClient {
             AutoArmour,
             AutoRespawn,
             AutoWalk,
+            AutoTotem,
             ClickGUI,
             HUDEditor,
             ExtraSign,
