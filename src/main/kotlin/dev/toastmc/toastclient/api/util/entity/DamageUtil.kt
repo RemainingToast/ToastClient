@@ -47,7 +47,8 @@ object DamageUtil {
                     ).toDouble(),
                     MathHelper.floor(crystalPos.z + power + 1.0).toDouble()
                 )
-            ).contains(target)) {
+            ).contains(target)
+        ) {
             damageCache[target] = 0f
             return 0f
         }
@@ -67,12 +68,15 @@ object DamageUtil {
 
                     // entity_1.damage(explosion.getDamageSource(), (float)((int)((double_14 *
                     // double_14 + double_14) / 2.0D * 7.0D * power + 1.0D)));
-                    var toDamage = Math.floor((double_14 * double_14 + double_14) / 2.0 * 7.0 * power + 1.0).toFloat()
+                    var toDamage =
+                        Math.floor((double_14 * double_14 + double_14) / 2.0 * 7.0 * power + 1.0)
+                            .toFloat()
                     if (target is PlayerEntity) {
                         if (mc.world!!.difficulty == Difficulty.EASY) toDamage = Math.min(
                             toDamage / 2.0f + 1.0f,
                             toDamage
-                        ) else if (mc.world!!.difficulty == Difficulty.HARD) toDamage = toDamage * 3.0f / 2.0f
+                        ) else if (mc.world!!.difficulty == Difficulty.HARD) toDamage =
+                            toDamage * 3.0f / 2.0f
                     }
 
                     // Armor
@@ -84,17 +88,22 @@ object DamageUtil {
 
                     // Enchantments
                     if (target.hasStatusEffect(StatusEffects.RESISTANCE)) {
-                        val resistance = (target.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
+                        val resistance =
+                            (target.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
                         val int_2 = 25 - resistance
                         val resistance_1 = toDamage * int_2
                         toDamage = Math.max(resistance_1 / 25.0f, 0.0f)
                     }
-                    if (toDamage <= 0.0f) { toDamage = 0.0f } else {
+                    if (toDamage <= 0.0f) {
+                        toDamage = 0.0f
+                    } else {
                         val protAmount = EnchantmentHelper.getProtectionAmount(
                             target.armorItems,
                             explosion.damageSource
                         )
-                        if (protAmount > 0) { toDamage = DamageUtil.getInflictedDamage(toDamage, protAmount.toFloat()) }
+                        if (protAmount > 0) {
+                            toDamage = DamageUtil.getInflictedDamage(toDamage, protAmount.toFloat())
+                        }
                     }
                     damageCache[target] = toDamage
                     return toDamage

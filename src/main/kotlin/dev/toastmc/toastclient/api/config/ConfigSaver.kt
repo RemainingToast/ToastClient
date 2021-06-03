@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets
 
 /**
  * @author Hoosiers
-**/
+ **/
 object ConfigSaver {
 
     fun saveModules() {
@@ -30,7 +30,7 @@ object ConfigSaver {
         }
     }
 
-    private fun registerModule(module: Module){
+    private fun registerModule(module: Module) {
         ConfigUtil.registerFile(moduleDirectory + module.getName())
 
         val fileOutputStreamWriter = OutputStreamWriter(
@@ -43,12 +43,24 @@ object ConfigSaver {
 
         moduleObject.add("Module", JsonPrimitive(module.getName()))
 
-        for (s in SettingManager.getSettingsForMod(module)){
-            when (s.type){
-                Type.BOOLEAN -> settingObject.add(s.configName, JsonPrimitive((s as Setting.Boolean).value))
-                Type.NUMBER -> settingObject.add(s.configName, JsonPrimitive((s as Setting.Number).value))
-                Type.COLOR -> settingObject.add(s.configName, JsonPrimitive((s as ColorSetting).toInteger()))
-                Type.MODE -> settingObject.add(s.configName, JsonPrimitive((s as Mode).value.toString()))
+        for (s in SettingManager.getSettingsForMod(module)) {
+            when (s.type) {
+                Type.BOOLEAN -> settingObject.add(
+                    s.configName,
+                    JsonPrimitive((s as Setting.Boolean).value)
+                )
+                Type.NUMBER -> settingObject.add(
+                    s.configName,
+                    JsonPrimitive((s as Setting.Number).value)
+                )
+                Type.COLOR -> settingObject.add(
+                    s.configName,
+                    JsonPrimitive((s as ColorSetting).toInteger())
+                )
+                Type.MODE -> settingObject.add(
+                    s.configName,
+                    JsonPrimitive((s as Mode).value.toString())
+                )
             }
         }
 

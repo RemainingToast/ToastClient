@@ -7,8 +7,8 @@ object Sprint : Module("Sprint", Category.MOVEMENT) {
     override fun onUpdate() {
         if (mc.player == null) return
         mc.player!!.isSprinting = mc.player!!.input.movementForward > 0 &&
-            mc.player!!.input.movementSideways != 0f ||
-            mc.player!!.input.movementForward > 0 && !mc.player!!.isSneaking
+                mc.player!!.input.movementSideways != 0f ||
+                mc.player!!.input.movementForward > 0 && !mc.player!!.isSneaking
     }
 
 }

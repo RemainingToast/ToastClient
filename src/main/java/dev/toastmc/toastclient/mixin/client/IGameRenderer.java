@@ -10,10 +10,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(GameRenderer.class)
 public interface IGameRenderer {
 
-    @Invoker
-    void callLoadShader(Identifier identifier);
+  @Invoker
+  void callLoadShader(Identifier identifier);
 
-    @Accessor
-    void setShader(ShaderEffect shader);
-
+  @Accessor
+  void setShader(ShaderEffect shader);
 }

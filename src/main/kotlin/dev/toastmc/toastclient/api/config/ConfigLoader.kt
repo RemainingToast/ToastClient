@@ -23,7 +23,8 @@ object ConfigLoader {
             for (module in ModuleManager.modules) {
                 loadModuleDirect(ConfigUtil.mainDirectory + ConfigUtil.moduleDirectory, module)
             }
-        } catch (ignore: IOException) { }
+        } catch (ignore: IOException) {
+        }
     }
 
     @Throws(IOException::class)
@@ -31,8 +32,10 @@ object ConfigLoader {
         if (!Files.exists(Paths.get(moduleLocation + module.getName() + ".json"))) {
             return
         }
-        val inputStream: InputStream = Files.newInputStream(Paths.get(moduleLocation + module.getName() + ".json"))
-        val moduleObject: JsonObject = JsonParser().parse(InputStreamReader(inputStream)).asJsonObject
+        val inputStream: InputStream =
+            Files.newInputStream(Paths.get(moduleLocation + module.getName() + ".json"))
+        val moduleObject: JsonObject =
+            JsonParser().parse(InputStreamReader(inputStream)).asJsonObject
         if (moduleObject["Module"] == null) {
             return
         }
@@ -45,12 +48,12 @@ object ConfigLoader {
                     Type.NUMBER -> (setting as Setting.Number).value = dataObject.asDouble
                     Type.COLOR -> (setting as ColorSetting).fromInteger(dataObject.asInt)
                     Type.MODE -> (setting as Mode).run {
-                        if(value.toString() != dataObject.asString) this.increment()
+                        if (value.toString() != dataObject.asString) this.increment()
                     }
                 }
             }
         }
-        if(moduleObject["Enabled"].asBoolean) module.enable()
+        if (moduleObject["Enabled"].asBoolean) module.enable()
         module.setDrawn(moduleObject["Drawn"].asBoolean)
 //        module.setBind(moduleObject["Bind"].asInt)
         inputStream.close()

@@ -23,8 +23,11 @@ object RenderUtil {
         val offsetX: Double = mc.textRenderer.getWidth(text) / 2.0
         val offsetY: Double = mc.textRenderer.fontHeight / 2.0
         GL11.glPushMatrix()
-        if (ignoreZ) { GL11.glDisable(GL11.GL_DEPTH_TEST) }
-        else { GL11.glEnable(GL11.GL_DEPTH_TEST) }
+        if (ignoreZ) {
+            GL11.glDisable(GL11.GL_DEPTH_TEST)
+        } else {
+            GL11.glEnable(GL11.GL_DEPTH_TEST)
+        }
         GL11.glTranslated(posX.toDouble(), posY.toDouble(), posZ.toDouble())
         GL11.glScaled(scale.toDouble(), scale.toDouble(), scale.toDouble())
         GL11.glTranslated(offsetX, offsetY, 0.0)

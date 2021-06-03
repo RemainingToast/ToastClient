@@ -15,7 +15,8 @@ import com.mojang.brigadier.context.CommandContext
 @Target(AnnotationTarget.TYPE)
 annotation class BrigadierDsl
 
-infix fun <S> CommandDispatcher<S>.register(builder: LiteralArgumentBuilder<S>) = this.register(builder)
+infix fun <S> CommandDispatcher<S>.register(builder: LiteralArgumentBuilder<S>) =
+    this.register(builder)
 
 /**
  * Creates a new [LiteralArgumentBuilder] without a parent.
@@ -29,7 +30,10 @@ fun <T> rootLiteral(name: String, block: (@BrigadierDsl LiteralArgumentBuilder<T
  * @param name the name of the literal argument
  * @param block the receiver function for further construction of the literal argument
  */
-fun <T> ArgumentBuilder<T, *>.literal(name: String, block: (@BrigadierDsl LiteralArgumentBuilder<T>).() -> Unit) =
+fun <T> ArgumentBuilder<T, *>.literal(
+    name: String,
+    block: (@BrigadierDsl LiteralArgumentBuilder<T>).() -> Unit
+) =
     then(rootLiteral(name, block))
 
 /**
@@ -117,18 +121,23 @@ fun <S, T : ArgumentBuilder<S, T>> ArgumentBuilder<S, T>.string(
  *
  * @see argument
  */
-fun <S, T : ArgumentBuilder<S, T>> ArgumentBuilder<S, T>.greedyString(name: String, block: (@BrigadierDsl RequiredArgumentBuilder<S, String>).() -> Unit) = argument(name, StringArgumentType.greedyString(), block)
+fun <S, T : ArgumentBuilder<S, T>> ArgumentBuilder<S, T>.greedyString(
+    name: String,
+    block: (@BrigadierDsl RequiredArgumentBuilder<S, String>).() -> Unit
+) = argument(name, StringArgumentType.greedyString(), block)
 
 /**
  * Sets the executes callback for `this` [ArgumentBuilder]
  *
  * @param command the callback
  */
-infix fun <S> ArgumentBuilder<S, *>.does(command: (@BrigadierDsl CommandContext<S>) -> Int) = executes(command)
+infix fun <S> ArgumentBuilder<S, *>.does(command: (@BrigadierDsl CommandContext<S>) -> Int) =
+    executes(command)
 
 /**
  * Gets the value of a (required) argument in the command hierarchy
  *
  * @see CommandContext.getArgument
  */
-inline infix fun <reified R, S> String.from(ctx: CommandContext<S>) = ctx.getArgument(this, R::class.java)
+inline infix fun <reified R, S> String.from(ctx: CommandContext<S>) =
+    ctx.getArgument(this, R::class.java)

@@ -13,20 +13,26 @@ import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture
 
-class FriendArgumentType<ToastPlayer>(private val clazz: Class<ToastPlayer>) : ArgumentType<ToastPlayer> {
+class FriendArgumentType<ToastPlayer>(private val clazz: Class<ToastPlayer>) :
+    ArgumentType<ToastPlayer> {
 
     @Throws(CommandSyntaxException::class)
     override fun parse(reader: StringReader): ToastPlayer {
         val string = reader.readUnquotedString()
         try {
-            return clazz.cast(FriendManager.friends.filter { clazz.isInstance(it) }.first { it.name.equals(string, ignoreCase = true) })
+            return clazz.cast(FriendManager.friends.filter { clazz.isInstance(it) }
+                .first { it.name.equals(string, ignoreCase = true) })
         } catch (e: NoSuchElementException) {
             throw INVALID_PLAYER_EXCEPTION.create(string)
         }
     }
 
-    override fun <S> listSuggestions(context: CommandContext<S>, builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
-        return CommandSource.suggestMatching(FriendManager.friends.filter { clazz.isInstance(it) }.map { it.name }, builder)
+    override fun <S> listSuggestions(
+        context: CommandContext<S>,
+        builder: SuggestionsBuilder
+    ): CompletableFuture<Suggestions> {
+        return CommandSource.suggestMatching(FriendManager.friends.filter { clazz.isInstance(it) }
+            .map { it.name }, builder)
     }
 
     override fun getExamples(): Collection<String> {
@@ -34,7 +40,9 @@ class FriendArgumentType<ToastPlayer>(private val clazz: Class<ToastPlayer>) : A
     }
 
     companion object {
-        val INVALID_PLAYER_EXCEPTION = DynamicCommandExceptionType { p -> lit("Couldn't find player '$p'") }
+        val INVALID_PLAYER_EXCEPTION =
+            DynamicCommandExceptionType { p -> lit("Couldn't find player '$p'") }
+
         fun friend(): FriendArgumentType<ToastPlayer> = FriendArgumentType(ToastPlayer::class.java)
     }
 }

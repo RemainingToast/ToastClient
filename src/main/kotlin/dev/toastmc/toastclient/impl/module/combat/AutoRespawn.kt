@@ -18,10 +18,10 @@ object AutoRespawn : Module("AutoRespawn", Category.COMBAT) {
     }
 
     override fun onUpdate() {
-        if(mc.currentScreen != null){
-             if(timer.isDelayComplete(delay.value.toLong() * 1000L)){
+        if (mc.currentScreen != null) {
+            if (timer.isDelayComplete(delay.value.toLong() * 1000L)) {
                 timer.setLastMS()
-                if(mc.currentScreen is DeathScreen){
+                if (mc.currentScreen is DeathScreen) {
                     mc.player!!.requestRespawn()
                     mc.openScreen(null)
                 }

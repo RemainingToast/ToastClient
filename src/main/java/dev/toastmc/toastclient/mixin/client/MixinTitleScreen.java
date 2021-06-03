@@ -21,47 +21,40 @@ import static net.minecraft.client.gui.DrawableHelper.drawTexture;
 @Mixin(TitleScreen.class)
 public class MixinTitleScreen {
 
-    @Mutable
-    @Shadow @Final private static Identifier EDITION_TITLE_TEXTURE;
+  @Mutable @Shadow @Final private static Identifier EDITION_TITLE_TEXTURE;
 
-    @Inject(
-            at = {@At("RETURN")},
-            method = {"render"}
-    )
-    private void on(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        EDITION_TITLE_TEXTURE = new Identifier("toastclient", "title/edition.png");
-    }
+  @Inject(
+      at = {@At("RETURN")},
+      method = {"render"})
+  private void on(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    EDITION_TITLE_TEXTURE = new Identifier("toastclient", "title/edition.png");
+  }
 
-    @Redirect(
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/RotatingCubeMapRenderer;render(FF)V"),
-            method = {"render"}
-    )
-    private void on(RotatingCubeMapRenderer rotatingCubeMapRenderer, float delta, float alpha){ }
+  @Redirect(
+      at =
+          @At(
+              value = "INVOKE",
+              target = "Lnet/minecraft/client/gui/RotatingCubeMapRenderer;render(FF)V"),
+      method = {"render"})
+  private void on(RotatingCubeMapRenderer rotatingCubeMapRenderer, float delta, float alpha) {}
 
-    @Inject(
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/RotatingCubeMapRenderer;render(FF)V"),
-            method = {"render"}
-    )
-    private void on1(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci){
-        MinecraftClient.getInstance().getTextureManager().bindTexture(new Identifier("toastclient", "title/background.png"));
-        assert MinecraftClient.getInstance().currentScreen != null; // Shouldn't ever be null, as we are literally rendering screen
-        int width = MinecraftClient.getInstance().currentScreen.width;
-        int height = MinecraftClient.getInstance().currentScreen.height;
-        drawTexture(
-                matrices,
-                0,
-                0,
-                width,
-                height,
-                0.0F,
-                0.0F,
-                width,
-                height,
-                width,
-                height
-        );
-//        TODO: Fix Shaders
-//        GLSLSandboxShader shader = GLSLSandboxShader.mandelbrotShader();
-//        if(shader != null) shader.useShader(width, height, mouseX, mouseY, delta);
-    }
+  @Inject(
+      at =
+          @At(
+              value = "INVOKE",
+              target = "Lnet/minecraft/client/gui/RotatingCubeMapRenderer;render(FF)V"),
+      method = {"render"})
+  private void on1(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    MinecraftClient.getInstance()
+        .getTextureManager()
+        .bindTexture(new Identifier("toastclient", "title/background.png"));
+    assert MinecraftClient.getInstance().currentScreen
+        != null; // Shouldn't ever be null, as we are literally rendering screen
+    int width = MinecraftClient.getInstance().currentScreen.width;
+    int height = MinecraftClient.getInstance().currentScreen.height;
+    drawTexture(matrices, 0, 0, width, height, 0.0F, 0.0F, width, height, width, height);
+    //        TODO: Fix Shaders
+    //        GLSLSandboxShader shader = GLSLSandboxShader.mandelbrotShader();
+    //        if(shader != null) shader.useShader(width, height, mouseX, mouseY, delta);
+  }
 }

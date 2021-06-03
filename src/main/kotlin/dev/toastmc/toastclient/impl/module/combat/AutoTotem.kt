@@ -22,15 +22,23 @@ object AutoTotem : Module("AutoTotem", Category.COMBAT) {
             moving -> {
                 mc.interactionManager!!.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player)
                 moving = false
-                if(!invEmpty) {
+                if (!invEmpty) {
                     returning = true
                 }
                 return
             }
             !invEmpty -> {
                 if (mc.player!!.totemCount() != 0) {
-                    val totem = (0..44).firstOrNull { mc.player!!.inventory.getStack(it).item === Items.TOTEM_OF_UNDYING } ?: return
-                    mc.interactionManager!!.clickSlot(0, if (totem < 9) totem + 36 else totem, 0, SlotActionType.PICKUP, mc.player)
+                    val totem =
+                        (0..44).firstOrNull { mc.player!!.inventory.getStack(it).item === Items.TOTEM_OF_UNDYING }
+                            ?: return
+                    mc.interactionManager!!.clickSlot(
+                        0,
+                        if (totem < 9) totem + 36 else totem,
+                        0,
+                        SlotActionType.PICKUP,
+                        mc.player
+                    )
                     moving = true
                 }
             }

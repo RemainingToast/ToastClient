@@ -89,13 +89,16 @@ object ModuleManager : IToastClient {
 
     @Subscribe
     fun on(event: TickEvent.Client.InGame) {
-        modules.stream().filter { mod: Module -> mod.isEnabled() }.forEach { mod: Module -> mod.onUpdate() }
+        modules.stream().filter { mod: Module -> mod.isEnabled() }
+            .forEach { mod: Module -> mod.onUpdate() }
     }
 
     @Subscribe
     fun on(event: OverlayRenderEvent) {
-        modules.stream().filter { mod: Module -> mod.isEnabled() }.forEach { mod: Module -> mod.onHUDRender() }
-        HUDEditor.SCREEN.getComponents().filter { c -> c.enabled }.forEach { c -> c.render(event.matrix) }
+        modules.stream().filter { mod: Module -> mod.isEnabled() }
+            .forEach { mod: Module -> mod.onHUDRender() }
+        HUDEditor.SCREEN.getComponents().filter { c -> c.enabled }
+            .forEach { c -> c.render(event.matrix) }
     }
 
 }

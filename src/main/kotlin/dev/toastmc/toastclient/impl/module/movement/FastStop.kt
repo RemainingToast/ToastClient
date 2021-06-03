@@ -2,7 +2,7 @@ package dev.toastmc.toastclient.impl.module.movement
 
 import dev.toastmc.toastclient.api.managers.module.Module
 
-object FastStop : Module("FastStop", Category.MOVEMENT){
+object FastStop : Module("FastStop", Category.MOVEMENT) {
 
     var airStop = bool("Air", true)
 

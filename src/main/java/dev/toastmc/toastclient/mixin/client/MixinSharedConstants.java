@@ -9,17 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SharedConstants.class)
 public class MixinSharedConstants {
 
-    /**
-     * @author Morgz
-     * Makes you able to "chat" § etc (normally "illegal" characters)
-     */
-    @Inject(
-            at = {@At("HEAD")},
-            method = {"isValidChar"},
-            cancellable = true
-    )
-    private static void on(CallbackInfoReturnable<Boolean> info) {
-        info.setReturnValue(true);
-    }
-
+  /** @author Morgz Makes you able to "chat" § etc (normally "illegal" characters) */
+  @Inject(
+      at = {@At("HEAD")},
+      method = {"isValidChar"},
+      cancellable = true)
+  private static void on(CallbackInfoReturnable<Boolean> info) {
+    info.setReturnValue(true);
+  }
 }

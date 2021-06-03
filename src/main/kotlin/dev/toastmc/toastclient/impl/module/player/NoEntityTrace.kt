@@ -7,8 +7,8 @@ object NoEntityTrace : Module("NoEntityTrace", Category.PLAYER) {
 
     var pickaxe = bool("Pickaxe Only", false)
 
-    fun work(): Boolean{
-        return if(pickaxe.value) mc.player!!.mainHandStack.item is PickaxeItem || mc.player!!.offHandStack.item is PickaxeItem else true
+    fun work(): Boolean {
+        return if (pickaxe.value) mc.player!!.mainHandStack.item is PickaxeItem || mc.player!!.offHandStack.item is PickaxeItem else true
     }
 
 }

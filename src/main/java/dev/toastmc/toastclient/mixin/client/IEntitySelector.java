@@ -9,10 +9,9 @@ import java.util.UUID;
 @Mixin(EntitySelector.class)
 public interface IEntitySelector {
 
-    @Accessor
-    String getPlayerName();
+  @Accessor
+  String getPlayerName();
 
-    @Accessor
-    UUID getUuid();
-
+  @Accessor
+  UUID getUuid();
 }

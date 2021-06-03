@@ -23,29 +23,38 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractSignBlock.class)
 public class MixinAbstractSignBlock {
 
-    @Inject(
-            at = {@At("HEAD")},
-            method = {"onUse"}
-    )
-    private void on(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (player.isSneaking() && ExtraSign.INSTANCE.isEnabled()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof SignBlockEntity) {
-                SignBlockEntity signBlockEntity = (SignBlockEntity) blockEntity;
-                Text[] lines = ((ISignBlockEntity) signBlockEntity).getText();
-                StringBuilder textToCopy = new StringBuilder();
+  @Inject(
+      at = {@At("HEAD")},
+      method = {"onUse"})
+  private void on(
+      BlockState state,
+      World world,
+      BlockPos pos,
+      PlayerEntity player,
+      Hand hand,
+      BlockHitResult hit,
+      CallbackInfoReturnable<ActionResult> cir) {
+    if (player.isSneaking() && ExtraSign.INSTANCE.isEnabled()) {
+      BlockEntity blockEntity = world.getBlockEntity(pos);
+      if (blockEntity instanceof SignBlockEntity) {
+        SignBlockEntity signBlockEntity = (SignBlockEntity) blockEntity;
+        Text[] lines = ((ISignBlockEntity) signBlockEntity).getText();
+        StringBuilder textToCopy = new StringBuilder();
 
-                for (Text text : lines) {
-                    String rowString = text.getString();
-                    if (!rowString.isEmpty()) {
-                        textToCopy.append(rowString);
-                        textToCopy.append(" ");
-                    }
-                }
-
-                MinecraftClient.getInstance().keyboard.setClipboard(textToCopy.toString().replaceAll("\\s+$", ""));
-                player.sendMessage(CommonsKt.lit("Copied sign to clipboard.").formatted(Formatting.GREEN),true);
-            }
+        for (Text text : lines) {
+          String rowString = text.getString();
+          if (!rowString.isEmpty()) {
+            textToCopy.append(rowString);
+            textToCopy.append(" ");
+          }
         }
+
+        MinecraftClient.getInstance()
+            .keyboard
+            .setClipboard(textToCopy.toString().replaceAll("\\s+$", ""));
+        player.sendMessage(
+            CommonsKt.lit("Copied sign to clipboard.").formatted(Formatting.GREEN), true);
+      }
     }
+  }
 }

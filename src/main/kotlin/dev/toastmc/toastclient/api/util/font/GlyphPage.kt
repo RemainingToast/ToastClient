@@ -17,7 +17,11 @@ import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
-class GlyphPage(private val font: Font, val isAntiAliasingEnabled: Boolean, val isFractionalMetricsEnabled: Boolean) {
+class GlyphPage(
+    private val font: Font,
+    val isAntiAliasingEnabled: Boolean,
+    val isFractionalMetricsEnabled: Boolean
+) {
     private var imgSize = 0
     private val glyphCharacterMap = HashMap<Char, Glyph>()
     private var bufferedImage: BufferedImage? = null
@@ -30,9 +34,11 @@ class GlyphPage(private val font: Font, val isAntiAliasingEnabled: Boolean, val 
         var maxWidth = -1.0
         var maxHeight = -1.0
         val affineTransform = AffineTransform()
-        val fontRenderContext = FontRenderContext(affineTransform,
+        val fontRenderContext = FontRenderContext(
+            affineTransform,
             isAntiAliasingEnabled,
-            isFractionalMetricsEnabled)
+            isFractionalMetricsEnabled
+        )
         for (ch in chars) {
             val bounds = font.getStringBounds(Character.toString(ch), fontRenderContext)
             if (maxWidth < bounds.width) maxWidth = bounds.width
@@ -42,10 +48,13 @@ class GlyphPage(private val font: Font, val isAntiAliasingEnabled: Boolean, val 
         // Leave some additional space
         maxWidth += 2.0
         maxHeight += 2.0
-        imgSize = Math.ceil(Math.max(
-            Math.ceil(Math.sqrt(maxWidth * maxWidth * chars.size) / maxWidth),
-            Math.ceil(Math.sqrt(maxHeight * maxHeight * chars.size) / maxHeight))
-                * Math.max(maxWidth, maxHeight)).toInt() + 1
+        imgSize = Math.ceil(
+            Math.max(
+                Math.ceil(Math.sqrt(maxWidth * maxWidth * chars.size) / maxWidth),
+                Math.ceil(Math.sqrt(maxHeight * maxHeight * chars.size) / maxHeight)
+            )
+                    * Math.max(maxWidth, maxHeight)
+        ).toInt() + 1
         bufferedImage = BufferedImage(imgSize, imgSize, BufferedImage.TYPE_INT_ARGB)
         val g = bufferedImage!!.graphics as Graphics2D
         g.font = font
@@ -54,12 +63,18 @@ class GlyphPage(private val font: Font, val isAntiAliasingEnabled: Boolean, val 
         // Set the image background to transparent
         g.fillRect(0, 0, imgSize, imgSize)
         g.color = Color.white
-        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-            if (isFractionalMetricsEnabled) RenderingHints.VALUE_FRACTIONALMETRICS_ON else RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-            if (isAntiAliasingEnabled) RenderingHints.VALUE_ANTIALIAS_OFF else RenderingHints.VALUE_ANTIALIAS_ON)
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-            if (isAntiAliasingEnabled) RenderingHints.VALUE_TEXT_ANTIALIAS_ON else RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
+        g.setRenderingHint(
+            RenderingHints.KEY_FRACTIONALMETRICS,
+            if (isFractionalMetricsEnabled) RenderingHints.VALUE_FRACTIONALMETRICS_ON else RenderingHints.VALUE_FRACTIONALMETRICS_OFF
+        )
+        g.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING,
+            if (isAntiAliasingEnabled) RenderingHints.VALUE_ANTIALIAS_OFF else RenderingHints.VALUE_ANTIALIAS_ON
+        )
+        g.setRenderingHint(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            if (isAntiAliasingEnabled) RenderingHints.VALUE_TEXT_ANTIALIAS_ON else RenderingHints.VALUE_TEXT_ANTIALIAS_OFF
+        )
         val fontMetrics = g.fontMetrics
         var currentCharHeight = 0
         var posX = 0

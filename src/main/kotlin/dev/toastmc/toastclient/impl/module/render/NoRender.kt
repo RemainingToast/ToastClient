@@ -9,8 +9,8 @@ import org.quantumclient.energy.Subscribe
 
 object NoRender : Module("NoRender", Category.RENDER) {
 
-    var explosion = bool("Explosions",true)
-    var totem = bool("Totem",  true)
+    var explosion = bool("Explosions", true)
+    var totem = bool("Totem", true)
     var fire = bool("Fire", false)
     var underwater = bool("Underwater", false)
 

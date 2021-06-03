@@ -18,9 +18,9 @@ object Offhand : Module("OffHand", Category.COMBAT) {
 
     val defaultItems = arrayListOf("NONE", "GAPPLE", "CRYSTAL", "TOTEM")
 
-    var totem = bool("Totems",  true)
-    var gapple = bool("Gapples",  true)
-    var crystal = bool("Crystals",  true)
+    var totem = bool("Totems", true)
+    var gapple = bool("Gapples", true)
+    var crystal = bool("Crystals", true)
     var totemHealth = number("Totem Health", 13.5, 0.1, 20.0)
     var rightClickGap = bool("Right Click Gap", true)
     var crystalCheck = bool("Crystal Check", true)
@@ -88,7 +88,11 @@ object Offhand : Module("OffHand", Category.COMBAT) {
             when {
                 count > 0 -> {
                     val t =
-                        ((if (itemType == Items.TOTEM_OF_UNDYING && notFromHotbar.value) 9 else 0)..44).firstOrNull { mc.player!!.inventory.getStack(it).item === itemType }
+                        ((if (itemType == Items.TOTEM_OF_UNDYING && notFromHotbar.value) 9 else 0)..44).firstOrNull {
+                            mc.player!!.inventory.getStack(
+                                it
+                            ).item === itemType
+                        }
                             ?: -1
                     if (t == -1) return Result.FAILURE
                     mc.interactionManager!!.clickSlot(

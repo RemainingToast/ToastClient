@@ -43,8 +43,19 @@ interface DrawableExtensions {
     ) {
         matrices.push()
         matrices.scale(scale, scale, 1f)
-        matrices.translate((centerX / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
-        DrawableHelper.drawCenteredText(matrices, textRenderer, text, 0, -textRenderer.fontHeight / 2, color)
+        matrices.translate(
+            (centerX / scale).toDouble(),
+            ((y + textRenderer.fontHeight / 2f) / scale).toDouble(),
+            0.0
+        )
+        DrawableHelper.drawCenteredText(
+            matrices,
+            textRenderer,
+            text,
+            0,
+            -textRenderer.fontHeight / 2,
+            color
+        )
         matrices.pop()
     }
 
@@ -59,7 +70,11 @@ interface DrawableExtensions {
     ) {
         matrices.push()
         matrices.scale(scale, scale, 1f)
-        matrices.translate((x / scale).toDouble(), ((centerY + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
+        matrices.translate(
+            (x / scale).toDouble(),
+            ((centerY + textRenderer.fontHeight / 2f) / scale).toDouble(),
+            0.0
+        )
         textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color)
         matrices.pop()
     }
@@ -75,7 +90,11 @@ interface DrawableExtensions {
     ) {
         matrices.push()
         matrices.scale(scale, scale, 1f)
-        matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
+        matrices.translate(
+            (x / scale).toDouble(),
+            ((y + textRenderer.fontHeight / 2f) / scale).toDouble(),
+            0.0
+        )
         textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color)
         matrices.pop()
     }
@@ -92,7 +111,15 @@ interface DrawableExtensions {
         drawText(matrices, textRenderer, lit(text), x, y, color, scale)
     }
 
-    fun fill(matrices: MatrixStack, x1: Int, y1: Int, x2: Int, y2: Int, color: Int, opacity: Float) {
+    fun fill(
+        matrices: MatrixStack,
+        x1: Int,
+        y1: Int,
+        x2: Int,
+        y2: Int,
+        color: Int,
+        opacity: Float
+    ) {
         var x1 = x1
         var y1 = y1
         var x2 = x2
@@ -117,10 +144,14 @@ interface DrawableExtensions {
         RenderSystem.disableTexture()
         RenderSystem.defaultBlendFunc()
         bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR)
-        bufferBuilder.vertex(matrix, x1.toFloat(), y2.toFloat(), 0.0f).color(r, g, b, opacity).next()
-        bufferBuilder.vertex(matrix, x2.toFloat(), y2.toFloat(), 0.0f).color(r, g, b, opacity).next()
-        bufferBuilder.vertex(matrix, x2.toFloat(), y1.toFloat(), 0.0f).color(r, g, b, opacity).next()
-        bufferBuilder.vertex(matrix, x1.toFloat(), y1.toFloat(), 0.0f).color(r, g, b, opacity).next()
+        bufferBuilder.vertex(matrix, x1.toFloat(), y2.toFloat(), 0.0f).color(r, g, b, opacity)
+            .next()
+        bufferBuilder.vertex(matrix, x2.toFloat(), y2.toFloat(), 0.0f).color(r, g, b, opacity)
+            .next()
+        bufferBuilder.vertex(matrix, x2.toFloat(), y1.toFloat(), 0.0f).color(r, g, b, opacity)
+            .next()
+        bufferBuilder.vertex(matrix, x1.toFloat(), y1.toFloat(), 0.0f).color(r, g, b, opacity)
+            .next()
         bufferBuilder.end()
         BufferRenderer.draw(bufferBuilder)
         RenderSystem.enableTexture()
@@ -154,7 +185,8 @@ interface DrawableExtensions {
         val matrix = matrices.peek().model
         bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR)
         bufferBuilder.vertex(matrix, xEnd.toFloat(), yStart.toFloat(), 0f).color(g, h, i, f).next()
-        bufferBuilder.vertex(matrix, xStart.toFloat(), yStart.toFloat(), 0f).color(g, h, i, f).next()
+        bufferBuilder.vertex(matrix, xStart.toFloat(), yStart.toFloat(), 0f).color(g, h, i, f)
+            .next()
         bufferBuilder.vertex(matrix, xStart.toFloat(), yEnd.toFloat(), 0f).color(k, l, m, j).next()
         bufferBuilder.vertex(matrix, xEnd.toFloat(), yEnd.toFloat(), 0f).color(k, l, m, j).next()
         tessellator.draw()

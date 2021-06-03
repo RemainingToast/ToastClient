@@ -16,10 +16,14 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
     override fun onUpdate() {
         if (mc.player == null) return
         val armorMap = HashMap<EquipmentSlot, IntArray>(4)
-        armorMap[EquipmentSlot.FEET] = intArrayOf(36, getProt(mc.player!!.inventory.getStack(36)), -1, -1)
-        armorMap[EquipmentSlot.LEGS] = intArrayOf(37, getProt(mc.player!!.inventory.getStack(37)), -1, -1)
-        armorMap[EquipmentSlot.CHEST] = intArrayOf(38, getProt(mc.player!!.inventory.getStack(38)), -1, -1)
-        armorMap[EquipmentSlot.HEAD] = intArrayOf(39, getProt(mc.player!!.inventory.getStack(39)), -1, -1)
+        armorMap[EquipmentSlot.FEET] =
+            intArrayOf(36, getProt(mc.player!!.inventory.getStack(36)), -1, -1)
+        armorMap[EquipmentSlot.LEGS] =
+            intArrayOf(37, getProt(mc.player!!.inventory.getStack(37)), -1, -1)
+        armorMap[EquipmentSlot.CHEST] =
+            intArrayOf(38, getProt(mc.player!!.inventory.getStack(38)), -1, -1)
+        armorMap[EquipmentSlot.HEAD] =
+            intArrayOf(39, getProt(mc.player!!.inventory.getStack(39)), -1, -1)
         when {
             preventBreak.value -> {
                 for ((_, value) in armorMap) {
@@ -46,11 +50,29 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
                             }
                         }
                         if (forceMoveSlot != -1) {
-                            mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, if (forceMoveSlot < 9) 36 + forceMoveSlot else forceMoveSlot, 1, SlotActionType.THROW, mc.player)
-                            mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.QUICK_MOVE, mc.player)
+                            mc.interactionManager!!.clickSlot(
+                                mc.player!!.currentScreenHandler.syncId,
+                                if (forceMoveSlot < 9) 36 + forceMoveSlot else forceMoveSlot,
+                                1,
+                                SlotActionType.THROW,
+                                mc.player
+                            )
+                            mc.interactionManager!!.clickSlot(
+                                mc.player!!.currentScreenHandler.syncId,
+                                armorSlot,
+                                1,
+                                SlotActionType.QUICK_MOVE,
+                                mc.player
+                            )
                             return
                         }
-                        mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.THROW, mc.player)
+                        mc.interactionManager!!.clickSlot(
+                            mc.player!!.currentScreenHandler.syncId,
+                            armorSlot,
+                            1,
+                            SlotActionType.THROW,
+                            mc.player
+                        )
                         return
                     }
                 }
@@ -60,7 +82,10 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
         for (s in 0..35) {
             val prot: Int = getProt(mc.player!!.inventory.getStack(s))
             if (prot > 0) {
-                val slot = if (mc.player!!.inventory.getStack(s).item is ElytraItem) EquipmentSlot.CHEST else (mc.player!!.inventory.getStack(s).item as ArmorItem).slotType
+                val slot =
+                    if (mc.player!!.inventory.getStack(s).item is ElytraItem) EquipmentSlot.CHEST else (mc.player!!.inventory.getStack(
+                        s
+                    ).item as ArmorItem).slotType
                 for ((key1, value) in armorMap) {
                     if (key1 == slot) {
                         if (prot > value[1] && prot > value[3]) {
@@ -79,14 +104,38 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
                         mc.player!!.inventory.selectedSlot = value[2]
                         mc.player!!.networkHandler.sendPacket(UpdateSelectedSlotC2SPacket(value[2]))
                     }
-                    mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, 36 + value[2], 1, SlotActionType.QUICK_MOVE, mc.player)
+                    mc.interactionManager!!.clickSlot(
+                        mc.player!!.currentScreenHandler.syncId,
+                        36 + value[2],
+                        1,
+                        SlotActionType.QUICK_MOVE,
+                        mc.player
+                    )
                 } else if (mc.player!!.playerScreenHandler === mc.player!!.currentScreenHandler) {
                     /* Convert inventory slots to container slots */
                     val armorSlot = value[0] - 34 + (39 - value[0]) * 2
                     val newArmorslot = if (value[2] < 9) 36 + value[2] else value[2]
-                    mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, newArmorslot, 0, SlotActionType.PICKUP, mc.player)
-                    mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 0, SlotActionType.PICKUP, mc.player)
-                    if (value[1] != -1) mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, newArmorslot, 0, SlotActionType.PICKUP, mc.player)
+                    mc.interactionManager!!.clickSlot(
+                        mc.player!!.currentScreenHandler.syncId,
+                        newArmorslot,
+                        0,
+                        SlotActionType.PICKUP,
+                        mc.player
+                    )
+                    mc.interactionManager!!.clickSlot(
+                        mc.player!!.currentScreenHandler.syncId,
+                        armorSlot,
+                        0,
+                        SlotActionType.PICKUP,
+                        mc.player
+                    )
+                    if (value[1] != -1) mc.interactionManager!!.clickSlot(
+                        mc.player!!.currentScreenHandler.syncId,
+                        newArmorslot,
+                        0,
+                        SlotActionType.PICKUP,
+                        mc.player
+                    )
                 }
                 return
             }

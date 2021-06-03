@@ -22,7 +22,8 @@ object ExtraTab : Module("ExtraTab", Category.MISC) {
             Team.modifyText(entry.scoreboardTeam, LiteralText(entry.profile.name))
 
         return if (highlightFriends.value && FriendManager.isFriend(entry.profile.id))
-            name!!.shallowCopy().setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ToastColor.rainbow().rgb)))
+            name!!.shallowCopy()
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ToastColor.rainbow().rgb)))
         else
             name!!
     }

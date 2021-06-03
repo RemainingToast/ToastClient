@@ -30,7 +30,8 @@ abstract class DependantArgumentType<T, D>(
         var words = words
         reader.cursor = 0.coerceAtLeast(reader.cursor - 1)
         while (words > 0) {
-            reader.cursor = 0.coerceAtLeast(reader.cursor - 1) // Move to the end of the previous argument
+            reader.cursor =
+                0.coerceAtLeast(reader.cursor - 1) // Move to the end of the previous argument
             val quoted = reader.peek() == '"'
             // Move to the front of the previous argument
             while (reader.cursor > 0) {

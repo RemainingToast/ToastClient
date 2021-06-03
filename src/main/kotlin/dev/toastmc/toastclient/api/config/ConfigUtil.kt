@@ -17,7 +17,7 @@ object ConfigUtil : IToastClient {
         loadEverything()
     }
 
-    fun loadEverything(){
+    fun loadEverything() {
         ConfigLoader.loadModules()
         FriendManager.loadFriends()
     }
@@ -39,11 +39,12 @@ object ConfigUtil : IToastClient {
 
     fun initLocations() {
         try {
-            if(!Files.exists(Paths.get(mainDirectory)))
+            if (!Files.exists(Paths.get(mainDirectory)))
                 Files.createDirectories(Paths.get(mainDirectory))
-            if(!Files.exists(Paths.get(mainDirectory + moduleDirectory)))
+            if (!Files.exists(Paths.get(mainDirectory + moduleDirectory)))
                 Files.createDirectories(Paths.get(mainDirectory + moduleDirectory))
-        } catch (ignore: IOException) {}
+        } catch (ignore: IOException) {
+        }
     }
 
 }

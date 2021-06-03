@@ -34,9 +34,9 @@ fun ClientPlayerEntity.totemCount(): Int {
 
 fun ClientPlayerEntity.getMovementYaw(): Double {
     var strafe = 90f
-    strafe += if(input.movementForward != 0F) input.movementForward * 0.5F else 1F
+    strafe += if (input.movementForward != 0F) input.movementForward * 0.5F else 1F
     var yaw = yaw - strafe
-    yaw -= if(input.movementForward < 0F) 180 else 0
+    yaw -= if (input.movementForward < 0F) 180 else 0
     return Math.toRadians(yaw.toDouble())
 }
 

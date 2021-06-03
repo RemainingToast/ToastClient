@@ -58,7 +58,11 @@ object KillAura : Module("KillAura", Category.COMBAT) {
             ) {
                 val distance = mc.player!!.distanceTo(entity)
                 if (canReach(
-                        mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0),
+                        mc.player!!.pos.add(
+                            0.0,
+                            mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(),
+                            0.0
+                        ),
                         entity.boundingBox,
                         range
                     ) && (sd == null || distance < sd)

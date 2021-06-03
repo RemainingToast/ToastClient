@@ -25,13 +25,17 @@ class ModuleArgumentType<Module>(private val clazz: Class<Module>) : ArgumentTyp
     override fun parse(reader: StringReader): Module {
         val string = reader.readUnquotedString()
         try {
-            return clazz.cast(modules.filter { clazz.isInstance(it) }.first { it.getName().equals(string, ignoreCase = true) })
+            return clazz.cast(modules.filter { clazz.isInstance(it) }
+                .first { it.getName().equals(string, ignoreCase = true) })
         } catch (e: NoSuchElementException) {
             throw INVALID_MODULE_EXCEPTION.create(string)
         }
     }
 
-    override fun <S> listSuggestions(context: CommandContext<S>, builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
+    override fun <S> listSuggestions(
+        context: CommandContext<S>,
+        builder: SuggestionsBuilder
+    ): CompletableFuture<Suggestions> {
         return CommandSource.suggestMatching(
             modules.filter { clazz.isInstance(it) }.map { it.getName() },
             builder
@@ -44,7 +48,9 @@ class ModuleArgumentType<Module>(private val clazz: Class<Module>) : ArgumentTyp
 
     companion object {
         private val EXAMPLES: Collection<String> = listOf("AutoTotem", "NoRender")
-        val INVALID_MODULE_EXCEPTION = DynamicCommandExceptionType { mod -> lit("Unknown Module '$mod'") }
+        val INVALID_MODULE_EXCEPTION =
+            DynamicCommandExceptionType { mod -> lit("Unknown Module '$mod'") }
+
         fun getModule(): ModuleArgumentType<Module> = ModuleArgumentType(Module::class.java)
     }
 }

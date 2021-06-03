@@ -11,21 +11,21 @@ import org.quantumclient.energy.EventBus
 interface IToastClient {
 
     val mc: MinecraftClient
-    get() = MinecraftClient.getInstance()
+        get() = MinecraftClient.getInstance()
 
     val clientName: String
-    get() = "ToastClient"
+        get() = "ToastClient"
 
     val version: String
-    get() = "b2.1"
+        get() = "b2.1"
 
     val nameVersion: String
-    get() = "$clientName $version"
+        get() = "$clientName $version"
 
     val logger: Logger
-    get() = LogManager.getLogger(clientName)
+        get() = LogManager.getLogger(clientName)
 
     val gson: Gson
-    get() = GsonBuilder().setPrettyPrinting().create()
+        get() = GsonBuilder().setPrettyPrinting().create()
 
 }

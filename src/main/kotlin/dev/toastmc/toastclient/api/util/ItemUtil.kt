@@ -19,9 +19,15 @@ object ItemUtil {
                 if (stack.item is MiningToolItem || stack.item is SwordItem) {
                     // Not sure of the best way to cast stack.item as either SwordItem or MiningToolItem
                     val damage = if (stack.item is SwordItem) {
-                        (stack.item as SwordItem).attackDamage + EnchantmentHelper.getAttackDamage(stack, EntityGroup.DEFAULT).toDouble()
+                        (stack.item as SwordItem).attackDamage + EnchantmentHelper.getAttackDamage(
+                            stack,
+                            EntityGroup.DEFAULT
+                        ).toDouble()
                     } else {
-                        (stack.item as MiningToolItem).attackDamage + EnchantmentHelper.getAttackDamage(stack, EntityGroup.DEFAULT).toDouble()
+                        (stack.item as MiningToolItem).attackDamage + EnchantmentHelper.getAttackDamage(
+                            stack,
+                            EntityGroup.DEFAULT
+                        ).toDouble()
                     }
                     if (damage > maxDamage) {
                         maxDamage = damage

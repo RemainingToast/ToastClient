@@ -69,7 +69,8 @@ class SettingArgumentType(
 
     companion object {
         private val EXAMPLES: Collection<String> = listOf("enabled", "speed")
-        val INVALID_SETTING_EXCEPTION = DynamicCommandExceptionType { `object`: Any -> lit("Unknown setting '" + (`object` as Array<*>)[0] + "' for module " + `object`[1]) }
+        val INVALID_SETTING_EXCEPTION =
+            DynamicCommandExceptionType { `object`: Any -> lit("Unknown setting '" + (`object` as Array<*>)[0] + "' for module " + `object`[1]) }
 
         fun setting(
             dependentType: ModuleArgumentType<Module>,

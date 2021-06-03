@@ -13,9 +13,9 @@ import org.quantumclient.energy.Subscribe
 
 object Velocity : Module("Velocity", Category.PLAYER) {
 
-    val horizontal = number("Horizontal", 0.0,0.0,100.0)
-    val vertical = number("Vertical", 0.0, 0.0,100.0)
-    val delay = number("Delay",170.0, 0.0, 1000.0)
+    val horizontal = number("Horizontal", 0.0, 0.0, 100.0)
+    val vertical = number("Vertical", 0.0, 0.0, 100.0)
+    val delay = number("Delay", 170.0, 0.0, 1000.0)
 
     var group1 = group("Group1", horizontal, vertical, delay)
 
@@ -63,7 +63,11 @@ object Velocity : Module("Velocity", Category.PLAYER) {
 
             if (delay.value > 0 && !oldVelX.isNaN() || !oldVelY.isNaN() || !oldVelZ.isNaN()) {
 //                Thread.sleep(max(0L, delay.value.toLong()))
-                mc.player!!.setVelocity(mc.player!!.velocity.x + oldVelX, mc.player!!.velocity.y + oldVelY, mc.player!!.velocity.z + oldVelZ)
+                mc.player!!.setVelocity(
+                    mc.player!!.velocity.x + oldVelX,
+                    mc.player!!.velocity.y + oldVelY,
+                    mc.player!!.velocity.z + oldVelZ
+                )
             }
         }
     }
@@ -85,7 +89,8 @@ object Velocity : Module("Velocity", Category.PLAYER) {
     @Subscribe
     fun on(event: MoveEntityFluidEvent) {
         if (event.entity === mc.player) {
-            event.movement = event.movement.multiply(horizontal.value, vertical.value, horizontal.value)
+            event.movement =
+                event.movement.multiply(horizontal.value, vertical.value, horizontal.value)
         }
     }
 
