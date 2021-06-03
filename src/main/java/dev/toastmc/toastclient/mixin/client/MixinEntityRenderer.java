@@ -14,21 +14,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderer.class)
 public abstract class MixinEntityRenderer<T extends Entity> {
 
-  @Inject(
-      at = {@At("HEAD")},
-      method = {"renderLabelIfPresent"},
-      cancellable = true)
-  protected void on(
-      T entity,
-      Text text,
-      MatrixStack matrices,
-      VertexConsumerProvider vertexConsumers,
-      int light,
-      CallbackInfo ci) {
-    // TODO: Make Event
-    if (NameTags.INSTANCE.isEnabled()) {
-      NameTags.INSTANCE.renderNameTag(entity, text.asString(), matrices, vertexConsumers, light);
-      ci.cancel();
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"renderLabelIfPresent"},
+            cancellable = true
+    )
+    protected void on(T entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        // TODO: Make Event
+        if (NameTags.INSTANCE.isEnabled()) {
+            NameTags.INSTANCE.renderNameTag(entity, text.asString(), matrices, vertexConsumers, light);
+            ci.cancel();
+        }
     }
-  }
 }

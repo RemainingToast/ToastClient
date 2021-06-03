@@ -12,21 +12,9 @@ object Jesus : Module("Jesus", Category.MOVEMENT) {
         if (e!!.isSneaking || e.fallDistance > 3f) return
         e.isOnGround = true
         when {
-            isFluid(BlockPos(e.pos.add(0.0, 0.3, 0.0))) -> e.setVelocity(
-                e.velocity.x,
-                0.08,
-                e.velocity.z
-            )
-            isFluid(BlockPos(e.pos.add(0.0, 0.1, 0.0))) -> e.setVelocity(
-                e.velocity.x,
-                0.05,
-                e.velocity.z
-            )
-            isFluid(BlockPos(e.pos.add(0.0, 0.05, 0.0))) -> e.setVelocity(
-                e.velocity.x,
-                0.01,
-                e.velocity.z
-            )
+            isFluid(BlockPos(e.pos.add(0.0, 0.3, 0.0))) -> e.setVelocity(e.velocity.x, 0.08, e.velocity.z)
+            isFluid(BlockPos(e.pos.add(0.0, 0.1, 0.0))) -> e.setVelocity(e.velocity.x, 0.05, e.velocity.z)
+            isFluid(BlockPos(e.pos.add(0.0, 0.05, 0.0))) -> e.setVelocity(e.velocity.x, 0.01, e.velocity.z)
             isFluid(BlockPos(e.pos)) -> e.setVelocity(e.velocity.x, -0.005, e.velocity.z)
         }
     }

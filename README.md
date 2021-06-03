@@ -1,12 +1,10 @@
 ## Toast Client b2.1
-
 [![Download](https://img.shields.io/github/downloads/RemainingToast/toastclient/total?color=green&label=total%20downloads)](https://github.com/RemainingToast/toastclient/releases/)
 [![Discord](https://img.shields.io/discord/801552028504555550)](https://discord.gg/fvSKpbtQAV)
 ![GitHub lines of code](https://tokei.rs/b1/github/RemainingToast/toastclient)
 ![GitHub last commit](https://img.shields.io/github/last-commit/RemainingToast/toastclient)
 
 ### Installing
-
 *I recommend using [multimc](https://multimc.org/) as it makes installing Fabric much easier.*
 
 1. Download the latest release [here](https://github.com/RemainingToast/toastclient/releases/)
@@ -15,11 +13,11 @@
 4. Launch Minecraft
 
 Note (By Default):
-
 * ClickGui Key is `RSHIFT`
 * Command Prefix is `.` (`.help` for all commands)
 
-### Credits
+
+### Credits 
 
 * ALL the [Contributors](https://github.com/RemainingToast/ToastClient/graphs/contributors)
 * Command System based off [KAMI's](https://github.com/zeroeightysix/KAMI/)

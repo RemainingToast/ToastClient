@@ -16,9 +16,7 @@ object FullBright : Module("FullBright", Category.RENDER) {
         mc.options.gamma = previousGamma
         increasedGamma = false
         if (mc.player!!.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
-            if (Objects.requireNonNull(mc.player!!.getStatusEffect(StatusEffects.NIGHT_VISION))!!.amplifier == 42069) mc.player!!.removeStatusEffect(
-                StatusEffects.NIGHT_VISION
-            )
+            if (Objects.requireNonNull(mc.player!!.getStatusEffect(StatusEffects.NIGHT_VISION))!!.amplifier == 42069) mc.player!!.removeStatusEffect(StatusEffects.NIGHT_VISION)
         }
     }
 

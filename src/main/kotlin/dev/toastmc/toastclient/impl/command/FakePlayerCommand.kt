@@ -15,14 +15,14 @@ object FakePlayerCommand : Command("fakeplayer") {
         dispatcher register rootLiteral(label) {
             does {
                 // TODO take UUID/name argument to customise fakeplayer
-                spawned = if (!spawned) {
+                spawned = if(!spawned) {
                     mc.world!!.addEntity(42069, mc.player!!.clone())
                     true
                 } else {
                     mc.world!!.removeEntity(42069)
                     false
                 }
-                message("$prefix Fake Player has been ${if (spawned) "${Formatting.GREEN}SPAWNED" else "${Formatting.RED}REMOVED"}")
+                message("$prefix Fake Player has been ${if(spawned) "${Formatting.GREEN}SPAWNED" else "${Formatting.RED}REMOVED" }")
                 0
             }
         }

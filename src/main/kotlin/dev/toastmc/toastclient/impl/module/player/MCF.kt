@@ -14,13 +14,9 @@ import org.lwjgl.glfw.GLFW
 object MCF : Module("MCF", Category.PLAYER) {
 
     override fun onUpdate() {
-        if (GLFW.glfwGetMouseButton(
-                mc.window.handle,
-                GLFW.GLFW_MOUSE_BUTTON_MIDDLE
-            ) == GLFW.GLFW_RELEASE
-        ) {
+        if(GLFW.glfwGetMouseButton(mc.window.handle, GLFW.GLFW_MOUSE_BUTTON_MIDDLE) == GLFW.GLFW_RELEASE) {
             val crosshairTarget = mc.crosshairTarget ?: return
-            if (crosshairTarget.type == HitResult.Type.ENTITY) {
+            if(crosshairTarget.type == HitResult.Type.ENTITY) {
                 val entityHitResult = crosshairTarget as EntityHitResult
                 val entity = entityHitResult.entity
 
@@ -29,18 +25,10 @@ object MCF : Module("MCF", Category.PLAYER) {
 
                     if (FriendManager.isFriend(entity)) {
                         FriendManager.removeFriend(entity)
-                        message(
-                            lit("${FriendCommand.prefix} $name has been ${Formatting.RED}removed${Formatting.GRAY} as friend").formatted(
-                                Formatting.GRAY
-                            )
-                        )
+                        message(lit("${FriendCommand.prefix} $name has been ${Formatting.RED}removed${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
                     } else {
                         FriendManager.addFriend(entity)
-                        message(
-                            lit("${FriendCommand.prefix} $name has been ${Formatting.GREEN}added${Formatting.GRAY} as friend").formatted(
-                                Formatting.GRAY
-                            )
-                        )
+                        message(lit("${FriendCommand.prefix} $name has been ${Formatting.GREEN}added${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
                     }
                 }
             }

@@ -76,7 +76,7 @@ open class Module(private var name: String, private var category: Category) : IT
         onToggle()
     }
 
-    open fun toggleDrawn() {
+    open fun toggleDrawn(){
         setDrawn(!isDrawn())
     }
 
@@ -112,21 +112,8 @@ open class Module(private var name: String, private var category: Category) : IT
         return SettingManager.addSetting(Group(name, this, settings.asList())) as Group
     }
 
-    protected open fun number(
-        name: String,
-        value: kotlin.Number,
-        min: kotlin.Number,
-        max: kotlin.Number
-    ): Number {
-        return SettingManager.addSetting(
-            Number(
-                name,
-                this,
-                value.toDouble(),
-                min.toDouble(),
-                max.toDouble()
-            )
-        ) as Number
+    protected open fun number(name: String, value: kotlin.Number, min: kotlin.Number, max: kotlin.Number): Number {
+        return SettingManager.addSetting(Number(name, this, value.toDouble(), min.toDouble(), max.toDouble())) as Number
     }
 
     protected open fun bool(name: String, value: kotlin.Boolean): Boolean {
@@ -145,11 +132,7 @@ open class Module(private var name: String, private var category: Category) : IT
         return SettingManager.addSetting(ColorSetting(name, this, false, color)) as ColorSetting
     }
 
-    protected open fun color(
-        name: String,
-        color: ToastColor,
-        rainbow: kotlin.Boolean
-    ): ColorSetting {
+    protected open fun color(name: String, color: ToastColor, rainbow: kotlin.Boolean): ColorSetting {
         return SettingManager.addSetting(ColorSetting(name, this, rainbow, color)) as ColorSetting
     }
 

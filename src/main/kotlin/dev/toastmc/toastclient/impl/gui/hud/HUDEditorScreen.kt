@@ -37,13 +37,7 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
         return false
     }
 
-    override fun mouseDragged(
-        mouseX: Double,
-        mouseY: Double,
-        button: Int,
-        deltaX: Double,
-        deltaY: Double
-    ): Boolean {
+    override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
         for (component in components) {
             component.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
         }

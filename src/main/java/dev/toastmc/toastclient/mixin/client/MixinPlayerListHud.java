@@ -15,25 +15,23 @@ import java.util.List;
 @Mixin(PlayerListHud.class)
 public class MixinPlayerListHud {
 
-  @Redirect(
-      at = @At(value = "INVOKE", target = "Ljava/util/List;subList(II)Ljava/util/List;"),
-      method = {"render"})
-  public <E> List<E> render(List<E> list, int fromIndex, int toIndex) {
-    return list.subList(
-        fromIndex,
-        ExtraTab.INSTANCE.isEnabled()
-            ? Math.min(ExtraTab.INSTANCE.getTabSize().getIntValue(), list.size())
-            : toIndex);
-  }
-
-  @Inject(
-      at = {@At("HEAD")},
-      method = {"getPlayerName"},
-      cancellable = true)
-  public void getPlayerName(PlayerListEntry entry, CallbackInfoReturnable<Text> cir) {
-    if (ExtraTab.INSTANCE.isEnabled()) {
-      cir.setReturnValue(ExtraTab.INSTANCE.formatList(entry));
-      cir.cancel();
+    @Redirect(
+            at = @At(value = "INVOKE", target = "Ljava/util/List;subList(II)Ljava/util/List;"),
+            method = {"render"}
+    )
+    public <E> List<E> render(List<E> list, int fromIndex, int toIndex) {
+        return list.subList(fromIndex, ExtraTab.INSTANCE.isEnabled() ? Math.min(ExtraTab.INSTANCE.getTabSize().getIntValue(), list.size()) : toIndex);
     }
-  }
+
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"getPlayerName"},
+            cancellable = true
+    )
+    public void getPlayerName(PlayerListEntry entry, CallbackInfoReturnable<Text> cir){
+        if(ExtraTab.INSTANCE.isEnabled()){
+            cir.setReturnValue(ExtraTab.INSTANCE.formatList(entry));
+            cir.cancel();
+        }
+    }
 }

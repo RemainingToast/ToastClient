@@ -30,11 +30,11 @@ class SettingValueArgumentType(
         val setting = findDependencyValue(reader)
         val string = reader.readUnquotedString()
         return string ?: throw INVALID_VALUE_EXCEPTION.create(
-            arrayOf<Any>(
-                string,
-                setting.name
+                arrayOf<Any>(
+                    string,
+                    setting.name
+                )
             )
-        )
     }
 
     override fun <S> listSuggestions(

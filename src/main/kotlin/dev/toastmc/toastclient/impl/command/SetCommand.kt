@@ -17,25 +17,20 @@ object SetCommand : Command("set") {
         val moduleArgumentType = ModuleArgumentType.getModule()
         val settingArgumentType = SettingArgumentType.setting(moduleArgumentType, "module", 1)
         dispatcher register rootLiteral(label) {
-            argument("module", moduleArgumentType) {
+            argument("module", moduleArgumentType){
                 argument("setting", settingArgumentType) {
-                    argument(
-                        "value", SettingValueArgumentType.value(
-                            settingArgumentType as ArgumentType<Setting<*>>,
-                            "setting",
-                            1
-                        )
-                    ) {
+                    argument("value", SettingValueArgumentType.value(
+                        settingArgumentType as ArgumentType<Setting<*>>,
+                        "setting",
+                        1
+                    )) {
                         does {
                             val module = it.getArgument("module", Module::class.java) as Module
-                            val setting =
-                                it.getArgument("setting", Setting::class.java) as Setting<*>
+                            val setting = it.getArgument("setting", Setting::class.java) as Setting<*>
                             val stringValue = it.getArgument("value", String::class.java) as String
-                            val moduleName =
-                                "${Formatting.DARK_GRAY}[${Formatting.DARK_GREEN}${module.getName()}${Formatting.DARK_GRAY}]${Formatting.GRAY}"
-                            if (setting.setValueFromString(stringValue)) {
-                                val settingString =
-                                    "${Formatting.GREEN}${setting.name}${Formatting.GRAY} to ${Formatting.GREEN.toString() + setting.stringValue}"
+                            val moduleName = "${Formatting.DARK_GRAY}[${Formatting.DARK_GREEN}${module.getName()}${Formatting.DARK_GRAY}]${Formatting.GRAY}"
+                            if(setting.setValueFromString(stringValue)){
+                                val settingString = "${Formatting.GREEN}${setting.name}${Formatting.GRAY} to ${Formatting.GREEN.toString() + setting.stringValue}"
                                 message(lit("$prefix $moduleName Successfully set $settingString"))
                             } else {
                                 message(lit("$prefix $moduleName Incorrect Arguments"))
@@ -45,7 +40,7 @@ object SetCommand : Command("set") {
                     }
                 }
             }
-            does {
+            does{
                 println("Something didn't go right.")
                 0
             }

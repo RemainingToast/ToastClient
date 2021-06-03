@@ -16,8 +16,7 @@ abstract class Command(name: String) : IToastClient {
 
     var label: String = ""
 
-    val prefix =
-        Formatting.DARK_GRAY.toString() + "[" + Formatting.RED + clientName + Formatting.DARK_GRAY + "]" + Formatting.GRAY
+    val prefix = Formatting.DARK_GRAY.toString() + "[" + Formatting.RED + clientName + Formatting.DARK_GRAY + "]" + Formatting.GRAY
 
     init {
         label = name

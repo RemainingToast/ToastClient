@@ -11,11 +11,7 @@ object TestModule : Module("TestModule", Category.COMBAT) {
 
     @Subscribe
     fun on(event: WorldRenderEvent) {
-        val tileEntities = WorldUtil.getTileEntitiesInChunk(
-            mc.player!!.world,
-            mc.player!!.chunkX,
-            mc.player!!.chunkZ
-        )
+        val tileEntities = WorldUtil.getTileEntitiesInChunk(mc.player!!.world, mc.player!!.chunkX, mc.player!!.chunkZ)
         for ((pos, tile) in tileEntities) {
             RenderUtil.drawText3D(
                 event.matrixStack,

@@ -59,9 +59,7 @@ class CloseScreenInPortalEvent(val screen: Screen?) : Event()
 class DisplaySizeChangedEvent
 
 open class EntityEvent(val entity: Entity) : Event() {
-    class EntityCollision(entity: Entity, var x: Double, var y: Double, var z: Double) :
-        EntityEvent(entity)
-
+    class EntityCollision(entity: Entity, var x: Double, var y: Double, var z: Double) : EntityEvent(entity)
     class EntityDamage(entity: Entity, var damage: Int) : EntityEvent(entity)
 }
 
@@ -95,13 +93,7 @@ class RenderGuiEvent(val window: Window, val matrixStack: MatrixStack) : Event()
 
 class RenderPlayerNametagEvent(val entity: AbstractClientPlayerEntity) : Event()
 
-class RenderWeatherEvent(
-    val manager: LightmapTextureManager,
-    val f: Float,
-    val d: Double,
-    val e: Double,
-    val g: Double
-) : Event()
+class RenderWeatherEvent(val manager: LightmapTextureManager, val f: Float, val d: Double, val e: Double, val g: Double) : Event()
 
 open class ScreenEvent(var screen: Screen?) : Event() {
     class Displayed(screen: Screen?) : ScreenEvent(screen)

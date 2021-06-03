@@ -10,11 +10,7 @@ import kotlin.math.roundToInt
 
 open class HUDComponent(var name: String, var x: Double, var y: Double) : IToastClient {
 
-    constructor(name: String, snapPoint: SnapPoint) : this(
-        name,
-        snapPoint.x.toDouble(),
-        snapPoint.y.toDouble()
-    )
+    constructor(name: String, snapPoint: SnapPoint) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble())
 
     var enabled = false
     var width = 0
@@ -42,26 +38,26 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
     }
 
     fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {
-        if (!clickedOnce) {
+        if(!clickedOnce) {
             if (button == 0) {
                 leftClicked = true
                 rightClicked = false
                 clickedOnce = true
             } else if (button == 1) {
                 leftClicked = false
-                rightClicked = true
+                rightClicked  = true
                 clickedOnce = true
             }
         } else {
             leftClicked = false
-            rightClicked = false
+            rightClicked  = false
         }
     }
 
     fun mouseReleased(mouseX: Double, mouseY: Double, button: Int) {
-        if (button == 0 || button == 1) {
+        if(button == 0 || button == 1) {
             leftClicked = false
-            rightClicked = false
+            rightClicked  = false
             clickedOnce = false
             dragging = false
         }
@@ -73,7 +69,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
             this.dragX = dragX
             this.dragY = dragY
 
-            if (hovering || labelHover) {
+            if(hovering || labelHover) {
                 this.x += this.dragX
                 this.y += this.dragY
             }
@@ -91,20 +87,16 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
         DrawableUtil.drawRect(
             matrices,
             buttonRect,
-            if (enabled) Color.green.rgb else Color.red.rgb
+            if(enabled) Color.green.rgb else Color.red.rgb
         )
 
         val labelRect = Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2)
-        labelHover = hover(
-            mouseX,
-            mouseY,
-            Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2)
-        )
+        labelHover = hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2))
 
         DrawableUtil.drawRect(
             matrices,
             labelRect,
-            if (dragging) 0x90303030.toInt() else 0x75101010
+            if(dragging) 0x90303030.toInt() else 0x75101010
         )
 
         DrawableUtil.drawHollowRect(
@@ -121,7 +113,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
             enabled = !enabled
         }
 
-        if (clickedOnce) {
+        if(clickedOnce) {
             leftClicked = false
             rightClicked = false
         }

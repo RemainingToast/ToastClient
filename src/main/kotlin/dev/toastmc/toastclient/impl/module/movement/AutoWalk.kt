@@ -10,11 +10,10 @@ object AutoWalk : Module("AutoWalk", Category.MOVEMENT) {
             direction.isHidden = mode1.value.equals("Baritone", true)
         }
 
-    private var direction =
-        mode("Direction", "Forward", "Forward", "Backward", "Leftward", "Rightward")
-            .onChanged {
-                if (isEnabled()) stop()
-            }
+    private var direction = mode("Direction", "Forward", "Forward", "Backward", "Leftward", "Rightward")
+        .onChanged {
+            if (isEnabled()) stop()
+        }
 
     override fun onDisable() {
         if (mc.player != null) {

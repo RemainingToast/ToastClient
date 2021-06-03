@@ -10,29 +10,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class MixinAbstractClientPlayerEntity {
 
-  @Inject(
-      at = {@At("HEAD")},
-      method = {"getCapeTexture"},
-      cancellable = true)
-  private void on(CallbackInfoReturnable<Identifier> cir) {
-    //        TODO: Better™ Capes
-    //        if(Capes.INSTANCE.isEnabled()){
-    //            switch (Capes.INSTANCE.getCapeType().getIndex()){
-    //                case 0: {
-    //                    cir.setReturnValue(new Identifier("toastclient", "capes/old_mojang.png"));
-    //                    return;
-    //                }
-    //                case 1:{
-    //                    cir.setReturnValue(new Identifier("toastclient",
-    // "capes/minecon_2013.png"));
-    //                    return;
-    //                }
-    //                case 2: {
-    //                    cir.setReturnValue(new Identifier("toastclient",
-    // "capes/minecon_2016.png"));
-    //                    return;
-    //                }
-    //            }
-    //        }
-  }
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"getCapeTexture"},
+            cancellable = true
+    )
+    private void on(CallbackInfoReturnable<Identifier> cir){
+//        TODO: Better™ Capes
+//        if(Capes.INSTANCE.isEnabled()){
+//            switch (Capes.INSTANCE.getCapeType().getIndex()){
+//                case 0: {
+//                    cir.setReturnValue(new Identifier("toastclient", "capes/old_mojang.png"));
+//                    return;
+//                }
+//                case 1:{
+//                    cir.setReturnValue(new Identifier("toastclient", "capes/minecon_2013.png"));
+//                    return;
+//                }
+//                case 2: {
+//                    cir.setReturnValue(new Identifier("toastclient", "capes/minecon_2016.png"));
+//                    return;
+//                }
+//            }
+//        }
+    }
 }

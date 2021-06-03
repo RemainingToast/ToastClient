@@ -14,25 +14,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public class MixinPlayerEntity {
 
-  @Inject(
-      at = {@At("HEAD")},
-      method = {"attack"},
-      cancellable = true)
-  private void on(Entity entity, CallbackInfo info) {
-    PlayerAttackEntityEvent event = new PlayerAttackEntityEvent(entity);
-    ToastClient.Companion.getEventBus().post(event);
-    if (info.isCancelled()) {
-      info.cancel();
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"attack"},
+            cancellable = true
+    )
+    private void on(Entity entity, CallbackInfo info) {
+        PlayerAttackEntityEvent event = new PlayerAttackEntityEvent(entity);
+        ToastClient.Companion.getEventBus().post(event);
+        if (info.isCancelled()) {
+            info.cancel();
+        }
     }
-  }
 
-  @Inject(
-      at = {@At("HEAD")},
-      method = {"clipAtLedge"},
-      cancellable = true)
-  private void on(CallbackInfoReturnable<Boolean> cir) {
-    ClipAtLedgeEvent event = new ClipAtLedgeEvent((PlayerEntity) (Object) this, false);
-    ToastClient.Companion.getEventBus().post(event);
-    cir.setReturnValue(event.getClip());
-  }
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"clipAtLedge"},
+            cancellable = true
+    )
+    private void on(CallbackInfoReturnable<Boolean> cir) {
+        ClipAtLedgeEvent event = new ClipAtLedgeEvent((PlayerEntity) (Object) this, false);
+        ToastClient.Companion.getEventBus().post(event);
+        cir.setReturnValue(event.getClip());
+    }
 }

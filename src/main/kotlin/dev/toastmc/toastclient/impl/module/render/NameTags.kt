@@ -11,22 +11,14 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.Formatting
 
 
-object NameTags : Module("NameTags", Category.RENDER) {
+object NameTags : Module("NameTags", Category.RENDER){
 
-    fun renderNameTag(
-        entity: Entity,
-        str: String,
-        matrixStack: MatrixStack,
-        vertexConsumerProvider: VertexConsumerProvider?,
-        int_1: Int
-    ) {
+    fun renderNameTag(entity: Entity, str: String, matrixStack: MatrixStack, vertexConsumerProvider: VertexConsumerProvider?, int_1: Int) {
         var name = str
-        val distance: Double =
-            MinecraftClient.getInstance().entityRenderDispatcher.getSquaredDistanceToCamera(entity)
+        val distance: Double = MinecraftClient.getInstance().entityRenderDispatcher.getSquaredDistanceToCamera(entity)
         if (entity is LivingEntity) {
-            if (entity is PlayerEntity) {
-                name = entity.getDisplayName().asString()
-                    .toString() + " " + (if (entity.health > entity.maxHealth / 3.0f) if (entity.health > entity.maxHealth / 3.0f * 2.0f) Formatting.GREEN else Formatting.YELLOW else Formatting.DARK_RED) + (entity.health * 2.0f).toInt() / 2.0f + "HP"
+            if(entity is PlayerEntity){
+                name = entity.getDisplayName().asString().toString() + " " + (if (entity.health > entity.maxHealth / 3.0f) if (entity.health > entity.maxHealth / 3.0f * 2.0f) Formatting.GREEN else Formatting.YELLOW else Formatting.DARK_RED) + (entity.health * 2.0f).toInt() / 2.0f + "HP"
 
             }
         }
@@ -38,35 +30,12 @@ object NameTags : Module("NameTags", Category.RENDER) {
             matrixStack.multiply(MinecraftClient.getInstance().entityRenderDispatcher.rotation)
             matrixStack.scale(-0.025f, -0.025f, 0.025f)
             val matrix4f = matrixStack.peek().model
-            val backgroundOpacity =
-                MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f)
+            val backgroundOpacity = MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f)
             val backgroundcolor = (backgroundOpacity * 255.0f).toInt() shl 24
             val textRenderer: TextRenderer = MinecraftClient.getInstance().textRenderer
             val nameWidth = (-textRenderer.getWidth(name) / 2).toFloat()
-            textRenderer.draw(
-                name,
-                nameWidth,
-                0f,
-                553648127,
-                false,
-                matrix4f,
-                vertexConsumerProvider,
-                notSneaking,
-                backgroundcolor,
-                int_1
-            )
-            textRenderer.draw(
-                name,
-                nameWidth,
-                0f,
-                -1,
-                false,
-                matrix4f,
-                vertexConsumerProvider,
-                false,
-                0,
-                int_1
-            )
+            textRenderer.draw(name, nameWidth, 0f, 553648127, false, matrix4f, vertexConsumerProvider, notSneaking, backgroundcolor, int_1)
+            textRenderer.draw(name, nameWidth, 0f, -1, false, matrix4f, vertexConsumerProvider, false, 0, int_1)
             matrixStack.pop()
         }
     }

@@ -10,15 +10,7 @@ object DrawableUtil : DrawableExtensions {
 
     fun drawRect(matrices: MatrixStack, rect: Rectangle, color: Int) {
         startSmooth()
-        fill(
-            matrices,
-            rect.x,
-            rect.y,
-            rect.x + rect.width,
-            rect.y + rect.height,
-            color,
-            (color shr 24 and 255).toFloat() / 255.0f
-        )
+        fill(matrices, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, color, (color shr 24 and 255).toFloat() / 255.0f)
         endSmooth()
     }
 
@@ -26,64 +18,20 @@ object DrawableUtil : DrawableExtensions {
         drawRect(matrices, Rectangle(x, y, width, height), color)
     }
 
-    fun drawCenteredTextBox(
-        matrices: MatrixStack,
-        text: String,
-        rect: Rectangle,
-        bgColor: Int,
-        textColor: Int,
-        textScale: Float
-    ) {
+    fun drawCenteredTextBox(matrices: MatrixStack, text: String, rect: Rectangle, bgColor: Int, textColor: Int, textScale: Float) {
         drawRect(matrices, rect.x - 2, rect.y - 2, rect.width, rect.height, bgColor)
-        drawCenteredText(
-            matrices,
-            mc.textRenderer,
-            lit(text),
-            rect.centerX.toInt(),
-            rect.y,
-            textColor,
-            textScale
-        )
+        drawCenteredText(matrices, mc.textRenderer, lit(text), rect.centerX.toInt(), rect.y, textColor, textScale)
     }
 
-    fun drawTextBox(
-        matrices: MatrixStack,
-        text: String,
-        rect: Rectangle,
-        bgColor: Int,
-        textColor: Int,
-        textScale: Float
-    ) {
+    fun drawTextBox(matrices: MatrixStack, text: String, rect: Rectangle, bgColor: Int, textColor: Int, textScale: Float) {
         drawRect(matrices, rect.x - 2, rect.y - 2, rect.width, rect.height, bgColor)
         drawText(matrices, mc.textRenderer, lit(text), rect.x, rect.y, textColor, textScale)
     }
 
-    fun drawHollowRect(
-        matrices: MatrixStack,
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        lineWidth: Int,
-        color: Int
-    ) {
-        drawRect(
-            matrices,
-            x - lineWidth,
-            y - lineWidth,
-            width + lineWidth * 2,
-            lineWidth,
-            color
-        ) // top line
+    fun drawHollowRect(matrices: MatrixStack, x: Int, y: Int, width: Int, height: Int, lineWidth: Int, color: Int) {
+        drawRect(matrices, x - lineWidth, y - lineWidth, width + lineWidth * 2, lineWidth, color) // top line
         drawRect(matrices, x - lineWidth, y, lineWidth, height, color) // left line
-        drawRect(
-            matrices,
-            x - lineWidth,
-            y + height,
-            width + lineWidth * 2,
-            lineWidth,
-            color
-        ) // bottom line
+        drawRect(matrices, x - lineWidth, y + height, width + lineWidth * 2, lineWidth, color) // bottom line
         drawRect(matrices, x + width, y, lineWidth, height, color) // right line
     }
 

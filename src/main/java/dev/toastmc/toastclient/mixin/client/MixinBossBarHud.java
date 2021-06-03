@@ -10,13 +10,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BossBarHud.class)
 public class MixinBossBarHud {
 
-  @Inject(
-      at = {@At("HEAD")},
-      method = {"render"},
-      cancellable = true)
-  private void on(CallbackInfo info) {
-    if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getBossbar().getValue()) {
-      info.cancel();
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"render"},
+            cancellable = true
+    )
+    private void on(CallbackInfo info) {
+        if(NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getBossbar().getValue()){
+            info.cancel();
+        }
     }
-  }
+
 }

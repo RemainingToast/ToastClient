@@ -39,13 +39,7 @@ class FontRenderer private constructor(
         return i
     }
 
-    private fun renderString(
-        text: String?,
-        x: Float,
-        y: Float,
-        color: Int,
-        dropShadow: Boolean
-    ): Int {
+    private fun renderString(text: String?, x: Float, y: Float, color: Int, dropShadow: Boolean): Int {
         var color = color
         return if (text == null) {
             0
@@ -94,12 +88,10 @@ class FontRenderer private constructor(
                         i1 += 16
                     }
                     val j1 = colorCode[i1]
-                    GlStateManager.color4f(
-                        (j1 shr 16).toFloat() / 255.0f,
+                    GlStateManager.color4f((j1 shr 16).toFloat() / 255.0f,
                         (j1 shr 8 and 255).toFloat() / 255.0f,
                         (j1 and 255).toFloat() / 255.0f,
-                        alpha
-                    )
+                        alpha)
                 } else if (i1 == 17) {
                     boldStyle = true
                 } else if (i1 == 18) {
@@ -133,27 +125,17 @@ class FontRenderer private constructor(
             val tessellator1 = Tessellator.getInstance()
             val worldrenderer1 = tessellator1.buffer
             worldrenderer1.begin(7, VertexFormats.POSITION)
-            worldrenderer1.vertex(
-                posX.toDouble(),
-                (posY + (glyphPage.maxFontHeight.toFloat() / 2)).toDouble(),
-                0.0
-            )
+            worldrenderer1.vertex(posX.toDouble(), (posY + (glyphPage.maxFontHeight.toFloat() / 2)).toDouble(), 0.0)
                 .next()
-            worldrenderer1.vertex(
-                (posX + f).toDouble(),
+            worldrenderer1.vertex((posX + f).toDouble(),
                 (posY + (glyphPage.maxFontHeight.toFloat() / 2)).toDouble(),
-                0.0
-            ).next()
-            worldrenderer1.vertex(
-                (posX + f).toDouble(),
+                0.0).next()
+            worldrenderer1.vertex((posX + f).toDouble(),
                 (posY + (glyphPage.maxFontHeight.toFloat() / 2) - 1.0f).toDouble(),
-                0.0
-            ).next()
-            worldrenderer1.vertex(
-                posX.toDouble(),
+                0.0).next()
+            worldrenderer1.vertex(posX.toDouble(),
                 (posY + (glyphPage.maxFontHeight.toFloat() / 2) - 1.0f).toDouble(),
-                0.0
-            ).next()
+                0.0).next()
             tessellator1.draw()
         }
         if (underlineStyle) {
@@ -162,27 +144,17 @@ class FontRenderer private constructor(
             GlStateManager.disableTexture()
             worldrenderer1.begin(7, VertexFormats.POSITION)
             val l = if (underlineStyle) -1 else 0
-            worldrenderer1.vertex(
-                (posX + l.toFloat()).toDouble(),
+            worldrenderer1.vertex((posX + l.toFloat()).toDouble(),
                 (posY + glyphPage.maxFontHeight.toFloat()).toDouble(),
-                0.0
-            ).next()
-            worldrenderer1.vertex(
-                (posX + f).toDouble(),
-                (posY + glyphPage.maxFontHeight.toFloat()).toDouble(),
-                0.0
-            )
+                0.0).next()
+            worldrenderer1.vertex((posX + f).toDouble(), (posY + glyphPage.maxFontHeight.toFloat()).toDouble(), 0.0)
                 .next()
-            worldrenderer1.vertex(
-                (posX + f).toDouble(),
+            worldrenderer1.vertex((posX + f).toDouble(),
                 (posY + glyphPage.maxFontHeight.toFloat() - 1.0f).toDouble(),
-                0.0
-            ).next()
-            worldrenderer1.vertex(
-                (posX + l.toFloat()).toDouble(),
+                0.0).next()
+            worldrenderer1.vertex((posX + l.toFloat()).toDouble(),
                 (posY + glyphPage.maxFontHeight.toFloat() - 1.0f).toDouble(),
-                0.0
-            ).next()
+                0.0).next()
             tessellator1.draw()
             GlStateManager.enableTexture()
         }
@@ -213,8 +185,7 @@ class FontRenderer private constructor(
         var i = 0
         while (i < size) {
             var character = text[i]
-            if (character == 'ง' || character == 'ย') on =
-                true else if (on && character >= '0' && character <= 'r') {
+            if (character == 'ง' || character == 'ย') on = true else if (on && character >= '0' && character <= 'r') {
                 val colorIndex = "0123456789abcdefklmnor".indexOf(character)
                 if (colorIndex < 16) {
                     boldStyle = false
@@ -254,8 +225,7 @@ class FontRenderer private constructor(
         var i = j
         while (i >= 0 && i < text.length && i < maxWidth) {
             var character = text[i]
-            if (character == 'ง' || character == 'ย') on =
-                true else if (on && character >= '0' && character <= 'r') {
+            if (character == 'ง' || character == 'ย') on = true else if (on && character >= '0' && character <= 'r') {
                 val colorIndex = "0123456789abcdefklmnor".indexOf(character)
                 if (colorIndex < 16) {
                     boldStyle = false
@@ -309,8 +279,7 @@ class FontRenderer private constructor(
             var italicPage = regularPage
             var boldItalicPage = regularPage
             if (boldItalic) {
-                boldItalicPage =
-                    GlyphPage(Font(fontName, Font.BOLD or Font.ITALIC, size), true, true)
+                boldItalicPage = GlyphPage(Font(fontName, Font.BOLD or Font.ITALIC, size), true, true)
                 boldItalicPage.generateGlyphPage(chars)
                 boldItalicPage.setupTexture()
             } else {

@@ -11,15 +11,14 @@ import java.util.*
 
 class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
 
-    private val panels: EnumMap<Module.Category, ClickGUIPanel> =
-        EnumMap(Module.Category::class.java)
+    private val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
 
     var keybindingCategory: ClickGUIPanel? = null
 
     init {
         var x = 20
         for (category in Module.Category.values()) {
-            if (category == Module.Category.NONE) continue
+            if(category == Module.Category.NONE) continue
 
             panels.putIfAbsent(category, ClickGUIPanel(category, x.toDouble(), 20.0))
             x += 103
@@ -51,13 +50,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
         return false
     }
 
-    override fun mouseDragged(
-        mouseX: Double,
-        mouseY: Double,
-        button: Int,
-        deltaX: Double,
-        deltaY: Double
-    ): Boolean {
+    override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
         for (panel in panels.values) {
             panel.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
         }
@@ -65,8 +58,8 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        if (keyCode != GLFW.GLFW_KEY_UNKNOWN) {
-            if (keyCode in arrayOf(GLFW.GLFW_KEY_ESCAPE, ClickGUI.getKey().code)) {
+        if(keyCode != GLFW.GLFW_KEY_UNKNOWN) {
+            if(keyCode in arrayOf(GLFW.GLFW_KEY_ESCAPE, ClickGUI.getKey().code)) {
                 ClickGUI.toggle()
             } else {
                 keybindingCategory?.keyPressed(keyCode)

@@ -8,9 +8,10 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ClientPlayerInteractionManager.class)
 public interface IClientPlayerInteractionManager {
 
-  @Invoker
-  void invokeSyncSelectedSlot();
+    @Invoker
+    void invokeSyncSelectedSlot();
 
-  @Accessor
-  void setBlockBreakingCooldown(int blockBreakingCooldown);
+    @Accessor
+    void setBlockBreakingCooldown(int blockBreakingCooldown);
+
 }

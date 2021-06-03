@@ -12,25 +12,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameOverlayRenderer.class)
 public class MixinInGameOverlayRenderer {
 
-  @Inject(
-      at = {@At("HEAD")},
-      method = {
-        "renderFireOverlay(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/util/math/MatrixStack;)V"
-      },
-      cancellable = true)
-  private static void on(
-      MinecraftClient minecraftClient, MatrixStack matrixStack, CallbackInfo ci) {
-    if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getFire().getValue()) ci.cancel();
-  }
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"renderFireOverlay(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/util/math/MatrixStack;)V"},
+            cancellable = true
+    )
+    private static void on(MinecraftClient minecraftClient, MatrixStack matrixStack, CallbackInfo ci) {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getFire().getValue())
+            ci.cancel();
+    }
 
-  @Inject(
-      at = {@At("HEAD")},
-      method = {
-        "renderUnderwaterOverlay(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/util/math/MatrixStack;)V"
-      },
-      cancellable = true)
-  private static void on1(
-      MinecraftClient minecraftClient, MatrixStack matrixStack, CallbackInfo ci) {
-    if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getUnderwater().getValue()) ci.cancel();
-  }
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"renderUnderwaterOverlay(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/util/math/MatrixStack;)V"},
+            cancellable = true
+    )
+    private static void on1(MinecraftClient minecraftClient, MatrixStack matrixStack, CallbackInfo ci) {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getUnderwater().getValue())
+            ci.cancel();
+    }
+
 }

@@ -48,14 +48,7 @@ object WorldUtil {
     ): LinkedHashMap<BlockPos, Block> {
         val map =
             LinkedHashMap<BlockPos, Block>()
-        if (!world.isChunkLoaded(
-                BlockPos(
-                    (chunkX shr 4).toDouble(),
-                    80.0,
-                    (chunkX shr 4).toDouble()
-                )
-            )
-        ) {
+        if (!world.isChunkLoaded(BlockPos((chunkX shr 4).toDouble(), 80.0, (chunkX shr 4).toDouble()))) {
             return map
         }
         val chunk: Chunk = world.getChunk(chunkX, chunkZ)
@@ -177,20 +170,12 @@ object WorldUtil {
      * @param endZ
      * @return block positions inside a 3d area between pos1 and pos2
      */
-    fun getBlockMatchesBelowSurface(
-        match: Block,
-        startX: Int,
-        startZ: Int,
-        endX: Int,
-        endZ: Int
-    ): List<BlockPos> {
+    fun getBlockMatchesBelowSurface(match: Block, startX: Int, startZ: Int, endX: Int, endZ: Int): List<BlockPos> {
         val returnList = mutableListOf<BlockPos>()
         for (x in startX..endX) {
             for (z in startZ..endZ) {
                 for (y in 0..getHighestYAtXZ(x, z)) {
-                    if (mc.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(
-                        BlockPos(x, y, z)
-                    )
+                    if (mc.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(BlockPos(x, y, z))
                 }
             }
         }
@@ -205,8 +190,7 @@ object WorldUtil {
      * @return Y coordinate of the highest non-air block in the column
      */
     fun getHighestYAtXZ(x: Int, z: Int): Int {
-        return mc.world!!.getChunk(BlockPos(x, 0, z))
-            .sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
+        return mc.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
     }
 
     val BlockPos.block: Block
@@ -231,14 +215,7 @@ object WorldUtil {
         ToastClient.eventBus.register(this)
     }
 
-    fun getSphere(
-        loc: BlockPos,
-        r: Int,
-        h: Int,
-        hollow: Boolean,
-        sphere: Boolean,
-        plus_y: Int
-    ): List<BlockPos> {
+    fun getSphere(loc: BlockPos, r: Int, h: Int, hollow: Boolean, sphere: Boolean, plus_y: Int): List<BlockPos> {
         val circleblocks: ArrayList<BlockPos> = ArrayList()
         val cx = loc.x
         val cy = loc.y
@@ -251,8 +228,7 @@ object WorldUtil {
                 do {
                     val f = if (sphere) cy.toFloat() + r else (cy + h).toFloat()
                     if (y >= f) break
-                    val dist =
-                        (cx - x) * (cx - x) + (cz - z) * (cz - z) + (if (sphere) (cy - y) * (cy - y) else 0).toDouble()
+                    val dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (if (sphere) (cy - y) * (cy - y) else 0).toDouble()
                     if (!(dist >= (r * r).toDouble() || hollow && dist < ((r - 1.0f) * (r - 1.0f)).toDouble())) {
                         val l = BlockPos(x, y + plus_y, z)
                         circleblocks.add(l)
@@ -274,8 +250,7 @@ object WorldUtil {
         for (i in -range..range) {
             for (j in -range..range) {
                 for (k in -range..range) {
-                    val distance: Double =
-                        ((x + x - i) * (x + x - i) + (y + y - j) * (y + y - j) + (z + z - k) * (z + z - k)).toDouble()
+                    val distance: Double = ((x + x - i) * (x + x - i) + (y + y - j) * (y + y - j) + (z + z - k) * (z + z - k)).toDouble()
                     if (distance < range * range) {
                         val block = BlockPos(x, y, z)
                         blocks.add(block)
@@ -287,39 +262,12 @@ object WorldUtil {
         return blocks
     }
 
-    val BEDS = listOf(
-        Blocks.BLACK_BED,
-        Blocks.BLUE_BED,
-        Blocks.BROWN_BED,
-        Blocks.CYAN_BED,
-        Blocks.GRAY_BED,
-        Blocks.GREEN_BED,
-        Blocks.LIGHT_BLUE_BED,
-        Blocks.LIGHT_GRAY_BED,
-        Blocks.LIME_BED,
-        Blocks.MAGENTA_BED,
-        Blocks.ORANGE_BED,
-        Blocks.PINK_BED,
-        Blocks.PURPLE_BED,
-        Blocks.RED_BED,
-        Blocks.WHITE_BED,
-        Blocks.YELLOW_BED
-    )
+    val BEDS = listOf(Blocks.BLACK_BED, Blocks.BLUE_BED, Blocks.BROWN_BED, Blocks.CYAN_BED, Blocks.GRAY_BED, Blocks.GREEN_BED, Blocks.LIGHT_BLUE_BED, Blocks.LIGHT_GRAY_BED, Blocks.LIME_BED, Blocks.MAGENTA_BED, Blocks.ORANGE_BED, Blocks.PINK_BED, Blocks.PURPLE_BED, Blocks.RED_BED, Blocks.WHITE_BED, Blocks.YELLOW_BED)
     val AIR = listOf(Blocks.AIR, Blocks.CAVE_AIR)
     val REPLACEABLE = listOf(
-        Blocks.AIR,
-        Blocks.CAVE_AIR,
-        Blocks.LAVA,
-        Blocks.WATER,
-        Blocks.GRASS,
-        Blocks.TALL_GRASS,
-        Blocks.SEAGRASS,
-        Blocks.TALL_SEAGRASS,
-        Blocks.FERN,
-        Blocks.DEAD_BUSH,
-        Blocks.VINE,
-        Blocks.FIRE,
-        Blocks.STRUCTURE_VOID
+        Blocks.AIR, Blocks.CAVE_AIR, Blocks.LAVA, Blocks.WATER,
+        Blocks.GRASS, Blocks.TALL_GRASS, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS, Blocks.FERN, Blocks.DEAD_BUSH,
+        Blocks.VINE, Blocks.FIRE, Blocks.STRUCTURE_VOID
     )
 
     fun openBlock(pos: BlockPos) {
@@ -328,12 +276,7 @@ object WorldUtil {
             val neighborBlock = mc.world!!.getBlockState(pos.offset(f)).block
             val vecPos = Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
             if (REPLACEABLE.contains(neighborBlock)) {
-                mc.interactionManager!!.interactBlock(
-                    mc.player,
-                    mc.world,
-                    Hand.MAIN_HAND,
-                    BlockHitResult(vecPos, f.opposite, pos, false)
-                )
+                mc.interactionManager!!.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, BlockHitResult(vecPos, f.opposite, pos, false))
                 return
             }
         }
@@ -441,8 +384,7 @@ object WorldUtil {
     }
 
     fun isFluid(pos: BlockPos): Boolean {
-        val fluids: List<Material> =
-            Arrays.asList(Material.WATER, Material.LAVA, Material.UNDERWATER_PLANT)
+        val fluids: List<Material> = Arrays.asList(Material.WATER, Material.LAVA, Material.UNDERWATER_PLANT)
         return fluids.contains(MinecraftClient.getInstance().world!!.getBlockState(pos).material)
     }
 
@@ -469,13 +411,7 @@ object WorldUtil {
                     val dh = sqrt(dx * dx + dz * dz)
                     val yaw = Math.toDegrees(atan2(dz, dx)).toFloat() - 90
                     val pitch = (-Math.toDegrees(atan2(dy, dh))).toFloat()
-                    player.networkHandler.sendPacket(
-                        PlayerMoveC2SPacket.LookOnly(
-                            yaw,
-                            pitch,
-                            player.isOnGround
-                        )
-                    )
+                    player.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(yaw, pitch, player.isOnGround))
                 }
                 if (isRightClickable(offsetBlock)) {
                     player!!.networkHandler.sendPacket(
