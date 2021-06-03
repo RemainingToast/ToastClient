@@ -13,32 +13,25 @@ import org.lwjgl.glfw.GLFW
 
 object MCF : Module("MCF", Category.PLAYER) {
 
-    var antiSpam = false
-
     override fun onUpdate() {
-        val button = GLFW.GLFW_MOUSE_BUTTON_MIDDLE
-        if(GLFW.glfwGetMouseButton(mc.window.handle, button) == 1 && !antiSpam){
-            antiSpam = true
-            if(mc.crosshairTarget!!.type == HitResult.Type.ENTITY){
-                val hitResult = mc.crosshairTarget
-                val entityHitResult = hitResult as EntityHitResult
+        if(GLFW.glfwGetMouseButton(mc.window.handle, GLFW.GLFW_MOUSE_BUTTON_MIDDLE) == GLFW.GLFW_RELEASE) {
+            val crosshairTarget = mc.crosshairTarget ?: return
+            if(crosshairTarget.type == HitResult.Type.ENTITY) {
+                val entityHitResult = crosshairTarget as EntityHitResult
                 val entity = entityHitResult.entity
 
-                if (entity is PlayerEntity){
+                if (entity is PlayerEntity) {
                     val name = entity.displayName.string
 
                     if (FriendManager.isFriend(entity)) {
                         FriendManager.removeFriend(entity)
                         message(lit("${FriendCommand.prefix} $name has been ${Formatting.RED}removed${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
-                    }
-                    else {
+                    } else {
                         FriendManager.addFriend(entity)
                         message(lit("${FriendCommand.prefix} $name has been ${Formatting.GREEN}added${Formatting.GRAY} as friend").formatted(Formatting.GRAY))
                     }
                 }
             }
-        } else if (GLFW.glfwGetMouseButton(mc.window.handle, button) == 0){
-            antiSpam = false
         }
     }
 

@@ -2,10 +2,9 @@ package dev.toastmc.toastclient.api.managers.module
 
 import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.ToastClient
-import dev.toastmc.toastclient.api.events.OverlayEvent
+import dev.toastmc.toastclient.api.events.OverlayRenderEvent
 import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.ClickGUI
-import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
 import dev.toastmc.toastclient.impl.module.client.HUDEditor
 import dev.toastmc.toastclient.impl.module.combat.*
@@ -34,7 +33,7 @@ object ModuleManager : IToastClient {
             ExtraSign,
             ExtraTab,
             ExtraTooltips,
-            Font,
+//            Font,
             FastUtil,
             FriendModule,
             NoRender,
@@ -53,7 +52,8 @@ object ModuleManager : IToastClient {
             AntiHunger,
             Sprint,
             Jesus,
-            PortalChat
+            PortalChat,
+            TestModule
         )
 
         ToastClient.eventBus.register(this)
@@ -93,7 +93,7 @@ object ModuleManager : IToastClient {
     }
 
     @Subscribe
-    fun on(event: OverlayEvent) {
+    fun on(event: OverlayRenderEvent) {
         modules.stream().filter { mod: Module -> mod.isEnabled() }.forEach { mod: Module -> mod.onHUDRender() }
         HUDEditor.SCREEN.getComponents().filter { c -> c.enabled }.forEach { c -> c.render(event.matrix) }
     }

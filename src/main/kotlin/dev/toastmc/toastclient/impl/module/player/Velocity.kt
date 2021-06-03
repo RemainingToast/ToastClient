@@ -10,7 +10,6 @@ import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
 import org.quantumclient.energy.Era
 import org.quantumclient.energy.Subscribe
-import kotlin.math.max
 
 object Velocity : Module("Velocity", Category.PLAYER) {
 
@@ -63,7 +62,7 @@ object Velocity : Module("Velocity", Category.PLAYER) {
             }
 
             if (delay.value > 0 && !oldVelX.isNaN() || !oldVelY.isNaN() || !oldVelZ.isNaN()) {
-                Thread.sleep(max(0L, delay.value.toLong()))
+//                Thread.sleep(max(0L, delay.value.toLong()))
                 mc.player!!.setVelocity(mc.player!!.velocity.x + oldVelX, mc.player!!.velocity.y + oldVelY, mc.player!!.velocity.z + oldVelZ)
             }
         }

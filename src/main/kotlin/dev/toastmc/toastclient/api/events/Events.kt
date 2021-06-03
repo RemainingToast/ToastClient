@@ -14,16 +14,16 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.MovementType
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.network.Packet
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket
 import net.minecraft.text.Text
 import net.minecraft.util.hit.EntityHitResult
-import net.minecraft.util.math.*
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
-import org.quantumclient.energy.Era
 import org.quantumclient.energy.Event
 import java.util.function.Predicate
 
@@ -89,25 +89,6 @@ open class RenderBossBarEvent : Event() {
     class Spacing(var spacing: Int) : RenderBossBarEvent()
 }
 
-open class RenderEvent private constructor(private val stage: Stage) : Event() {
-    enum class Stage {
-        WORLD, SCREEN
-    }
-
-    class Screen : RenderEvent(Stage.SCREEN)
-    class World(
-        val tickDelta: Float,
-        val matrixStack: MatrixStack,
-        val camera: Camera
-    ) :
-        RenderEvent(Stage.WORLD) {
-
-        init {
-            era = Era.POST
-        }
-    }
-}
-
 class RenderGuiEvent(val window: Window, val matrixStack: MatrixStack) : Event()
 
 class RenderPlayerNametagEvent(val entity: AbstractClientPlayerEntity) : Event()
@@ -143,6 +124,3 @@ class UpdateLookEvent(
     val deltaY: Double
 ) : Event()
 
-class OverlayEvent(
-    val matrix: MatrixStack
-) : Event()

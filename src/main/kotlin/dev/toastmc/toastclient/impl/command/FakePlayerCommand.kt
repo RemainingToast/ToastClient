@@ -3,6 +3,7 @@ package dev.toastmc.toastclient.impl.command
 import com.mojang.brigadier.CommandDispatcher
 import dev.toastmc.toastclient.api.managers.command.Command
 import dev.toastmc.toastclient.api.util.*
+import dev.toastmc.toastclient.api.util.entity.clone
 import net.minecraft.command.CommandSource
 import net.minecraft.util.Formatting
 

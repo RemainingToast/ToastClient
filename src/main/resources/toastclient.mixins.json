@@ -8,6 +8,7 @@
     "IEntitySelector",
     "IEntityVelocityUpdateS2CPacket",
     "IExplosionS2CPacket",
+    "IGameRenderer",
     "IMinecraftClient",
     "ISignBlockEntity",
     "MixinAbstractClientPlayerEntity",

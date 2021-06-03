@@ -6,15 +6,14 @@ import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.util.KeyUtil
-import dev.toastmc.toastclient.api.util.TwoDRenderUtil
 import dev.toastmc.toastclient.api.util.lit
+import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import net.minecraft.client.util.math.MatrixStack
 import org.lwjgl.glfw.GLFW
 import java.awt.Rectangle
 import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.math.roundToInt
-
 
 class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : IToastClient {
 
@@ -124,18 +123,19 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val catHeight = height - 3
 
         // Category Name
-        TwoDRenderUtil.drawCenteredTextBox(
+        DrawableUtil.drawCenteredTextBox(
             matrices,
             category.name,
             Rectangle(x.roundToInt(), y.roundToInt() - 3, width, catHeight),
             if (hoveringCategory) MAIN_COLOR_HOVER else MAIN_COLOR,
-            -0x1
+            -0x1,
+            1.25f
         )
 
         // Background
         val bgHeight = if(categoryExpanded) level() + height * level() - (height - 2) else height / 2 - 2
 
-        TwoDRenderUtil.drawRect(
+        DrawableUtil.drawRect(
             matrices,
             x.roundToInt() - 2,
             y.roundToInt() - 4 + catHeight,
@@ -177,8 +177,8 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         else
             if (hovering) HOVER_COLOR else INACTIVE_COLOR
 
-        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, bgColor)
-        TwoDRenderUtil.drawText(matrices, lit(mod.getName()), rect.x + 3, rect.y + 3, -0x1)
+        DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, bgColor)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mod.getName()), rect.x + 3, rect.y + 3, -0x1, 1f)
         level++
 
         for ((module, expanded) in modsExpanded) {
@@ -227,13 +227,13 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val hovering = hover(mouseX, mouseY, rect)
 
         if(hovering)
-            TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, HOVER_COLOR)
+            DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, HOVER_COLOR)
 
         if(keybindingModule == mod) {
-            TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
-            TwoDRenderUtil.drawCenteredYText(matrices, lit("Press a key..."), rect.x + 4, rect.y + (rect.height / 2), -0x1)
+            DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+            DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit("Press a key..."), rect.x + 4, rect.y + (rect.height / 2), -0x1, 1f)
         } else {
-            TwoDRenderUtil.drawCenteredYText(matrices, lit("Keybind " + KeyUtil.getKeyName(mod.getKey().code)), rect.x + 4, rect.y + (rect.height / 2), -0x1)
+            DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit("Keybind " + KeyUtil.getKeyName(mod.getKey().code)), rect.x + 4, rect.y + (rect.height / 2), -0x1, 1f)
         }
 
         if(hovering && leftClicked) {
@@ -255,9 +255,9 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val str = if (group.isExpanded) "_" else "..."
         val i = if (group.isExpanded) 1 else 0
 
-        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height - i, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
-        TwoDRenderUtil.drawCenteredYText(matrices, lit(group.name), rect.x + 2, rect.y + (rect.height / 2), -0x1)
-        TwoDRenderUtil.drawCenteredYText(matrices, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y + (rect.height / 2), -0x1)
+        DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height - i, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(group.name), rect.x + 2, rect.y + (rect.height / 2), -0x1,1f)
+        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y + (rect.height / 2), -0x1,1f)
 
         if(hovering && rightClicked) {
             group.isExpanded = !group.isExpanded
@@ -270,9 +270,11 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val i = if (bool.isGrouped) 1 else 0
         val t = if (bool.isGrouped) 2 else 0
 
-        if(hovering) TwoDRenderUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(bool.enabled()) MAIN_COLOR_HOVER else HOVER_COLOR)
-        if(bool.enabled()) TwoDRenderUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
-        TwoDRenderUtil.drawCenteredYText(matrices, lit(bool.name), rect.x + 4 + t, rect.y + (rect.height / 2) - i, -0x1)
+        if(hovering)
+            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(bool.enabled()) MAIN_COLOR_HOVER else HOVER_COLOR)
+        if(bool.enabled())
+            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(bool.name), rect.x + 4 + t, rect.y + (rect.height / 2) - i, -0x1, 1f)
 
         if (hovering && leftClicked) {
             bool.value = !bool.value
@@ -287,11 +289,11 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val progress = ((setting.value - setting.min) / (setting.max - setting.min) * (rect.width - (t * 2))).toInt()
 
         if (setting.value != setting.min)
-            TwoDRenderUtil.drawRect(matrices, rect.x + t, rect.y - i, progress, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, progress, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
         if (hovering)
-            TwoDRenderUtil.drawRect(matrices, rect.x + progress + t, rect.y - i, rect.width - progress - (t * 2), rect.height, HOVER_COLOR)
-        TwoDRenderUtil.drawCenteredYText(matrices, lit(setting.name), rect.x + 2 + t, rect.y + (rect.height / 2), -0x1)
-        TwoDRenderUtil.drawCenteredYText(matrices, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5 + t,rect.y + (rect.height / 2), -0x1)
+            DrawableUtil.drawRect(matrices, rect.x + progress + t, rect.y - i, rect.width - progress - (t * 2), rect.height, HOVER_COLOR)
+        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(setting.name), rect.x + 2 + t, rect.y + (rect.height / 2), -0x1, 1f)
+        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5 + t,rect.y + (rect.height / 2), -0x1, 1f)
 
         if(hovering && (dragging || leftClicked)) {
             setting.value = clamp(
@@ -307,8 +309,8 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val hovering = hover(mouseX, mouseY, rect)
 
 //        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, if (hovering) -0x80000000 else 0x50000000)
-        TwoDRenderUtil.drawText(matrices, lit(mode.name), rect.x + 2, rect.y, -0x1)
-        TwoDRenderUtil.drawText(matrices, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.name), rect.x + 2, rect.y, -0x1, 1f)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1, 1f)
 
         if (hovering && leftClicked) {
             mode.increment()

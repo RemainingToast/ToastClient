@@ -1,11 +1,11 @@
 package dev.toastmc.toastclient.mixin.client;
 
 import dev.toastmc.toastclient.ToastClient;
-import dev.toastmc.toastclient.api.events.RenderEvent;
+import dev.toastmc.toastclient.api.events.WorldRenderEvent;
+import dev.toastmc.toastclient.api.util.render.RenderUtil;
 import dev.toastmc.toastclient.impl.module.player.NoEntityTrace;
 import dev.toastmc.toastclient.impl.module.render.NoRender;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -51,18 +51,6 @@ public class MixinGameRenderer {
         return 0;
     }
 
-
-    @Inject(
-            at = {@At("HEAD")},
-            method = {"renderHand"},
-            cancellable = true
-    )
-    private void on(MatrixStack matrices, Camera camera, float tickDelta, CallbackInfo ci) {
-        RenderEvent.World event = new RenderEvent.World(tickDelta, matrices, camera);
-        ToastClient.Companion.getEventBus().post(event);
-        if (event.isCancelled()) ci.cancel();
-    }
-
     @Inject(
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/hit/EntityHitResult;getEntity()Lnet/minecraft/entity/Entity;"),
             method = {"updateTargetedEntity"},
@@ -76,4 +64,16 @@ public class MixinGameRenderer {
             }
         }
     }
+
+    @Inject(
+            at = @At(value = "INVOKE_STRING", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", args = "ldc=hand"),
+            method = {"renderWorld"},
+            cancellable = true
+    )
+    private void on(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+        WorldRenderEvent event = new WorldRenderEvent(tickDelta, limitTime, matrix);
+        ToastClient.Companion.getEventBus().post(event);
+        if (event.isCancelled()) ci.cancel();
+    }
+
 }

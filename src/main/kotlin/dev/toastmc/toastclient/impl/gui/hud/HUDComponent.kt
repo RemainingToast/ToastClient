@@ -1,8 +1,8 @@
 package dev.toastmc.toastclient.impl.gui.hud
 
 import dev.toastmc.toastclient.IToastClient
-import dev.toastmc.toastclient.api.util.TwoDRenderUtil
 import dev.toastmc.toastclient.api.util.mc
+import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import net.minecraft.client.util.math.MatrixStack
 import java.awt.Color
 import java.awt.Rectangle
@@ -84,7 +84,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
         val buttonRect = Rectangle(x.roundToInt() + width - 5, y.roundToInt() - height, 5, 5)
         val hoverButton = hover(mouseX, mouseY, buttonRect)
 
-        TwoDRenderUtil.drawRect(
+        DrawableUtil.drawRect(
             matrices,
             buttonRect,
             if(enabled) Color.green.rgb else Color.red.rgb
@@ -93,13 +93,13 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
         val labelRect = Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2)
         labelHover = hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2))
 
-        TwoDRenderUtil.drawRect(
+        DrawableUtil.drawRect(
             matrices,
             labelRect,
             if(dragging) 0x90303030.toInt() else 0x75101010
         )
 
-        TwoDRenderUtil.drawHollowRect(
+        DrawableUtil.drawHollowRect(
             matrices,
             x.roundToInt(),
             y.roundToInt() - height,

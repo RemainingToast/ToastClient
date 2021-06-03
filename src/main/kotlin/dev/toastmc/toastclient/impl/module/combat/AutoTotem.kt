@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
-import dev.toastmc.toastclient.api.util.totemCount
+import dev.toastmc.toastclient.api.util.entity.totemCount
 import net.minecraft.item.Items
 import net.minecraft.screen.slot.SlotActionType
 

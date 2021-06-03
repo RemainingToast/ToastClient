@@ -8,7 +8,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import dev.toastmc.toastclient.api.managers.FriendManager
-import dev.toastmc.toastclient.api.util.ToastPlayer
+import dev.toastmc.toastclient.api.util.entity.ToastPlayer
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture

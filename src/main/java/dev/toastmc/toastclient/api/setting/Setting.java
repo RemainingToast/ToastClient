@@ -2,7 +2,7 @@ package dev.toastmc.toastclient.api.setting;
 
 import dev.toastmc.toastclient.api.managers.module.Module;
 import dev.toastmc.toastclient.api.setting.types.*;
-import dev.toastmc.toastclient.api.util.TextUtilKt;
+import dev.toastmc.toastclient.api.util.CommonsKt;
 import dev.toastmc.toastclient.api.util.ToastColor;
 
 import java.awt.*;
@@ -295,7 +295,7 @@ public class Setting<T> {
         @Override
         public boolean setValueFromString(String value) {
             if(modes.stream().anyMatch(value::equalsIgnoreCase)) {
-                setValue(TextUtilKt.capitalize(value));
+                setValue(CommonsKt.capitalize(value));
                 return true;
             } else {
                 return false;

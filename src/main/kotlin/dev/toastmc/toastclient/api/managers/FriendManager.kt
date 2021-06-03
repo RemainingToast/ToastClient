@@ -4,7 +4,7 @@ import com.google.gson.reflect.TypeToken
 import com.mojang.authlib.GameProfile
 import dev.toastmc.toastclient.api.config.ConfigUtil
 import dev.toastmc.toastclient.api.config.ConfigUtil.mainDirectory
-import dev.toastmc.toastclient.api.util.ToastPlayer
+import dev.toastmc.toastclient.api.util.entity.ToastPlayer
 import net.minecraft.entity.player.PlayerEntity
 import java.io.FileOutputStream
 import java.io.FileReader
