@@ -3,10 +3,7 @@ package dev.toastmc.toastclient.api.util
 import dev.toastmc.toastclient.ToastClient
 import dev.toastmc.toastclient.api.events.ChunkEvent
 import io.netty.util.internal.ConcurrentSet
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.Blocks
-import net.minecraft.block.Material
+import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.Items
@@ -17,6 +14,8 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import net.minecraft.util.registry.DefaultedRegistry
+import net.minecraft.util.registry.Registry
 import net.minecraft.world.Heightmap
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
@@ -28,6 +27,7 @@ import kotlin.math.atan2
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
+import kotlin.reflect.jvm.javaMethod
 
 object WorldUtil {
     var loadedChunks: ConcurrentSet<Chunk> = ConcurrentSet()
@@ -281,9 +281,9 @@ object WorldUtil {
             }
         }
     }
-
+    
     //what i mean with special items are like if you rightclick a cauldron with a waterbottle it fills it
-    private val RIGHTCLICKABLE_NOSPECIALITEM: MutableList<Block> = listOf(
+    private val NONSPECIAL_INTERACTIVE: MutableList<Block> = listOf(
         Blocks.DISPENSER,
         Blocks.NOTE_BLOCK,
         Blocks.WHITE_BED,
@@ -380,7 +380,7 @@ object WorldUtil {
     }
 
     fun isRightClickable(b: Block): Boolean {
-        return RIGHTCLICKABLE_NOSPECIALITEM.contains(b)
+        return INTERACTIVE.contains(b)
     }
 
     fun isFluid(pos: BlockPos): Boolean {
@@ -449,5 +449,15 @@ object WorldUtil {
             }
         }
         return false
+    }
+
+    val ALL_BLOCKS: DefaultedRegistry<Block> = Registry.BLOCK
+    val INTERACTIVE: List<Block>
+    
+    init {
+        val onUseMethod = AbstractBlock::onUse::javaMethod.get()!!
+        INTERACTIVE = ALL_BLOCKS.stream().filter {
+            it::class.java.getMethod(onUseMethod.name, *onUseMethod.parameterTypes).declaringClass != AbstractBlock::class.java
+        }.collect(Collectors.toList())
     }
 }

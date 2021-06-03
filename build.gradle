@@ -13,6 +13,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+    mavenCentral()
     maven {
         url 'https://jitpack.io'
     }
@@ -27,6 +28,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
     compile "com.github.QuantumClient:Energy:${project.events_version}"
+    compile "com.google.guava:guava:${project.guava_version}"
 }
 
 processResources {
