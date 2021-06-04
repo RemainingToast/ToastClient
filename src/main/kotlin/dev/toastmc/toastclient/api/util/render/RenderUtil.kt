@@ -3,6 +3,7 @@ package dev.toastmc.toastclient.api.util.render
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.mc
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.render.Camera
 import net.minecraft.client.render.DiffuseLighting
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.model.json.ModelTransformation
@@ -35,9 +36,10 @@ object RenderUtil {
         background: Boolean,
         shadow: Boolean
     ) {
-        val matrix = matrixFrom(x, y, z)
         val camera = mc.gameRenderer.camera
+        val matrix = camera.getMatrix(x, y, z)
 
+        matrix.push()
         matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
         matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
 
@@ -48,30 +50,19 @@ object RenderUtil {
         matrix.scale(-0.025f * scale.toFloat(), -0.025f * scale.toFloat(), 1f)
 
         if (background) {
-            mc.textRenderer.draw(text,
-                -mc.textRenderer.getWidth(text) / 2f,
-                0f,
-                553648127,
-                false,
-                matrix.peek().model,
-                mc.bufferBuilders.entityVertexConsumers,
-                true,
-                (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f) * 255.0f).toInt() shl 24,
-                0xf000f0
-            )
+            mc.textRenderer.draw(text, -mc.textRenderer.getWidth(text) / 2f, 0f, 553648127, false, matrix.peek().model, mc.bufferBuilders.entityVertexConsumers, true, (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f) * 255.0f).toInt() shl 24, 0xf000f0)
         }
 
         if (shadow) {
-            matrix.push()
             matrix.translate(1.0, 1.0, 0.0)
             mc.textRenderer.draw(text.copy(), -mc.textRenderer.getWidth(text) / 2f, 0f, 0x202020, false, matrix.peek().model, mc.bufferBuilders.entityVertexConsumers, true, 0, 0xf000f0)
         }
 
         mc.textRenderer.draw(text, -mc.textRenderer.getWidth(text) / 2f, 0f, -1, false, matrix.peek().model, mc.bufferBuilders.entityVertexConsumers, true, 0, 0xf000f0)
         mc.bufferBuilders.entityVertexConsumers.draw()
-        matrix.pop()
 
         RenderSystem.disableBlend()
+        matrix.pop()
     }
 
     /** Draws a 2D ItemStack in the world. */
@@ -80,10 +71,11 @@ object RenderUtil {
             return
         }
 
-        val matrix = matrixFrom(x, y, z)
         val camera = mc.gameRenderer.camera
+        val matrix = camera.getMatrix(x, y, z)
         val vertex = mc.bufferBuilders.entityVertexConsumers
 
+        matrix.push()
         matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
         matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
 
@@ -92,7 +84,12 @@ object RenderUtil {
         matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180f))
         vertex.draw()
 
-        val currentLight = currentLight
+        val light1 = FloatArray(4)
+        val light2 = FloatArray(4)
+        GL11.glGetLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, light1)
+        GL11.glGetLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, light2)
+        val currentLight = arrayOf(Vector3f(light1[0], light1[1], light1[2]), Vector3f(light2[0], light2[1], light2[2]))
+
         DiffuseLighting.disableGuiDepthLighting()
         GL11.glDepthFunc(GL11.GL_ALWAYS)
         mc.itemRenderer.renderItem(item, ModelTransformation.Mode.GUI, 0xF000F0, OverlayTexture.DEFAULT_UV, matrix, vertex)
@@ -100,23 +97,14 @@ object RenderUtil {
 
         GL11.glDepthFunc(GL11.GL_LEQUAL)
         RenderSystem.setupLevelDiffuseLighting(currentLight[0], currentLight[1], Matrix4f.translate(0f, 0f, 0f))
+        matrix.pop()
     }
 
-    private fun matrixFrom(x: Double, y: Double, z: Double): MatrixStack {
+    fun Camera.getMatrix(x: Double, y: Double, z: Double): MatrixStack {
         val matrix = MatrixStack()
-        val camera = mc.gameRenderer.camera
-        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
-        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.yaw + 180.0f))
-        matrix.translate(x - camera.pos.x, y - camera.pos.y, z - camera.pos.z)
+        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch))
+        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw + 180.0f))
+        matrix.translate(x - pos.x, y - pos.y, z - pos.z)
         return matrix
     }
-
-    private val currentLight: Array<Vector3f>
-        get() {
-            val light1 = FloatArray(4)
-            val light2 = FloatArray(4)
-            GL11.glGetLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, light1)
-            GL11.glGetLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, light2)
-            return arrayOf(Vector3f(light1[0], light1[1], light1[2]), Vector3f(light2[0], light2[1], light2[2]))
-        }
 }
