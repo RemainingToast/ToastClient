@@ -8,8 +8,8 @@ object SafeWalk : Module("SafeWalk", Category.MOVEMENT) {
 
     @Subscribe
     fun on(event: ClipAtLedgeEvent) {
-        if(mc.player == null && isEnabled()) return
-        event.clip = true
+        if (mc.player == null) return
+        event.clip = true;
     }
 
 }
