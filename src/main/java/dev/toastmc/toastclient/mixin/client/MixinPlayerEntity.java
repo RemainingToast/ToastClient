@@ -28,12 +28,12 @@ public class MixinPlayerEntity {
     }
 
     @Inject(
-            at = {@At("HEAD")},
+            at = {@At("RETURN")},
             method = {"clipAtLedge"},
             cancellable = true
     )
     private void on(CallbackInfoReturnable<Boolean> cir) {
-        ClipAtLedgeEvent event = new ClipAtLedgeEvent((PlayerEntity) (Object) this, false);
+        ClipAtLedgeEvent event = new ClipAtLedgeEvent((PlayerEntity) (Object) this, cir.getReturnValue());
         ToastClient.Companion.getEventBus().post(event);
         cir.setReturnValue(event.getClip());
     }
