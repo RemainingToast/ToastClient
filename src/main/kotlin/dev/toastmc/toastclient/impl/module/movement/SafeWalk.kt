@@ -9,7 +9,7 @@ object SafeWalk : Module("SafeWalk", Category.MOVEMENT) {
     @Subscribe
     fun on(event: ClipAtLedgeEvent) {
         if (mc.player == null) return
-        event.clip = true;
+        event.clip = true
     }
 
 }
