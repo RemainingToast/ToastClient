@@ -451,13 +451,15 @@ object WorldUtil {
         return false
     }
 
+    private val onUseMethod = AbstractBlock::onUse::javaMethod.get()!!
+
     val ALL_BLOCKS: DefaultedRegistry<Block> = Registry.BLOCK
-    val INTERACTIVE: List<Block>
-    
-    init {
-        val onUseMethod = AbstractBlock::onUse::javaMethod.get()!!
-        INTERACTIVE = ALL_BLOCKS.stream().filter {
-            it::class.java.getMethod(onUseMethod.name, *onUseMethod.parameterTypes).declaringClass != AbstractBlock::class.java
-        }.collect(Collectors.toList())
-    }
+    val INTERACTIVE: List<Block> = ALL_BLOCKS.stream().filter {
+        for (method in it::class.java.declaredMethods) {
+            if (method.name == onUseMethod.name) {
+                return@filter true
+            }
+        }
+        return@filter false
+    }.collect(Collectors.toList())
 }
