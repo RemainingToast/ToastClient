@@ -34,9 +34,9 @@ object Particles : Module("Particles", Category.RENDER) {
     var deathKills = bool("KillsOnly", true)
     var deathPlayers = bool("PlayersOnly", true)
     var deathParticle = mode("Particle", "damage_indicator", particleNames)
-    var deathRad = number("Radius", 0.0, 0.0, 10.0)
-    var deathCount = number("Count", 1, 1, 1000)
-    var deathSpeed = number("Speed", 0.0, 0.0, 5.0)
+    var deathRad = number("Radius", 1.0, 0.0, 10.0)
+    var deathCount = number("Count", 100, 1, 1000)
+    var deathSpeed = number("Speed", 3.0, 0.0, 5.0)
     var deaths = group("Deaths",
         deathToggle,
         deathKills,
