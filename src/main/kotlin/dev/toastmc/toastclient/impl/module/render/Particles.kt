@@ -5,9 +5,11 @@ import dev.toastmc.toastclient.api.events.PlayerAttackEntityEvent
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.util.RandomUtil
+import net.minecraft.entity.Entity
 import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.particle.*
+import net.minecraft.particle.ParticleEffect
+import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.registry.Registry
@@ -22,7 +24,8 @@ object Particles : Module("Particles", Category.RENDER) {
     var crystalRad = number("Radius", 1.0, 0.0, 10.0)
     var crystalCount = number("Count", 100, 1, 1000)
     var crystalSpeed = number("Speed", 1.0, 0.0, 5.0)
-    var crystals = group("Crystals",
+    var crystals = group(
+        "Crystals",
         crystalToggle,
         crystalParticle,
         crystalRad,
@@ -37,7 +40,8 @@ object Particles : Module("Particles", Category.RENDER) {
     var deathRad = number("Radius", 1.0, 0.0, 10.0)
     var deathCount = number("Count", 100, 1, 1000)
     var deathSpeed = number("Speed", 3.0, 0.0, 5.0)
-    var deaths = group("Deaths",
+    var deaths = group(
+        "Deaths",
         deathToggle,
         deathKills,
         deathPlayers,
@@ -49,12 +53,17 @@ object Particles : Module("Particles", Category.RENDER) {
 
     @Subscribe
     fun on(event: PlayerAttackEntityEvent) {
-        if (mc.player == null || !crystalToggle.value ) return
+        if (mc.player == null || !crystalToggle.value) return
 
         val ent = event.entity
         if (ent is EndCrystalEntity) {
-            val pos = ent.pos.add(0.0, ent.eyeY / 2, 0.0)
-            createParticleCloud(getParticle(crystalParticle, ParticleTypes.SMOKE), RandomUtil.nextCloud(crystalRad.value, crystalCount.value.toInt(), pos), pos, crystalSpeed.value)
+            val pos = getCenter(ent)
+            createParticleCloud(
+                getParticle(crystalParticle, ParticleTypes.SMOKE),
+                RandomUtil.nextCloud(crystalRad.value, crystalCount.value.toInt(), pos),
+                pos,
+                crystalSpeed.value
+            )
         }
     }
 
@@ -65,18 +74,30 @@ object Particles : Module("Particles", Category.RENDER) {
         val ent = event.entity
         if ((deathPlayers.value && ent !is PlayerEntity)
             || (ent is PlayerEntity && ent == mc.player)
-            || (deathKills.value && event.source.attacker != mc.player)) return
+            || (deathKills.value && event.source.attacker != mc.player)
+        ) return
 
-        val pos = ent.pos.add(0.0, ent.eyeY / 2, 0.0)
-        createParticleCloud(getParticle(deathParticle, ParticleTypes.DAMAGE_INDICATOR), RandomUtil.nextCloud(deathRad.value, deathCount.value.toInt(), pos), pos, deathSpeed.value)
+        val pos = getCenter(ent)
+        createParticleCloud(
+            getParticle(deathParticle, ParticleTypes.DAMAGE_INDICATOR),
+            RandomUtil.nextCloud(deathRad.value, deathCount.value.toInt(), pos),
+            pos,
+            deathSpeed.value
+        )
     }
 
     fun getParticle(mode: Setting.Mode, default: ParticleEffect): ParticleEffect {
-        val particle = particleTypes.entries.filter { idToName(it.key.value) == mode.value }.getOrNull(0)
+        val particle =
+            particleTypes.entries.filter { idToName(it.key.value) == mode.value }.getOrNull(0)
         return if (particle == null) default else particle.value as ParticleEffect
     }
 
-    fun createParticleCloud(particleEffect: ParticleEffect, cloud: List<Vec3d>, center: Vec3d, speed: Double) {
+    fun createParticleCloud(
+        particleEffect: ParticleEffect,
+        cloud: List<Vec3d>,
+        center: Vec3d,
+        speed: Double
+    ) {
         cloud.forEach { vec ->
             val motionVector = vec.subtract(center).normalize().multiply(speed)
 
@@ -94,6 +115,10 @@ object Particles : Module("Particles", Category.RENDER) {
 
     fun idToName(id: Identifier): String {
         return (if (id.namespace == "minecraft") "" else "${id.namespace}:") + id.path.toString()
+    }
+
+    fun getCenter(entity: Entity): Vec3d {
+        return entity.pos.add(0.0, (entity.getEyeHeight(entity.pose) / 2).toDouble(), 0.0)
     }
 
 //    fun recoverPath(name: String): String {
