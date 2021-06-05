@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.util
+package dev.toastmc.toastclient.api.util.entity
 
 import java.util.*
 

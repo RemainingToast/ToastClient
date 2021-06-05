@@ -25,6 +25,10 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
         }
     }
 
+    override fun onClose() {
+        mc.gameRenderer.disableShader()
+    }
+
     override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
         for (panel in panels.values) {
             panel.render(matrices, mouseX.toDouble(), mouseY.toDouble())

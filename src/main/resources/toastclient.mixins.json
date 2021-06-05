@@ -8,6 +8,7 @@
     "IEntitySelector",
     "IEntityVelocityUpdateS2CPacket",
     "IExplosionS2CPacket",
+    "IGameRenderer",
     "IMinecraftClient",
     "ISignBlockEntity",
     "MixinAbstractClientPlayerEntity",
@@ -30,6 +31,7 @@
     "MixinPlayerEntity",
     "MixinPlayerListHud",
     "MixinSharedConstants",
+    "MixinLivingEntity",
     "MixinTitleScreen"
   ],
   "injectors": {

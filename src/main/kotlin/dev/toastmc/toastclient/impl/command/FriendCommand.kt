@@ -8,7 +8,7 @@ import dev.toastmc.toastclient.api.managers.FriendManager
 import dev.toastmc.toastclient.api.managers.command.Command
 import dev.toastmc.toastclient.api.managers.command.type.FriendArgumentType
 import dev.toastmc.toastclient.api.util.*
-import dev.toastmc.toastclient.api.util.ToastPlayer
+import dev.toastmc.toastclient.api.util.entity.ToastPlayer
 import dev.toastmc.toastclient.mixin.client.IEntitySelector
 import net.minecraft.client.network.PlayerListEntry
 import net.minecraft.command.CommandSource

@@ -1,8 +1,11 @@
 package dev.toastmc.toastclient.api.util
 
 import dev.toastmc.toastclient.mixin.client.IChatHud
+import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
+
+val mc: MinecraftClient = MinecraftClient.getInstance()
 
 fun lit(string: String): LiteralText {
     return LiteralText(string)

@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.mixin.client;
 
 import dev.toastmc.toastclient.ToastClient;
-import dev.toastmc.toastclient.api.events.OverlayEvent;
+import dev.toastmc.toastclient.api.events.OverlayRenderEvent;
 import dev.toastmc.toastclient.impl.module.render.NoRender;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
@@ -19,7 +19,7 @@ public class MixinIngameHud {
             cancellable = true
     )
     private void on(MatrixStack matrixStack, float float_1, CallbackInfo info) {
-        OverlayEvent event = new OverlayEvent(matrixStack);
+        OverlayRenderEvent event = new OverlayRenderEvent(matrixStack);
         ToastClient.Companion.getEventBus().post(event);
         if (event.isCancelled())
             info.cancel();

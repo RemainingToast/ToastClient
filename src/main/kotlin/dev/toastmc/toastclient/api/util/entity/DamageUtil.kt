@@ -1,5 +1,6 @@
-package dev.toastmc.toastclient.api.util
+package dev.toastmc.toastclient.api.util.entity
 
+import dev.toastmc.toastclient.api.util.mc
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.DamageUtil
 import net.minecraft.entity.Entity

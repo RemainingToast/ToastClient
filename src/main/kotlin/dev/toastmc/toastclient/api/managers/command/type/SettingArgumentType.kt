@@ -8,9 +8,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
+import dev.toastmc.toastclient.api.managers.SettingManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.setting.Setting
-import dev.toastmc.toastclient.api.managers.SettingManager
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.command.CommandSource
 import java.util.concurrent.CompletableFuture
@@ -69,12 +69,7 @@ class SettingArgumentType(
 
     companion object {
         private val EXAMPLES: Collection<String> = listOf("enabled", "speed")
-        val INVALID_SETTING_EXCEPTION =
-            DynamicCommandExceptionType { `object`: Any ->
-                lit(
-                    "Unknown setting '" + (`object` as Array<*>)[0] + "' for module " + `object`[1]
-                )
-            }
+        val INVALID_SETTING_EXCEPTION = DynamicCommandExceptionType { `object`: Any -> lit("Unknown setting '" + (`object` as Array<*>)[0] + "' for module " + `object`[1]) }
 
         fun setting(
             dependentType: ModuleArgumentType<Module>,
