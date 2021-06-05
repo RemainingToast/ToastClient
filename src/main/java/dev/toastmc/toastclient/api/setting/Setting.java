@@ -322,6 +322,15 @@ public class Setting<T> {
             setValue(modes.get(modeIndex));
         }
 
+        public void decrement() {
+            int modeIndex = modes.indexOf(value);
+            --modeIndex;
+            if (modeIndex < 0) {
+                modeIndex = modes.size() - 1;
+            }
+            setValue(modes.get(modeIndex));
+        }
+
         public Mode onChanged(Consumer<Mode> listener){
             setChangedListener(listener);
             return this;
