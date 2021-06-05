@@ -2,7 +2,6 @@ package dev.toastmc.toastclient.mixin.client;
 
 import dev.toastmc.toastclient.ToastClient;
 import dev.toastmc.toastclient.api.events.WorldRenderEvent;
-import dev.toastmc.toastclient.api.util.render.RenderUtil;
 import dev.toastmc.toastclient.impl.module.player.NoEntityTrace;
 import dev.toastmc.toastclient.impl.module.render.NoRender;
 import net.minecraft.client.MinecraftClient;
@@ -57,7 +56,7 @@ public class MixinGameRenderer {
             cancellable = true
     )
     private void on(float tickDelta, CallbackInfo info) {
-        if (NoEntityTrace.INSTANCE.work() && MinecraftClient.getInstance().crosshairTarget != null) {
+        if (NoEntityTrace.INSTANCE.isEnabled() && NoEntityTrace.INSTANCE.work() && MinecraftClient.getInstance().crosshairTarget != null) {
             if (MinecraftClient.getInstance().crosshairTarget.getType() == HitResult.Type.BLOCK) {
                 MinecraftClient.getInstance().getProfiler().pop();
                 info.cancel();
