@@ -32,6 +32,7 @@
     "MixinPlayerEntity",
     "MixinPlayerListHud",
     "MixinSharedConstants",
+    "MixinLivingEntity",
     "MixinTitleScreen"
   ],
   "injectors": {

@@ -54,6 +54,7 @@ object ModuleManager : IToastClient {
             Jesus,
             PortalChat,
             ViewModel,
+            Particles,
             TestModule
         )
 

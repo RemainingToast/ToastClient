@@ -14,6 +14,7 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.MovementType
+import net.minecraft.entity.damage.DamageSource
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket
 import net.minecraft.text.Text
 import net.minecraft.util.hit.EntityHitResult
@@ -60,7 +61,8 @@ class DisplaySizeChangedEvent
 
 open class EntityEvent(val entity: Entity) : Event() {
     class EntityCollision(entity: Entity, var x: Double, var y: Double, var z: Double) : EntityEvent(entity)
-    class EntityDamage(entity: Entity, var damage: Int) : EntityEvent(entity)
+    class EntityDamage(entity: Entity, var source: DamageSource, var damage: Float) : EntityEvent(entity)
+    class EntityDeath(entity: Entity, var source: DamageSource) : EntityEvent(entity)
 }
 
 class EntityJoinWorldEvent(val id: Int, val entity: Entity) : Event()

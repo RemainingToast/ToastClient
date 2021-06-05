@@ -312,8 +312,12 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.name), rect.x + 2, rect.y, -0x1, 1f)
         DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1, 1f)
 
-        if (hovering && leftClicked) {
-            mode.increment()
+        if (hovering) {
+            if (leftClicked) {
+                mode.increment()
+            } else if (rightClicked) {
+                mode.decrement()
+            }
         }
     }
 
