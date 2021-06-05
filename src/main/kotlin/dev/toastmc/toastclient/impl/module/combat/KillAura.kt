@@ -47,28 +47,25 @@ object KillAura : Module("KillAura", Category.COMBAT) {
     }
 
     private fun findTarget(range: Double): LivingEntity? {
-        var foundTarget: LivingEntity? = null
-        var sd: Double? = null
-        for (entity in mc.world!!.entities) {
-            if (entity == null || entity.removed || entity !is LivingEntity || entity.isDead || !entity.isAttackable) continue
-            if ((entity is PlayerEntity && players.value && entity != mc.player) ||
-                (EntityUtil.isHostile(entity) && hostile.value) ||
-                ((EntityUtil.isAnimal(entity) || EntityUtil.isNeutral(entity)) && passive.value) ||
-                (EntityUtil.isVehicle(entity) && vehicles.value)
-            ) {
-                val distance = mc.player!!.distanceTo(entity)
-                if (canReach(
-                        mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0),
+        val target = mc.world!!.entities.toList().parallelStream().filter { entity ->
+            return@filter entity != null && !entity.removed && entity is LivingEntity && !entity.isDead && entity.isAttackable
+                    && ((entity is PlayerEntity && players.value && entity != mc.player)
+                    || (EntityUtil.isHostile(entity) && hostile.value)
+                    || ((EntityUtil.isAnimal(entity) || EntityUtil.isNeutral(entity)) && passive.value)
+                    || (EntityUtil.isVehicle(entity) && vehicles.value))
+                    && canReach(
+                        mc.player!!.pos.add(
+                            0.0,
+                            mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(),
+                            0.0
+                        ),
                         entity.boundingBox,
                         range
-                    ) && (sd == null || distance < sd)
-                ) {
-                    sd = distance.toDouble()
-                    foundTarget = entity
-                }
-            }
-        }
-        return foundTarget
+                    )
+        }.sorted { a, b ->
+            mc.player!!.distanceTo(a).compareTo(mc.player!!.distanceTo(b))
+        }.findFirst().orElse(null)
+        return if (target == null) null else target as LivingEntity
     }
 
     private fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
