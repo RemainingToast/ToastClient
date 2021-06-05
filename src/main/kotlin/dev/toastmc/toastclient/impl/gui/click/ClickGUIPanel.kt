@@ -351,16 +351,18 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
 
             if (expanded) {
                 for (setting in SettingManager.getSettingsForMod(module)) {
-                    if (setting.type == Setting.Type.GROUP) {
-                        l++
+                    if (!setting.isHidden) {
+                        if (setting.type == Setting.Type.GROUP) {
+                            l++
 
-                        if ((setting as Setting.Group).isExpanded) {
-                            for (subSetting in setting.settings) {
-                                l++
+                            if ((setting as Setting.Group).isExpanded) {
+                                for (subSetting in setting.settings) {
+                                    l++
+                                }
                             }
+                        } else if (!setting.isGrouped) {
+                            l++
                         }
-                    } else if (!setting.isGrouped) {
-                        l++
                     }
                 }
                 l++ // Keybind

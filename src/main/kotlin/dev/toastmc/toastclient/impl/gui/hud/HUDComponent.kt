@@ -11,6 +11,10 @@ import kotlin.math.roundToInt
 open class HUDComponent(var name: String, var x: Double, var y: Double) : IToastClient {
 
     constructor(name: String, snapPoint: SnapPoint) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble())
+    constructor(name: String, snapPoint: SnapPoint, width: Int, height: Int) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble()) {
+        this.width = width
+        this.height = height
+    }
 
     var enabled = false
     var width = 0

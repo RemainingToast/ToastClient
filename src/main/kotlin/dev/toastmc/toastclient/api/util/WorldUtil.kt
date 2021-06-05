@@ -46,11 +46,11 @@ object WorldUtil {
         chunkX: Int,
         chunkZ: Int
     ): LinkedHashMap<BlockPos, Block> {
-        val map =
-            LinkedHashMap<BlockPos, Block>()
+        val map = LinkedHashMap<BlockPos, Block>()
         if (!world.isChunkLoaded(BlockPos((chunkX shr 4).toDouble(), 80.0, (chunkX shr 4).toDouble()))) {
             return map
         }
+
         val chunk: Chunk = world.getChunk(chunkX, chunkZ)
         chunk.blockEntityPositions.forEach(Consumer { tilePos: BlockPos ->
             map[tilePos] = world.getBlockState(tilePos).block
