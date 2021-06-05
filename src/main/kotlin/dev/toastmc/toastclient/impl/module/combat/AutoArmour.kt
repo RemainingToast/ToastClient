@@ -22,7 +22,7 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
         armorMap[EquipmentSlot.HEAD] = intArrayOf(39, getProt(mc.player!!.inventory.getStack(39)), -1, -1)
         when {
             preventBreak.value -> {
-                for ((_, value) in armorMap) {
+                armorMap.toList().parallelStream().forEach { (_, value) ->
                     val `is` = mc.player!!.inventory.getStack(value[0])
                     val armorSlot = value[0] - 34 + (39 - value[0]) * 2
                     if (`is`.isDamageable && `is`.maxDamage - `is`.damage < 7) {
@@ -36,7 +36,7 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
                                     SlotActionType.QUICK_MOVE,
                                     mc.player
                                 )
-                                return
+                                return@forEach
                             } else if (mc.player!!.inventory.getStack(s).item !is ToolItem
                                 && mc.player!!.inventory.getStack(s).item !is ArmorItem
                                 && mc.player!!.inventory.getStack(s).item !is ElytraItem
@@ -48,10 +48,10 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
                         if (forceMoveSlot != -1) {
                             mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, if (forceMoveSlot < 9) 36 + forceMoveSlot else forceMoveSlot, 1, SlotActionType.THROW, mc.player)
                             mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.QUICK_MOVE, mc.player)
-                            return
+                            return@forEach
                         }
                         mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 1, SlotActionType.THROW, mc.player)
-                        return
+                        return@forEach
                     }
                 }
             }
@@ -72,7 +72,7 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
             }
         }
 
-        for ((_, value) in armorMap) {
+        armorMap.toList().parallelStream().forEach { (_, value) ->
             if (value[2] != -1) {
                 if (value[1] == -1 && value[2] < 9) {
                     if (value[2] != mc.player!!.inventory.selectedSlot) {
@@ -88,7 +88,7 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
                     mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, armorSlot, 0, SlotActionType.PICKUP, mc.player)
                     if (value[1] != -1) mc.interactionManager!!.clickSlot(mc.player!!.currentScreenHandler.syncId, newArmorslot, 0, SlotActionType.PICKUP, mc.player)
                 }
-                return
+                return@forEach
             }
         }
     }
