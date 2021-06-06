@@ -90,7 +90,6 @@ object InventoryUtil : IToastClient {
 
     fun isCursorEmpty(): Boolean {
         if (mc.player == null) return true
-        logger.info(mc.player!!.inventory.cursorStack.toString())
         return mc.player!!.inventory.cursorStack != ItemStack.EMPTY
     }
 
