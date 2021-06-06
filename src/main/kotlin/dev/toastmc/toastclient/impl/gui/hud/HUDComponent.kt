@@ -92,7 +92,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
         DrawableUtil.drawRect(
             matrices,
             buttonRect,
-            (if(enabled) Color.green else Color.red) as ToastColor
+            ToastColor(if(enabled) Color.green else Color.red)
         )
 
         val labelRect = Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2)
