@@ -55,6 +55,7 @@ object ModuleManager : IToastClient {
             PortalChat,
             ViewModel,
             Particles,
+            AutoAnvil,
             TestModule
         )
 

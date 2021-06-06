@@ -3,9 +3,12 @@ package dev.toastmc.toastclient.api.util.entity
 import com.mojang.authlib.GameProfile
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.client.network.OtherClientPlayerEntity
+import net.minecraft.entity.Entity
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
+import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.*
 
@@ -34,9 +37,9 @@ fun ClientPlayerEntity.totemCount(): Int {
 
 fun ClientPlayerEntity.getMovementYaw(): Double {
     var strafe = 90f
-    strafe += if(input.movementForward != 0F) input.movementForward * 0.5F else 1F
+    strafe += if (input.movementForward != 0F) input.movementForward * 0.5F else 1F
     var yaw = yaw - strafe
-    yaw -= if(input.movementForward < 0F) 180 else 0
+    yaw -= if (input.movementForward < 0F) 180 else 0
     return Math.toRadians(yaw.toDouble())
 }
 
@@ -80,4 +83,31 @@ fun ClientPlayerEntity.lookPacket(yaw: Float, pitch: Float) {
 fun ClientPlayerEntity.lookClient(yaw: Float, pitch: Float) {
     this.yaw = yaw
     this.pitch = pitch
+}
+
+val PlayerEntity.eyePos
+    get() = this.pos.add(
+        0.0,
+        this.getEyeHeight(this.pose).toDouble(),
+        0.0
+    )
+
+private fun canReach(vec: Vec3d, aabb: Box, range: Double): Boolean {
+    return aabb.expand(range).contains(vec)
+}
+
+fun PlayerEntity.canReach(aabb: Box, range: Double): Boolean {
+    return canReach(
+        this.eyePos,
+        aabb,
+        range
+    )
+}
+
+fun PlayerEntity.canReach(entity: Entity, range: Double): Boolean {
+    return canReach(
+        this.eyePos,
+        entity.boundingBox,
+        range
+    )
 }
