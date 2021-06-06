@@ -6,7 +6,7 @@ import net.minecraft.item.Items
 
 object FastUtil : Module("FastUtil", Category.PLAYER) {
 
-    var fastExp = bool("EXP Bottles", true)
+    var fastExp = bool("XP", true)
     var fastCrystal = bool("Crystals", true)
     var fastBreak =  bool("Break", true)
     var fastPlace = bool("Place", true)

@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL11
 import java.awt.Rectangle
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.math.roundToInt
 
 interface DrawableExtensions {
 
@@ -147,8 +146,8 @@ interface DrawableExtensions {
         )
     }
 
-    fun round(value: Double, places: Double): Double {
-        return BigDecimal(value).setScale(places.roundToInt(), RoundingMode.HALF_UP).toDouble()
+    fun round(value: Double, places: Int): Double {
+        return BigDecimal(value).setScale(places, RoundingMode.HALF_UP).toDouble()
     }
 
     fun clamp(value: Double, min: Double, max: Double): Double {

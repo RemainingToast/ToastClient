@@ -14,7 +14,6 @@ import java.util.function.Consumer;
 public class Setting<T> {
 
     private final String name;
-    private final String configName;
 
     private final Module parent;
     private final Module.Category faxCategory;
@@ -26,13 +25,15 @@ public class Setting<T> {
     private Consumer<T> changedListener;
     private T value;
 
+    private String commandName;
+
     public Setting(
             final String name,
             final Module parent,
             final Module.Category faxCategory,
             final Type type) {
         this.name = name;
-        this.configName = name.replace(" ", "");
+        this.commandName = name;
         this.parent = parent;
         this.type = type;
         this.faxCategory = faxCategory;
@@ -42,10 +43,6 @@ public class Setting<T> {
 
     public String getName() {
         return this.name;
-    }
-
-    public String getConfigName() {
-        return this.configName;
     }
 
     public Module getParent() {
@@ -94,6 +91,10 @@ public class Setting<T> {
         return grouped;
     }
 
+    public String getCommandName() {
+        return commandName;
+    }
+
     public enum Type {
         BOOLEAN,
         NUMBER,
@@ -107,7 +108,7 @@ public class Setting<T> {
         private double value;
         private final double min;
         private final double max;
-        private final double precision;
+        private final int precision;
 
         public Number(
                 final String name,
@@ -115,7 +116,7 @@ public class Setting<T> {
                 final double value,
                 final double min,
                 final double max,
-                final double precision
+                final int precision
         ) {
             super(name, parent, parent.getCategory(), Type.NUMBER);
             this.value = value;
@@ -130,7 +131,7 @@ public class Setting<T> {
                 final int value,
                 final int min,
                 final int max,
-                final double precision
+                final int precision
         ) {
             super(name, parent, parent.getCategory(), Type.NUMBER);
             this.value = value;
@@ -145,7 +146,7 @@ public class Setting<T> {
                 final float value,
                 final float min,
                 final float max,
-                final double precision
+                final int precision
         ) {
             super(name, parent, parent.getCategory(), Type.NUMBER);
             this.value = value;
@@ -201,7 +202,7 @@ public class Setting<T> {
         }
 
         @Override
-        public double getPrecision() {
+        public int getPrecision() {
             return precision;
         }
 
@@ -439,6 +440,7 @@ public class Setting<T> {
             this.settings = new ArrayList<>();
             for(Setting<?> setting : settings){
                 setting.setGrouped(true);
+                setting.commandName = name + "." + setting.name;
                 this.settings.add(setting);
             }
         }

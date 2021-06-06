@@ -38,7 +38,7 @@ object ConfigLoader {
         }
         val settingObject = moduleObject["Settings"].asJsonObject
         for (setting in SettingManager.getSettingsForMod(module)) {
-            val dataObject = settingObject[setting.configName]
+            val dataObject = settingObject[setting.name.replace(" ", "")]
             if (dataObject != null && dataObject.isJsonPrimitive) {
                 when (setting.type) {
                     Type.BOOLEAN -> (setting as Setting.Boolean).value = dataObject.asBoolean

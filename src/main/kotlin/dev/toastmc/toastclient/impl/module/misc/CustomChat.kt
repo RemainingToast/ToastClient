@@ -14,7 +14,7 @@ object CustomChat : Module("CustomChat", Category.MISC) {
     var suffix: String = "ᴛᴏᴀѕᴛᴄʟɪᴇɴᴛ"
 
     var suffixBool = bool("Suffix", true)
-    var fancyChat = bool("Fancy Chat", false)
+    var fancyChat = bool("FancyChat", false)
     var commands = bool("Commands", false)
 
     var fancyChatType = mode(

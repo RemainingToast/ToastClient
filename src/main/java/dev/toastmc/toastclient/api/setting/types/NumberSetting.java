@@ -34,6 +34,6 @@ public interface NumberSetting {
      * Get the setting's precision.
      * @return decimal precision
      */
-    public double getPrecision();
+    public int getPrecision();
 
 }

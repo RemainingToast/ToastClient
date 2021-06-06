@@ -16,11 +16,7 @@ object SettingManager {
     }
 
     fun getSettingByNameAndMod(name: String, parent: Module): Setting<*> {
-        return settings.stream().filter { s: Setting<*> -> s.parent == parent }.filter { s: Setting<*> -> s.configName.equals(name, ignoreCase = true) }.findFirst().orElse(null)
-    }
-
-    fun getSettingByNameAndModConfig(configName: String, parent: Module): Setting<*> {
-        return settings.stream().filter { s: Setting<*> -> s.parent == parent }.filter { s: Setting<*> -> s.configName.equals(configName, ignoreCase = true) }.findFirst().orElse(null)
+        return settings.stream().filter { s: Setting<*> -> s.parent == parent }.filter { s: Setting<*> -> s.name.equals(name, ignoreCase = true) }.findFirst().orElse(null)
     }
 
     fun getSettingsForMod(parent: Module): List<Setting<*>> {

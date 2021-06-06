@@ -13,9 +13,10 @@ class ToastColor : Color {
 
     companion object {
         private const val serialVersionUID = 1L
-        fun rainbow(): ToastColor {
+
+        fun rainbow(alpha: Int): ToastColor {
             val hue = System.currentTimeMillis() % (320 * 32) / (320f * 32)
-            return ToastColor(fromHSB(hue, 1f, 1f, 255))
+            return ToastColor(fromHSB(hue, 1f, 1f, alpha))
         }
 
         fun fromHSB(hue: Float, saturation: Float, brightness: Float, alpha: Int): ToastColor {
