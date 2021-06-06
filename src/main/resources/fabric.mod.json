@@ -5,7 +5,8 @@
   "name": "ToastClient",
   "description": "Like bread, but warmer...",
   "authors": [
-    "RemainingToast"
+    "RemainingToast",
+    "odpay"
   ],
   "contact": {
     "sources": "https://github.com/RemainingToast/ToastClient"
