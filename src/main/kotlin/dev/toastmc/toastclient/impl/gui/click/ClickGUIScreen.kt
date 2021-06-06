@@ -3,17 +3,15 @@ package dev.toastmc.toastclient.impl.gui.click
 import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.lit
-import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
-import org.lwjgl.glfw.GLFW
 import java.util.*
 
 class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
 
     private val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
 
-    var keybindingCategory: ClickGUIPanel? = null
+    var keybindingModule: Module? = null
 
     init {
         var x = 20
@@ -25,14 +23,9 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
         }
     }
 
-    override fun onClose() {
-        mc.gameRenderer.disableShader()
-    }
-
     override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
         for (panel in panels.values) {
             panel.render(matrices, mouseX.toDouble(), mouseY.toDouble())
-            keybindingCategory = if (panel.keybinding) panel else null
         }
     }
 
@@ -57,18 +50,18 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
         return false
     }
 
-    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        if(keyCode != GLFW.GLFW_KEY_UNKNOWN) {
-            if(keyCode in arrayOf(GLFW.GLFW_KEY_ESCAPE, ClickGUI.getKey().code)) {
-                ClickGUI.toggle()
-            } else {
-                keybindingCategory?.keyPressed(keyCode)
-            }
+    override fun keyReleased(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+        for (panel in panels.values) {
+            panel.keyReleased(keyCode, scanCode)
         }
         return false
     }
 
     override fun isPauseScreen(): Boolean {
         return false
+    }
+
+    override fun shouldCloseOnEsc(): Boolean {
+        return true
     }
 }

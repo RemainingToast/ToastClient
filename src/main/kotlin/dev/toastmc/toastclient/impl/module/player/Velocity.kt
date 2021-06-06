@@ -10,14 +10,13 @@ import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket
 import org.quantumclient.energy.Era
 import org.quantumclient.energy.Subscribe
+import java.lang.Long.max
 
 object Velocity : Module("Velocity", Category.PLAYER) {
 
-    val horizontal = number("Horizontal", 0.0,0.0,100.0, 0.1)
-    val vertical = number("Vertical", 0.0, 0.0,100.0, 0.1)
-    val delay = number("Delay",170.0, 0.0, 1000.0, 0.1)
-
-    var group1 = group("Group1", horizontal, vertical, delay)
+    val horizontal = number("Horizontal", 0.0,0.0,100.0, 2)
+    val vertical = number("Vertical", 0.0, 0.0,100.0, 2)
+    val delay = number("Delay",170.0, 0.0, 1000.0, 2)
 
     private var oldVelX = Double.NaN
     private var oldVelY = Double.NaN
@@ -62,7 +61,7 @@ object Velocity : Module("Velocity", Category.PLAYER) {
             }
 
             if (delay.value > 0 && !oldVelX.isNaN() || !oldVelY.isNaN() || !oldVelZ.isNaN()) {
-//                Thread.sleep(max(0L, delay.value.toLong()))
+                Thread.sleep(max(0L, delay.value.toLong())) // TODO WHY THE FUCK DOES THIS THREAD SLEEP AAAA THERE MUST BE BETTER WAY
                 mc.player!!.setVelocity(mc.player!!.velocity.x + oldVelX, mc.player!!.velocity.y + oldVelY, mc.player!!.velocity.z + oldVelZ)
             }
         }

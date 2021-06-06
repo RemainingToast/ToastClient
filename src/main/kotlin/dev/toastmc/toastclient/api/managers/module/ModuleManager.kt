@@ -2,6 +2,7 @@ package dev.toastmc.toastclient.api.managers.module
 
 import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.ToastClient
+import dev.toastmc.toastclient.api.events.KeyEvent
 import dev.toastmc.toastclient.api.events.OverlayRenderEvent
 import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.ClickGUI
@@ -80,10 +81,12 @@ object ModuleManager : IToastClient {
             .collect(Collectors.toCollection { ArrayList() })
     }
 
-    fun onKey(window: Long, keyCode: Int, scancode: Int) {
+    @Subscribe
+    fun on(event: KeyEvent) {
+        if (mc.currentScreen == ClickGUI.SCREEN || mc.currentScreen == HUDEditor.SCREEN) return
         for (mod in modules) {
-            if (mod.getKey() === InputUtil.fromKeyCode(keyCode, scancode)) {
-                if (GLFW.glfwGetKey(window, keyCode) == 0) {
+            if (mod.getKey() === InputUtil.fromKeyCode(event.key, event.scancode)) {
+                if (GLFW.glfwGetKey(event.window, event.key) == GLFW.GLFW_RELEASE) {
                     mod.toggle()
                 }
             }

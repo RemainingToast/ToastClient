@@ -11,7 +11,7 @@ import net.minecraft.screen.slot.SlotActionType
 object AutoArmour : Module("AutoArmour", Category.COMBAT) {
 
     val elytra = bool("Elytra", false)
-    var preventBreak = bool("Prevent Break", true)
+    var preventBreak = bool("PreventBreak", true)
 
     override fun onUpdate() {
         if (mc.player == null) return

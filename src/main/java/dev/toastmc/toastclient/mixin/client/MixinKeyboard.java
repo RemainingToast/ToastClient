@@ -1,5 +1,7 @@
 package dev.toastmc.toastclient.mixin.client;
 
+import dev.toastmc.toastclient.ToastClient;
+import dev.toastmc.toastclient.api.events.KeyEvent;
 import dev.toastmc.toastclient.api.managers.command.CommandManager;
 import dev.toastmc.toastclient.api.managers.module.ModuleManager;
 import net.minecraft.client.Keyboard;
@@ -20,13 +22,10 @@ public class MixinKeyboard {
             cancellable = true
     )
     private void on(long window, int keyInt, int scancode, int i, int j, CallbackInfo ci) {
-        String key = GLFW.glfwGetKeyName(keyInt, scancode);
-        if(key != null && key.equals(CommandManager.prefix)){
-            if(MinecraftClient.getInstance().currentScreen == null) {
-               MinecraftClient.getInstance().openScreen(new ChatScreen(""));
-            }
-        } else {
-            ModuleManager.INSTANCE.onKey(window, keyInt, scancode);
+        KeyEvent event = new KeyEvent(window, keyInt, scancode);
+        ToastClient.Companion.getEventBus().post(event);
+        if (event.isCancelled()) {
+            ci.cancel();
         }
     }
 }

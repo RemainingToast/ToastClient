@@ -45,10 +45,10 @@ object ConfigSaver {
 
         for (s in SettingManager.getSettingsForMod(module)){
             when (s.type){
-                Type.BOOLEAN -> settingObject.add(s.configName, JsonPrimitive((s as Setting.Boolean).value))
-                Type.NUMBER -> settingObject.add(s.configName, JsonPrimitive((s as Setting.Number).value))
-                Type.COLOR -> settingObject.add(s.configName, JsonPrimitive((s as ColorSetting).toInteger()))
-                Type.MODE -> settingObject.add(s.configName, JsonPrimitive((s as Mode).value.toString()))
+                Type.BOOLEAN -> settingObject.add(s.name, JsonPrimitive((s as Setting.Boolean).value))
+                Type.NUMBER -> settingObject.add(s.name, JsonPrimitive((s as Setting.Number).value))
+                Type.COLOR -> settingObject.add(s.name, JsonPrimitive((s as ColorSetting).toInteger()))
+                Type.MODE -> settingObject.add(s.name, JsonPrimitive((s as Mode).value.toString()))
             }
         }
 

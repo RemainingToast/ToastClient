@@ -7,26 +7,21 @@ import org.quantumclient.energy.Subscribe
 
 object ViewModel : Module("ViewModel", Category.RENDER) {
 
-    var fov = number("FOV", 110, 10, 179, 0.1)
-    var itemFov = bool("Items", true).onChanged { bool ->
-        scaleGroup.isHidden = !bool.value
-        posGroup.isHidden = !bool.value
-        rotationGroup.isHidden = !bool.value
-    }
+    var fov = number("FOV", 110, 10, 179, 2)
 
-    var scaleX = number("SX", 0.75, -1, 2, 0.1)
-    var scaleY = number("SY", 0.60, -1, 2, 0.1)
-    var scaleZ = number("SZ", 1, -1, 2, 0.1)
+    var scaleX = number("X", 0.75, -1, 2, 2)
+    var scaleY = number("Y", 0.60, -1, 2, 2)
+    var scaleZ = number("Z", 1, -1, 2, 2)
     var scaleGroup = group("Scale", scaleX, scaleY, scaleZ)
 
-    var posX = number("PX", 0, -3, 3, 0.1)
-    var posY = number("PY", 0, -3, 3, 0.1)
-    var posZ = number("PZ", 0, -3, 3, 0.1)
+    var posX = number("X", 0, -3, 3, 2)
+    var posY = number("Y", 0, -3, 3, 2)
+    var posZ = number("Z", 0, -3, 3, 2)
     var posGroup = group("Position", posX, posY, posZ)
 
-    var rotationX = number("RX", 0, -180, 180, 0.1)
-    var rotationY = number("RY", 0, -180, 180, 0.1)
-    var rotationZ = number("RZ", 0, -180, 180, 0.1)
+    var rotationX = number("X", 0, -180, 180, 2)
+    var rotationY = number("Y", 0, -180, 180, 2)
+    var rotationZ = number("Z", 0, -180, 180, 2)
     var rotationGroup = group("Rotation", rotationX, rotationY, rotationZ)
 
     @Subscribe

@@ -1,6 +1,5 @@
-## Toast Client b2.1
-[![Download](https://img.shields.io/github/downloads/RemainingToast/toastclient/total?color=green&label=total%20downloads)](https://github.com/RemainingToast/toastclient/releases/)
-[![Discord](https://img.shields.io/discord/801552028504555550)](https://discord.gg/fvSKpbtQAV)
+## Toast Client
+[![Discord](https://img.shields.io/discord/668416925671489547)](https://discord.gg/PASHZanfyc)
 ![GitHub lines of code](https://tokei.rs/b1/github/RemainingToast/toastclient)
 ![GitHub last commit](https://img.shields.io/github/last-commit/RemainingToast/toastclient)
 
@@ -16,6 +15,12 @@ Note (By Default):
 * ClickGui Key is `RSHIFT`
 * Command Prefix is `.` (`.help` for all commands)
 
+### Building
+
+Import ToastClient into your IDE of choice. IntelliJ Reccomended (for windows users, remove the `./` before each command).
+- `./gradlew genSources`
+- `./gradlew idea` for IntelliJ IDEA
+- `./gradlew eclipse` for Eclipse
 
 ### Credits 
 
