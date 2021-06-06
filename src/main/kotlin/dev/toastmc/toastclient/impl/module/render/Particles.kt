@@ -21,9 +21,9 @@ object Particles : Module("Particles", Category.RENDER) {
 
     var crystalToggle = bool("Toggle", true)
     var crystalParticle = mode("Particle", "smoke", particleNames)
-    var crystalRad = number("Radius", 1.0, 0.0, 10.0)
-    var crystalCount = number("Count", 100, 1, 1000)
-    var crystalSpeed = number("Speed", 1.0, 0.0, 5.0)
+    var crystalRad = number("Radius", 1.0, 0.0, 10.0, 0.1)
+    var crystalCount = number("Count", 100, 1, 1000, 0.1)
+    var crystalSpeed = number("Speed", 1.0, 0.0, 5.0, 0.1)
     var crystals = group(
         "Crystals",
         crystalToggle,
@@ -37,9 +37,9 @@ object Particles : Module("Particles", Category.RENDER) {
     var deathKills = bool("KillsOnly", true)
     var deathPlayers = bool("PlayersOnly", true)
     var deathParticle = mode("Particle", "damage_indicator", particleNames)
-    var deathRad = number("Radius", 1.0, 0.0, 10.0)
-    var deathCount = number("Count", 100, 1, 1000)
-    var deathSpeed = number("Speed", 3.0, 0.0, 5.0)
+    var deathRad = number("Radius", 1.0, 0.0, 10.0, 0.1)
+    var deathCount = number("Count", 100, 1, 1000, 0.1)
+    var deathSpeed = number("Speed", 3.0, 0.0, 5.0, 0.1)
     var deaths = group(
         "Deaths",
         deathToggle,

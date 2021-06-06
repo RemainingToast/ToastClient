@@ -12,7 +12,7 @@ import net.minecraft.text.TextColor
 
 object ExtraTab : Module("ExtraTab", Category.MISC) {
 
-    var tabSize = number("TabSize", 150.0, 20.0, 500.0)
+    var tabSize = number("TabSize", 150.0, 20.0, 500.0, 1)
     var highlightFriends = bool("HighlightFriends", true)
 
     fun formatList(entry: PlayerListEntry): Text {

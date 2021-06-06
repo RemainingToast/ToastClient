@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.util.entity
+    package dev.toastmc.toastclient.api.util.entity
 
 import com.mojang.authlib.GameProfile
 import net.minecraft.client.network.ClientPlayerEntity

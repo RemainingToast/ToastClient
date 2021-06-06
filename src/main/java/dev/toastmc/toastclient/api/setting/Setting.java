@@ -107,17 +107,21 @@ public class Setting<T> {
         private double value;
         private final double min;
         private final double max;
+        private final double precision;
 
         public Number(
                 final String name,
                 final Module parent,
                 final double value,
                 final double min,
-                final double max) {
+                final double max,
+                final double precision
+        ) {
             super(name, parent, parent.getCategory(), Type.NUMBER);
             this.value = value;
             this.min = min;
             this.max = max;
+            this.precision = precision;
         }
 
         public Number(
@@ -125,11 +129,14 @@ public class Setting<T> {
                 final Module parent,
                 final int value,
                 final int min,
-                final int max) {
+                final int max,
+                final double precision
+        ) {
             super(name, parent, parent.getCategory(), Type.NUMBER);
             this.value = value;
             this.min = min;
             this.max = max;
+            this.precision = precision;
         }
 
         public Number(
@@ -137,11 +144,14 @@ public class Setting<T> {
                 final Module parent,
                 final float value,
                 final float min,
-                final float max) {
+                final float max,
+                final double precision
+        ) {
             super(name, parent, parent.getCategory(), Type.NUMBER);
             this.value = value;
             this.min = min;
             this.max = max;
+            this.precision = precision;
         }
 
         public double getValue() {
@@ -191,8 +201,8 @@ public class Setting<T> {
         }
 
         @Override
-        public int getPrecision() {
-            return 0;
+        public double getPrecision() {
+            return precision;
         }
 
         @Override

@@ -4,6 +4,7 @@ import dev.toastmc.toastclient.api.util.InventoryUtil
 import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import dev.toastmc.toastclient.impl.gui.hud.HUDComponent
+import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.Items
 import kotlin.math.roundToInt
@@ -25,7 +26,7 @@ object Totems : HUDComponent("Totems", SnapPoint.BOTTOM_LEFT,16,16) {
             text,
             x.roundToInt() + 5,
             y.roundToInt() + 5,
-            -1,
+            ClickGUI.FONT_COLOR,
             1f
         )
 

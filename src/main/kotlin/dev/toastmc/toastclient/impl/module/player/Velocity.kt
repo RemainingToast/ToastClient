@@ -13,9 +13,9 @@ import org.quantumclient.energy.Subscribe
 
 object Velocity : Module("Velocity", Category.PLAYER) {
 
-    val horizontal = number("Horizontal", 0.0,0.0,100.0)
-    val vertical = number("Vertical", 0.0, 0.0,100.0)
-    val delay = number("Delay",170.0, 0.0, 1000.0)
+    val horizontal = number("Horizontal", 0.0,0.0,100.0, 0.1)
+    val vertical = number("Vertical", 0.0, 0.0,100.0, 0.1)
+    val delay = number("Delay",170.0, 0.0, 1000.0, 0.1)
 
     var group1 = group("Group1", horizontal, vertical, delay)
 

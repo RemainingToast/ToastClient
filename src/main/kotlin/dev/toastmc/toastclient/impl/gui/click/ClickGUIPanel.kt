@@ -7,15 +7,21 @@ import dev.toastmc.toastclient.api.managers.module.ModuleManager
 import dev.toastmc.toastclient.api.setting.Setting
 import dev.toastmc.toastclient.api.util.KeyUtil
 import dev.toastmc.toastclient.api.util.lit
+import dev.toastmc.toastclient.api.util.render.DrawableExtensions
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
+import dev.toastmc.toastclient.impl.module.client.ClickGUI.BACKGROUND_COLOR
+import dev.toastmc.toastclient.impl.module.client.ClickGUI.COLOR
+import dev.toastmc.toastclient.impl.module.client.ClickGUI.COLOR_HOVER
+import dev.toastmc.toastclient.impl.module.client.ClickGUI.FONT_COLOR
+import dev.toastmc.toastclient.impl.module.client.ClickGUI.HOVER_COLOR
+import dev.toastmc.toastclient.impl.module.client.ClickGUI.INACTIVE_COLOR
 import net.minecraft.client.util.math.MatrixStack
 import org.lwjgl.glfw.GLFW
 import java.awt.Rectangle
-import java.math.BigDecimal
-import java.math.RoundingMode
 import kotlin.math.roundToInt
 
-class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : IToastClient {
+// TODO Themes
+class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : IToastClient, DrawableExtensions {
 
     var width = 100
     var height = 15
@@ -37,12 +43,6 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
     private var clickedOnce = false
     private var rightClicked = false
     private var leftClicked = false
-
-    var MAIN_COLOR: Int = -0x7fff0100
-    var MAIN_COLOR_HOVER: Int = (-0x8fff0100).toInt()
-    var BACKGROUND_COLOR: Int = -0x80000000
-    var HOVER_COLOR: Int = -0x64c0c0c0
-    var INACTIVE_COLOR: Int = -0x7fdbdbdb
 
     private val hoveringCategory: Boolean
         get() {
@@ -127,9 +127,9 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
             matrices,
             category.name,
             Rectangle(x.roundToInt(), y.roundToInt() - 3, width, catHeight),
-            if (hoveringCategory) MAIN_COLOR_HOVER else MAIN_COLOR,
-            -0x1,
-            1.25f
+            if (hoveringCategory) COLOR_HOVER else COLOR,
+            FONT_COLOR,
+            1f
         )
 
         // Background
@@ -173,12 +173,12 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         }
 
         val bgColor = if (mod.isEnabled())
-            if (hovering) MAIN_COLOR_HOVER else MAIN_COLOR
+            if (hovering) COLOR_HOVER else COLOR
         else
             if (hovering) HOVER_COLOR else INACTIVE_COLOR
 
         DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, bgColor)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mod.getName()), rect.x + 3, rect.y + 3, -0x1, 1f)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mod.getName()), rect.x + 3, rect.y + 3, FONT_COLOR, 0.90f)
         level++
 
         for ((module, expanded) in modsExpanded) {
@@ -230,10 +230,10 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
             DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, HOVER_COLOR)
 
         if(keybindingModule == mod) {
-            DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
-            DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit("Press a key..."), rect.x + 4, rect.y + (rect.height / 2), -0x1, 1f)
+            DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(hovering) COLOR_HOVER else COLOR)
+            DrawableUtil.drawText(matrices, mc.textRenderer, lit("Press a key..."), rect.x + 4, rect.y + 3, FONT_COLOR, 0.90f)
         } else {
-            DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit("Keybind " + KeyUtil.getKeyName(mod.getKey().code)), rect.x + 4, rect.y + (rect.height / 2), -0x1, 1f)
+            DrawableUtil.drawText(matrices, mc.textRenderer, lit("Keybind " + KeyUtil.getKeyName(mod.getKey().code)), rect.x + 4, rect.y + 3, FONT_COLOR, 0.90f)
         }
 
         if(hovering && leftClicked) {
@@ -255,9 +255,9 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val str = if (group.isExpanded) "_" else "..."
         val i = if (group.isExpanded) 1 else 0
 
-        DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height - i, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
-        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(group.name), rect.x + 2, rect.y + (rect.height / 2), -0x1,1f)
-        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y + (rect.height / 2), -0x1,1f)
+        DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height - i, if(hovering) COLOR_HOVER else COLOR)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(group.name), rect.x + 2, rect.y + 3, FONT_COLOR,0.90f)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y + 3, FONT_COLOR,0.90f)
 
         if(hovering && rightClicked) {
             group.isExpanded = !group.isExpanded
@@ -271,10 +271,10 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val t = if (bool.isGrouped) 2 else 0
 
         if(hovering)
-            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(bool.enabled()) MAIN_COLOR_HOVER else HOVER_COLOR)
+            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(bool.enabled()) COLOR_HOVER else HOVER_COLOR)
         if(bool.enabled())
-            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
-        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(bool.name), rect.x + 4 + t, rect.y + (rect.height / 2) - i, -0x1, 1f)
+            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(hovering) COLOR_HOVER else COLOR)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(bool.name), rect.x + 4 + t, rect.y + 3 - i, FONT_COLOR, 0.90f)
 
         if (hovering && leftClicked) {
             bool.value = !bool.value
@@ -289,11 +289,11 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val progress = ((setting.value - setting.min) / (setting.max - setting.min) * (rect.width - (t * 2))).toInt()
 
         if (setting.value != setting.min)
-            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, progress, rect.height, if(hovering) MAIN_COLOR_HOVER else MAIN_COLOR)
+            DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, progress, rect.height, if(hovering) COLOR_HOVER else COLOR)
         if (hovering)
             DrawableUtil.drawRect(matrices, rect.x + progress + t, rect.y - i, rect.width - progress - (t * 2), rect.height, HOVER_COLOR)
-        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(setting.name), rect.x + 2 + t, rect.y + (rect.height / 2), -0x1, 1f)
-        DrawableUtil.drawYCenteredText(matrices, mc.textRenderer, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5 + t,rect.y + (rect.height / 2), -0x1, 1f)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(setting.name), rect.x + 4 + t, rect.y + 3, FONT_COLOR, 0.90f)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5 + t,rect.y + 3, FONT_COLOR, 0.90f)
 
         if(hovering && (dragging || leftClicked)) {
             setting.value = clamp(
@@ -308,15 +308,13 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
 
-//        TwoDRenderUtil.drawRect(matrices, rect.x, rect.y - 2, rect.width - 2, rect.height, if (hovering) -0x80000000 else 0x50000000)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.name), rect.x + 2, rect.y, -0x1, 1f)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(mode.stringValue)) - 5, rect.y, -0x1, 1f)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.name), rect.x + 4, rect.y + 3, FONT_COLOR, 0.90f)
+        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(lit(mode.stringValue))), rect.y + 3, FONT_COLOR, 0.90f)
 
         if (hovering) {
-            if (leftClicked) {
-                mode.increment()
-            } else if (rightClicked) {
-                mode.decrement()
+            when {
+                leftClicked -> mode.increment()
+                rightClicked -> mode.decrement()
             }
         }
     }
@@ -325,30 +323,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         //TODO
     }
 
-    private fun round(value: Double, places: Int): Double {
-        var bd = BigDecimal(value)
-        bd = bd.setScale(places, RoundingMode.HALF_UP)
-        return bd.toDouble()
-    }
-
-    private fun clamp(value: Double, min: Double, max: Double): Double {
-        return min.coerceAtLeast(max.coerceAtMost(value))
-    }
-
-    private fun hover(mouseX: Double, mouseY: Double, rect: Rectangle): Boolean {
-        return mouseX >= rect.x && mouseX <= rect.width + rect.x && mouseY >= rect.y && mouseY <= rect.height + rect.y
-    }
-
-    private fun iteration(rect: Rectangle, iteration: Int): Rectangle {
-        return Rectangle(
-            rect.x + 1,
-            rect.y + iteration + rect.height * iteration,
-            rect.width - 2,
-            rect.height
-        )
-    }
-
-    private fun level(): Int {
+    fun level(): Int {
         var l = 1
         for ((module, expanded) in modsExpanded){
             l++

@@ -17,11 +17,11 @@ object AutoAnvil : Module("AutoAnvil", Category.COMBAT) {
 
     var surrounded = bool("Surrounded", true)
     var rotations = bool("Rotations", true)
-    var range = number("Range", 4.5, 0.0, 6.0)
-    var trapHeight = number("TrapHeight", 5.0, 0.0, 30.0)
-    var fallHeight = number("FallHeight", 30.0, 0.0, 30.0)
-    var obbySlot = number("ObbySlot", 3, 1, 9)
-    var anvilSlot = number("AnvilSlot", 8, 1, 9)
+    var range = number("Range", 4.5, 0.0, 6.0, 0.1)
+    var trapHeight = number("TrapHeight", 5.0, 0.0, 30.0, 0.1)
+    var fallHeight = number("FallHeight", 30.0, 0.0, 30.0, 0.1)
+    var obbySlot = number("ObbySlot", 3, 1, 9, 0.1)
+    var anvilSlot = number("AnvilSlot", 8, 1, 9, 0.1)
 
     override fun onUpdate() {
         if (mc.player == null) return
