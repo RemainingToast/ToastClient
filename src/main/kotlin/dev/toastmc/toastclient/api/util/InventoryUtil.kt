@@ -85,7 +85,7 @@ object InventoryUtil : IToastClient {
     }
 
     fun findEmptySlot(): Int? {
-        return getSlotWithItem(Items.AIR) ?: null
+        return getSlotWithItem(Items.AIR)
     }
 
     fun isCursorEmpty(): Boolean {
@@ -98,7 +98,7 @@ object InventoryUtil : IToastClient {
         if (isCursorEmpty()) {
             pickup(slot)
         }
-        return true;
+        return true
     }
 
     fun cleanupTransfer(): Boolean {

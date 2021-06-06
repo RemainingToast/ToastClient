@@ -9,27 +9,35 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.Items
 import kotlin.math.roundToInt
 
-object Totems : HUDComponent("Totems", SnapPoint.BOTTOM_LEFT,16,16) {
+object Totems : HUDComponent("Totems") {
+
+    init {
+        this.width = 16
+        this.height = 16
+        val point = getSnapPoint(SnapPoint.BOTTOM_LEFT, width, height)
+        this.x = point.x.toDouble()
+        this.y = point.y.toDouble()
+    }
 
     override fun render(matrices: MatrixStack) {
-        val text = lit(InventoryUtil.itemCount(Items.TOTEM_OF_UNDYING).toString())
-
         mc.itemRenderer.renderGuiItemIcon(
             Items.TOTEM_OF_UNDYING.defaultStack,
             x.roundToInt(),
             y.roundToInt()
         )
 
+        val text = lit(InventoryUtil.itemCount(Items.TOTEM_OF_UNDYING).toString())
+
         DrawableUtil.drawText(
             matrices,
             mc.textRenderer,
             text,
-            x.roundToInt() + 5,
-            y.roundToInt() + 5,
+            x.roundToInt() + width - 8,
+            y.roundToInt() + height - 8,
+            420.69,
             ClickGUI.FONT_COLOR,
             1f
         )
-
     }
 
 }

@@ -2,22 +2,18 @@ package dev.toastmc.toastclient.impl.gui.hud
 
 import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.util.ToastColor
-import dev.toastmc.toastclient.api.util.mc
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import net.minecraft.client.util.math.MatrixStack
 import java.awt.Color
+import java.awt.Point
 import java.awt.Rectangle
 import kotlin.math.roundToInt
 
-open class HUDComponent(var name: String, var x: Double, var y: Double) : IToastClient {
-
-    constructor(name: String, snapPoint: SnapPoint) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble())
-    constructor(name: String, snapPoint: SnapPoint, width: Int, height: Int) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble()) {
-        this.width = width
-        this.height = height
-    }
+open class HUDComponent(var name: String) : IToastClient {
 
     var enabled = false
+    var x = 0.0
+    var y = 0.0
     var width = 0
     var height = 0
 
@@ -86,71 +82,88 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
     }
 
     open fun renderEditor(matrices: MatrixStack) {
-        val buttonRect = Rectangle(x.roundToInt() + width - 5, y.roundToInt() - height, 5, 5)
-        val hoverButton = hover(mouseX, mouseY, buttonRect)
-
+        // Background
         DrawableUtil.drawRect(
             matrices,
-            buttonRect,
-            ToastColor(if(enabled) Color.green else Color.red)
+            Rectangle(x.roundToInt(), y.roundToInt(), width, height),
+            ToastColor(if(dragging) 0x90303030.toInt() else 0x75101010, true)
         )
 
-        val labelRect = Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2)
-        labelHover = hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2))
-
-        DrawableUtil.drawRect(
-            matrices,
-            labelRect,
-            ToastColor(if(dragging) 0x90303030.toInt() else 0x75101010)
-        )
-
+        // Outline
         DrawableUtil.drawHollowRect(
             matrices,
             x.roundToInt(),
-            y.roundToInt() - height,
+            y.roundToInt(),
             width,
-            height * 2,
+            height,
             1,
             ToastColor(-0x000000)
         )
 
-        if (hoverButton && leftClicked) {
+        // Render HUDComponent
+        render(matrices)
+
+        // Button
+        val rect = Rectangle(x.roundToInt() + width - 5, y.roundToInt(), 5, 5)
+        val hover = hover(mouseX, mouseY, rect)
+
+        if (hover && leftClicked) {
             enabled = !enabled
         }
 
+        DrawableUtil.drawRect(
+            matrices,
+            rect,
+            ToastColor(if(enabled) Color.green else Color.red)
+        )
+
+        // Keep Last
         if(clickedOnce) {
             leftClicked = false
             rightClicked = false
         }
-
-        render(matrices)
     }
 
     private fun hover(mouseX: Double, mouseY: Double, rect: Rectangle): Boolean {
         return mouseX >= rect.x && mouseX <= rect.width + rect.x && mouseY >= rect.y && mouseY <= rect.height + rect.y
     }
 
-    enum class SnapPoint(var x: Int, var y: Int) {
-        TOP_RIGHT(
-            mc.window.scaledWidth - 2,
-            2
-        ),
-        TOP_LEFT(
-            2,
-            2
-        ),
-        BOTTOM_RIGHT(
-            mc.window.scaledWidth - 2,
-            mc.window.scaledHeight - 2
-        ),
-        BOTTOM_LEFT(
-            2,
-            mc.window.scaledHeight - 2
-        ),
-        NONE(
-            -1,
-            -1
-        );
+    enum class SnapPoint {
+        TOP_RIGHT,
+        TOP_LEFT,
+        BOTTOM_RIGHT,
+        BOTTOM_LEFT;
     }
 
+    fun getSnapPoint(snapPoint: SnapPoint, width: Int, height: Int): Point {
+        when (snapPoint) {
+            SnapPoint.TOP_RIGHT -> {
+                return Point(
+                    mc.window.scaledWidth - width - 2,
+                    height - 2
+                )
+            }
+            SnapPoint.TOP_LEFT -> {
+                return Point(
+                    width - 2,
+                    height - 2
+                )
+            }
+            SnapPoint.BOTTOM_RIGHT -> {
+                return Point(
+                    mc.window.scaledWidth - width - 2,
+                    mc.window.scaledHeight - height - 2
+                )
+            }
+            SnapPoint.BOTTOM_LEFT -> {
+                return Point(
+                    width - 2,
+                    mc.window.scaledHeight - height - 2
+                )
+            }
+            else -> {
+                return Point(-1,-1)
+            }
+        }
+    }
 }
