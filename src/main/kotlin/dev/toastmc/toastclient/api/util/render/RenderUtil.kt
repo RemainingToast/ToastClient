@@ -3,6 +3,7 @@ package dev.toastmc.toastclient.api.util.render
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.ToastColor
 import dev.toastmc.toastclient.api.util.mc
+import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.DiffuseLighting
 import net.minecraft.client.render.OverlayTexture
@@ -117,13 +118,14 @@ object RenderUtil : RenderExtensions {
 
         val camera = mc.gameRenderer.camera
         val matrix = camera.matrixFrom(x, y, z)
-        val vertex = mc.bufferBuilders.outlineVertexConsumers
+        val vertex = mc.bufferBuilders.entityVertexConsumers
 
         matrix.push()
         matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
         matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
         matrix.translate(offX, offY, 0.0)
         matrix.scale(-0.025f * scale.toFloat(), -0.025f * scale.toFloat(), 1f)
+        vertex.draw()
 
         if (background) {
             mc.textRenderer.draw(
@@ -157,16 +159,11 @@ object RenderUtil : RenderExtensions {
         }
 
         mc.textRenderer.draw(
+            matrix,
             text,
             -mc.textRenderer.getWidth(text) / 2f,
             0f,
-            -1,
-            false,
-            matrix.peek().model,
-            vertex,
-            true,
-            0,
-            0xf000f0
+            ClickGUI.FONT_COLOR.aBGRPackedInt
         )
 
         vertex.draw()
