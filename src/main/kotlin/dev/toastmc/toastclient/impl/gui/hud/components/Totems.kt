@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.impl.gui.hud.components
 
-import dev.toastmc.toastclient.api.util.entity.totemCount
+import dev.toastmc.toastclient.api.util.InventoryUtil
 import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import dev.toastmc.toastclient.impl.gui.hud.HUDComponent
@@ -11,7 +11,7 @@ import kotlin.math.roundToInt
 object Totems : HUDComponent("Totems", SnapPoint.BOTTOM_LEFT,16,16) {
 
     override fun render(matrices: MatrixStack) {
-        val text = lit(mc.player!!.totemCount().toString())
+        val text = lit(InventoryUtil.itemCount(Items.TOTEM_OF_UNDYING).toString())
 
         mc.itemRenderer.renderGuiItemIcon(
             Items.TOTEM_OF_UNDYING.defaultStack,
