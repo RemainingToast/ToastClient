@@ -14,12 +14,11 @@ import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Difficulty
 import net.minecraft.world.explosion.Explosion
-import java.util.*
 
 object DamageUtil {
     private val damageCache: HashMap<Entity, Float> = HashMap()
 
-    fun getExplosionDamage(basePos: BlockPos, target: LivingEntity): Float {
+    fun getCrystalDamage(basePos: BlockPos, target: LivingEntity): Float {
         if (mc.world!!.difficulty == Difficulty.PEACEFUL) return 0f
         if (damageCache.containsKey(target)) return damageCache[target]!!
         val crystalPos: Vec3d = Vec3d.of(basePos).add(0.5, 1.0, 0.5)

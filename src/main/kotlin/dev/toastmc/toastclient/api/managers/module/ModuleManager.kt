@@ -58,6 +58,7 @@ object ModuleManager : IToastClient {
             ViewModel,
             Particles,
             AutoAnvil,
+            CrystalAura,
             TestModule
         )
 

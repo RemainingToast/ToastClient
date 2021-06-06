@@ -19,19 +19,14 @@ object InventoryUtil : IToastClient {
         return mc.player?.inventory?.count(item) ?: 0
     }
 
-    fun getSlotWithItem(item: Item): Int? {
+    fun getSlotWithItem(item: Item, range: IntRange = (0..44)): Int? {
         if (mc.player == null) return null
-        return (0..44).firstOrNull { item == mc.player!!.inventory.getStack(it).item }
-    }
-
-    fun getHotbarSlot(item: Item): Int? {
-        if (mc.player == null) return null
-        return (0..8).firstOrNull { item == mc.player!!.inventory.getStack(it).item }
+        return range.firstOrNull { item == mc.player!!.inventory.getStack(it).item }
     }
 
     fun switchToHotbarItem(item: Item): Boolean {
         if (mc.player == null) return false
-        mc.player!!.inventory.selectedSlot = getHotbarSlot(item) ?: return false
+        mc.player!!.inventory.selectedSlot = getSlotWithItem(item, 0..8) ?: return false
         return false
     }
 
@@ -105,7 +100,7 @@ object InventoryUtil : IToastClient {
         return cleanupTransfer(findEmptySlot() ?: return false)
     }
 
-    fun putInHotbar(item: Item, slot: Int) {
+    fun putInSlot(item: Item, slot: Int) {
         if (mc.player == null || item == mc.player!!.inventory.getStack(slot).item) return
         val foundItem = getSlotWithItem(item)
         transferSlot(foundItem ?: return, slot)

@@ -44,6 +44,7 @@ object EntityUtil {
                 e is EndermanEntity && !e.isAngry ||
                 e is GolemEntity && !e.handSwinging
     }
+
     fun isVehicle(e: Entity): Boolean {
         return e is BoatEntity || e is MinecartEntity || (e is Saddleable && e.isSaddled)
     }
