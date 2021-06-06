@@ -168,6 +168,7 @@ object RenderUtil : RenderExtensions {
             0,
             0xf000f0
         )
+
         vertex.draw()
         matrix.pop()
         disable()
