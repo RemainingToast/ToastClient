@@ -6,6 +6,7 @@ import dev.toastmc.toastclient.api.events.KeyEvent
 import dev.toastmc.toastclient.api.events.OverlayRenderEvent
 import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.ClickGUI
+import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
 import dev.toastmc.toastclient.impl.module.client.HUDEditor
 import dev.toastmc.toastclient.impl.module.combat.*
@@ -34,7 +35,7 @@ object ModuleManager : IToastClient {
             ExtraSign,
             ExtraTab,
             ExtraTooltips,
-//            Font,
+            Font,
             FastUtil,
             FriendModule,
             NoRender,
