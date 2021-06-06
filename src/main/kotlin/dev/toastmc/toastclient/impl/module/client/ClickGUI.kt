@@ -10,13 +10,13 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT) {
 
     val SCREEN = ClickGUIScreen()
 
-    private val HUE = number("Hue", 360, 0, 360, 0.1)
-    private val SATURATION = number("Saturation", 100, 0, 100, 0.1)
-    private val BRIGHTNESS = number("Brightness",44, 0, 100, 0.1)
+    private val HUE = number("Hue", 100, 0, 100, 2)
+    private val SATURATION = number("Saturation", 100, 0, 100, 2)
+    private val BRIGHTNESS = number("Brightness",100, 0, 100, 2)
 
     val COLOR: ToastColor
         get() {
-            return ToastColor.fromHSB(HUE.floatValue, SATURATION.floatValue, BRIGHTNESS.floatValue, 255)
+            return ToastColor.fromHSB(HUE.floatValue / 100, SATURATION.floatValue / 100, BRIGHTNESS.floatValue / 100, 150)
         }
 
     val COLOR_HOVER: ToastColor

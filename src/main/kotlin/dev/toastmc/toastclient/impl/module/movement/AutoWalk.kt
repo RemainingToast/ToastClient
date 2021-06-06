@@ -4,7 +4,9 @@ import dev.toastmc.toastclient.api.managers.module.Module
 
 object AutoWalk : Module("AutoWalk", Category.MOVEMENT) {
 
-    private var mode = mode("Mode", "Simple", "Simple", "Baritone")
+    private var mode = mode("Mode", "Simple", "Simple"
+//        , "Baritone"
+    )
         .onChanged { mode1 ->
             if (isEnabled()) stop()
             direction.isHidden = mode1.value.equals("Baritone", true)

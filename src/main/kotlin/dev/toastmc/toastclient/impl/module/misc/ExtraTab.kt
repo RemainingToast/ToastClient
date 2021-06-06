@@ -12,7 +12,7 @@ import net.minecraft.text.TextColor
 
 object ExtraTab : Module("ExtraTab", Category.MISC) {
 
-    var tabSize = number("TabSize", 150.0, 20.0, 500.0, 1)
+    var tabSize = number("TabSize", 150.0, 20.0, 500.0, 2)
     var highlightFriends = bool("HighlightFriends", true)
 
     fun formatList(entry: PlayerListEntry): Text {
@@ -22,7 +22,7 @@ object ExtraTab : Module("ExtraTab", Category.MISC) {
             Team.modifyText(entry.scoreboardTeam, LiteralText(entry.profile.name))
 
         return if (highlightFriends.value && FriendManager.isFriend(entry.profile.id))
-            name!!.shallowCopy().setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ToastColor.rainbow().rgb)))
+            name!!.shallowCopy().setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ToastColor.rainbow(255).rgb)))
         else
             name!!
     }

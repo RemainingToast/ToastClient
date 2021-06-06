@@ -12,7 +12,7 @@ import net.minecraft.util.Hand
 
 object KillAura : Module("KillAura", Category.COMBAT) {
 
-    val reach = number("Reach", 4.5, 1.0, 5.0, 0.1)
+    val reach = number("Reach", 4.5, 1.0, 5.0, 2)
 
     //    val rotate = registerBoolean("Rotate", true)
     val autoSwitch = bool("AutoSwitch", false)

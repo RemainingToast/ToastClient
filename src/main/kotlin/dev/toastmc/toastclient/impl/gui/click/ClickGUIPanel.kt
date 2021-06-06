@@ -9,6 +9,7 @@ import dev.toastmc.toastclient.api.util.KeyUtil
 import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.api.util.render.DrawableExtensions
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
+import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import dev.toastmc.toastclient.impl.module.client.ClickGUI.BACKGROUND_COLOR
 import dev.toastmc.toastclient.impl.module.client.ClickGUI.COLOR
 import dev.toastmc.toastclient.impl.module.client.ClickGUI.COLOR_HOVER
@@ -21,18 +22,15 @@ import java.awt.Rectangle
 import kotlin.math.roundToInt
 
 // TODO Themes
-class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : IToastClient, DrawableExtensions {
+class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double) : IToastClient, DrawableExtensions {
 
     var width = 100
     var height = 15
 
-    var category: Module.Category = Module.Category.NONE
     var categoryExpanded = true
     var modsExpanded: HashMap<Module, Boolean> = java.util.HashMap<Module, Boolean>()
 
     var keybinding = false
-    var keyPressed = false
-    var keybindingModule: Module? = null
 
     private var level = 1
 
@@ -46,12 +44,8 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
 
     private val hoveringCategory: Boolean
         get() {
-            return hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt(), width, height))
+            return hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt() - 3, width, height - 3))
         }
-
-    init {
-        this.category = category
-    }
 
     fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {
         if(!clickedOnce) {
@@ -90,19 +84,22 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         }
     }
 
-    fun keyPressed(key: Int) {
+    fun keyReleased(key: Int, scancode: Int) {
         if(keybinding) {
-            if(key == -1) {
-                return
-            }
-            else if (key == GLFW.GLFW_KEY_BACKSPACE || key == GLFW.GLFW_KEY_DELETE) {
-                keybindingModule!!.setKey(key, -1)
+            if (key == GLFW.GLFW_KEY_BACKSPACE ||
+                key == GLFW.GLFW_KEY_DELETE ||
+                ModuleManager.modules.stream().anyMatch { it.getKey().code == key }
+            ) {
+                ClickGUI.SCREEN.keybindingModule?.setKey(-1, -1)
             } else {
-                keybindingModule!!.setKey(key, -1)
+                ClickGUI.SCREEN.keybindingModule?.setKey(key, -1)
             }
-            this.keyPressed = true
+
             this.keybinding = false
-        } else keybinding = true
+            ClickGUI.SCREEN.keybindingModule = null
+        } else {
+            keybinding = true
+        }
     }
 
     fun render(matrices: MatrixStack, mouseX: Double, mouseY: Double) {
@@ -229,7 +226,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
         if(hovering)
             DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, HOVER_COLOR)
 
-        if(keybindingModule == mod) {
+        if(ClickGUI.SCREEN.keybindingModule == mod) {
             DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(hovering) COLOR_HOVER else COLOR)
             DrawableUtil.drawText(matrices, mc.textRenderer, lit("Press a key..."), rect.x + 4, rect.y + 3, FONT_COLOR, 0.90f)
         } else {
@@ -238,14 +235,7 @@ class ClickGUIPanel(category: Module.Category, var x: Double, var y: Double) : I
 
         if(hovering && leftClicked) {
             keybinding = true
-            keybindingModule = mod
-        }
-
-        if(keybindingModule == mod) {
-            if(!keyPressed) {
-                keybinding = true
-                keybindingModule = mod
-            }
+            ClickGUI.SCREEN.keybindingModule = mod
         }
     }
 
