@@ -4,12 +4,11 @@ import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.ItemUtil.equipBestWeapon
 import dev.toastmc.toastclient.api.util.entity.DamageUtil
 import dev.toastmc.toastclient.api.util.entity.EntityUtil
+import dev.toastmc.toastclient.api.util.entity.canReach
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.util.Hand
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Vec3d
 
 object KillAura : Module("KillAura", Category.COMBAT) {
 
@@ -53,12 +52,7 @@ object KillAura : Module("KillAura", Category.COMBAT) {
                     || (EntityUtil.isHostile(entity) && hostile.value)
                     || ((EntityUtil.isAnimal(entity) || EntityUtil.isNeutral(entity)) && passive.value)
                     || (EntityUtil.isVehicle(entity) && vehicles.value))
-                    && canReach(
-                        mc.player!!.pos.add(
-                            0.0,
-                            mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(),
-                            0.0
-                        ),
+                    && mc.player!!.canReach(
                         entity.boundingBox,
                         range
                     )
@@ -66,10 +60,6 @@ object KillAura : Module("KillAura", Category.COMBAT) {
             mc.player!!.distanceTo(a).compareTo(mc.player!!.distanceTo(b))
         }.findFirst().orElse(null)
         return if (target == null) null else target as LivingEntity
-    }
-
-    private fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
-        return aabb.expand(maxRange).contains(point)
     }
 
 }

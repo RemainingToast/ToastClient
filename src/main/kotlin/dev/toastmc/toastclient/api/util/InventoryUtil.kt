@@ -1,13 +1,15 @@
 package dev.toastmc.toastclient.api.util
 
+import dev.toastmc.toastclient.IToastClient
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.item.Items
 import net.minecraft.screen.slot.SlotActionType
 
-object InventoryUtil {
+object InventoryUtil : IToastClient {
 
     fun hasItem(vararg items: Item): Boolean {
         return mc.player?.inventory?.containsAny(items.toSet()) ?: false
@@ -80,6 +82,35 @@ object InventoryUtil {
 
     fun asyncTransferToOffHand(item: Item, delay: Long) {
         asyncTransferSlot(getSlotWithItem(item) ?: return, 45, delay)
+    }
+
+    fun findEmptySlot(): Int? {
+        return getSlotWithItem(Items.AIR) ?: null
+    }
+
+    fun isCursorEmpty(): Boolean {
+        if (mc.player == null) return true
+        logger.info(mc.player!!.inventory.cursorStack.toString())
+        return mc.player!!.inventory.cursorStack != ItemStack.EMPTY
+    }
+
+    fun cleanupTransfer(slot: Int): Boolean {
+        if (mc.player == null) return true
+        if (isCursorEmpty()) {
+            pickup(slot)
+        }
+        return true;
+    }
+
+    fun cleanupTransfer(): Boolean {
+        return cleanupTransfer(findEmptySlot() ?: return false)
+    }
+
+    fun putInHotbar(item: Item, slot: Int) {
+        if (mc.player == null || item == mc.player!!.inventory.getStack(slot).item) return
+        val foundItem = getSlotWithItem(item)
+        transferSlot(foundItem ?: return, slot)
+        cleanupTransfer(foundItem)
     }
 
 }
