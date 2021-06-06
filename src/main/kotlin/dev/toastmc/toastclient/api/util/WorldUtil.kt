@@ -2,6 +2,7 @@ package dev.toastmc.toastclient.api.util
 
 import dev.toastmc.toastclient.ToastClient
 import dev.toastmc.toastclient.api.events.ChunkEvent
+import dev.toastmc.toastclient.api.util.WorldUtil.isSurrounded
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
@@ -46,11 +47,11 @@ object WorldUtil {
         chunkX: Int,
         chunkZ: Int
     ): LinkedHashMap<BlockPos, Block> {
-        val map =
-            LinkedHashMap<BlockPos, Block>()
+        val map = LinkedHashMap<BlockPos, Block>()
         if (!world.isChunkLoaded(BlockPos((chunkX shr 4).toDouble(), 80.0, (chunkX shr 4).toDouble()))) {
             return map
         }
+
         val chunk: Chunk = world.getChunk(chunkX, chunkZ)
         chunk.blockEntityPositions.forEach(Consumer { tilePos: BlockPos ->
             map[tilePos] = world.getBlockState(tilePos).block
@@ -198,6 +199,9 @@ object WorldUtil {
 
     val BlockPos.vec3d: Vec3d
         get() = Vec3d(this.x.toDouble(), this.y.toDouble(), this.z.toDouble())
+
+    val BlockPos.centeredVec3d: Vec3d
+        get() = Vec3d(this.x.toDouble() + 0.5, this.y.toDouble(), this.z.toDouble() + 0.5)
 
     fun Block.matches(vararg blocks: Block): Boolean {
         return blocks.contains(this)
@@ -449,6 +453,30 @@ object WorldUtil {
             }
         }
         return false
+    }
+
+
+    val surroundOffsets = listOf(
+        BlockPos(1, 0, 0),
+        BlockPos(-1, 0, 0),
+        BlockPos(0, 0, 1),
+        BlockPos(0, 0, -1),
+    )
+    fun BlockPos.isSurrounded(vararg acceptableBlocks: Block = arrayOf(Blocks.OBSIDIAN, Blocks.BEDROCK)): Boolean {
+        for (offset in surroundOffsets) {
+            if (!acceptableBlocks.contains(this.add(offset).block)) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun BlockPos.isHole(airOnly: Boolean = false, vararg acceptableBlocks: Block = arrayOf(Blocks.OBSIDIAN, Blocks.BEDROCK)): Boolean {
+        if (airOnly && !AIR.contains(this.block)) {
+            return false
+        }
+
+        return acceptableBlocks.contains(this.add(0, -1, 0).block) && this.isSurrounded(*acceptableBlocks)
     }
 
     private val onUseMethod = AbstractBlock::onUse::javaMethod.get()!!

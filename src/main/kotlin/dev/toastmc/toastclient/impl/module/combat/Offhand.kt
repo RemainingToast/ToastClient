@@ -21,13 +21,13 @@ object Offhand : Module("OffHand", Category.COMBAT) {
     var totem = bool("Totems",  true)
     var gapple = bool("Gapples",  true)
     var crystal = bool("Crystals",  true)
-    var totemHealth = number("Totem Health", 13.5, 0.1, 20.0)
-    var rightClickGap = bool("Right Click Gap", true)
-    var crystalCheck = bool("Crystal Check", true)
-    var playerRange = number("Player Range", 9.0, 0.1, 15.0)
-    var crystalRange = number("Crystal Range", 4.5, 0.1, 6.0)
-    var notFromHotbar = bool("Not From Hotbar", true)
-    var defaultItem = mode("Default Item", "TOTEM", defaultItems)
+    var totemHealth = number("TotemHealth", 13.5, 0.1, 20.0, 0.1)
+    var rightClickGap = bool("RightClickGap", true)
+    var crystalCheck = bool("CrystalCheck", true)
+    var playerRange = number("PlayerRange", 9.0, 0.1, 15.0, 0.1)
+    var crystalRange = number("CrystalRange", 4.5, 0.1, 6.0, 0.1)
+    var notFromHotbar = bool("IgnoreHotbar", true)
+    var defaultItem = mode("DefaultItem", "TOTEM", defaultItems)
 
     override fun onUpdate() {
         if (mc.player == null || mc.currentScreen is InventoryScreen) return

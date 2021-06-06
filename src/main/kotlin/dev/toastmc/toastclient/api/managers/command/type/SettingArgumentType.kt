@@ -58,7 +58,9 @@ class SettingArgumentType(
             return this
         }
         return CommandSource.suggestMatching(
-            SettingManager.getSettingsForMod(module).map { it.name.quoteIfNecessary() },
+            SettingManager.getSettingsForMod(module)
+                .filter { it.type != Setting.Type.GROUP }
+                .map { it.configName.quoteIfNecessary() },
             builder
         )
     }

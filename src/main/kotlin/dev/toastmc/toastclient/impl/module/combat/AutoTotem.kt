@@ -1,11 +1,10 @@
 package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
-import dev.toastmc.toastclient.api.util.entity.totemCount
+import dev.toastmc.toastclient.api.util.InventoryUtil
 import net.minecraft.item.Items
-import net.minecraft.screen.slot.SlotActionType
 
-object AutoTotem : Module("AutoTotem", Category.COMBAT) {
+object  AutoTotem : Module("AutoTotem", Category.COMBAT) {
 
     private val gui = bool("WorkInGui", true)
     private var moving = false
@@ -20,7 +19,7 @@ object AutoTotem : Module("AutoTotem", Category.COMBAT) {
         if (offhandTotem() || (!gui.value && mc.currentScreen != null)) return
         when {
             moving -> {
-                mc.interactionManager!!.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player)
+                InventoryUtil.pickupOffHand()
                 moving = false
                 if(!invEmpty) {
                     returning = true
@@ -28,17 +27,14 @@ object AutoTotem : Module("AutoTotem", Category.COMBAT) {
                 return
             }
             !invEmpty -> {
-                if (mc.player!!.totemCount() != 0) {
-                    val totem = (0..44).firstOrNull { mc.player!!.inventory.getStack(it).item === Items.TOTEM_OF_UNDYING } ?: return
-                    mc.interactionManager!!.clickSlot(0, if (totem < 9) totem + 36 else totem, 0, SlotActionType.PICKUP, mc.player)
-                    moving = true
-                }
+                InventoryUtil.pickup(InventoryUtil.getSlotWithItem(Items.TOTEM_OF_UNDYING) ?: return)
+                moving = true
             }
         }
     }
 
     private fun offhandTotem(): Boolean {
-        return mc.player!!.inventory.offHand.first().item === Items.TOTEM_OF_UNDYING
+        return InventoryUtil.getOffHandStack().item === Items.TOTEM_OF_UNDYING
     }
 
 }

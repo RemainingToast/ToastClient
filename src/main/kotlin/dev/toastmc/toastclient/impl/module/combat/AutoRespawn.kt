@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screen.DeathScreen
 object AutoRespawn : Module("AutoRespawn", Category.COMBAT) {
 
     val timer = TimerUtil()
-    var delay = number("Delay", 2.0, 0.1, 20.0)
+    var delay = number("Delay", 2.0, 0.1, 20.0, 0.1)
 
     override fun onEnable() {
         timer.reset()

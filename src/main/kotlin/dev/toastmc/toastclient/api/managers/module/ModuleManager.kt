@@ -53,7 +53,9 @@ object ModuleManager : IToastClient {
             Sprint,
             Jesus,
             PortalChat,
+            ViewModel,
             Particles,
+            AutoAnvil,
             TestModule
         )
 

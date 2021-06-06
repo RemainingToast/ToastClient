@@ -4,16 +4,15 @@ import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.ItemUtil.equipBestWeapon
 import dev.toastmc.toastclient.api.util.entity.DamageUtil
 import dev.toastmc.toastclient.api.util.entity.EntityUtil
+import dev.toastmc.toastclient.api.util.entity.canReach
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.util.Hand
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Vec3d
 
 object KillAura : Module("KillAura", Category.COMBAT) {
 
-    val reach = number("Reach", 4.5, 1.0, 5.0)
+    val reach = number("Reach", 4.5, 1.0, 5.0, 0.1)
 
     //    val rotate = registerBoolean("Rotate", true)
     val autoSwitch = bool("AutoSwitch", false)
@@ -47,32 +46,20 @@ object KillAura : Module("KillAura", Category.COMBAT) {
     }
 
     private fun findTarget(range: Double): LivingEntity? {
-        var foundTarget: LivingEntity? = null
-        var sd: Double? = null
-        for (entity in mc.world!!.entities) {
-            if (entity == null || entity.removed || entity !is LivingEntity || entity.isDead || !entity.isAttackable) continue
-            if ((entity is PlayerEntity && players.value && entity != mc.player) ||
-                (EntityUtil.isHostile(entity) && hostile.value) ||
-                ((EntityUtil.isAnimal(entity) || EntityUtil.isNeutral(entity)) && passive.value) ||
-                (EntityUtil.isVehicle(entity) && vehicles.value)
-            ) {
-                val distance = mc.player!!.distanceTo(entity)
-                if (canReach(
-                        mc.player!!.pos.add(0.0, mc.player!!.getEyeHeight(mc.player!!.pose).toDouble(), 0.0),
+        val target = mc.world!!.entities.toList().parallelStream().filter { entity ->
+            return@filter entity != null && !entity.removed && entity is LivingEntity && !entity.isDead && entity.isAttackable
+                    && ((entity is PlayerEntity && players.value && entity != mc.player)
+                    || (EntityUtil.isHostile(entity) && hostile.value)
+                    || ((EntityUtil.isAnimal(entity) || EntityUtil.isNeutral(entity)) && passive.value)
+                    || (EntityUtil.isVehicle(entity) && vehicles.value))
+                    && mc.player!!.canReach(
                         entity.boundingBox,
                         range
-                    ) && (sd == null || distance < sd)
-                ) {
-                    sd = distance.toDouble()
-                    foundTarget = entity
-                }
-            }
-        }
-        return foundTarget
-    }
-
-    private fun canReach(point: Vec3d, aabb: Box, maxRange: Double): Boolean {
-        return aabb.expand(maxRange).contains(point)
+                    )
+        }.sorted { a, b ->
+            mc.player!!.distanceTo(a).compareTo(mc.player!!.distanceTo(b))
+        }.findFirst().orElse(null)
+        return if (target == null) null else target as LivingEntity
     }
 
 }

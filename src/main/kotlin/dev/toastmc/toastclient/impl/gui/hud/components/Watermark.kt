@@ -3,6 +3,7 @@ package dev.toastmc.toastclient.impl.gui.hud.components
 import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import dev.toastmc.toastclient.impl.gui.hud.HUDComponent
+import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import net.minecraft.client.util.math.MatrixStack
 import kotlin.math.roundToInt
 
@@ -20,7 +21,7 @@ object Watermark : HUDComponent("Watermark", SnapPoint.TOP_RIGHT) {
             lit(clientName),
             x.roundToInt(),
             y.roundToInt(),
-            -1,
+            ClickGUI.FONT_COLOR,
             1f
         )
     }

@@ -1,6 +1,7 @@
 package dev.toastmc.toastclient.impl.gui.hud
 
 import dev.toastmc.toastclient.IToastClient
+import dev.toastmc.toastclient.api.util.ToastColor
 import dev.toastmc.toastclient.api.util.mc
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import net.minecraft.client.util.math.MatrixStack
@@ -11,6 +12,10 @@ import kotlin.math.roundToInt
 open class HUDComponent(var name: String, var x: Double, var y: Double) : IToastClient {
 
     constructor(name: String, snapPoint: SnapPoint) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble())
+    constructor(name: String, snapPoint: SnapPoint, width: Int, height: Int) : this(name, snapPoint.x.toDouble(), snapPoint.y.toDouble()) {
+        this.width = width
+        this.height = height
+    }
 
     var enabled = false
     var width = 0
@@ -87,7 +92,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
         DrawableUtil.drawRect(
             matrices,
             buttonRect,
-            if(enabled) Color.green.rgb else Color.red.rgb
+            (if(enabled) Color.green else Color.red) as ToastColor
         )
 
         val labelRect = Rectangle(x.roundToInt(), y.roundToInt() - height, width, height * 2)
@@ -96,7 +101,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
         DrawableUtil.drawRect(
             matrices,
             labelRect,
-            if(dragging) 0x90303030.toInt() else 0x75101010
+            ToastColor(if(dragging) 0x90303030.toInt() else 0x75101010)
         )
 
         DrawableUtil.drawHollowRect(
@@ -106,7 +111,7 @@ open class HUDComponent(var name: String, var x: Double, var y: Double) : IToast
             width,
             height * 2,
             1,
-            -0x000000
+            ToastColor(-0x000000)
         )
 
         if (hoverButton && leftClicked) {
