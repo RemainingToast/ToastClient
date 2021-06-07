@@ -27,7 +27,8 @@ object TestModule : Module("TestModule", Category.RENDER) {
                 pos.y + 0.5,
                 pos.z + 0.5,
                 0.50,
-                true
+                background = false,
+                shadow = true
             )
             RenderUtil.drawGuiItem(
                 pos.x + 0.5,
