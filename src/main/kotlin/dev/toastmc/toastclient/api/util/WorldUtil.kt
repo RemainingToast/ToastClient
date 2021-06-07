@@ -32,6 +32,7 @@ import kotlin.reflect.jvm.javaMethod
 import kotlin.streams.toList
 
 object WorldUtil {
+
     var loadedChunks: ConcurrentSet<Chunk> = ConcurrentSet()
 
     /**
@@ -591,5 +592,8 @@ object WorldUtil {
         return@filter false
     }.collect(Collectors.toList())
 
+    fun World.crystalMultiplier(): Float {
+        return if (difficulty.id == 0) 0.0f else if (difficulty.id == 2) 1.0f else if (difficulty.id == 1) 0.5f else 1.5f
+    }
 
 }

@@ -1,5 +1,6 @@
 package dev.toastmc.toastclient.api.util
 
+import dev.toastmc.toastclient.api.util.WorldUtil.crystalMultiplier
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.DamageUtil
 import net.minecraft.entity.LivingEntity
@@ -9,7 +10,6 @@ import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
-import net.minecraft.world.World
 import net.minecraft.world.explosion.Explosion
 import kotlin.math.max
 
@@ -23,10 +23,10 @@ object CrystalUtil {
         val distance = (squaredDistanceTo(pos).toFloat() / 12.0f) - 1f
         val damage = (distance * distance + distance) / 2.0f * 7.0f * 12.0f + 1.0f
         val explosion = Explosion(mc.world, null, pos.x, pos.y, pos.z, 6.0f, false, Explosion.DestructionType.DESTROY)
-        return getBlastReduction(damage * world.getDamageMultiplier(), explosion)
+        return calculateCrystalDamage(damage * world.crystalMultiplier(), explosion)
     }
 
-    fun LivingEntity.getBlastReduction(incomingDamage: Float, explosion: Explosion): Float {
+    private fun LivingEntity.calculateCrystalDamage(incomingDamage: Float, explosion: Explosion): Float {
         var damage = incomingDamage
         if (this is PlayerEntity) {
             val player: PlayerEntity = this
@@ -50,10 +50,6 @@ object CrystalUtil {
             return max(damage, 0.0f)
         }
         return DamageUtil.getDamageLeft(damage, armor.toFloat(), attributes.getValue(EntityAttributes.GENERIC_ARMOR_TOUGHNESS).toFloat())
-    }
-
-    fun World.getDamageMultiplier(): Float {
-        return if (difficulty.id == 0) 0.0f else if (difficulty.id == 2) 1.0f else if (difficulty.id == 1) 0.5f else 1.5f
     }
 
 }
