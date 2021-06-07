@@ -38,7 +38,7 @@ class SettingArgumentType(
         }
 
         val setting = SettingManager.getSettingsForMod(module).stream().filter {
-            it.commandName.equals(string, true)
+            it.id.equals(string, true)
         }.findAny()
 
         return if (setting.isPresent) {
@@ -60,7 +60,7 @@ class SettingArgumentType(
         return CommandSource.suggestMatching(
             SettingManager.getSettingsForMod(module)
                 .filter { it.type != Setting.Type.GROUP }
-                .map { it.commandName.quoteIfNecessary() },
+                .map { it.id.quoteIfNecessary() },
             builder
         )
     }

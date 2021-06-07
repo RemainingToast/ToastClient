@@ -1,6 +1,7 @@
 package dev.toastmc.toastclient.impl.gui.click
 
 import dev.toastmc.toastclient.IToastClient
+import dev.toastmc.toastclient.api.config.ConfigSaver
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.client.gui.screen.Screen
@@ -21,6 +22,10 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
             panels.putIfAbsent(category, ClickGUIPanel(category, x.toDouble(), 20.0))
             x += 103
         }
+    }
+
+    override fun onClose() {
+        ConfigSaver.saveModules()
     }
 
     override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {

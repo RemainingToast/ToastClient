@@ -7,21 +7,19 @@ import org.quantumclient.energy.Subscribe
 
 object ViewModel : Module("ViewModel", Category.RENDER) {
 
-    var fov = number("FOV", 110, 10, 179, 2)
-
-    var scaleX = number("X", 0.75, -1, 2, 2)
-    var scaleY = number("Y", 0.60, -1, 2, 2)
-    var scaleZ = number("Z", 1, -1, 2, 2)
+    var scaleX = number("X", 1, 0.5, 1.5, 5)
+    var scaleY = number("Y", 1, 0.5, 1.5, 5)
+    var scaleZ = number("Z", 1, 0.5, 1.5, 5)
     var scaleGroup = group("Scale", scaleX, scaleY, scaleZ)
 
-    var posX = number("X", 0, -3, 3, 2)
-    var posY = number("Y", 0, -3, 3, 2)
-    var posZ = number("Z", 0, -3, 3, 2)
+    var posX = number("X", 0, -0.5, 0.5, 5)
+    var posY = number("Y", 0, -0.5, 0.5, 5)
+    var posZ = number("Z", 0, -0.5, 0.5, 5)
     var posGroup = group("Position", posX, posY, posZ)
 
-    var rotationX = number("X", 0, -180, 180, 2)
-    var rotationY = number("Y", 0, -180, 180, 2)
-    var rotationZ = number("Z", 0, -180, 180, 2)
+    var rotationX = number("X", 0, -180, 180, 5)
+    var rotationY = number("Y", 0, -180, 180, 5)
+    var rotationZ = number("Z", 0, -180, 180, 5)
     var rotationGroup = group("Rotation", rotationX, rotationY, rotationZ)
 
     @Subscribe

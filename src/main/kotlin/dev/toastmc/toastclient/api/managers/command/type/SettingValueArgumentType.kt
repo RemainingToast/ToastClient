@@ -32,7 +32,7 @@ class SettingValueArgumentType(
         return string ?: throw INVALID_VALUE_EXCEPTION.create(
                 arrayOf<Any>(
                     string,
-                    setting.commandName
+                    setting.id
                 )
             )
     }

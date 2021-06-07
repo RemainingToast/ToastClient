@@ -6,13 +6,11 @@ import dev.toastmc.toastclient.api.events.KeyEvent
 import dev.toastmc.toastclient.api.events.OverlayRenderEvent
 import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.ClickGUI
+import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
 import dev.toastmc.toastclient.impl.module.client.HUDEditor
 import dev.toastmc.toastclient.impl.module.combat.*
-import dev.toastmc.toastclient.impl.module.misc.ExtraSign
-import dev.toastmc.toastclient.impl.module.misc.ExtraTab
-import dev.toastmc.toastclient.impl.module.misc.ExtraTooltips
-import dev.toastmc.toastclient.impl.module.misc.PortalChat
+import dev.toastmc.toastclient.impl.module.misc.*
 import dev.toastmc.toastclient.impl.module.movement.*
 import dev.toastmc.toastclient.impl.module.player.*
 import dev.toastmc.toastclient.impl.module.render.*
@@ -31,61 +29,46 @@ object ModuleManager : IToastClient {
      * Commented Modules are either incomplete/broken/dev module
      */
     fun init() {
-        // Client
-        register(
-            ClickGUI,
-//            Font,
-            FriendModule,
-            HUDEditor
-        )
 
-        // Combat
         register(
+            /** Client **/
+            ClickGUI,
+            Font,
+            FriendModule,
+            HUDEditor,
+            /** Combat **/
             AutoAnvil,
             AutoArmour,
             AutoRespawn,
             AutoTotem,
             KillAura,
-//            Offhand
-        )
-
-        // Misc
-        register(
-//            CustomChat,
+            /** Misc **/
+            CustomChat,
             ExtraSign,
             ExtraTab,
             ExtraTooltips,
-            PortalChat
-        )
-
-        // Movement
-        register(
+            PortalChat,
+            /** Movement **/
             AutoWalk,
             FastStop,
             Jesus,
             NoFall,
             SafeWalk,
-            Sprint
-        )
-
-        // Player
-        register(
+            Sprint,
+            /** Player **/
             AntiHunger,
             FastUtil,
             MCF,
             NoEntityTrace,
-            Velocity
-        )
-
-        // Render
-        register(
-//            Capes,
+            Velocity,
+            /** Render **/
+            Capes,
             FullBright,
             NameTags,
             NoFog,
             NoRender,
             Particles,
-//            TestModule,
+            TestModule,
             Tracers,
             ViewModel
         )
@@ -113,10 +96,24 @@ object ModuleManager : IToastClient {
 
     @Subscribe
     fun on(event: KeyEvent) {
-        if (mc.currentScreen == ClickGUI.SCREEN || mc.currentScreen == HUDEditor.SCREEN) return
         for (mod in modules) {
-            if (mod.getKey() === InputUtil.fromKeyCode(event.key, event.scancode)) {
-                if (GLFW.glfwGetKey(event.window, event.key) == GLFW.GLFW_RELEASE) {
+            if (GLFW.glfwGetKey(event.window, event.key) == GLFW.GLFW_RELEASE) {
+                val click = mc.currentScreen == ClickGUI.SCREEN
+                val hud = mc.currentScreen == HUDEditor.SCREEN
+                if (click || hud) {
+                    if (click && event.key == GLFW.GLFW_KEY_ESCAPE ||
+                        hud && event.key == ClickGUI.getKey().code
+                    ) {
+                            ClickGUI.toggle()
+                    }
+                    if (hud && event.key == GLFW.GLFW_KEY_ESCAPE ||
+                        click && event.key == HUDEditor.getKey().code
+                    ) {
+                            HUDEditor.toggle()
+                    }
+                    return
+                }
+                if (mod.getKey() === InputUtil.fromKeyCode(event.key, event.scancode)) {
                     mod.toggle()
                 }
             }
