@@ -30,7 +30,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var breakOptions = group("BreakOpt", breakRange)
 
     var targetRange = number("TargetRange", 10.0, 0.0, 30.0, 1)
-    var targetBy = mode("TargetBy", "Distance", "Distance", "MostHP", "LeastHP", "Damage")
+    var targetBy = mode("TargetBy", "Damage", "Distance", "MostHP", "LeastHP", "Damage")
     var players = bool("Players", true)
     var passives = bool("Passives", false)
     var neutrals = bool("Neutrals", false)
@@ -95,24 +95,30 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
         for (attempt in 1..placesPerTick.intValue) {
             val spots = potentialSpots.filter {
-                mc.player!!.canReach(Box(it), range) && it.isCrystalSpot && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(it, mc.player!!) > maxSelfDamage.value)
+                mc.player!!.canReach(
+                    Box(it),
+                    range
+                ) && it.isCrystalSpot && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(
+                    it,
+                    mc.player!!
+                ) < maxSelfDamage.value)
             }
 
-            val target = when (targetBy.value) {
+            target = when (targetBy.value) {
                 "Distance" -> {
                     targets.sortedWith { entity1, entity2 ->
                         entity1.pos.distanceTo(eyePos).compareTo(entity2.pos.distanceTo(eyePos))
-                    }.firstOrNull()
+                    }.lastOrNull()
                 }
                 "MostHP" -> {
                     targets.sortedWith { entity1, entity2 ->
                         entity1.health.compareTo(entity2.health)
-                    }.lastOrNull()
+                    }.firstOrNull()
                 }
                 "LeastHP" -> {
                     targets.sortedWith { entity1, entity2 ->
                         entity1.health.compareTo(entity2.health)
-                    }.firstOrNull()
+                    }.lastOrNull()
                 }
                 "Damage" -> {
                     val maxDamages = HashMap<LivingEntity, Double>()
@@ -123,17 +129,17 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                     }
                     targets.sortedWith { entity1, entity2 ->
                         maxDamages[entity1]!!.compareTo(maxDamages[entity2]!!)
-                    }.lastOrNull()
+                    }.firstOrNull()
                 }
                 else -> return false
             } ?: return false
 
             val spot = spots.sortedWith { spot1, spot2 ->
-                DamageUtil.getCrystalDamage(spot1, target)
-                    .compareTo(DamageUtil.getCrystalDamage(spot2, target))
-            }.lastOrNull() ?: return false
+                DamageUtil.getCrystalDamage(spot1, target!!)
+                    .compareTo(DamageUtil.getCrystalDamage(spot2, target!!))
+            }.firstOrNull() ?: return false
 
-            if (DamageUtil.getCrystalDamage(spot, target) < minDamage.value) return false
+            if (DamageUtil.getCrystalDamage(spot, target!!) < minDamage.value) return false
 
             if ((autoSwitch.value && InventoryUtil.switchToHotbarItem(Items.END_CRYSTAL)) || mc.player!!.inventory.mainHandStack.item == Items.END_CRYSTAL) {
                 placeCrystal(spot)
@@ -152,7 +158,13 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
         val range = breakRange.value
         val crystals = mc.world!!.entities.filterIsInstance(EndCrystalEntity::class.java).filter {
-            mc.player!!.canReach(it, range) && DamageUtil.getCrystalDamage(it.blockPos.down(), target!!) > minDamage.value && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(it.blockPos.down(), mc.player!!) > maxSelfDamage.value)
+            mc.player!!.canReach(it, range) && DamageUtil.getCrystalDamage(
+                it.blockPos.down(),
+                target!!
+            ) > minDamage.value && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(
+                it.blockPos.down(),
+                mc.player!!
+            ) < maxSelfDamage.value)
         }
         val crystal = crystals.sortedWith { crystal1, crystal2 ->
             DamageUtil.getCrystalDamage(crystal1.blockPos.down(), target!!).compareTo(
@@ -161,7 +173,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                     target!!
                 )
             )
-        }.lastOrNull() ?: return false
+        }.firstOrNull() ?: return false
 
         mc.interactionManager!!.attackEntity(mc.player, crystal)
         mc.player!!.swingHand(Hand.MAIN_HAND)
