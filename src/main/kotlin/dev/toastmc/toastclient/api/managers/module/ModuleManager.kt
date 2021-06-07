@@ -30,7 +30,6 @@ object ModuleManager : IToastClient {
     fun init() {
         modules = ArrayList()
 
-
         register(
             /** Client **/
             ClickGUI,
@@ -43,7 +42,7 @@ object ModuleManager : IToastClient {
             AutoRespawn,
             AutoTotem,
             CrystalAura,
-            KillAura
+            KillAura,
             /** Misc **/
             CustomChat,
             ExtraSign,
@@ -71,7 +70,6 @@ object ModuleManager : IToastClient {
             NoRender,
             Particles,
             TestModule,
-//            TestModule,
             Tracers,
             ViewModel
         )

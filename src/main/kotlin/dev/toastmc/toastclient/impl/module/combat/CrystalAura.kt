@@ -1,10 +1,11 @@
 package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
+import dev.toastmc.toastclient.api.util.CrystalUtil.calculateCrystalDamage
 import dev.toastmc.toastclient.api.util.InventoryUtil.switchToHotbarItem
 import dev.toastmc.toastclient.api.util.WorldUtil.blockPos
 import dev.toastmc.toastclient.api.util.WorldUtil.isCrystalSpot
-import dev.toastmc.toastclient.api.util.entity.DamageUtil
+import dev.toastmc.toastclient.api.util.WorldUtil.vec
 import dev.toastmc.toastclient.api.util.entity.EntityUtil
 import dev.toastmc.toastclient.api.util.entity.canReach
 import dev.toastmc.toastclient.api.util.entity.eyePos
@@ -19,16 +20,23 @@ import net.minecraft.util.math.*
 import kotlin.math.ceil
 
 object CrystalAura : Module("CrystalAura", Category.COMBAT) {
+
+    var priority = mode("Priority", "Plac", "Break", "Place")
+
     var placeToggle = bool("Place", true)
     var placeRange = number("PlaceRange", 4.5, 0.0, 8.0, 1)
     var placesPerTick = number("PlacesPerTick", 1, 1, 20, 0)
     var autoSwitch = bool("AutoSwitch", true)
     var switchBack = bool("SwitchBack", true)
-    var placeOptions = group("PlaceOpt", placeRange, placesPerTick, autoSwitch)
+    var placeOptions = group("Place", placeRange, placesPerTick, autoSwitch)
 
     var breakToggle = bool("Break", true)
     var breakRange = number("BreakRange", 3.0, 0.0, 8.0, 1)
-    var breakOptions = group("BreakOpt", breakRange)
+    var minDamage = number("MinDamage", 5.5, 1.0, 20.0, 1)
+    var antiSuicide = bool("AntiSuicide", true)
+    var maxSelfDamage = number("MaxSelfDmg", 2.0, 0.0, 20.0, 1)
+    var maxPlaced = number("MaxPlaced", 2, 1, 10, 0)
+    var breakOptions = group("Break", breakRange,  minDamage, antiSuicide, maxSelfDamage, maxPlaced)
 
     var targetRange = number("TargetRange", 10.0, 0.0, 30.0, 1)
     var targetBy = mode("TargetBy", "Damage", "Distance", "MostHP", "LeastHP", "Damage")
@@ -36,17 +44,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var passives = bool("Passives", false)
     var neutrals = bool("Neutrals", false)
     var hostiles = bool("Hostiles", false)
-    var targetOptions =
-        group("Targetting", targetRange, targetBy, players, passives, neutrals, hostiles)
-
-    var minDamage = number("MinDamage", 5.5, 1.0, 20.0, 1)
-    var antiSuicide = bool("AntiSuicide", true)
-    var maxSelfDamage = number("MaxSelfDmg", 2.0, 0.0, 20.0, 1)
-    var maxPlaced = number("MaxPlaced", 2, 1, 10, 0)
-    var crystalOptions = group("Crystal", minDamage, antiSuicide, maxSelfDamage, maxPlaced)
-
-    var priority = mode("Priority", "Break", "Break", "Place")
-
+    var targetOptions = group("Targets", targetRange, targetBy, players, passives, neutrals, hostiles)
 
     var target: LivingEntity? = null
     var placed = 0
@@ -102,9 +100,8 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                 mc.player!!.canReach(
                     Box(it),
                     range
-                ) && it.isCrystalSpot && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(
-                    it,
-                    mc.player!!
+                ) && it.isCrystalSpot && (maxSelfDamage.value == 0.0 || mc.player!!.calculateCrystalDamage(
+                    it.vec
                 ) <= maxSelfDamage.value)
             }
 
@@ -127,9 +124,9 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                 "Damage" -> {
                     val maxDamages = HashMap<LivingEntity, Double>()
                     targets.forEach { entity ->
-                        maxDamages[entity] = spots.map { pos ->
-                            DamageUtil.getCrystalDamage(pos, entity)
-                        }.maxOrNull()?.toDouble() ?: 0.0
+                        maxDamages[entity] = spots
+                            .map { pos -> entity.calculateCrystalDamage(pos.vec) }
+                            .maxOrNull()?.toDouble() ?: 0.0
                     }
                     targets.maxByOrNull {
                         maxDamages[it]!!
@@ -138,9 +135,9 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                 else -> return false
             } ?: return false
 
-            val spot = spots.maxByOrNull { DamageUtil.getCrystalDamage(it, target!!) } ?: return false
+            val spot = spots.maxByOrNull { target!!.calculateCrystalDamage(it.vec) } ?: return false
 
-            if (DamageUtil.getCrystalDamage(spot, target!!) < minDamage.value) return false
+            if (target!!.calculateCrystalDamage(spot.vec) < minDamage.value) return false
 
             val slot = mc.player!!.inventory.selectedSlot
             if ((autoSwitch.value && mc.player!!.switchToHotbarItem(Items.END_CRYSTAL)) || mc.player!!.inventory.mainHandStack.item == Items.END_CRYSTAL) {
@@ -168,16 +165,14 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
         val range = breakRange.value
         val crystals = mc.world!!.entities.filterIsInstance(EndCrystalEntity::class.java).filter {
-            mc.player!!.canReach(it, range) && DamageUtil.getCrystalDamage(
-                it.blockPos.down(),
-                target!!
-            ) > minDamage.value && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(
-                it.blockPos.down(),
-                mc.player!!
+            mc.player!!.canReach(it, range) && target!!.calculateCrystalDamage(
+                it.blockPos.down().vec
+            ) > minDamage.value && (maxSelfDamage.value == 0.0 || mc.player!!.calculateCrystalDamage(
+                it.blockPos.down().vec
             ) <= maxSelfDamage.value)
         }
-        val crystal = crystals.maxByOrNull { DamageUtil.getCrystalDamage(it.blockPos.down(), target!!) } ?: return false
-        if (antiSuicide.value && mc.player!!.health - DamageUtil.getCrystalDamage(crystal.blockPos.down(), mc.player!!) <= 0) return false
+        val crystal = crystals.maxByOrNull { target!!.calculateCrystalDamage(it.blockPos.down().vec) } ?: return false
+        if (antiSuicide.value && mc.player!!.health - mc.player!!.calculateCrystalDamage(crystal.blockPos.down().vec) <= 0) return false
 
         mc.interactionManager!!.attackEntity(mc.player, crystal)
         mc.player!!.swingHand(Hand.MAIN_HAND)
