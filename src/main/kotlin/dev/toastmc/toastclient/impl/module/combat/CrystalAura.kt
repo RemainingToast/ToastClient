@@ -2,6 +2,7 @@ package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.InventoryUtil
+import dev.toastmc.toastclient.api.util.WorldUtil.blockPos
 import dev.toastmc.toastclient.api.util.WorldUtil.isCrystalSpot
 import dev.toastmc.toastclient.api.util.entity.DamageUtil
 import dev.toastmc.toastclient.api.util.entity.EntityUtil
@@ -38,12 +39,14 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         group("Targetting", targetRange, targetBy, players, passives, neutrals, hostiles)
 
     var minDamage = number("MinDamage", 5.5, 1.0, 20.0, 2)
+    var maxPlaced = number("MaxPlaced", 2, 1, 10, 0)
     var crystalOptions = group("Crystal", minDamage)
 
     var priority = mode("Priority", "Break", "Break", "Place")
 
 
     var target: LivingEntity? = null
+    var placed = 0
 
     override fun onUpdate() {
         if (mc.player == null) return
@@ -55,7 +58,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                 }
             }
             "Place" -> {
-                if (!placeCrystals()) {
+                if (placed < maxPlaced.intValue || !placeCrystals()) {
                     breakCrystals()
                 }
             }
@@ -63,18 +66,21 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     }
 
     private fun placeCrystals(): Boolean {
-        if (mc.player == null || !placeToggle.value) return false
+        if (mc.player == null || !placeToggle.value || (!autoSwitch.value && mc.player!!.inventory.mainHandStack.item != Items.END_CRYSTAL)) return false
 
-        val range = placeRange.doubleValue
+        val range = placeRange.value
         val blockRange = ceil(range).toInt()
         val eyePos = mc.player!!.eyePos
         val targets = mc.world!!.entities.filterIsInstance(LivingEntity::class.java).filter {
             it != mc.player
+                    && !it.isDead
+                    && !it.isImmuneToExplosion
+                    && !it.isInvulnerable
                     && ((players.value && it is PlayerEntity)
                     || (passives.value && EntityUtil.isAnimal(it))
                     || (neutrals.value && EntityUtil.isNeutral(it))
                     || (hostiles.value && EntityUtil.isHostile(it)))
-                    && mc.player!!.canReach(it, targetRange.doubleValue)
+                    && mc.player!!.canReach(it, targetRange.value)
         }
 
         val potentialSpots = mutableListOf<BlockPos>()
@@ -121,24 +127,19 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                 else -> return false
             } ?: return false
 
-            logger.info(spots.size)
             val spot = spots.sortedWith { spot1, spot2 ->
                 DamageUtil.getCrystalDamage(spot1, target)
                     .compareTo(DamageUtil.getCrystalDamage(spot2, target))
             }.lastOrNull() ?: return false
 
-            logger.info(spot)
+            if (DamageUtil.getCrystalDamage(spot, target) < minDamage.value) return false
 
-            if (DamageUtil.getCrystalDamage(spot, target) < minDamage.doubleValue) return false
-
-            if (autoSwitch.value) {
-                if (!InventoryUtil.switchToHotbarItem(Items.END_CRYSTAL)) {
-                    return false
-                }
+            if ((autoSwitch.value && InventoryUtil.switchToHotbarItem(Items.END_CRYSTAL)) || mc.player!!.inventory.mainHandStack.item == Items.END_CRYSTAL) {
+                placeCrystal(spot)
+                ++placed
+            } else {
+                return false
             }
-
-            logger.info("survived 4")
-            placeCrystal(spot)
         }
 
         return true
@@ -146,9 +147,9 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
     private fun breakCrystals(): Boolean {
         if (mc.player == null || !breakToggle.value) return false
-        if (target == null) return true
+        if (target == null) return false
 
-        val range = breakRange.doubleValue
+        val range = breakRange.value
         val crystals = mc.world!!.entities.filterIsInstance(EndCrystalEntity::class.java).filter {
             mc.player!!.canReach(it, range)
         }
@@ -161,8 +162,9 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
             )
         }.lastOrNull() ?: return false
 
-        mc.interactionManager?.attackEntity(mc.player, crystal)
+        mc.interactionManager!!.attackEntity(mc.player, crystal)
         mc.player!!.swingHand(Hand.MAIN_HAND)
+        placed = 0
 
         return true
     }
