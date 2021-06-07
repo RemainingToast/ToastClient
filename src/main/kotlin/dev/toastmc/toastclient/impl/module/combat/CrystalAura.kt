@@ -41,7 +41,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var minDamage = number("MinDamage", 5.5, 1.0, 20.0, 1)
     var maxSelfDamage = number("MaxSelfDmg", 2.0, 0.0, 20.0, 1)
     var maxPlaced = number("MaxPlaced", 2, 1, 10, 0)
-    var crystalOptions = group("Crystal", minDamage)
+    var crystalOptions = group("Crystal", minDamage, maxSelfDamage, maxPlaced)
 
     var priority = mode("Priority", "Break", "Break", "Place")
 
