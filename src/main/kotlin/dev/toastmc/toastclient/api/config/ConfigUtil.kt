@@ -11,6 +11,7 @@ object ConfigUtil : IToastClient {
     val mainDirectory = "${mc.runDirectory.canonicalPath}/toastclient/"
 
     const val moduleDirectory = "modules/"
+    const val hudDirectory = "modules/hud/"
 
     fun init() {
         initLocations()
@@ -19,11 +20,13 @@ object ConfigUtil : IToastClient {
 
     fun loadEverything(){
         ConfigLoader.loadModules()
+        ConfigLoader.loadComponents()
         FriendManager.loadFriends()
     }
 
     fun saveEverything() {
         ConfigSaver.saveModules()
+        ConfigSaver.saveComponents()
         FriendManager.saveFriends()
     }
 
