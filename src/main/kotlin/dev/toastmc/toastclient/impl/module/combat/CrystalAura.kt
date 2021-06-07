@@ -28,7 +28,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var placesPerTick = number("PlacesPerTick", 1, 1, 20, 0)
     var autoSwitch = bool("AutoSwitch", true)
     var switchBack = bool("SwitchBack", true)
-    var placeOptions = group("Place", placeRange, placesPerTick, autoSwitch)
+    var placeOptions = group("Place", placeRange, placesPerTick, autoSwitch, switchBreak)
 
     var breakToggle = bool("Break", true)
     var breakRange = number("BreakRange", 3.0, 0.0, 8.0, 1)
