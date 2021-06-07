@@ -81,7 +81,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         (-blockRange..blockRange).forEach { x ->
             (-blockRange..blockRange).forEach { y ->
                 (-blockRange..blockRange).forEach { z ->
-                    potentialSpots.add(BlockPos(x, y, z))
+                    potentialSpots.add(eyePos.blockPos.add(BlockPos(x, y, z)))
                 }
             }
         }
