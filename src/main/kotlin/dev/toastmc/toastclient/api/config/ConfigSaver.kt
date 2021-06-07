@@ -20,8 +20,9 @@ import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 
 /**
- * @author Hoosiers
-**/
+ * Original @author Hoosiers
+ * Modified for my client base
+ **/
 object ConfigSaver : IToastClient {
 
     fun saveModules() {
@@ -59,11 +60,11 @@ object ConfigSaver : IToastClient {
 
         for (setting in SettingManager.getSettingsForMod(module)){
             when (setting.type){
-                Type.BOOLEAN -> settingObject.add(setting.name, JsonPrimitive((setting as Setting.Boolean).value))
-                Type.NUMBER -> settingObject.add(setting.name, JsonPrimitive((setting as Setting.Number).value))
-                Type.COLOR -> settingObject.add(setting.name, JsonPrimitive((setting as ColorSetting).toInteger()))
-                Type.MODE -> settingObject.add(setting.name, JsonPrimitive((setting as Mode).value.toString()))
-                Type.GROUP -> settingObject.add(setting.name, JsonPrimitive((setting as Group).isExpanded.toString()))
+                Type.GROUP -> settingObject.add(setting.id, JsonPrimitive((setting as Group).isExpanded))
+                Type.BOOLEAN -> settingObject.add(setting.id, JsonPrimitive((setting as Setting.Boolean).value))
+                Type.NUMBER -> settingObject.add(setting.id, JsonPrimitive((setting as Setting.Number).value))
+                Type.COLOR -> settingObject.add(setting.id, JsonPrimitive((setting as ColorSetting).toInteger()))
+                Type.MODE -> settingObject.add(setting.id, JsonPrimitive((setting as Mode).value.toString()))
             }
         }
 

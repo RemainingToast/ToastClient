@@ -96,10 +96,10 @@ object FriendManager {
     }
 
     fun saveFriends() {
-        ConfigUtil.registerFile("friends")
+        ConfigUtil.registerFile("Friends")
 
         val fileOutputStreamWriter = OutputStreamWriter(
-            FileOutputStream("${mainDirectory}friends.json"),
+            FileOutputStream("${mainDirectory}Friends.json"),
             StandardCharsets.UTF_8
         )
 
@@ -109,7 +109,7 @@ object FriendManager {
 
     fun loadFriends() {
         try {
-            val reader = FileReader("${mainDirectory}friends.json")
+            val reader = FileReader("${mainDirectory}Friends.json")
             val type = object : TypeToken<MutableList<ToastPlayer>>() {}.type
 
             friends = ConfigUtil.gson.fromJson(reader, type)

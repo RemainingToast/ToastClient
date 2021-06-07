@@ -46,6 +46,8 @@ object ConfigUtil : IToastClient {
                 Files.createDirectories(Paths.get(mainDirectory))
             if(!Files.exists(Paths.get(mainDirectory + moduleDirectory)))
                 Files.createDirectories(Paths.get(mainDirectory + moduleDirectory))
+            if(!Files.exists(Paths.get(mainDirectory + hudDirectory)))
+                Files.createDirectories(Paths.get(mainDirectory + hudDirectory))
         } catch (ignore: IOException) {}
     }
 

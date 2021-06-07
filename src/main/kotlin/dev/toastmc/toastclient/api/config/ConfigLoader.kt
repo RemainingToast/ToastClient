@@ -3,6 +3,9 @@ package dev.toastmc.toastclient.api.config
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import dev.toastmc.toastclient.IToastClient
+import dev.toastmc.toastclient.api.config.ConfigUtil.hudDirectory
+import dev.toastmc.toastclient.api.config.ConfigUtil.mainDirectory
+import dev.toastmc.toastclient.api.config.ConfigUtil.moduleDirectory
 import dev.toastmc.toastclient.api.managers.SettingManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.managers.module.ModuleManager
@@ -17,7 +20,8 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 /**
- * @author Hoosiers
+ * Original @author Hoosiers
+ * Modified for my client base
  **/
 object ConfigLoader : IToastClient {
 
@@ -41,13 +45,13 @@ object ConfigLoader : IToastClient {
 
     @Throws(IOException::class)
     private fun loadModuleDirect(module: Module) {
-        val moduleLocation = ConfigUtil.mainDirectory + ConfigUtil.moduleDirectory
+        val path = Paths.get("$mainDirectory$moduleDirectory${module.getName()}.json")
 
-        if (!Files.exists(Paths.get(moduleLocation + module.getName() + ".json"))) {
+        if (!Files.exists(path)) {
             return
         }
 
-        val inputStream: InputStream = Files.newInputStream(Paths.get(moduleLocation + module.getName() + ".json"))
+        val inputStream: InputStream = Files.newInputStream(path)
         val moduleObject: JsonObject = JsonParser().parse(InputStreamReader(inputStream)).asJsonObject
 
         if (moduleObject["Module"] == null) {
@@ -57,14 +61,14 @@ object ConfigLoader : IToastClient {
         val settingObject = moduleObject["Settings"].asJsonObject
 
         for (setting in SettingManager.getSettingsForMod(module)) {
-            val dataObject = settingObject[setting.name.replace(" ", "")]
+            val dataObject = settingObject[setting.id]
             if (dataObject != null && dataObject.isJsonPrimitive) {
                 when (setting.type!!) {
+                    Type.GROUP -> (setting as Group).isExpanded = dataObject.asBoolean
                     Type.BOOLEAN -> (setting as Setting.Boolean).value = dataObject.asBoolean
                     Type.NUMBER -> (setting as Setting.Number).value = dataObject.asDouble
                     Type.COLOR -> (setting as ColorSetting).fromInteger(dataObject.asInt)
                     Type.MODE -> (setting as Mode).value = dataObject.asString
-                    Type.GROUP -> (setting as Group).isExpanded = dataObject.asBoolean
                 }
             }
         }
@@ -77,7 +81,7 @@ object ConfigLoader : IToastClient {
     }
 
     private fun loadHudComponentDirect(hudComponent: HUDComponent) {
-        val path = Paths.get("${ConfigUtil.mainDirectory}${ConfigUtil.hudDirectory}${hudComponent.name}.json")
+        val path = Paths.get("$mainDirectory$hudDirectory${hudComponent.name}.json")
 
         if (!Files.exists(path)) {
             return

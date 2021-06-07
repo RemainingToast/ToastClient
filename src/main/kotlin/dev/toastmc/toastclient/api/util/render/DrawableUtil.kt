@@ -36,21 +36,4 @@ object DrawableUtil : DrawableExtensions {
         drawRect(matrices, x + width, y, lineWidth, height, color) // right line
     }
 
-    fun startSmooth() {
-        GL11.glEnable(GL11.GL_LINE_SMOOTH)
-        GL11.glEnable(GL11.GL_POLYGON_SMOOTH)
-        GL11.glEnable(GL11.GL_POINT_SMOOTH)
-        GL11.glEnable(GL11.GL_BLEND)
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
-        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST)
-        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST)
-    }
-
-    fun endSmooth() {
-        GL11.glDisable(GL11.GL_LINE_SMOOTH)
-        GL11.glDisable(GL11.GL_POLYGON_SMOOTH)
-        GL11.glEnable(GL11.GL_POINT_SMOOTH)
-    }
-
 }

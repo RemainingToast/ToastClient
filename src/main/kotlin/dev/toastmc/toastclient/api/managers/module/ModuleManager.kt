@@ -28,7 +28,6 @@ object ModuleManager : IToastClient {
      * A-Z for each Category
      */
     fun init() {
-        modules = ArrayList()
 
         register(
             /** Client **/
@@ -80,6 +79,8 @@ object ModuleManager : IToastClient {
     }
 
     private fun register(vararg mods: Module) {
+        modules = ArrayList()
+
         for (mod in mods) {
             modules.add(mod)
         }
@@ -95,10 +96,24 @@ object ModuleManager : IToastClient {
 
     @Subscribe
     fun on(event: KeyEvent) {
-        if (mc.currentScreen == ClickGUI.SCREEN || mc.currentScreen == HUDEditor.SCREEN) return
         for (mod in modules) {
-            if (mod.getKey() === InputUtil.fromKeyCode(event.key, event.scancode)) {
-                if (GLFW.glfwGetKey(event.window, event.key) == GLFW.GLFW_RELEASE) {
+            if (GLFW.glfwGetKey(event.window, event.key) == GLFW.GLFW_RELEASE) {
+                val click = mc.currentScreen == ClickGUI.SCREEN
+                val hud = mc.currentScreen == HUDEditor.SCREEN
+                if (click || hud) {
+                    if (click && event.key == GLFW.GLFW_KEY_ESCAPE ||
+                        hud && event.key == ClickGUI.getKey().code
+                    ) {
+                            ClickGUI.toggle()
+                    }
+                    if (hud && event.key == GLFW.GLFW_KEY_ESCAPE ||
+                        click && event.key == HUDEditor.getKey().code
+                    ) {
+                            HUDEditor.toggle()
+                    }
+                    return
+                }
+                if (mod.getKey() === InputUtil.fromKeyCode(event.key, event.scancode)) {
                     mod.toggle()
                 }
             }

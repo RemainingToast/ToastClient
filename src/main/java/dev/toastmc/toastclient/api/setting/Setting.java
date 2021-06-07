@@ -25,7 +25,7 @@ public class Setting<T> {
     private Consumer<T> changedListener;
     private T value;
 
-    private String commandName;
+    private String id;
 
     public Setting(
             final String name,
@@ -33,7 +33,7 @@ public class Setting<T> {
             final Module.Category faxCategory,
             final Type type) {
         this.name = name;
-        this.commandName = name;
+        this.id = name;
         this.parent = parent;
         this.type = type;
         this.faxCategory = faxCategory;
@@ -91,8 +91,8 @@ public class Setting<T> {
         return grouped;
     }
 
-    public String getCommandName() {
-        return commandName;
+    public String getId() {
+        return id;
     }
 
     public enum Type {
@@ -440,7 +440,7 @@ public class Setting<T> {
             this.settings = new ArrayList<>();
             for(Setting<?> setting : settings){
                 setting.setGrouped(true);
-                setting.commandName = name + "." + setting.name;
+                setting.id = name + "." + setting.name;
                 this.settings.add(setting);
             }
         }

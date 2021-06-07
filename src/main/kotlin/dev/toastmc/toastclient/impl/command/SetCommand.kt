@@ -30,7 +30,7 @@ object SetCommand : Command("set") {
                             val stringValue = it.getArgument("value", String::class.java) as String
                             val moduleName = "${Formatting.DARK_GRAY}[${Formatting.DARK_GREEN}${module.getName()}${Formatting.DARK_GRAY}]${Formatting.GRAY}"
                             if(setting.setValueFromString(stringValue)){
-                                val settingString = "${Formatting.GREEN}${setting.commandName}${Formatting.GRAY} to ${Formatting.GREEN.toString() + setting.stringValue}"
+                                val settingString = "${Formatting.GREEN}${setting.id}${Formatting.GRAY} to ${Formatting.GREEN.toString() + setting.stringValue}"
                                 message(lit("$prefix $moduleName Successfully set $settingString"))
                             } else {
                                 message(lit("$prefix $moduleName Incorrect Arguments"))
