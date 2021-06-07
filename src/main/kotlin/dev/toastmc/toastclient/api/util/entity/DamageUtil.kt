@@ -83,11 +83,10 @@ object DamageUtil {
 
                     // Enchantments
                     if (target.hasStatusEffect(StatusEffects.RESISTANCE)) {
-//                        val resistance = (target.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
-//                        val int_2 = 25 - resistance
-//                        val resistance_1 = toDamage * int_2
-//                        toDamage = Math.max(resistance_1 / 25.0f, 0.0f)
-                        toDamage = Math.max(toDamage * (100 - 20 * (target.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1)), 0.0f)
+                        val resistance = (target.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
+                        val int_2 = 25 - resistance
+                        val resistance_1 = toDamage * int_2
+                        toDamage = Math.max(resistance_1 / 25.0f, 0.0f)
                     }
                     if (toDamage <= 0.0f) { toDamage = 0.0f } else {
                         val protAmount = EnchantmentHelper.getProtectionAmount(

@@ -43,7 +43,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var antiSuicide = bool("AntiSuicide", true)
     var maxSelfDamage = number("MaxSelfDmg", 2.0, 0.0, 20.0, 1)
     var maxPlaced = number("MaxPlaced", 2, 1, 10, 0)
-    var crystalOptions = group("Crystal", minDamage, maxSelfDamage, maxPlaced)
+    var crystalOptions = group("Crystal", minDamage, antiSuicide, maxSelfDamage, maxPlaced)
 
     var priority = mode("Priority", "Break", "Break", "Place")
 
@@ -61,8 +61,10 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                 }
             }
             "Place" -> {
-                if (placed < maxPlaced.intValue && !placeCrystals()) {
-                    breakCrystals()
+                if (placed < maxPlaced.intValue) {
+                    if (!placeCrystals()) {
+                        breakCrystals()
+                    }
                 }
             }
         }
@@ -160,6 +162,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         if (target == null) return false
         if (target!!.isDead) {
             target = null
+            placed = 0
             return false
         }
 
@@ -174,7 +177,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
             ) <= maxSelfDamage.value)
         }
         val crystal = crystals.maxByOrNull { DamageUtil.getCrystalDamage(it.blockPos.down(), target!!) } ?: return false
-        if (mc.player!!.health - DamageUtil.getCrystalDamage(crystal.blockPos.down(), mc.player!!) <= 0 ) return false
+        if (antiSuicide.value && mc.player!!.health - DamageUtil.getCrystalDamage(crystal.blockPos.down(), mc.player!!) <= 0) return false
 
         mc.interactionManager!!.attackEntity(mc.player, crystal)
         mc.player!!.swingHand(Hand.MAIN_HAND)
