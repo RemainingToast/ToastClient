@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
-import dev.toastmc.toastclient.api.util.InventoryUtil
+import dev.toastmc.toastclient.api.util.InventoryUtil.switchToHotbarItem
 import dev.toastmc.toastclient.api.util.WorldUtil.blockPos
 import dev.toastmc.toastclient.api.util.WorldUtil.isCrystalSpot
 import dev.toastmc.toastclient.api.util.entity.DamageUtil
@@ -141,7 +141,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
             if (DamageUtil.getCrystalDamage(spot, target!!) < minDamage.value) return false
 
             val slot = mc.player!!.inventory.selectedSlot
-            if ((autoSwitch.value && InventoryUtil.switchToHotbarItem(Items.END_CRYSTAL)) || mc.player!!.inventory.mainHandStack.item == Items.END_CRYSTAL) {
+            if ((autoSwitch.value && mc.player!!.switchToHotbarItem(Items.END_CRYSTAL)) || mc.player!!.inventory.mainHandStack.item == Items.END_CRYSTAL) {
                 placeCrystal(spot)
                 if (autoSwitch.value && switchBack.value) {
                     mc.player!!.inventory.selectedSlot = slot

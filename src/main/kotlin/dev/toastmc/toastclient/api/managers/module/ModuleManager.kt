@@ -31,6 +31,8 @@ object ModuleManager : IToastClient {
      * Commented Modules are either incomplete/broken/dev module
      */
     fun init() {
+        modules = ArrayList()
+
         // Client
         register(
             ClickGUI,
@@ -86,7 +88,7 @@ object ModuleManager : IToastClient {
             NoFog,
             NoRender,
             Particles,
-            TestModule
+            TestModule,
 //            TestModule,
             Tracers,
             ViewModel
@@ -98,8 +100,6 @@ object ModuleManager : IToastClient {
     }
 
     private fun register(vararg mods: Module) {
-        modules = ArrayList()
-
         for (mod in mods) {
             modules.add(mod)
         }

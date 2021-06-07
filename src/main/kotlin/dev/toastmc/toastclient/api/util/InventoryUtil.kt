@@ -26,6 +26,7 @@ object InventoryUtil : IToastClient {
 
     fun ClientPlayerEntity.switchToHotbarItem(item: Item): Boolean {
         inventory.selectedSlot = getSlotWithItem(item, 0..8) ?: return false
+        return true
     }
 
     fun ClientPlayerEntity.pickup(slot: Int) {
