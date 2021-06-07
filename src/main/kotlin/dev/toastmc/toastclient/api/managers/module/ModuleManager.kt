@@ -6,11 +6,13 @@ import dev.toastmc.toastclient.api.events.KeyEvent
 import dev.toastmc.toastclient.api.events.OverlayRenderEvent
 import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.ClickGUI
-import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
 import dev.toastmc.toastclient.impl.module.client.HUDEditor
 import dev.toastmc.toastclient.impl.module.combat.*
-import dev.toastmc.toastclient.impl.module.misc.*
+import dev.toastmc.toastclient.impl.module.misc.ExtraSign
+import dev.toastmc.toastclient.impl.module.misc.ExtraTab
+import dev.toastmc.toastclient.impl.module.misc.ExtraTooltips
+import dev.toastmc.toastclient.impl.module.misc.PortalChat
 import dev.toastmc.toastclient.impl.module.movement.*
 import dev.toastmc.toastclient.impl.module.player.*
 import dev.toastmc.toastclient.impl.module.render.*
@@ -24,42 +26,70 @@ object ModuleManager : IToastClient {
 
     var modules: ArrayList<Module> = ArrayList()
 
+    /**
+     * A-Z
+     * Commented Modules are either incomplete/broken/dev module
+     */
     fun init() {
+        // Client
         register(
+            ClickGUI,
+//            Font,
+            FriendModule,
+            HUDEditor
+        )
+
+        // Combat
+        register(
+            AutoAnvil,
             AutoArmour,
             AutoRespawn,
-            AutoWalk,
             AutoTotem,
-            ClickGUI,
-            HUDEditor,
+            CrystalAura,
+            KillAura
+//            Offhand
+        )
+
+        // Misc
+        register(
+//            CustomChat,
             ExtraSign,
             ExtraTab,
             ExtraTooltips,
-            Font,
-            FastUtil,
-            FriendModule,
-            NoRender,
-            MCF,
-            Offhand,
-            Capes,
-            NameTags,
-            FullBright,
-            SafeWalk,
-            NoEntityTrace,
-            NoFog,
-            CustomChat,
-            KillAura,
-            Velocity,
-            NoFall,
-            AntiHunger,
-            Sprint,
+            PortalChat
+        )
+
+        // Movement
+        register(
+            AutoWalk,
+            FastStop,
             Jesus,
-            PortalChat,
-            ViewModel,
+            NoFall,
+            SafeWalk,
+            Sprint
+        )
+
+        // Player
+        register(
+            AntiHunger,
+            FastUtil,
+            MCF,
+            NoEntityTrace,
+            Velocity
+        )
+
+        // Render
+        register(
+//            Capes,
+            FullBright,
+            NameTags,
+            NoFog,
+            NoRender,
             Particles,
-            AutoAnvil,
-            CrystalAura,
             TestModule
+//            TestModule,
+            Tracers,
+            ViewModel
         )
 
         ToastClient.eventBus.register(this)

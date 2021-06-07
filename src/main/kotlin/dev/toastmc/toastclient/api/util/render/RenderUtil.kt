@@ -94,8 +94,8 @@ object RenderUtil : RenderExtensions {
      * Draws text in the world.
      * @author BleachDrinker420
      **/
-    fun draw3DText(text: Text, x: Double, y: Double, z: Double, scale: Double, shadow: Boolean) {
-        draw3DText(text, x, y, z, 0.0, 0.0, scale, false, shadow)
+    fun draw3DText(text: Text, x: Double, y: Double, z: Double, scale: Double, background: Boolean, shadow: Boolean) {
+        draw3DText(text, x, y, z, 0.0, 0.0, scale, background, shadow)
     }
 
     /**
@@ -117,13 +117,15 @@ object RenderUtil : RenderExtensions {
 
         val camera = mc.gameRenderer.camera
         val matrix = camera.matrixFrom(x, y, z)
-        val vertex = mc.bufferBuilders.outlineVertexConsumers
+        val vertex = mc.bufferBuilders.entityVertexConsumers
 
         matrix.push()
         matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
         matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
         matrix.translate(offX, offY, 0.0)
         matrix.scale(-0.025f * scale.toFloat(), -0.025f * scale.toFloat(), 1f)
+
+        GL11.glDepthFunc(GL11.GL_ALWAYS)
 
         if (background) {
             mc.textRenderer.draw(
@@ -143,16 +145,11 @@ object RenderUtil : RenderExtensions {
         if (shadow) {
             matrix.translate(1.0, 1.0, 0.0)
             mc.textRenderer.draw(
+                matrix,
                 text.copy(),
                 -mc.textRenderer.getWidth(text) / 2f,
                 0f,
-                0x202020,
-                false,
-                matrix.peek().model,
-                vertex,
-                true,
-                0,
-                0xf000f0
+                0x202020
             )
         }
 
@@ -168,8 +165,12 @@ object RenderUtil : RenderExtensions {
             0,
             0xf000f0
         )
+
         vertex.draw()
         matrix.pop()
+
+        GL11.glDepthFunc(GL11.GL_LEQUAL)
+
         disable()
     }
 

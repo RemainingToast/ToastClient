@@ -2,7 +2,6 @@ package dev.toastmc.toastclient.api.util.render
 
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.ToastColor
-import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.render.BufferRenderer
@@ -57,23 +56,24 @@ interface DrawableExtensions {
         color: ToastColor,
         scale: Float,
     ) {
-        matrices.push()
-        matrices.scale(scale, scale, 1f)
-        matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
-        textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color.aBGRPackedInt)
-        matrices.pop()
+        drawText(matrices, textRenderer, text, x, y, 0.0, color, scale)
     }
 
     fun drawText(
         matrices: MatrixStack,
         textRenderer: TextRenderer,
-        text: String,
+        text: Text,
         x: Int,
         y: Int,
+        z: Double,
         color: ToastColor,
         scale: Float,
     ) {
-        drawText(matrices, textRenderer, lit(text), x, y, color, scale)
+        matrices.push()
+        matrices.scale(scale, scale, 1f)
+        matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), z)
+        textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color.aBGRPackedInt)
+        matrices.pop()
     }
 
     fun fill(matrices: MatrixStack, x1: Int, y1: Int, x2: Int, y2: Int, color: ToastColor) {
