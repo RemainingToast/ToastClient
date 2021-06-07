@@ -9,8 +9,10 @@ import net.minecraft.entity.passive.AnimalEntity
 import net.minecraft.entity.passive.GolemEntity
 import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.entity.passive.WolfEntity
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.vehicle.BoatEntity
 import net.minecraft.entity.vehicle.MinecartEntity
+import net.minecraft.util.math.Vec3d
 
 object EntityUtil {
     fun isSelf(e: Entity): Boolean {
@@ -47,5 +49,13 @@ object EntityUtil {
 
     fun isVehicle(e: Entity): Boolean {
         return e is BoatEntity || e is MinecartEntity || (e is Saddleable && e.isSaddled)
+    }
+
+    fun Entity.predictPos(ticks: Int = 1): Vec3d {
+        return pos.add(velocity.multiply(ticks.toDouble()))
+    }
+
+    fun PlayerEntity.predictEyePos(ticks: Int = 1): Vec3d {
+        return eyePos.add(velocity.multiply(ticks.toDouble()))
     }
 }
