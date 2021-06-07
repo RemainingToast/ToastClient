@@ -167,10 +167,6 @@ public class Setting<T> {
             return (float) this.value;
         }
 
-        public double getDoubleValue() {
-            return (double) this.value;
-        }
-
         public void setValue(final double value) {
             this.value = value;
             setValue(this);
