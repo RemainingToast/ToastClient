@@ -20,13 +20,13 @@ import kotlin.math.ceil
 
 object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var placeToggle = bool("Place", true)
-    var placeRange = number("PlaceRange", 4.5, 0.0, 8.0, 2)
+    var placeRange = number("PlaceRange", 4.5, 0.0, 8.0, 1)
     var placesPerTick = number("PlacesPerTick", 1, 1, 20, 0)
     var autoSwitch = bool("AutoSwitch", true)
     var placeOptions = group("PlaceOpt", placeRange, placesPerTick, autoSwitch)
 
     var breakToggle = bool("Break", true)
-    var breakRange = number("BreakRange", 3.0, 0.0, 8.0, 2)
+    var breakRange = number("BreakRange", 3.0, 0.0, 8.0, 1)
     var breakOptions = group("BreakOpt", breakRange)
 
     var targetRange = number("TargetRange", 10.0, 0.0, 30.0, 1)
@@ -38,7 +38,8 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var targetOptions =
         group("Targetting", targetRange, targetBy, players, passives, neutrals, hostiles)
 
-    var minDamage = number("MinDamage", 5.5, 1.0, 20.0, 2)
+    var minDamage = number("MinDamage", 5.5, 1.0, 20.0, 1)
+    var maxSelfDamage = number("MaxSelfDmg", 2.0, 0.0, 20.0, 1)
     var maxPlaced = number("MaxPlaced", 2, 1, 10, 0)
     var crystalOptions = group("Crystal", minDamage)
 
@@ -94,7 +95,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
         for (attempt in 1..placesPerTick.intValue) {
             val spots = potentialSpots.filter {
-                mc.player!!.canReach(Box(it), range) && it.isCrystalSpot
+                mc.player!!.canReach(Box(it), range) && it.isCrystalSpot && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(it, mc.player!!) > maxSelfDamage.value)
             }
 
             val target = when (targetBy.value) {
@@ -151,7 +152,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
         val range = breakRange.value
         val crystals = mc.world!!.entities.filterIsInstance(EndCrystalEntity::class.java).filter {
-            mc.player!!.canReach(it, range)
+            mc.player!!.canReach(it, range) && DamageUtil.getCrystalDamage(it.blockPos.down(), target!!) > minDamage.value && (maxSelfDamage.value == 0.0 || DamageUtil.getCrystalDamage(it.blockPos.down(), mc.player!!) > maxSelfDamage.value)
         }
         val crystal = crystals.sortedWith { crystal1, crystal2 ->
             DamageUtil.getCrystalDamage(crystal1.blockPos.down(), target!!).compareTo(
