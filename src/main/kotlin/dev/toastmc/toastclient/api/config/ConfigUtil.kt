@@ -11,6 +11,7 @@ object ConfigUtil : IToastClient {
     val mainDirectory = "${mc.runDirectory.canonicalPath}/toastclient/"
 
     const val moduleDirectory = "modules/"
+    const val hudDirectory = "modules/hud/"
 
     fun init() {
         initLocations()
@@ -19,11 +20,13 @@ object ConfigUtil : IToastClient {
 
     fun loadEverything(){
         ConfigLoader.loadModules()
+        ConfigLoader.loadComponents()
         FriendManager.loadFriends()
     }
 
     fun saveEverything() {
         ConfigSaver.saveModules()
+        ConfigSaver.saveComponents()
         FriendManager.saveFriends()
     }
 
@@ -43,6 +46,8 @@ object ConfigUtil : IToastClient {
                 Files.createDirectories(Paths.get(mainDirectory))
             if(!Files.exists(Paths.get(mainDirectory + moduleDirectory)))
                 Files.createDirectories(Paths.get(mainDirectory + moduleDirectory))
+            if(!Files.exists(Paths.get(mainDirectory + hudDirectory)))
+                Files.createDirectories(Paths.get(mainDirectory + hudDirectory))
         } catch (ignore: IOException) {}
     }
 

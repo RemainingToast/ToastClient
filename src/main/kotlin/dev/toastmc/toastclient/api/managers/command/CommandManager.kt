@@ -23,7 +23,6 @@ object CommandManager : IToastClient {
             FakePlayerCommand,
             FriendCommand,
             SetCommand,
-            TestCommand,
             ToggleCommand
         )
 

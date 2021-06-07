@@ -1,7 +1,7 @@
 package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
-import dev.toastmc.toastclient.api.util.InventoryUtil
+import dev.toastmc.toastclient.api.util.InventoryUtil.putInHotbar
 import dev.toastmc.toastclient.api.util.WorldUtil
 import dev.toastmc.toastclient.api.util.WorldUtil.block
 import dev.toastmc.toastclient.api.util.WorldUtil.centeredVec3d
@@ -34,7 +34,7 @@ object AutoAnvil : Module("AutoAnvil", Category.COMBAT) {
 
         val target = if (targetOpt.isPresent) targetOpt.get() else return
 
-        var completedAction = false;
+        var completedAction = false
 
         for (h in 0..trapHeight.intValue) {
             val current = target.blockPos.add(0, h, 0)
@@ -42,7 +42,7 @@ object AutoAnvil : Module("AutoAnvil", Category.COMBAT) {
                 for (offset in WorldUtil.surroundOffsets) {
                     val pos = current.add(offset)
                     if (mc.player!!.canReach(Box(pos), range.floatValue.toDouble()) && WorldUtil.isReplaceable(pos.block)) {
-                        InventoryUtil.putInHotbar(Items.OBSIDIAN, obbySlot.intValue - 1)
+                        mc.player!!.putInHotbar(Items.OBSIDIAN, obbySlot.intValue - 1)
                         mc.player!!.inventory.selectedSlot = obbySlot.intValue - 1
 
                         completedAction = WorldUtil.placeBlock(pos, Hand.MAIN_HAND, rotations.value)
@@ -65,7 +65,7 @@ object AutoAnvil : Module("AutoAnvil", Category.COMBAT) {
         for (h in 0..fallHeight.intValue) {
             val current = closest.add(0, h, 0)
             if (mc.player!!.canReach(Box(current), range.floatValue.toDouble()) && WorldUtil.isReplaceable(current.block)) {
-                InventoryUtil.putInHotbar(Items.OBSIDIAN, obbySlot.intValue - 1)
+                mc.player!!.putInHotbar(Items.OBSIDIAN, obbySlot.intValue - 1)
                 mc.player!!.inventory.selectedSlot = obbySlot.intValue - 1
 
                 completedAction = WorldUtil.placeBlock(current, Hand.MAIN_HAND, rotations.value)
@@ -78,7 +78,7 @@ object AutoAnvil : Module("AutoAnvil", Category.COMBAT) {
         for (h in fallHeight.intValue downTo 3) {
             val current = target.blockPos.add(0, h, 0)
             if (mc.player!!.canReach(Box(current), range.floatValue.toDouble()) && WorldUtil.isReplaceable(current.block) && !WorldUtil.AIR.contains(current.add(closestOffset).block)) {
-                InventoryUtil.putInHotbar(Items.ANVIL, anvilSlot.intValue - 1)
+                mc.player!!.putInHotbar(Items.ANVIL, anvilSlot.intValue - 1)
                 mc.player!!.inventory.selectedSlot = anvilSlot.intValue - 1
 
                 if (WorldUtil.placeBlock(current, Hand.MAIN_HAND, rotations.value)) break

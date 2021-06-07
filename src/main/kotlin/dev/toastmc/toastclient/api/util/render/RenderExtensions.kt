@@ -8,6 +8,7 @@ import net.minecraft.client.util.math.Vector3f
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.MathHelper
 
+
 interface RenderExtensions {
 
     fun box(
@@ -129,4 +130,5 @@ interface RenderExtensions {
         matrix.translate(-pos.x, -pos.y, -pos.z)
         return matrix
     }
+
 }

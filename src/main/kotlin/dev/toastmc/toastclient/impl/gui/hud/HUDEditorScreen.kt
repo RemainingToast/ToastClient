@@ -1,5 +1,6 @@
 package dev.toastmc.toastclient.impl.gui.hud
 
+import dev.toastmc.toastclient.api.config.ConfigSaver
 import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.impl.gui.hud.components.Totems
 import dev.toastmc.toastclient.impl.gui.hud.components.Watermark
@@ -14,6 +15,10 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
     init {
         components.add(Watermark)
         components.add(Totems)
+    }
+
+    override fun onClose() {
+        ConfigSaver.saveComponents()
     }
 
     override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
@@ -46,6 +51,10 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
 
     fun getComponents(): ArrayList<HUDComponent> {
         return components
+    }
+
+    override fun shouldCloseOnEsc(): Boolean {
+        return true
     }
 
 }

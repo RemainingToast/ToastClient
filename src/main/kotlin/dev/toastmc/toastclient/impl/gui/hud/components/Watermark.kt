@@ -7,11 +7,14 @@ import dev.toastmc.toastclient.impl.module.client.ClickGUI
 import net.minecraft.client.util.math.MatrixStack
 import kotlin.math.roundToInt
 
-object Watermark : HUDComponent("Watermark", SnapPoint.TOP_RIGHT) {
+object Watermark : HUDComponent("Watermark") {
 
     init {
         width = mc.textRenderer.getWidth(lit(clientName))
         height = mc.textRenderer.fontHeight
+        val point = getSnapPoint(SnapPoint.TOP_RIGHT, width, height)
+        this.x = point.x.toDouble()
+        this.y = point.y.toDouble()
     }
 
     override fun render(matrices: MatrixStack) {

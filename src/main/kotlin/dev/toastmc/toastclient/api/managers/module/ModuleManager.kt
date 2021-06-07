@@ -6,6 +6,7 @@ import dev.toastmc.toastclient.api.events.KeyEvent
 import dev.toastmc.toastclient.api.events.OverlayRenderEvent
 import dev.toastmc.toastclient.api.events.TickEvent
 import dev.toastmc.toastclient.impl.module.client.ClickGUI
+import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.impl.module.client.FriendModule
 import dev.toastmc.toastclient.impl.module.client.HUDEditor
 import dev.toastmc.toastclient.impl.module.combat.*
@@ -23,41 +24,53 @@ object ModuleManager : IToastClient {
 
     var modules: ArrayList<Module> = ArrayList()
 
+    /**
+     * A-Z
+     * Commented Modules are either incomplete/broken/dev module
+     */
     fun init() {
+
         register(
+            /** Client **/
+            ClickGUI,
+            Font,
+            FriendModule,
+            HUDEditor,
+            /** Combat **/
+            AutoAnvil,
             AutoArmour,
             AutoRespawn,
-            AutoWalk,
             AutoTotem,
-            ClickGUI,
-            HUDEditor,
+            KillAura,
+            /** Misc **/
+            CustomChat,
             ExtraSign,
             ExtraTab,
             ExtraTooltips,
-//            Font,
-            FastUtil,
-            FriendModule,
-            NoRender,
-            MCF,
-            Offhand,
-            Capes,
-            NameTags,
-            FullBright,
-            SafeWalk,
-            NoEntityTrace,
-            NoFog,
-            CustomChat,
-            KillAura,
-            Velocity,
-            NoFall,
-            AntiHunger,
-            Sprint,
-            Jesus,
             PortalChat,
-            ViewModel,
+            /** Movement **/
+            AutoWalk,
+            FastStop,
+            Jesus,
+            NoFall,
+            SafeWalk,
+            Sprint,
+            /** Player **/
+            AntiHunger,
+            FastUtil,
+            MCF,
+            NoEntityTrace,
+            Velocity,
+            /** Render **/
+            Capes,
+            FullBright,
+            NameTags,
+            NoFog,
+            NoRender,
             Particles,
-            AutoAnvil,
-            TestModule
+            TestModule,
+            Tracers,
+            ViewModel
         )
 
         ToastClient.eventBus.register(this)
@@ -83,10 +96,24 @@ object ModuleManager : IToastClient {
 
     @Subscribe
     fun on(event: KeyEvent) {
-        if (mc.currentScreen == ClickGUI.SCREEN || mc.currentScreen == HUDEditor.SCREEN) return
         for (mod in modules) {
-            if (mod.getKey() === InputUtil.fromKeyCode(event.key, event.scancode)) {
-                if (GLFW.glfwGetKey(event.window, event.key) == GLFW.GLFW_RELEASE) {
+            if (GLFW.glfwGetKey(event.window, event.key) == GLFW.GLFW_RELEASE) {
+                val click = mc.currentScreen == ClickGUI.SCREEN
+                val hud = mc.currentScreen == HUDEditor.SCREEN
+                if (click || hud) {
+                    if (click && event.key == GLFW.GLFW_KEY_ESCAPE ||
+                        hud && event.key == ClickGUI.getKey().code
+                    ) {
+                            ClickGUI.toggle()
+                    }
+                    if (hud && event.key == GLFW.GLFW_KEY_ESCAPE ||
+                        click && event.key == HUDEditor.getKey().code
+                    ) {
+                            HUDEditor.toggle()
+                    }
+                    return
+                }
+                if (mod.getKey() === InputUtil.fromKeyCode(event.key, event.scancode)) {
                     mod.toggle()
                 }
             }
