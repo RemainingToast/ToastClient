@@ -86,24 +86,26 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                     && mc.player!!.canReach(it, targetRange.value)
         }
 
-        val potentialSpots = mutableListOf<BlockPos>()
+        var spots = mutableListOf<BlockPos>()
         (-blockRange..blockRange).forEach { x ->
             (-blockRange..blockRange).forEach { y ->
                 (-blockRange..blockRange).forEach { z ->
-                    potentialSpots.add(eyePos.blockPos.add(BlockPos(x, y, z)))
+                    spots.add(eyePos.blockPos.add(BlockPos(x, y, z)))
                 }
             }
         }
 
         for (attempt in 1..placesPerTick.intValue) {
-            val spots = potentialSpots.filter {
+            spots = spots.filter {
                 mc.player!!.canReach(
                     Box(it),
                     range
-                ) && it.isCrystalSpot && (maxSelfDamage.value == 0.0 || mc.player!!.calculateCrystalDamage(
+                ) && it.isCrystalSpot && mc.player!!.calculateCrystalDamage(
                     it.up().centeredVec3d
-                ) <= maxSelfDamage.value)
-            }
+                ) <= maxSelfDamage.value && (!antiSuicide.value || mc.player!!.health - mc.player!!.calculateCrystalDamage(
+                    it.up().centeredVec3d
+                ) > 0)
+            }.toMutableList()
 
             target = when (targetBy.value) {
                 "Distance" -> {
@@ -168,12 +170,16 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         val crystals = mc.world!!.entities.filterIsInstance(EndCrystalEntity::class.java).filter {
             mc.player!!.canReach(it, range) && target!!.calculateCrystalDamage(
                 it.blockPos.up().centeredVec3d
-            ) > minDamage.value && (maxSelfDamage.value == 0.0 || mc.player!!.calculateCrystalDamage(
+            ) > minDamage.value && mc.player!!.calculateCrystalDamage(
                 it.blockPos.up().centeredVec3d
-            ) <= maxSelfDamage.value)
+            ) <= maxSelfDamage.value && (!antiSuicide.value || mc.player!!.health - mc.player!!.calculateCrystalDamage(
+                it.blockPos.up().centeredVec3d
+            ) > 0)
         }
-        val crystal = crystals.maxByOrNull { target!!.calculateCrystalDamage(it.blockPos.up().centeredVec3d) } ?: return false
-        if (antiSuicide.value && mc.player!!.health - mc.player!!.calculateCrystalDamage(crystal.blockPos.up().centeredVec3d) <= 0) return false
+        val crystal =
+            crystals.maxByOrNull { target!!.calculateCrystalDamage(it.blockPos.up().centeredVec3d) }
+                ?: return false
+//        if (antiSuicide.value && mc.player!!.health - mc.player!!.calculateCrystalDamage(crystal.blockPos.up().centeredVec3d) <= 0) return false
 
         mc.interactionManager!!.attackEntity(mc.player, crystal)
         mc.player!!.swingHand(Hand.MAIN_HAND)
