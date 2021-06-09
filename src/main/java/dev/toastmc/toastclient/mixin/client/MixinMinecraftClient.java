@@ -69,7 +69,7 @@ public abstract class MixinMinecraftClient {
      */
     @Inject(method = "<init>", at = @At("TAIL"))
     public void minecraftClient (CallbackInfo ci) {
-        FontAccessor.fontRenderer = new StringRenderer(18, "/assets/fonts/" + FontAccessor.FontMain);
+        FontAccessor.fontRenderer = new StringRenderer(18, "/assets/toastclient/font/" + FontAccessor.FontMain);
     }
 
 }

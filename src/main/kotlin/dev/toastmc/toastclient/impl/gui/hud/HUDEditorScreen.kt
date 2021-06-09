@@ -4,6 +4,7 @@ import dev.toastmc.toastclient.api.config.ConfigSaver
 import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.impl.gui.hud.components.Totems
 import dev.toastmc.toastclient.impl.gui.hud.components.Watermark
+import dev.toastmc.toastclient.impl.gui.hud.components.Welcomer
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import java.util.*
@@ -15,6 +16,7 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
     init {
         components.add(Watermark)
         components.add(Totems)
+        components.add(Welcomer)
     }
 
     override fun onClose() {
