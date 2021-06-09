@@ -5,7 +5,7 @@ public class FontAccessor {
     /**
      * Instead of "Font-Name" put, for example, "Raleway".
      */
-    public static String FontMain = "Font-Name" + ".ttf";
+    public static String FontMain = "raleway" + ".ttf";
 
     /**
      * To use the fontrenderer, use FontAccessor.fontRenderer.drawString(args);

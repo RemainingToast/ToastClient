@@ -33,7 +33,8 @@
     "MixinPlayerListHud",
     "MixinSharedConstants",
     "MixinLivingEntity",
-    "MixinTitleScreen"
+    "MixinTitleScreen",
+    "AccessorMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

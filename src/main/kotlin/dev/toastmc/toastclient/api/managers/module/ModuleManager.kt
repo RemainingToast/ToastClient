@@ -55,6 +55,7 @@ object ModuleManager : IToastClient {
             NoFall,
             SafeWalk,
             Sprint,
+            Strafe,
             /** Player **/
             AntiHunger,
             FastUtil,
