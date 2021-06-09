@@ -10,7 +10,7 @@ import kotlin.math.roundToInt
 
 object Coordinates : HUDComponent("Coordinates") {
 
-    var format: DecimalFormat = DecimalFormat("0.#")
+    var formatter: DecimalFormat = DecimalFormat("0.#")
 
     init {
         // TODO make the background size portable
@@ -26,7 +26,7 @@ object Coordinates : HUDComponent("Coordinates") {
             DrawableUtil.drawText(
                 matrices,
                 mc.textRenderer,
-                lit(format.format(mc.player!!.x) + ", " + format.format(mc.player!!.y) + ", " + format.format(mc.player!!.z) + " [" + format.format(mc.player!!.x / 8) + ", " + format.format(mc.player!!.y) + ", " + format.format(mc.player!!.z / 8) + "]"),
+                lit(formatter.format(mc.player!!.x) + ", " + formatter.format(mc.player!!.y) + ", " + formatter.format(mc.player!!.z) + " [" + formatter.format(mc.player!!.x / 8) + ", " + formatter.format(mc.player!!.y) + ", " + formatter.format(mc.player!!.z / 8) + "]"),
                 x.roundToInt(),
                 y.roundToInt(),
                 ClickGUI.FONT_COLOR,
@@ -36,7 +36,7 @@ object Coordinates : HUDComponent("Coordinates") {
             DrawableUtil.drawText(
                 matrices,
                 mc.textRenderer,
-                lit(format.format(mc.player!!.x) + ", " + format.format(mc.player!!.y) + ", " + format.format(mc.player!!.z) + " [" + format.format(mc.player!!.x * 8) + ", " + format.format(mc.player!!.y) + ", " + format.format(mc.player!!.z * 8) + "]"),
+                lit(formatter.format(mc.player!!.x) + ", " + formatter.format(mc.player!!.y) + ", " + formatter.format(mc.player!!.z) + " [" + formatter.format(mc.player!!.x * 8) + ", " + formatter.format(mc.player!!.y) + ", " + formatter.format(mc.player!!.z * 8) + "]"),
                 x.roundToInt(),
                 y.roundToInt(),
                 ClickGUI.FONT_COLOR,
@@ -46,7 +46,7 @@ object Coordinates : HUDComponent("Coordinates") {
             DrawableUtil.drawText(
                 matrices,
                 mc.textRenderer,
-                lit(format.format(mc.player!!.x) + ", " + format.format(mc.player!!.y) + ", " + format.format(mc.player!!.z)),
+                lit(formatter.format(mc.player!!.x) + ", " + formatter.format(mc.player!!.y) + ", " + formatter.format(mc.player!!.z)),
                 x.roundToInt(),
                 y.roundToInt(),
                 ClickGUI.FONT_COLOR,
