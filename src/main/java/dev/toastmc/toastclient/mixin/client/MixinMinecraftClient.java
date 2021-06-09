@@ -3,6 +3,8 @@ package dev.toastmc.toastclient.mixin.client;
 import dev.toastmc.toastclient.ToastClient;
 import dev.toastmc.toastclient.api.events.ScreenEvent;
 import dev.toastmc.toastclient.api.events.TickEvent;
+import dev.toastmc.toastclient.api.font.FontAccessor;
+import dev.toastmc.toastclient.api.font.StringRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -60,6 +62,14 @@ public abstract class MixinMinecraftClient {
             return MinecraftClient.getInstance().currentScreen;
         }
         return displayedEvent.getScreen();
+    }
+
+    /**
+     * To add fonts, to src/main/resources/assets/fonts, add your .ttf file.
+     */
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void minecraftClient (CallbackInfo ci) {
+        FontAccessor.fontRenderer = new StringRenderer(18, "/assets/fonts/" + FontAccessor.FontMain);
     }
 
 }
