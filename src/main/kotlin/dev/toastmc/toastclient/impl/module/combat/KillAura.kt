@@ -2,7 +2,6 @@ package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.ItemUtil.equipBestWeapon
-import dev.toastmc.toastclient.api.util.entity.DamageUtil
 import dev.toastmc.toastclient.api.util.entity.EntityUtil
 import dev.toastmc.toastclient.api.util.entity.canReach
 import net.minecraft.entity.LivingEntity
@@ -31,7 +30,6 @@ object KillAura : Module("KillAura", Category.COMBAT) {
 
     override fun onUpdate() {
         if (mc.player == null) return
-        val damageCache = DamageUtil.getDamageCache(); damageCache.clear()
         target = findTarget(reach.value) ?: return
         if (target!!.removed || target!!.isDead) {
             oldSlot = mc.player!!.inventory.selectedSlot
