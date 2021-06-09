@@ -43,8 +43,10 @@ interface DrawableExtensions {
         matrices.push()
         matrices.scale(scale, scale, 1f)
         matrices.translate((centerX / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
+        startSmooth()
         DrawableHelper.drawCenteredText(matrices, textRenderer, text, 0, -textRenderer.fontHeight / 2, color.aBGRPackedInt)
         matrices.pop()
+        endSmooth()
     }
 
     fun drawText(
@@ -72,8 +74,10 @@ interface DrawableExtensions {
         matrices.push()
         matrices.scale(scale, scale, 1f)
         matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), z)
+        startSmooth()
         textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color.aBGRPackedInt)
         matrices.pop()
+        endSmooth()
     }
 
     fun fill(matrices: MatrixStack, x1: Int, y1: Int, x2: Int, y2: Int, color: ToastColor) {
@@ -165,6 +169,23 @@ interface DrawableExtensions {
             rect.width - 2,
             rect.height
         )
+    }
+
+    fun startSmooth() {
+        GL11.glEnable(GL11.GL_LINE_SMOOTH)
+        GL11.glEnable(GL11.GL_POLYGON_SMOOTH)
+        GL11.glEnable(GL11.GL_POINT_SMOOTH)
+        GL11.glEnable(GL11.GL_BLEND)
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
+        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST)
+        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST)
+    }
+
+    fun endSmooth() {
+        GL11.glDisable(GL11.GL_LINE_SMOOTH)
+        GL11.glDisable(GL11.GL_POLYGON_SMOOTH)
+        GL11.glEnable(GL11.GL_POINT_SMOOTH)
     }
 
 }
