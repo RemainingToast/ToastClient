@@ -19,6 +19,7 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
 //        components.add(FPS)
         components.add(TPS)
         components.add(Time)
+        components.add(Armor)
     }
 
     override fun onClose() {
