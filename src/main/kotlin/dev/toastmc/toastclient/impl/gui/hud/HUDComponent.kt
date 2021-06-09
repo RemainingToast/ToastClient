@@ -39,7 +39,7 @@ open class HUDComponent(var name: String) : IToastClient {
     }
 
     fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {
-        if(!clickedOnce) {
+        if (!clickedOnce) {
             if (button == 0) {
                 leftClicked = true
                 rightClicked = false
@@ -56,7 +56,7 @@ open class HUDComponent(var name: String) : IToastClient {
     }
 
     fun mouseReleased(mouseX: Double, mouseY: Double, button: Int) {
-        if(button == 0 || button == 1) {
+        if (button == 0 || button == 1) {
             leftClicked = false
             rightClicked  = false
             clickedOnce = false
@@ -86,7 +86,7 @@ open class HUDComponent(var name: String) : IToastClient {
         DrawableUtil.drawRect(
             matrices,
             Rectangle(x.roundToInt(), y.roundToInt(), width, height),
-            ToastColor(if(dragging) 0x90303030.toInt() else 0x75101010, true)
+            ToastColor(if (dragging) 0x90303030.toInt() else 0x75101010, true)
         )
 
         // Outline
