@@ -37,7 +37,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var breakOptions = group("Break", breakRange, minDamage, antiSuicide, maxSelfDamage, maxPlaced)
 
     var targetRange = number("TargetRange", 10.0, 0.0, 30.0, 1)
-    var targetBy = mode("TargetBy", "Damage", "Distance", "MostHP", "LeastHP", "Damage")
+    var targetBy = mode("TargetBy", "Damage", "Distance", "MostHP", "LeastHP", "Damage", "NetDamage")
     var players = bool("Players", true)
     var passives = bool("Passives", false)
     var neutrals = bool("Neutrals", false)
@@ -63,15 +63,15 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
     private fun place(): Boolean {
         val slot = mc.player!!.inventory.selectedSlot
-        if (spot != null && (autoSwitch.value && mc.player!!.switchToHotbarItem(Items.END_CRYSTAL)) || mc.player!!.inventory.mainHandStack.item == Items.END_CRYSTAL) {
+        return if (spot != null && (autoSwitch.value && mc.player!!.switchToHotbarItem(Items.END_CRYSTAL)) || mc.player!!.inventory.mainHandStack.item == Items.END_CRYSTAL) {
             placeCrystal(spot)
             if (autoSwitch.value && switchBack.value) {
                 mc.player!!.inventory.selectedSlot = slot
             }
             ++placed
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 
