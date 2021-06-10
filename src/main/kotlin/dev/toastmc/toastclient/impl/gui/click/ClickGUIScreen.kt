@@ -10,7 +10,7 @@ import java.util.*
 
 class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
 
-    private val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
+    val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
 
     var keybindingModule: Module? = null
 

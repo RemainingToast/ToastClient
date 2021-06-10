@@ -64,7 +64,7 @@ object ConfigLoader : IToastClient {
             val dataObject = settingObject[setting.id]
             if (dataObject != null && dataObject.isJsonPrimitive) {
                 when (setting.type!!) {
-                    Type.GROUP -> (setting as Group).isExpanded = dataObject.asBoolean
+                    Type.GROUP -> (setting as Group).isExpanded = settingObject["${setting.id}.Expanded"].asBoolean
                     Type.BOOLEAN -> (setting as Setting.Boolean).value = dataObject.asBoolean
                     Type.NUMBER -> (setting as Setting.Number).value = dataObject.asDouble
                     Type.COLOR -> (setting as ColorSetting).fromInteger(dataObject.asInt)

@@ -52,13 +52,13 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     override fun onUpdate() {
         if (mc.player == null) return
 
-        if (!breakCrystals()) {
-            place()
-        }
-
         GlobalScope.async {
             prePlace()
         }.start()
+
+        if (!breakCrystals()) {
+            place()
+        }
     }
 
     private fun place(): Boolean {

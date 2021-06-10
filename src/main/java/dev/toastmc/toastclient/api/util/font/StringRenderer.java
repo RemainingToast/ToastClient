@@ -5,6 +5,7 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import org.lwjgl.opengl.GL11;
+import org.w3c.dom.CharacterData;
 
 import java.awt.*;
 import java.awt.font.GlyphVector;
@@ -270,25 +271,20 @@ public class StringRenderer
         /* Return total horizontal advance (slightly wider than the bounding box, but close enough for centering strings) */
         return entry.advance / 2;
     }
-    private Rectangle getGlyphBounds (GlyphVector vector, int index, int codePoint) {
-        Rectangle bounds = vector.getGlyphPixelBounds(index, GlyphCache.fontRenderContext, 0, 0);
-        if (codePoint == ' ') bounds.width = vector.getGlyphLogicalBounds(0).getBounds().width;
-        return bounds;
-    }
+
     /**
      * Return the width of a string in pixels. Used for centering strings inside GUI buttons.
      *
      * @param text compute the width of this string
      * @return the width in pixels (divided by 2; this matches the scaled coordinate system used by GUIs in Minecraft)
      */
-    @SuppressWarnings("unused")
-    public int getStringWidth(String text, float fontsize)
+    public int getWidth(String text)
     {
         if (text == null) return 0;
         if (text.length() == 0) return 0;
 
         char[] chars = text.toCharArray();
-        GlyphVector vector = GlyphCache.usedFonts.get(0).deriveFont(fontsize).layoutGlyphVector(GlyphCache.fontRenderContext, chars, 0, chars.length, Font.LAYOUT_LEFT_TO_RIGHT);
+        GlyphVector vector = GlyphCache.usedFonts.get(0).deriveFont(fontsize).layoutGlyphVector(GlyphCache.fontRenderContext, chars, 0, chars.length, Font.LAYOUT_RIGHT_TO_LEFT);
 
         int width = 0;
         int extraX = 0;
@@ -306,6 +302,36 @@ public class StringRenderer
         }
 
         return width / 2;
+    }
+
+    /**
+     * Gets the height of the given text.
+     *
+     * @param text The text to get the height of.
+     * @return The height of the given text.
+     */
+    public int getHeight(String text) {
+        if (text == null || text.length() == 0) return 0;
+
+        char[] chars = text.toCharArray();
+        GlyphVector vector = GlyphCache.usedFonts.get(0).deriveFont(fontsize).layoutGlyphVector(GlyphCache.fontRenderContext, chars, 0, chars.length, Font.LAYOUT_RIGHT_TO_LEFT);
+
+        int height = 0;
+        int extraY = 0;
+//        boolean startNewLine = false;
+        for (int glyphIndex = 0, n = vector.getNumGlyphs(); glyphIndex < n; glyphIndex++) {
+            int charIndex = vector.getGlyphCharIndex(glyphIndex);
+            int codePoint = text.codePointAt(charIndex);
+            Rectangle bounds = getGlyphBounds(vector, glyphIndex, codePoint);
+
+//            if (startNewLine && codePoint != '\n') extraY = -bounds.y;
+
+            height = Math.max(height, bounds.y + extraY + bounds.height);
+
+//            if (codePoint == '\n') startNewLine = true;
+        }
+
+        return height / 2;
     }
 
     /**
@@ -434,5 +460,11 @@ public class StringRenderer
         }
 
         return color;
+    }
+
+    private Rectangle getGlyphBounds (GlyphVector vector, int index, int codePoint) {
+        Rectangle bounds = vector.getGlyphPixelBounds(index, GlyphCache.fontRenderContext, 0, 0);
+        if (codePoint == ' ') bounds.width = vector.getGlyphLogicalBounds(0).getBounds().width;
+        return bounds;
     }
 }

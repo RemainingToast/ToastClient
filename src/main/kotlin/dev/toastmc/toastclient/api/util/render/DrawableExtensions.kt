@@ -46,7 +46,13 @@ interface DrawableExtensions {
         matrices.scale(scale, scale, 1f)
         startSmooth()
         if (Font.isEnabled()) {
-            FontAccessor.fontRenderer.drawString(text.asString(), centerX / scale, (y + -textRenderer.fontHeight / 2f) / scale, color.aBGRPackedInt, true)
+            FontAccessor.fontRenderer.drawString(
+                text.asString(),
+                (centerX - FontAccessor.fontRenderer.getWidth(text.asString()) / 2f),
+                (y + -FontAccessor.fontRenderer.getHeight(text.asString()) / 2f),
+                color.aBGRPackedInt,
+                true
+            )
         } else {
             matrices.translate((centerX / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
             DrawableHelper.drawCenteredText(matrices, textRenderer, text, 0, -textRenderer.fontHeight / 2, color.aBGRPackedInt)
@@ -81,7 +87,13 @@ interface DrawableExtensions {
         matrices.scale(scale, scale, 1f)
         startSmooth()
         if (Font.isEnabled()) {
-            FontAccessor.fontRenderer.drawString(text.asString(), x / scale, (y + -textRenderer.fontHeight / 2f) / scale, color.aBGRPackedInt, true)
+            FontAccessor.fontRenderer.drawString(
+                text.asString(),
+                x.toFloat(),
+                (y + -FontAccessor.fontRenderer.getHeight(text.asString()) / 2f),
+                color.aBGRPackedInt,
+                true
+            )
         } else {
             matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), z)
             textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color.aBGRPackedInt)

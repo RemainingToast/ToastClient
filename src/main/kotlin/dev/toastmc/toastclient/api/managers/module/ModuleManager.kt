@@ -89,8 +89,18 @@ object ModuleManager : IToastClient {
         Collections.sort(modules, Comparator.comparing(Module::getName))
     }
 
+    fun getModule(name: String): Module? {
+        for (mod in modules) {
+            if (mod.getName().equals(name, true)) {
+                return mod
+            }
+        }
+        return null
+    }
+
     fun getModulesByCategory(category: Module.Category): ArrayList<Module>? {
-        return modules.stream()
+        return modules
+            .stream()
             .filter { module: Module -> module.getCategory() == category }
             .collect(Collectors.toCollection { ArrayList() })
     }
