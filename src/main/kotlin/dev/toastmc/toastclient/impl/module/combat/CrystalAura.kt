@@ -22,8 +22,6 @@ import kotlin.math.ceil
 
 object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
-    var multiThread = bool("Multithread", true)
-
     var placeToggle = bool("Place", true)
     var placeRange = number("PlaceRange", 4.5, 0.0, 8.0, 1)
     var autoSwitch = bool("AutoSwitch", true)
@@ -54,17 +52,13 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     override fun onUpdate() {
         if (mc.player == null) return
 
-        if (!multiThread.value) {
-            if (!prePlace()) return
-        }
         if (!breakCrystals()) {
             place()
         }
-        if (multiThread.value) {
-            GlobalScope.async {
-                prePlace()
-            }.start()
-        }
+
+        GlobalScope.async {
+            prePlace()
+        }.start()
     }
 
     private fun place(): Boolean {
@@ -203,7 +197,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         return when (targetBy.value) {
             "Distance" -> {
                 targets.minByOrNull {
-                    it.pos.add(if (multiThread.value) it.velocity else Vec3d.ZERO).distanceTo(eyePos)
+                    it.pos.add(it.velocity).distanceTo(eyePos)
                 }
             }
             "MostHP" -> {
@@ -221,11 +215,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                     val spot = spots.maxByOrNull { pos ->
                         it.getCrystalDamage(pos)
                     }
-                    if (spot != null) {
-                        spot.getCrystalDamage(it)
-                    } else {
-                        0f
-                    }
+                    spot?.getCrystalDamage(it) ?: 0f
                 }
             }
             else -> return null
@@ -261,8 +251,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         if (mc.player == null || !placeToggle.value || (!autoSwitch.value && mc.player!!.inventory.mainHandStack.item != Items.END_CRYSTAL)) return false
 
         val range = placeRange.value
-        val eyePos = mc.player!!.predictEyePos()
-        if (multiThread.value) eyePos.add(mc.player!!.velocity)
+        val eyePos = mc.player!!.predictEyePos().add(mc.player!!.velocity)
 
         val targets = findTargets()
         val spots = filterSpots(getCube(eyePos, ceil(range).toInt()), range)
