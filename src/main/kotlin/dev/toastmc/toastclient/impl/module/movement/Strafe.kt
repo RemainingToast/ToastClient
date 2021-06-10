@@ -7,6 +7,7 @@ import net.minecraft.util.math.Vec3d
 
 object Strafe : Module("Strafe", Category.MOVEMENT) {
 
+    var slowdown = false
     var water = bool("InWater", false)
     var autoSprint = bool("AutoSprint", true)
 
@@ -18,17 +19,21 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
                 mc.player!!.networkHandler.sendPacket(ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_SPRINTING))
 
             if (mc.player!!.isOnGround) {
-                // Gets the highest speed, then jumps.
-                mc.player!!.updateVelocity(0.277f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
+                mc.player!!.velocity = Vec3d(0.0, mc.player!!.velocity.y, 0.0)
+                mc.player!!.updateVelocity(0.31f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
                 mc.player!!.jump()
-                // Slowdowns to 0.275 speed
-                mc.player!!.updateVelocity(0.27f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
+                slowdown = true
             } else if (mc.player!!.isInsideWaterOrBubbleColumn && water.value) {
                 mc.player!!.velocity = Vec3d(0.0, mc.player!!.velocity.y, 0.0)
-                mc.player!!.updateVelocity(0.27f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
+                mc.player!!.updateVelocity(0.275f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
             }
 
-        }
+            if (slowdown) {
+                mc.player!!.velocity = Vec3d(0.0, mc.player!!.velocity.y, 0.0)
+                mc.player!!.updateVelocity(0.27f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
+                slowdown = false
+            }
+        } else slowdown = false
 
         if (!mc.options.keyForward.isPressed &&
             !mc.options.keyBack.isPressed &&
