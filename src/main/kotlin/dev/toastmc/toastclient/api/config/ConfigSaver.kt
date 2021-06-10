@@ -55,12 +55,13 @@ object ConfigSaver : IToastClient {
 
         val moduleObject = JsonObject()
         val settingObject = JsonObject()
+        //TODO val groupObject = JsonObject()
 
         moduleObject.add("Module", JsonPrimitive(module.getName()))
 
         for (setting in SettingManager.getSettingsForMod(module)){
             when (setting.type){
-                Type.GROUP -> settingObject.add(setting.id, JsonPrimitive((setting as Group).isExpanded))
+                Type.GROUP -> settingObject.add("${setting.id}.Expanded", JsonPrimitive((setting as Group).isExpanded))
                 Type.BOOLEAN -> settingObject.add(setting.id, JsonPrimitive((setting as Setting.Boolean).value))
                 Type.NUMBER -> settingObject.add(setting.id, JsonPrimitive((setting as Setting.Number).value))
                 Type.COLOR -> settingObject.add(setting.id, JsonPrimitive((setting as ColorSetting).toInteger()))

@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.font;
+package dev.toastmc.toastclient.api.util.font;
 
 public interface IBFFontRenderer
 {
