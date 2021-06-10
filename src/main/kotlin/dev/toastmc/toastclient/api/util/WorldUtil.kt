@@ -2,7 +2,6 @@ package dev.toastmc.toastclient.api.util
 
 import dev.toastmc.toastclient.ToastClient
 import dev.toastmc.toastclient.api.events.ChunkEvent
-import dev.toastmc.toastclient.api.util.WorldUtil.isSurrounded
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
@@ -13,6 +12,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.registry.DefaultedRegistry
@@ -29,8 +29,10 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.reflect.jvm.javaMethod
+import kotlin.streams.toList
 
 object WorldUtil {
+
     var loadedChunks: ConcurrentSet<Chunk> = ConcurrentSet()
 
     /**
@@ -48,7 +50,14 @@ object WorldUtil {
         chunkZ: Int
     ): LinkedHashMap<BlockPos, Block> {
         val map = LinkedHashMap<BlockPos, Block>()
-        if (!world.isChunkLoaded(BlockPos((chunkX shr 4).toDouble(), 80.0, (chunkX shr 4).toDouble()))) {
+        if (!world.isChunkLoaded(
+                BlockPos(
+                    (chunkX shr 4).toDouble(),
+                    80.0,
+                    (chunkX shr 4).toDouble()
+                )
+            )
+        ) {
             return map
         }
 
@@ -137,13 +146,13 @@ object WorldUtil {
     fun Vec3d.getBlockPositionsInArea(
         end: Vec3d
     ): List<BlockPos> {
-        val minX: Int = this.x.coerceAtMost(end.x).roundToInt()
-        val maxX: Int = this.x.coerceAtLeast(end.x).roundToInt()
-        val minY: Int = this.y.coerceAtMost(end.y).roundToInt()
-        val maxY: Int = this.y.coerceAtLeast(end.y).roundToInt()
-        val minZ: Int = this.z.coerceAtMost(end.z).roundToInt()
-        val maxZ: Int = this.z.coerceAtLeast(end.z).roundToInt()
-        return BlockPos.stream(minX, minY, minZ, maxX, maxY, maxZ).collect(Collectors.toList())
+        val minX: Int = this.x.roundToInt()
+        val maxX: Int = end.x.roundToInt()
+        val minY: Int = this.y.roundToInt()
+        val maxY: Int = end.y.roundToInt()
+        val minZ: Int = this.z.roundToInt()
+        val maxZ: Int = end.z.roundToInt()
+        return BlockPos.stream(minX, minY, minZ, maxX, maxY, maxZ).toList()
     }
 
     /**
@@ -153,13 +162,13 @@ object WorldUtil {
      * @return block positions inside a 3d area between pos1 and pos2
      */
     fun BlockPos.getBlockPositionsInArea(end: BlockPos): List<BlockPos> {
-        val minX: Int = this.x.coerceAtMost(end.x)
-        val maxX: Int = this.x.coerceAtLeast(end.x)
-        val minY: Int = this.y.coerceAtMost(end.y)
-        val maxY: Int = this.y.coerceAtLeast(end.y)
-        val minZ: Int = this.z.coerceAtMost(end.z)
-        val maxZ: Int = this.z.coerceAtLeast(end.z)
-        return BlockPos.stream(minX, minY, minZ, maxX, maxY, maxZ).collect(Collectors.toList())
+        val minX: Int = this.x
+        val maxX: Int = end.x
+        val minY: Int = this.y
+        val maxY: Int = end.y
+        val minZ: Int = this.z
+        val maxZ: Int = end.z
+        return BlockPos.stream(minX, minY, minZ, maxX, maxY, maxZ).toList()
     }
 
     /**
@@ -171,12 +180,20 @@ object WorldUtil {
      * @param endZ
      * @return block positions inside a 3d area between pos1 and pos2
      */
-    fun getBlockMatchesBelowSurface(match: Block, startX: Int, startZ: Int, endX: Int, endZ: Int): List<BlockPos> {
+    fun getBlockMatchesBelowSurface(
+        match: Block,
+        startX: Int,
+        startZ: Int,
+        endX: Int,
+        endZ: Int
+    ): List<BlockPos> {
         val returnList = mutableListOf<BlockPos>()
         for (x in startX..endX) {
             for (z in startZ..endZ) {
                 for (y in 0..getHighestYAtXZ(x, z)) {
-                    if (mc.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(BlockPos(x, y, z))
+                    if (mc.world!!.getBlockState(BlockPos(x, y, z)).block == match) returnList.add(
+                        BlockPos(x, y, z)
+                    )
                 }
             }
         }
@@ -191,14 +208,18 @@ object WorldUtil {
      * @return Y coordinate of the highest non-air block in the column
      */
     fun getHighestYAtXZ(x: Int, z: Int): Int {
-        return mc.world!!.getChunk(BlockPos(x, 0, z)).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
+        return mc.world!!.getChunk(BlockPos(x, 0, z))
+            .sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z)
     }
 
     val BlockPos.block: Block
         get() = mc.world!!.getBlockState(this).block
 
-    val BlockPos.vec3d: Vec3d
+    val BlockPos.vec: Vec3d
         get() = Vec3d(this.x.toDouble(), this.y.toDouble(), this.z.toDouble())
+
+    val Vec3d.blockPos: BlockPos
+        get() = BlockPos(this.x.roundToInt(), this.y.roundToInt(), this.z.roundToInt())
 
     val BlockPos.centeredVec3d: Vec3d
         get() = Vec3d(this.x.toDouble() + 0.5, this.y.toDouble(), this.z.toDouble() + 0.5)
@@ -219,7 +240,14 @@ object WorldUtil {
         ToastClient.eventBus.register(this)
     }
 
-    fun getSphere(loc: BlockPos, r: Int, h: Int, hollow: Boolean, sphere: Boolean, plus_y: Int): List<BlockPos> {
+    fun getSphere(
+        loc: BlockPos,
+        r: Int,
+        h: Int,
+        hollow: Boolean,
+        sphere: Boolean,
+        plus_y: Int
+    ): List<BlockPos> {
         val circleblocks: ArrayList<BlockPos> = ArrayList()
         val cx = loc.x
         val cy = loc.y
@@ -232,7 +260,8 @@ object WorldUtil {
                 do {
                     val f = if (sphere) cy.toFloat() + r else (cy + h).toFloat()
                     if (y >= f) break
-                    val dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (if (sphere) (cy - y) * (cy - y) else 0).toDouble()
+                    val dist =
+                        (cx - x) * (cx - x) + (cz - z) * (cz - z) + (if (sphere) (cy - y) * (cy - y) else 0).toDouble()
                     if (!(dist >= (r * r).toDouble() || hollow && dist < ((r - 1.0f) * (r - 1.0f)).toDouble())) {
                         val l = BlockPos(x, y + plus_y, z)
                         circleblocks.add(l)
@@ -254,11 +283,11 @@ object WorldUtil {
         for (i in -range..range) {
             for (j in -range..range) {
                 for (k in -range..range) {
-                    val distance: Double = ((x + x - i) * (x + x - i) + (y + y - j) * (y + y - j) + (z + z - k) * (z + z - k)).toDouble()
+                    val distance: Double =
+                        ((x + x - i) * (x + x - i) + (y + y - j) * (y + y - j) + (z + z - k) * (z + z - k)).toDouble()
                     if (distance < range * range) {
                         val block = BlockPos(x, y, z)
                         blocks.add(block)
-                        print("x:${i - x}, y:${j - y}, z:${k - z}\n")
                     }
                 }
             }
@@ -266,13 +295,43 @@ object WorldUtil {
         return blocks
     }
 
-    val BEDS = listOf(Blocks.BLACK_BED, Blocks.BLUE_BED, Blocks.BROWN_BED, Blocks.CYAN_BED, Blocks.GRAY_BED, Blocks.GREEN_BED, Blocks.LIGHT_BLUE_BED, Blocks.LIGHT_GRAY_BED, Blocks.LIME_BED, Blocks.MAGENTA_BED, Blocks.ORANGE_BED, Blocks.PINK_BED, Blocks.PURPLE_BED, Blocks.RED_BED, Blocks.WHITE_BED, Blocks.YELLOW_BED)
+    val BEDS = listOf(
+        Blocks.BLACK_BED,
+        Blocks.BLUE_BED,
+        Blocks.BROWN_BED,
+        Blocks.CYAN_BED,
+        Blocks.GRAY_BED,
+        Blocks.GREEN_BED,
+        Blocks.LIGHT_BLUE_BED,
+        Blocks.LIGHT_GRAY_BED,
+        Blocks.LIME_BED,
+        Blocks.MAGENTA_BED,
+        Blocks.ORANGE_BED,
+        Blocks.PINK_BED,
+        Blocks.PURPLE_BED,
+        Blocks.RED_BED,
+        Blocks.WHITE_BED,
+        Blocks.YELLOW_BED
+    )
     val AIR = listOf(Blocks.AIR, Blocks.CAVE_AIR)
     val REPLACEABLE = listOf(
-        Blocks.AIR, Blocks.CAVE_AIR, Blocks.LAVA, Blocks.WATER,
-        Blocks.GRASS, Blocks.TALL_GRASS, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS, Blocks.FERN, Blocks.DEAD_BUSH,
-        Blocks.VINE, Blocks.FIRE, Blocks.STRUCTURE_VOID
+        Blocks.AIR,
+        Blocks.CAVE_AIR,
+        Blocks.LAVA,
+        Blocks.WATER,
+        Blocks.GRASS,
+        Blocks.TALL_GRASS,
+        Blocks.SEAGRASS,
+        Blocks.TALL_SEAGRASS,
+        Blocks.FERN,
+        Blocks.DEAD_BUSH,
+        Blocks.VINE,
+        Blocks.FIRE,
+        Blocks.STRUCTURE_VOID
     )
+
+    val BlockPos.isAir: Boolean
+        get() = mc.world?.isAir(this) ?: false
 
     fun openBlock(pos: BlockPos) {
         val direction: Array<Direction> = Direction.values()
@@ -280,12 +339,17 @@ object WorldUtil {
             val neighborBlock = mc.world!!.getBlockState(pos.offset(f)).block
             val vecPos = Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
             if (REPLACEABLE.contains(neighborBlock)) {
-                mc.interactionManager!!.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, BlockHitResult(vecPos, f.opposite, pos, false))
+                mc.interactionManager!!.interactBlock(
+                    mc.player,
+                    mc.world,
+                    Hand.MAIN_HAND,
+                    BlockHitResult(vecPos, f.opposite, pos, false)
+                )
                 return
             }
         }
     }
-    
+
     //what i mean with special items are like if you rightclick a cauldron with a waterbottle it fills it
     private val NONSPECIAL_INTERACTIVE: MutableList<Block> = listOf(
         Blocks.DISPENSER,
@@ -388,7 +452,8 @@ object WorldUtil {
     }
 
     fun isFluid(pos: BlockPos): Boolean {
-        val fluids: List<Material> = Arrays.asList(Material.WATER, Material.LAVA, Material.UNDERWATER_PLANT)
+        val fluids: List<Material> =
+            Arrays.asList(Material.WATER, Material.LAVA, Material.UNDERWATER_PLANT)
         return fluids.contains(MinecraftClient.getInstance().world!!.getBlockState(pos).material)
     }
 
@@ -415,7 +480,13 @@ object WorldUtil {
                     val dh = sqrt(dx * dx + dz * dz)
                     val yaw = Math.toDegrees(atan2(dz, dx)).toFloat() - 90
                     val pitch = (-Math.toDegrees(atan2(dy, dh))).toFloat()
-                    player.networkHandler.sendPacket(PlayerMoveC2SPacket.LookOnly(yaw, pitch, player.isOnGround))
+                    player.networkHandler.sendPacket(
+                        PlayerMoveC2SPacket.LookOnly(
+                            yaw,
+                            pitch,
+                            player.isOnGround
+                        )
+                    )
                 }
                 if (isRightClickable(offsetBlock)) {
                     player!!.networkHandler.sendPacket(
@@ -462,7 +533,13 @@ object WorldUtil {
         BlockPos(0, 0, 1),
         BlockPos(0, 0, -1),
     )
-    fun BlockPos.isSurrounded(vararg acceptableBlocks: Block = arrayOf(Blocks.OBSIDIAN, Blocks.BEDROCK)): Boolean {
+
+    fun BlockPos.isSurrounded(
+        vararg acceptableBlocks: Block = arrayOf(
+            Blocks.OBSIDIAN,
+            Blocks.BEDROCK
+        )
+    ): Boolean {
         for (offset in surroundOffsets) {
             if (!acceptableBlocks.contains(this.add(offset).block)) {
                 return false
@@ -471,13 +548,37 @@ object WorldUtil {
         return true
     }
 
-    fun BlockPos.isHole(airOnly: Boolean = false, vararg acceptableBlocks: Block = arrayOf(Blocks.OBSIDIAN, Blocks.BEDROCK)): Boolean {
+    fun BlockPos.isHole(
+        airOnly: Boolean = false,
+        vararg acceptableBlocks: Block = arrayOf(Blocks.OBSIDIAN, Blocks.BEDROCK)
+    ): Boolean {
         if (airOnly && !AIR.contains(this.block)) {
             return false
         }
 
-        return acceptableBlocks.contains(this.add(0, -1, 0).block) && this.isSurrounded(*acceptableBlocks)
+        return acceptableBlocks.contains(
+            this.add(
+                0,
+                -1,
+                0
+            ).block
+        ) && this.isSurrounded(*acceptableBlocks)
     }
+
+    val BlockPos.isCrystalSpot: Boolean
+        get() = (this.block == Blocks.BEDROCK || this.block == Blocks.OBSIDIAN)
+                && this.up().isAir
+                && mc.world!!.getOtherEntities(
+            null,
+            Box(
+                this.vec.x,
+                this.vec.y + 1.0,
+                this.vec.z,
+                this.vec.x + 1.0,
+                this.vec.y + 3.0,
+                this.vec.z + 1.0
+            )
+        ).isEmpty()
 
     private val onUseMethod = AbstractBlock::onUse::javaMethod.get()!!
 
@@ -490,4 +591,9 @@ object WorldUtil {
         }
         return@filter false
     }.collect(Collectors.toList())
+
+    fun World.crystalMultiplier(): Float {
+        return if (difficulty.id == 0) 0.0f else if (difficulty.id == 2) 1.0f else if (difficulty.id == 1) 0.5f else 1.5f
+    }
+
 }

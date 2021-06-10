@@ -25,8 +25,7 @@ object ModuleManager : IToastClient {
     var modules: ArrayList<Module> = ArrayList()
 
     /**
-     * A-Z
-     * Commented Modules are either incomplete/broken/dev module
+     * A-Z for each Category
      */
     fun init() {
 
@@ -41,6 +40,7 @@ object ModuleManager : IToastClient {
             AutoArmour,
             AutoRespawn,
             AutoTotem,
+            CrystalAura,
             KillAura,
             /** Misc **/
             CustomChat,
