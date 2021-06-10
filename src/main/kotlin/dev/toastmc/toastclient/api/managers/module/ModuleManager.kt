@@ -70,7 +70,6 @@ object ModuleManager : IToastClient {
             NoRender,
             Particles,
             TestModule,
-            Tracers,
             ViewModel
         )
 
