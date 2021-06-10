@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.font;
+package dev.toastmc.toastclient.api.util.font;
 
 /**
  * Identifies a single glyph in the layed-out string. Includes a reference to a GlyphCache.Entry with the OpenGL texture ID

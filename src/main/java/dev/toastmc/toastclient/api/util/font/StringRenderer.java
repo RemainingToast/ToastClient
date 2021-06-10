@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.font;
+package dev.toastmc.toastclient.api.util.font;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.render.BufferBuilder;
@@ -86,7 +86,6 @@ public class StringRenderer
     //todo Add support for the "k" code which randomly replaces letters on each render (used on
     //todo Pre-sort by texture to minimize binds; can store colors per glyph in string cache
     //todo Optimize the underline/strikethrough drawing to draw a single line for each run
-    @SuppressWarnings("unused")
     public int drawString(String str, float startX, float startY, int initialColor, boolean shadowFlag)
     {
         /* Check for invalid arguments */

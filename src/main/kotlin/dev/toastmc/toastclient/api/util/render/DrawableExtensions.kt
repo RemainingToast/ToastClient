@@ -2,6 +2,8 @@ package dev.toastmc.toastclient.api.util.render
 
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.ToastColor
+import dev.toastmc.toastclient.api.util.font.FontAccessor
+import dev.toastmc.toastclient.impl.module.client.Font
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.render.BufferRenderer
@@ -42,9 +44,13 @@ interface DrawableExtensions {
     ) {
         matrices.push()
         matrices.scale(scale, scale, 1f)
-        matrices.translate((centerX / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
         startSmooth()
-        DrawableHelper.drawCenteredText(matrices, textRenderer, text, 0, -textRenderer.fontHeight / 2, color.aBGRPackedInt)
+        if (Font.isEnabled()) {
+            FontAccessor.fontRenderer.drawString(text.asString(), centerX / scale, (y + -textRenderer.fontHeight / 2f) / scale, color.aBGRPackedInt, true)
+        } else {
+            matrices.translate((centerX / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
+            DrawableHelper.drawCenteredText(matrices, textRenderer, text, 0, -textRenderer.fontHeight / 2, color.aBGRPackedInt)
+        }
         matrices.pop()
         endSmooth()
     }
@@ -73,9 +79,13 @@ interface DrawableExtensions {
     ) {
         matrices.push()
         matrices.scale(scale, scale, 1f)
-        matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), z)
         startSmooth()
-        textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color.aBGRPackedInt)
+        if (Font.isEnabled()) {
+            FontAccessor.fontRenderer.drawString(text.asString(), x / scale, (y + -textRenderer.fontHeight / 2f) / scale, color.aBGRPackedInt, true)
+        } else {
+            matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), z)
+            textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color.aBGRPackedInt)
+        }
         matrices.pop()
         endSmooth()
     }
