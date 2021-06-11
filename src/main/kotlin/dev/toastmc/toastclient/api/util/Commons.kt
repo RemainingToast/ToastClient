@@ -1,21 +1,15 @@
 package dev.toastmc.toastclient.api.util
 
-import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.mixin.client.IChatHud
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import net.minecraft.text.MutableText
-import net.minecraft.text.Style
 import net.minecraft.text.Text
 
 val mc: MinecraftClient = MinecraftClient.getInstance()
 
 fun lit(string: String): MutableText {
     return LiteralText(string)
-}
-
-fun font(string: String): MutableText {
-    return LiteralText(string).setStyle(Style.EMPTY.withFont(Font.getFont()))
 }
 
 fun message(text: Text) {

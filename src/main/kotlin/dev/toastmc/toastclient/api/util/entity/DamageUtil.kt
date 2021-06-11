@@ -6,6 +6,7 @@ import net.minecraft.entity.DamageUtil
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.BlockPos
@@ -14,14 +15,28 @@ import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Difficulty
 import net.minecraft.world.explosion.Explosion
-import java.util.*
 
 object DamageUtil {
-    private val damageCache: HashMap<Entity, Float> = HashMap()
 
-    fun getExplosionDamage(basePos: BlockPos, target: LivingEntity): Float {
+    fun LivingEntity.getCrystalDamage(basePos: BlockPos): Float {
+        return getCrystalDamage(basePos, this)
+    }
+
+    fun LivingEntity.getCrystalDamage(crystal: EndCrystalEntity): Float {
+        return getCrystalDamage(crystal, this)
+    }
+
+    @JvmName("getCrystalDamage1")
+    fun BlockPos.getCrystalDamage(entity: LivingEntity): Float {
+        return getCrystalDamage(this, entity)
+    }
+
+    fun getCrystalDamage(crystal: EndCrystalEntity, target: LivingEntity): Float {
+        return getCrystalDamage(crystal.blockPos.down(), target)
+    }
+
+    fun getCrystalDamage(basePos: BlockPos, target: LivingEntity): Float {
         if (mc.world!!.difficulty == Difficulty.PEACEFUL) return 0f
-        if (damageCache.containsKey(target)) return damageCache[target]!!
         val crystalPos: Vec3d = Vec3d.of(basePos).add(0.5, 1.0, 0.5)
         val explosion = Explosion(
             mc.world,
@@ -47,8 +62,8 @@ object DamageUtil {
                     ).toDouble(),
                     MathHelper.floor(crystalPos.z + power + 1.0).toDouble()
                 )
-            ).contains(target)) {
-            damageCache[target] = 0f
+            ).contains(target)
+        ) {
             return 0f
         }
         if (!target.isImmuneToExplosion) {
@@ -67,12 +82,15 @@ object DamageUtil {
 
                     // entity_1.damage(explosion.getDamageSource(), (float)((int)((double_14 *
                     // double_14 + double_14) / 2.0D * 7.0D * power + 1.0D)));
-                    var toDamage = Math.floor((double_14 * double_14 + double_14) / 2.0 * 7.0 * power + 1.0).toFloat()
+                    var toDamage =
+                        Math.floor((double_14 * double_14 + double_14) / 2.0 * 7.0 * power + 1.0)
+                            .toFloat()
                     if (target is PlayerEntity) {
                         if (mc.world!!.difficulty == Difficulty.EASY) toDamage = Math.min(
                             toDamage / 2.0f + 1.0f,
                             toDamage
-                        ) else if (mc.world!!.difficulty == Difficulty.HARD) toDamage = toDamage * 3.0f / 2.0f
+                        ) else if (mc.world!!.difficulty == Difficulty.HARD) toDamage =
+                            toDamage * 3.0f / 2.0f
                     }
 
                     // Armor
@@ -84,28 +102,27 @@ object DamageUtil {
 
                     // Enchantments
                     if (target.hasStatusEffect(StatusEffects.RESISTANCE)) {
-                        val resistance = (target.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
+                        val resistance =
+                            (target.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
                         val int_2 = 25 - resistance
                         val resistance_1 = toDamage * int_2
                         toDamage = Math.max(resistance_1 / 25.0f, 0.0f)
                     }
-                    if (toDamage <= 0.0f) { toDamage = 0.0f } else {
+                    if (toDamage <= 0.0f) {
+                        toDamage = 0.0f
+                    } else {
                         val protAmount = EnchantmentHelper.getProtectionAmount(
                             target.armorItems,
                             explosion.damageSource
                         )
-                        if (protAmount > 0) { toDamage = DamageUtil.getInflictedDamage(toDamage, protAmount.toFloat()) }
+                        if (protAmount > 0) {
+                            toDamage = DamageUtil.getInflictedDamage(toDamage, protAmount.toFloat())
+                        }
                     }
-                    damageCache[target] = toDamage
                     return toDamage
                 }
             }
         }
-        damageCache[target] = 0f
         return 0f
-    }
-
-    fun getDamageCache(): HashMap<Entity, Float> {
-        return damageCache
     }
 }

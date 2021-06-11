@@ -25,8 +25,7 @@ object ModuleManager : IToastClient {
     var modules: ArrayList<Module> = ArrayList()
 
     /**
-     * A-Z
-     * Commented Modules are either incomplete/broken/dev module
+     * A-Z for each Category
      */
     fun init() {
 
@@ -41,6 +40,7 @@ object ModuleManager : IToastClient {
             AutoArmour,
             AutoRespawn,
             AutoTotem,
+            CrystalAura,
             KillAura,
             /** Misc **/
             CustomChat,
@@ -70,7 +70,6 @@ object ModuleManager : IToastClient {
             NoRender,
             Particles,
             TestModule,
-            Tracers,
             ViewModel
         )
 
@@ -89,8 +88,18 @@ object ModuleManager : IToastClient {
         Collections.sort(modules, Comparator.comparing(Module::getName))
     }
 
+    fun getModule(name: String): Module? {
+        for (mod in modules) {
+            if (mod.getName().equals(name, true)) {
+                return mod
+            }
+        }
+        return null
+    }
+
     fun getModulesByCategory(category: Module.Category): ArrayList<Module>? {
-        return modules.stream()
+        return modules
+            .stream()
             .filter { module: Module -> module.getCategory() == category }
             .collect(Collectors.toCollection { ArrayList() })
     }

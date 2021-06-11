@@ -8,6 +8,7 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
 
     var slowdown = false
     var water = bool("InWater", false)
+    var lava = bool("InLava", false)
     var autoSprint = bool("AutoSprint", true)
 
     override fun onUpdate() {
@@ -25,6 +26,9 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
             } else if (mc.player!!.isInsideWaterOrBubbleColumn && water.value) {
                 mc.player!!.velocity = Vec3d(0.0, mc.player!!.velocity.y, 0.0)
                 mc.player!!.updateVelocity(0.275f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
+            } else if (mc.player!!.isInLava && lava.value) {
+                mc.player!!.velocity = Vec3d(0.0, mc.player!!.velocity.y, 0.0)
+                mc.player!!.updateVelocity(0.273f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
             }
 
             if (slowdown) {

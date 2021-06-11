@@ -1,4 +1,4 @@
-package dev.toastmc.toastclient.api.font;
+package dev.toastmc.toastclient.api.util.font;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

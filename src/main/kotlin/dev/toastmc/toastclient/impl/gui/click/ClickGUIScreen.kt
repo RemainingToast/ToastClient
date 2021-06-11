@@ -8,9 +8,10 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import java.util.*
 
+
 class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
 
-    private val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
+    val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
 
     var keybindingModule: Module? = null
 
