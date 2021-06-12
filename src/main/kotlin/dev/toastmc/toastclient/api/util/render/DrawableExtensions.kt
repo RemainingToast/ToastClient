@@ -3,8 +3,8 @@ package dev.toastmc.toastclient.api.util.render
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.ToastColor
 import dev.toastmc.toastclient.api.util.font.FontAccessor
+import dev.toastmc.toastclient.api.util.mc
 import dev.toastmc.toastclient.impl.module.client.Font
-import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.render.BufferRenderer
 import net.minecraft.client.render.Tessellator
@@ -35,7 +35,6 @@ interface DrawableExtensions {
 
     fun drawCenteredText(
         matrices: MatrixStack,
-        textRenderer: TextRenderer,
         text: Text,
         centerX: Int,
         y: Int,
@@ -54,8 +53,8 @@ interface DrawableExtensions {
                 true
             )
         } else {
-            matrices.translate((centerX / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
-            DrawableHelper.drawCenteredText(matrices, textRenderer, text, 0, -textRenderer.fontHeight / 2, color.aBGRPackedInt)
+            matrices.translate((centerX / scale).toDouble(), ((y + mc.textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
+            DrawableHelper.drawCenteredText(matrices, mc.textRenderer, text, 0, -mc.textRenderer.fontHeight / 2, color.aBGRPackedInt)
         }
         matrices.pop()
         endSmooth()
@@ -63,19 +62,17 @@ interface DrawableExtensions {
 
     fun drawText(
         matrices: MatrixStack,
-        textRenderer: TextRenderer,
         text: Text,
         x: Int,
         y: Int,
         color: ToastColor,
         scale: Float,
     ) {
-        drawText(matrices, textRenderer, text, x, y, 0.0, color, scale)
+        drawText(matrices, text, x, y, 0.0, color, scale)
     }
 
     fun drawText(
         matrices: MatrixStack,
-        textRenderer: TextRenderer,
         text: Text,
         x: Int,
         y: Int,
@@ -95,8 +92,8 @@ interface DrawableExtensions {
                 true
             )
         } else {
-            matrices.translate((x / scale).toDouble(), ((y + textRenderer.fontHeight / 2f) / scale).toDouble(), z)
-            textRenderer.drawWithShadow(matrices, text, 0f, -textRenderer.fontHeight / 2f, color.aBGRPackedInt)
+            matrices.translate((x / scale).toDouble(), ((y + mc.textRenderer.fontHeight / 2f) / scale).toDouble(), z)
+            mc.textRenderer.drawWithShadow(matrices, text, 0f, -mc.textRenderer.fontHeight / 2f, color.aBGRPackedInt)
         }
         matrices.pop()
         endSmooth()

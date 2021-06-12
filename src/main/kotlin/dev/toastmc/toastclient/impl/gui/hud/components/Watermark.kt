@@ -20,7 +20,6 @@ object Watermark : HUDComponent("Watermark") {
     override fun render(matrices: MatrixStack) {
         DrawableUtil.drawText(
             matrices,
-            mc.textRenderer,
             lit(clientName),
             x.roundToInt(),
             y.roundToInt(),
