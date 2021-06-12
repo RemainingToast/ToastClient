@@ -26,9 +26,6 @@ public abstract class MixinMinecraftClient {
 
     @Shadow public ClientPlayerEntity player;
 
-    @Shadow @Final
-    private Session session;
-
     @Inject(
             at = {@At(value = "INVOKE")},
             method = {"tick"},

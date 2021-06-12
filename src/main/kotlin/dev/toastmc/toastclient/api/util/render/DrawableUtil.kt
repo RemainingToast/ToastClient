@@ -2,9 +2,7 @@ package dev.toastmc.toastclient.api.util.render
 
 import dev.toastmc.toastclient.api.util.ToastColor
 import dev.toastmc.toastclient.api.util.lit
-import dev.toastmc.toastclient.api.util.mc
 import net.minecraft.client.util.math.MatrixStack
-import org.lwjgl.opengl.GL11
 import java.awt.Rectangle
 
 object DrawableUtil : DrawableExtensions {
@@ -21,12 +19,12 @@ object DrawableUtil : DrawableExtensions {
 
     fun drawCenteredTextBox(matrices: MatrixStack, text: String, rect: Rectangle, bgColor: ToastColor, textColor: ToastColor, textScale: Float) {
         drawRect(matrices, rect.x - 2, rect.y - 2, rect.width, rect.height, bgColor)
-        drawCenteredText(matrices, mc.textRenderer, lit(text), rect.centerX.toInt(), rect.y, textColor, textScale)
+        drawCenteredText(matrices, lit(text), rect.centerX.toInt(), rect.y, textColor, textScale)
     }
 
     fun drawTextBox(matrices: MatrixStack, text: String, rect: Rectangle, bgColor: ToastColor, textColor: ToastColor, textScale: Float) {
         drawRect(matrices, rect.x - 2, rect.y - 2, rect.width, rect.height, bgColor)
-        drawText(matrices, mc.textRenderer, lit(text), rect.x, rect.y, textColor, textScale)
+        drawText(matrices, lit(text), rect.x, rect.y, textColor, textScale)
     }
 
     fun drawHollowRect(matrices: MatrixStack, x: Int, y: Int, width: Int, height: Int, lineWidth: Int, color: ToastColor) {

@@ -10,4 +10,7 @@ public interface IMinecraftClient {
     @Accessor("itemUseCooldown")
     void setItemUseCooldown(int itemUseCooldown);
 
+    @Accessor("currentFps")
+    int getCurrentFps();
+
 }

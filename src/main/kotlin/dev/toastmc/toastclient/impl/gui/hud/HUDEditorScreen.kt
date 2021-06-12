@@ -16,6 +16,7 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
         components.add(Totems)
         components.add(Welcomer)
         components.add(Coordinates)
+        components.add(FPS)
         components.add(TPS)
         components.add(Time)
         components.add(Armor)

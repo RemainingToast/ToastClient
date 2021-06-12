@@ -14,6 +14,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
     val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
 
     var keybindingModule: Module? = null
+    var focusedPanel: ClickGUIPanel? = null
 
     init {
         var x = 20

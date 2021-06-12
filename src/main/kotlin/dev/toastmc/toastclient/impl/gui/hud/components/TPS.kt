@@ -23,7 +23,6 @@ object TPS : HUDComponent("TPS") {
     override fun render(matrices: MatrixStack) {
         DrawableUtil.drawText(
             matrices,
-            mc.textRenderer,
             lit("TPS: " + getTickRate()),
             x.roundToInt(),
             y.roundToInt(),
@@ -35,8 +34,8 @@ object TPS : HUDComponent("TPS") {
     fun getTickRate(): Float {
         var tickCount = 0
         var tickRate = 0.0f
-        for (i in 0 until this.ticks.size) {
-            val tick: Float = this.ticks.get(i)
+        for (i in this.ticks.indices) {
+            val tick: Float = this.ticks[i]
             if (tick > 0.0f) {
                 tickRate += tick
                 tickCount++
