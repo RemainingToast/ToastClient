@@ -16,6 +16,7 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
         components.add(Totems)
         components.add(Welcomer)
         components.add(Coordinates)
+        components.add(FPS)
         components.add(TPS)
         components.add(Time)
         components.add(Armor)
@@ -48,7 +49,12 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
         for (component in components) {
-            component.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+            if(component.hovering || component.labelHover) {
+                component.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+                components.remove(component)
+                components.add(0, component)
+                break
+            }
         }
         return false
     }

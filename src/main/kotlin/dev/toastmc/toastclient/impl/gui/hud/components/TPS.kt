@@ -21,11 +21,11 @@ object TPS : HUDComponent("TPS") {
     }
 
     override fun render(matrices: MatrixStack) {
+        val text = lit("TPS: " + getTickRate())
         DrawableUtil.drawText(
             matrices,
-            mc.textRenderer,
-            lit("TPS: " + getTickRate()),
-            x.roundToInt(),
+            text,
+            getTextPositionWithOffset(text),
             y.roundToInt(),
             ClickGUI.FONT_COLOR,
             1f
@@ -35,8 +35,8 @@ object TPS : HUDComponent("TPS") {
     fun getTickRate(): Float {
         var tickCount = 0
         var tickRate = 0.0f
-        for (i in 0 until this.ticks.size) {
-            val tick: Float = this.ticks.get(i)
+        for (i in this.ticks.indices) {
+            val tick: Float = this.ticks[i]
             if (tick > 0.0f) {
                 tickRate += tick
                 tickCount++

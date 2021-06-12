@@ -46,7 +46,7 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
     private var textScaleModule = 0.90f
     private var textScaleSetting = 0.915f
 
-    private val hoveringCategory: Boolean
+    val hoveringCategory: Boolean
         get() {
             return hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt() - 3, width, height - 3))
         }
@@ -179,7 +179,7 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
             if (hovering) HOVER_COLOR else INACTIVE_COLOR
 
         DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, bgColor)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mod.getName()), rect.x + 3, rect.y + 3, FONT_COLOR, textScaleModule)
+        DrawableUtil.drawText(matrices, lit(mod.getName()), rect.x + 3, rect.y + 3, FONT_COLOR, textScaleModule)
         level++
 
         for ((module, expanded) in modsExpanded) {
@@ -232,9 +232,9 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
 
         if(ClickGUI.SCREEN.keybindingModule == mod) {
             DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height, if(hovering) COLOR_HOVER else COLOR)
-            DrawableUtil.drawText(matrices, mc.textRenderer, lit("Press a key..."), rect.x + 4, rect.y + 3, FONT_COLOR, textScaleSetting)
+            DrawableUtil.drawText(matrices, lit("Press a key..."), rect.x + 4, rect.y + 3, FONT_COLOR, textScaleSetting)
         } else {
-            DrawableUtil.drawText(matrices, mc.textRenderer, lit("Keybind " + KeyUtil.getKeyName(mod.getKey().code)), rect.x + 4, rect.y + 3, FONT_COLOR, textScaleSetting)
+            DrawableUtil.drawText(matrices, lit("Keybind " + KeyUtil.getKeyName(mod.getKey().code)), rect.x + 4, rect.y + 3, FONT_COLOR, textScaleSetting)
         }
 
         if(hovering && leftClicked) {
@@ -250,8 +250,8 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
         val i = if (group.isExpanded) 1 else 0
 
         DrawableUtil.drawRect(matrices, rect.x, rect.y, rect.width, rect.height - i, if(hovering) COLOR_HOVER else COLOR)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(group.name), rect.x + 4, rect.y + 3, FONT_COLOR,textScaleSetting)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y + 3, FONT_COLOR,textScaleSetting)
+        DrawableUtil.drawText(matrices, lit(group.name), rect.x + 4, rect.y + 3, FONT_COLOR,textScaleSetting)
+        DrawableUtil.drawText(matrices, lit(str), rect.x + (rect.width - mc.textRenderer.getWidth(str)) - 5, rect.y + 3, FONT_COLOR,textScaleSetting)
 
         if(hovering && rightClicked) {
             group.isExpanded = !group.isExpanded
@@ -268,7 +268,7 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
             DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(bool.enabled()) COLOR_HOVER else HOVER_COLOR)
         if(bool.enabled())
             DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, rect.width - (t * 2), rect.height, if(hovering) COLOR_HOVER else COLOR)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(bool.name), rect.x + 4 + t, rect.y + 3 - i, FONT_COLOR, textScaleSetting)
+        DrawableUtil.drawText(matrices, lit(bool.name), rect.x + 4 + t, rect.y + 3 - i, FONT_COLOR, textScaleSetting)
 
         if (hovering && leftClicked) {
             bool.value = !bool.value
@@ -286,8 +286,8 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
             DrawableUtil.drawRect(matrices, rect.x + t, rect.y - i, progress, rect.height, if(hovering) COLOR_HOVER else COLOR)
         if (hovering)
             DrawableUtil.drawRect(matrices, rect.x + progress + t, rect.y - i, rect.width - progress - (t * 2), rect.height, HOVER_COLOR)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(setting.name), rect.x + 4 + t, rect.y + 3, FONT_COLOR, textScaleSetting)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5 + t,rect.y + 3, FONT_COLOR, textScaleSetting)
+        DrawableUtil.drawText(matrices, lit(setting.name), rect.x + 4 + t, rect.y + 3, FONT_COLOR, textScaleSetting)
+        DrawableUtil.drawText(matrices, lit(setting.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(setting.stringValue)) - 5 + t,rect.y + 3, FONT_COLOR, textScaleSetting)
 
         if(hovering && (dragging || leftClicked)) {
             setting.value = clamp(
@@ -302,8 +302,8 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
         val rect = Rectangle((x + 3).roundToInt(), (y + level + height * level).roundToInt() - 6, width - 10, height + 1)
         val hovering = hover(mouseX, mouseY, rect)
 
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.name), rect.x + 4, rect.y + 3, FONT_COLOR, textScaleSetting)
-        DrawableUtil.drawText(matrices, mc.textRenderer, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(lit(mode.stringValue))), rect.y + 3, FONT_COLOR, textScaleSetting)
+        DrawableUtil.drawText(matrices, lit(mode.name), rect.x + 4, rect.y + 3, FONT_COLOR, textScaleSetting)
+        DrawableUtil.drawText(matrices, lit(mode.stringValue), rect.x + (rect.width - mc.textRenderer.getWidth(lit(mode.stringValue))), rect.y + 3, FONT_COLOR, textScaleSetting)
 
         if (hovering) {
             when {

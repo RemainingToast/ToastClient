@@ -16,7 +16,7 @@ object Velocity : Module("Velocity", Category.PLAYER) {
 
     val horizontal = number("Horizontal", 0.0,0.0,100.0, 2)
     val vertical = number("Vertical", 0.0, 0.0,100.0, 2)
-    val delay = number("Delay",170.0, 0.0, 1000.0, 2)
+    val delay = number("Delay",0.0, 0.0, 1000.0, 2)
 
     private var oldVelX = Double.NaN
     private var oldVelY = Double.NaN
