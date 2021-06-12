@@ -49,8 +49,13 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var spot: BlockPos? = null
     var placed = 0
 
+    var counter: Byte = 0
+
     override fun onUpdate() {
         if (mc.player == null) return
+        counter++
+        if (counter < 2) return
+        else counter = 0
 
         GlobalScope.async {
             prePlace()
