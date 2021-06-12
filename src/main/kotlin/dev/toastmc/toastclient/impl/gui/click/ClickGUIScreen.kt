@@ -12,6 +12,7 @@ import java.util.*
 class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
 
     val panels: EnumMap<Module.Category, ClickGUIPanel> = EnumMap(Module.Category::class.java)
+    val panelOrder: ArrayList<Module.Category> = ArrayList()
 
     var keybindingModule: Module? = null
     var focusedPanel: ClickGUIPanel? = null
@@ -20,7 +21,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
         var x = 20
         for (category in Module.Category.values()) {
             if(category == Module.Category.NONE) continue
-
+            panelOrder.add(category)
             panels.putIfAbsent(category, ClickGUIPanel(category, x.toDouble(), 20.0))
             x += 103
         }
@@ -51,8 +52,14 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
     }
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
-        for (panel in panels.values) {
-            panel.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+        for (category in panelOrder) {
+            val panel = panels[category]!!
+            if(panel.hoveringCategory) {
+                panel.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+                panelOrder.remove(category)
+                panelOrder.add(0, category)
+                break
+            }
         }
         return false
     }

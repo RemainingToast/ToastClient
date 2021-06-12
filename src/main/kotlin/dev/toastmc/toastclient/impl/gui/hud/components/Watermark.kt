@@ -18,10 +18,11 @@ object Watermark : HUDComponent("Watermark") {
     }
 
     override fun render(matrices: MatrixStack) {
+        val text = lit(clientName)
         DrawableUtil.drawText(
             matrices,
-            lit(clientName),
-            x.roundToInt(),
+            text,
+            getTextPositionWithOffset(text),
             y.roundToInt(),
             ClickGUI.FONT_COLOR,
             1f

@@ -18,15 +18,15 @@ object FPS : HUDComponent("FPS") {
     }
 
     override fun render(matrices: MatrixStack) {
-        val fps = "FPS: ${(mc as IMinecraftClient).currentFps}"
+        val fps = lit("FPS: ${(mc as IMinecraftClient).currentFps}")
 
-        width = getStringWidth(fps)
+        width = getStringWidth(fps.asString())
         height = mc.textRenderer.fontHeight
 
         DrawableUtil.drawText(
             matrices,
-            lit(fps),
-            x.roundToInt(),
+            fps,
+            getTextPositionWithOffset(fps),
             y.roundToInt(),
             ClickGUI.FONT_COLOR,
             1f

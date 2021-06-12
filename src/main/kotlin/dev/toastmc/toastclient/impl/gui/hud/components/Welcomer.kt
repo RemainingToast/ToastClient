@@ -18,10 +18,11 @@ object Welcomer : HUDComponent("Welcomer") {
     }
 
     override fun render(matrices: MatrixStack) {
+        val text = lit("Welcome to toast client, " + mc.player!!.displayName.asString() + " :^)")
         DrawableUtil.drawText(
             matrices,
-            lit("Welcome to toast client, " + mc.player!!.displayName.asString() + " :^)"),
-            x.roundToInt(),
+            text,
+            getTextPositionWithOffset(text),
             y.roundToInt(),
             ClickGUI.FONT_COLOR,
             1f

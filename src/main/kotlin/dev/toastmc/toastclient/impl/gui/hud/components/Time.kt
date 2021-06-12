@@ -22,10 +22,11 @@ object Time : HUDComponent("Time") {
     }
 
     override fun render(matrices: MatrixStack) {
+        val text = lit(formatter.format(date))
         DrawableUtil.drawText(
             matrices,
-            lit(formatter.format(date)),
-            x.roundToInt(),
+            text,
+            getTextPositionWithOffset(text),
             y.roundToInt(),
             ClickGUI.FONT_COLOR,
             1f

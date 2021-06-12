@@ -4,6 +4,7 @@ import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.util.ToastColor
 import dev.toastmc.toastclient.api.util.render.DrawableUtil
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.text.MutableText
 import java.awt.Color
 import java.awt.Point
 import java.awt.Rectangle
@@ -26,9 +27,9 @@ open class HUDComponent(var name: String) : IToastClient {
     private var clickedOnce = false
     private var rightClicked = false
     private var leftClicked = false
-    private var labelHover = false
+    var labelHover = false
 
-    private val hovering: Boolean
+    val hovering: Boolean
         get() {
             return hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt(), width, height))
         }
@@ -126,6 +127,10 @@ open class HUDComponent(var name: String) : IToastClient {
 
     private fun hover(mouseX: Double, mouseY: Double, rect: Rectangle): Boolean {
         return mouseX >= rect.x && mouseX <= rect.width + rect.x && mouseY >= rect.y && mouseY <= rect.height + rect.y
+    }
+
+    fun getTextPositionWithOffset(text: MutableText): Int {
+        return if(x.roundToInt() > (mc.window.scaledWidth / mc.window.scaleFactor)) (x + width - mc.textRenderer.getWidth(text)).roundToInt() else x.roundToInt()
     }
 
     enum class SnapPoint {

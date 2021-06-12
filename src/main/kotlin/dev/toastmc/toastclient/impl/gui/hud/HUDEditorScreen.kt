@@ -49,7 +49,12 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
         for (component in components) {
-            component.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+            if(component.hovering || component.labelHover) {
+                component.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+                components.remove(component)
+                components.add(0, component)
+                break
+            }
         }
         return false
     }
