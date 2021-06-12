@@ -46,7 +46,7 @@ class ClickGUIPanel(var category: Module.Category, var x: Double, var y: Double)
     private var textScaleModule = 0.90f
     private var textScaleSetting = 0.915f
 
-    private val hoveringCategory: Boolean
+    val hoveringCategory: Boolean
         get() {
             return hover(mouseX, mouseY, Rectangle(x.roundToInt(), y.roundToInt() - 3, width, height - 3))
         }

@@ -31,7 +31,7 @@ object Totems : HUDComponent("Totems") {
         DrawableUtil.drawText(
             matrices,
             text,
-            x.roundToInt() + width - 8,
+            getTextPositionWithOffset(text) + width - 8,
             y.roundToInt() + height - 8,
             1000.0,
             ClickGUI.FONT_COLOR,

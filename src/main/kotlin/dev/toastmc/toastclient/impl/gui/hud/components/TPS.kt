@@ -21,10 +21,11 @@ object TPS : HUDComponent("TPS") {
     }
 
     override fun render(matrices: MatrixStack) {
+        val text = lit("TPS: " + getTickRate())
         DrawableUtil.drawText(
             matrices,
-            lit("TPS: " + getTickRate()),
-            x.roundToInt(),
+            text,
+            getTextPositionWithOffset(text),
             y.roundToInt(),
             ClickGUI.FONT_COLOR,
             1f

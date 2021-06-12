@@ -38,7 +38,7 @@ object Coordinates : HUDComponent("Coordinates") {
         DrawableUtil.drawText(
             matrices,
             text,
-            x.roundToInt(),
+            getTextPositionWithOffset(text),
             y.roundToInt(),
             ClickGUI.FONT_COLOR,
             1f
