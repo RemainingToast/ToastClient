@@ -12,13 +12,14 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
     private val components: ArrayList<HUDComponent> = ArrayList()
 
     init {
-        components.add(Watermark)
-        components.add(Totems)
         components.add(Welcomer)
-        components.add(Coordinates)
-        components.add(FPS)
+        components.add(Watermark)
         components.add(TPS)
+        components.add(Totems)
         components.add(Time)
+        components.add(ModuleList)
+        components.add(FPS)
+        components.add(Coordinates)
         components.add(Armor)
     }
 
