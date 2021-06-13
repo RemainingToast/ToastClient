@@ -1,7 +1,6 @@
 package dev.toastmc.toastclient.mixin.client;
 
 import dev.toastmc.toastclient.api.util.entity.CapeUtil;
-import dev.toastmc.toastclient.impl.module.render.Capes;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.util.Identifier;
@@ -23,11 +22,8 @@ public abstract class MixinAbstractClientPlayerEntity {
             cancellable = true
     )
     private void on(CallbackInfoReturnable<Identifier> cir){
-        if(Capes.INSTANCE.isEnabled()){
             if(CapeUtil.INSTANCE.getCapeType(this.getPlayerListEntry().getProfile().getId()) != null) {
                 cir.setReturnValue(CapeUtil.INSTANCE.getIdentifierFromString(CapeUtil.INSTANCE.getCapeType(this.getPlayerListEntry().getProfile().getId())));
             }
-            return;
-        }
     }
 }

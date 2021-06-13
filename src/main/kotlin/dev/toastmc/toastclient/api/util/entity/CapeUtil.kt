@@ -1,13 +1,13 @@
 package dev.toastmc.toastclient.api.util.entity
 
 import com.google.gson.reflect.TypeToken
+import dev.toastmc.toastclient.IToastClient
 import dev.toastmc.toastclient.api.util.network.ConnectionUtil
-import dev.toastmc.toastclient.impl.module.render.Capes
 import net.minecraft.util.Identifier
 import java.lang.reflect.Type
 import java.util.*
 
-object CapeUtil {
+object CapeUtil : IToastClient {
 
     private val users = hashMapOf<UUID, String>()
 
@@ -40,13 +40,13 @@ object CapeUtil {
         val type: Type = object : TypeToken<Map<UUID, String>>(){}.getType()
         if(ConnectionUtil.getJsonFromUrl("https://raw.githubusercontent.com/SkiddyToast/ToastClient/dev/capes.json") != "") {
             val cachedUsers: Map<UUID, String> =
-                Capes.gson.fromJson<Map<UUID, String>>(ConnectionUtil.getJsonFromUrl("https://raw.githubusercontent.com/SkiddyToast/ToastClient/dev/capes.json"), type)
+                gson.fromJson<Map<UUID, String>>(ConnectionUtil.getJsonFromUrl("https://raw.githubusercontent.com/SkiddyToast/ToastClient/dev/capes.json"), type)
             for (entry in cachedUsers.entries) {
                 users.put(entry.key, entry.value)
             }
-            Capes.logger.info(users.entries.toString())
+            logger.info(users.entries.toString())
         } else {
-            Capes.logger.error("Failed to get capes.")
+            logger.error("Failed to get capes.")
         }
     }
 

@@ -63,7 +63,6 @@ object ModuleManager : IToastClient {
             NoEntityTrace,
             Velocity,
             /** Render **/
-            Capes,
             FullBright,
             NameTags,
             NoFog,
