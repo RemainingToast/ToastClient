@@ -39,9 +39,9 @@ object Capes : Module("Capes", Category.RENDER), IToastClient {
 
     fun init() {
         val type: Type = object : TypeToken<Map<UUID, String>>(){}.getType()
-        if(ConnectionUtil.getJsonFromUrl("http://localhost/capes.json") != "") {
+        if(ConnectionUtil.getJsonFromUrl("https://raw.githubusercontent.com/SkiddyToast/ToastClient/dev/capes.json") != "") {
             val cachedUsers: Map<UUID, String> =
-                gson.fromJson<Map<UUID, String>>(ConnectionUtil.getJsonFromUrl("http://localhost/capes.json"), type)
+                gson.fromJson<Map<UUID, String>>(ConnectionUtil.getJsonFromUrl("https://raw.githubusercontent.com/SkiddyToast/ToastClient/dev/capes.json"), type)
             for (entry in cachedUsers.entries) {
                 users.put(entry.key, entry.value)
             }
