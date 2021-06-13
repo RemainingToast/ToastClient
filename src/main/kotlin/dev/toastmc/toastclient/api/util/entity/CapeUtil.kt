@@ -38,15 +38,15 @@ object CapeUtil : IToastClient {
 
     fun init() {
         val type: Type = object : TypeToken<Map<UUID, String>>(){}.getType()
-        if(ConnectionUtil.getJsonFromUrl("https://raw.githubusercontent.com/SkiddyToast/ToastClient/dev/capes.json") != "") {
+        if(ConnectionUtil.getJsonFromUrl(capeUrl) != "") {
             val cachedUsers: Map<UUID, String> =
-                gson.fromJson<Map<UUID, String>>(ConnectionUtil.getJsonFromUrl("https://raw.githubusercontent.com/SkiddyToast/ToastClient/dev/capes.json"), type)
+                gson.fromJson<Map<UUID, String>>(ConnectionUtil.getJsonFromUrl(capeUrl), type)
             for (entry in cachedUsers.entries) {
                 users.put(entry.key, entry.value)
             }
-            logger.info(users.entries.toString())
+            logger.info("Finished loading capes")
         } else {
-            logger.error("Failed to get capes.")
+            logger.error("Failed to get capes")
         }
     }
 
