@@ -7,7 +7,6 @@ import net.minecraft.util.math.BlockPos
 object Jesus : Module("Jesus", Category.MOVEMENT) {
 
     override fun onUpdate() {
-        if (mc.player == null) return
         val e = if (mc.player!!.vehicle != null) mc.player!!.vehicle else mc.player
         if (e!!.isSneaking || e.fallDistance > 3f) return
         e.isOnGround = true

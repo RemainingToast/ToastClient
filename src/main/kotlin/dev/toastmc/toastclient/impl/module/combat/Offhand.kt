@@ -30,7 +30,7 @@ object Offhand : Module("OffHand", Category.COMBAT) {
     var defaultItem = mode("DefaultItem", "TOTEM", defaultItems)
 
     override fun onUpdate() {
-        if (mc.player == null || mc.currentScreen is InventoryScreen) return
+        if (mc.currentScreen is InventoryScreen) return
 
         if (mc.options.keyUse.isPressed && rightClickGap.value) {
             switchOffhand(Items.ENCHANTED_GOLDEN_APPLE, gapples)
