@@ -14,7 +14,6 @@ object AutoArmour : Module("AutoArmour", Category.COMBAT) {
     var preventBreak = bool("PreventBreak", true)
 
     override fun onUpdate() {
-        if (mc.player == null) return
         val armorMap = HashMap<EquipmentSlot, IntArray>(4)
         armorMap[EquipmentSlot.FEET] = intArrayOf(36, getProt(mc.player!!.inventory.getStack(36)), -1, -1)
         armorMap[EquipmentSlot.LEGS] = intArrayOf(37, getProt(mc.player!!.inventory.getStack(37)), -1, -1)

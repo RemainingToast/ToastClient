@@ -9,7 +9,6 @@ object AntiHunger : Module("AntiHunger", Category.PLAYER) {
 
     @Subscribe
     fun on(event: PacketEvent.Receive) {
-        if (mc.player == null) return
         if (event.packet is PlayerMoveC2SPacket) {
             if (mc.isInSingleplayer) {
                 mc.player!!.hungerManager.add(20, 5.0f)
