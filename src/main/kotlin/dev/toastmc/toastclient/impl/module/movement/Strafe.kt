@@ -13,7 +13,7 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
     var autoSprint = bool("AutoSprint", true)
 
     override fun onUpdate() {
-        if (mc.player == null || mc.player!!.isSneaking || mc.options.keyJump.isPressed) return
+        if (mc.player!!.isSneaking || mc.options.keyJump.isPressed) return
 
         if (mc.player!!.forwardSpeed != 0f || mc.player!!.sidewaysSpeed != 0f) {
             if (!mc.player!!.isSprinting && autoSprint.value && (!Sprint.isEnabled() && Sprint.mode.equals("Rage")))
