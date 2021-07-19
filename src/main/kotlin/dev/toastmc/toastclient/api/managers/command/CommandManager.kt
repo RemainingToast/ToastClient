@@ -20,6 +20,7 @@ object CommandManager : IToastClient {
     fun init() {
         register(
             DrawCommand,
+            DupeCommand,
             FakePlayerCommand,
             FriendCommand,
             SetCommand,
@@ -41,6 +42,7 @@ object CommandManager : IToastClient {
 
         commands.forEach {
             it.register(Command.dispatcher)
+            ToastClient.eventBus.register(it)
         }
 
         Collections.sort(commands, Comparator.comparing(Command::label))
