@@ -105,7 +105,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         if (antiSuicide.value && mc.player!!.health - mc.player!!.getCrystalDamage(crystal) <= 0) return false
 
         mc.interactionManager!!.attackEntity(mc.player, crystal)
-        mc.player!!.swingHand(Hand.MAIN_HAND)
+        mc.player!!.swingHand(Hand.OFF_HAND)
         placed = 0
 
         return true
@@ -156,7 +156,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
             mc.interactionManager!!.interactBlock(
                 mc.player,
                 mc.world,
-                if (offhand) Hand.OFF_HAND else Hand.MAIN_HAND,
+                if (mainhand) Hand.MAIN_HAND else Hand.OFFHAND_HAND,
                 BlockHitResult(
                     Vec3d(
                         pos.x.toDouble(),
