@@ -29,7 +29,6 @@ object KillAura : Module("KillAura", Category.COMBAT) {
     var target: LivingEntity? = null
 
     override fun onUpdate() {
-        if (mc.player == null) return
         target = findTarget(reach.value) ?: return
         if (target!!.isRemoved || target!!.isDead) {
             oldSlot = mc.player!!.inventory.selectedSlot

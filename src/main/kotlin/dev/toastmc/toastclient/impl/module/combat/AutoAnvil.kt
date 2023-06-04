@@ -23,8 +23,6 @@ object AutoAnvil : Module("AutoAnvil", Category.COMBAT) {
     var anvilSlot = number("AnvilSlot", 8, 1, 9, 0)
 
     override fun onUpdate() {
-        if (mc.player == null) return
-
         val targetOpt = mc.world!!.entities.toList().filterIsInstance(PlayerEntity::class.java).parallelStream().filter {
             (!surrounded.value || it.blockPos.isSurrounded()) && mc.player!!.blockPos.x != it.blockPos.x && mc.player!!.blockPos.z != it.blockPos.z
         }.sorted { player1, player2 ->

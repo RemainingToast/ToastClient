@@ -8,7 +8,6 @@ import java.util.*
 object FullBright : Module("FullBright", Category.RENDER) {
 
     override fun onUpdate() {
-        if (mc.player == null) return
         increaseGamma()
     }
 

@@ -8,7 +8,6 @@ object Sprint : Module("Sprint", Category.MOVEMENT) {
     val mode = mode("Mode", "Rage", "Rage", "Legit")
 
     override fun onUpdate() {
-        if (mc.player == null) return
         if (mode.value.equals("Rage")) {
             mc.player!!.networkHandler.sendPacket(ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_SPRINTING))
         } else {

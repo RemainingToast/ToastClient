@@ -35,7 +35,6 @@ object CustomChat : Module("CustomChat", Category.MISC) {
 
     @Subscribe
     fun on(event: PacketEvent.Receive) {
-        if (mc.player == null) return
         if (event.packet is ChatMessageC2SPacket){
             val chatMessage = event.packet.chatMessage
             if ((chatMessage.startsWith(CommandManager.prefix) || chatMessage.startsWith("/")) && !commands.value) return

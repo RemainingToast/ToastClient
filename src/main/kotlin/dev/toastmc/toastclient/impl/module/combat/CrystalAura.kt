@@ -52,7 +52,6 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
     var counter: Byte = 0
 
     override fun onUpdate() {
-        if (mc.player == null) return
         counter++
         if (counter < 2) return
         else counter = 0

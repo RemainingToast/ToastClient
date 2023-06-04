@@ -17,6 +17,9 @@ interface IToastClient {
     val version: String
     get() = "b2.1.1"
 
+    val capeUrl: String
+        get() = "https://raw.githubusercontent.com/RemainingToast/ToastClient/dev/capes.json"
+
     val nameVersion: String
     get() = "$clientName $version"
 
