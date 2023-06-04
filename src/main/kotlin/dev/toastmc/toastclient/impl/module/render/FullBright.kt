@@ -13,7 +13,7 @@ object FullBright : Module("FullBright", Category.RENDER) {
     }
 
     override fun onDisable() {
-        mc.options.gamma = previousGamma
+        mc.options.gamma.value = previousGamma
         increasedGamma = false
         if (mc.player!!.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
             if (Objects.requireNonNull(mc.player!!.getStatusEffect(StatusEffects.NIGHT_VISION))!!.amplifier == 42069) mc.player!!.removeStatusEffect(StatusEffects.NIGHT_VISION)
@@ -22,12 +22,12 @@ object FullBright : Module("FullBright", Category.RENDER) {
 
     override fun onEnable() {
         if (mc.player == null) return
-        previousGamma = mc.options.gamma
+        previousGamma = mc.options.gamma.value
         mc.player!!.addStatusEffect(StatusEffectInstance(StatusEffects.NIGHT_VISION, 42069, 42069))
     }
 
     private fun increaseGamma() {
-        mc.options.gamma = 1000.0
+        mc.options.gamma.value = 1000.0
         increasedGamma = true
     }
 

@@ -16,11 +16,13 @@ object MCF : Module("MCF", Category.PLAYER) {
     override fun onUpdate() {
         if(GLFW.glfwGetMouseButton(mc.window.handle, GLFW.GLFW_MOUSE_BUTTON_MIDDLE) == GLFW.GLFW_RELEASE) {
             val crosshairTarget = mc.crosshairTarget ?: return
-            if(crosshairTarget.type == HitResult.Type.ENTITY) {
+            if (crosshairTarget.type == HitResult.Type.ENTITY) {
                 val entityHitResult = crosshairTarget as EntityHitResult
                 val entity = entityHitResult.entity
 
                 if (entity is PlayerEntity) {
+                    if (entity == mc.player) return;
+
                     val name = entity.displayName.string
 
                     if (FriendManager.isFriend(entity)) {

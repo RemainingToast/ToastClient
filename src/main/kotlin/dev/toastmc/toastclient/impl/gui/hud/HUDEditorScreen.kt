@@ -5,7 +5,6 @@ import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.impl.gui.hud.components.*
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
-import java.util.*
 
 class HUDEditorScreen : Screen(lit("HUDEditor")) {
 
@@ -22,7 +21,7 @@ class HUDEditorScreen : Screen(lit("HUDEditor")) {
         components.add(Armor)
     }
 
-    override fun onClose() {
+    override fun close() {
         ConfigSaver.saveComponents()
     }
 

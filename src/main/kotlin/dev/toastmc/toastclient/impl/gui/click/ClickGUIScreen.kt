@@ -27,7 +27,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
         }
     }
 
-    override fun onClose() {
+    override fun close() {
         ConfigSaver.saveModules()
     }
 
@@ -71,7 +71,7 @@ class ClickGUIScreen : Screen(lit("ClickGUI")), IToastClient {
         return false
     }
 
-    override fun isPauseScreen(): Boolean {
+    override fun shouldPause(): Boolean {
         return false
     }
 

@@ -6,14 +6,15 @@ import dev.toastmc.toastclient.api.util.mc
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.DiffuseLighting
 import net.minecraft.client.render.OverlayTexture
+import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
 import net.minecraft.client.render.model.json.ModelTransformation
-import net.minecraft.client.util.math.Vector3f
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Matrix4f
+import net.minecraft.util.math.Vec3f
 import org.lwjgl.opengl.GL11
 
 object RenderUtil : RenderExtensions {
@@ -28,7 +29,7 @@ object RenderUtil : RenderExtensions {
         val matrix = mc.gameRenderer.camera.originMatrix()
         val tessellator = RenderSystem.renderThreadTesselator()
 
-        tessellator.buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR)
+        tessellator.buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
         box(
             matrix,
             tessellator.buffer,
@@ -43,7 +44,7 @@ object RenderUtil : RenderExtensions {
 
         RenderSystem.lineWidth(2.5f)
 
-        tessellator.buffer.begin(GL11.GL_LINE_STRIP, VertexFormats.POSITION_COLOR)
+        tessellator.buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
         box(
             matrix,
             tessellator.buffer,
@@ -73,7 +74,7 @@ object RenderUtil : RenderExtensions {
         // Outline
         RenderSystem.lineWidth(width)
 
-        buffer.begin(3, VertexFormats.POSITION_COLOR)
+        buffer.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR)
         box(
             matrix,
             tessellator.buffer,
@@ -120,8 +121,8 @@ object RenderUtil : RenderExtensions {
         val vertex = mc.bufferBuilders.entityVertexConsumers
 
         matrix.push()
-        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
-        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
+        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
+        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
         matrix.translate(offX, offY, 0.0)
         matrix.scale(-0.025f * scale.toFloat(), -0.025f * scale.toFloat(), 1f)
 
@@ -134,7 +135,7 @@ object RenderUtil : RenderExtensions {
                 0f,
                 553648127,
                 false,
-                matrix.peek().model,
+                matrix.peek().positionMatrix,
                 vertex,
                 true,
                 (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f) * 255.0f).toInt() shl 24,
@@ -159,7 +160,7 @@ object RenderUtil : RenderExtensions {
             0f,
             -1,
             false,
-            matrix.peek().model,
+            matrix.peek().positionMatrix,
             vertex,
             true,
             0,
@@ -189,23 +190,31 @@ object RenderUtil : RenderExtensions {
         val vertex = mc.bufferBuilders.entityVertexConsumers
 
         matrix.push()
-        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
-        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
+        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
+        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
 
         matrix.translate(offX, offY, 0.0)
         matrix.scale(scale.toFloat(), scale.toFloat(), 0.001f)
-        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180f))
+        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180f))
         vertex.draw()
 
         val light1 = FloatArray(4)
         val light2 = FloatArray(4)
         GL11.glGetLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, light1)
         GL11.glGetLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, light2)
-        val currentLight = arrayOf(Vector3f(light1[0], light1[1], light1[2]), Vector3f(light2[0], light2[1], light2[2]))
+        val currentLight = arrayOf(Vec3f(light1[0], light1[1], light1[2]), Vec3f(light2[0], light2[1], light2[2]))
 
         DiffuseLighting.disableGuiDepthLighting()
         GL11.glDepthFunc(GL11.GL_ALWAYS)
-        mc.itemRenderer.renderItem(item, ModelTransformation.Mode.GUI, 0xF000F0, OverlayTexture.DEFAULT_UV, matrix, vertex)
+        mc.itemRenderer.renderItem(
+            item,
+            ModelTransformation.Mode.GUI,
+            0xF000F0,
+            OverlayTexture.DEFAULT_UV,
+            matrix,
+            vertex,
+            42069
+        )
         vertex.draw()
 
         GL11.glDepthFunc(GL11.GL_LEQUAL)

@@ -7,7 +7,6 @@ import dev.toastmc.toastclient.api.util.WorldUtil.block
 import dev.toastmc.toastclient.api.util.WorldUtil.centeredVec3d
 import dev.toastmc.toastclient.api.util.WorldUtil.isSurrounded
 import dev.toastmc.toastclient.api.util.entity.canReach
-import dev.toastmc.toastclient.api.util.entity.eyePos
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.util.Hand

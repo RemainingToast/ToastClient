@@ -67,12 +67,12 @@ object DamageUtil {
             return 0f
         }
         if (!target.isImmuneToExplosion) {
-            val double_8 = MathHelper.sqrt(target.squaredDistanceTo(crystalPos)) / power
+            val double_8 = MathHelper.sqrt(target.squaredDistanceTo(crystalPos).toFloat()) / power
             if (double_8 <= 1.0) {
                 var x: Double = target.x - crystalPos.x
                 var y: Double = target.y + target.standingEyeHeight - crystalPos.y
                 var z: Double = target.z - crystalPos.z
-                val double_12 = MathHelper.sqrt(x * x + y * y + z * z).toDouble()
+                val double_12 = MathHelper.sqrt((x * x + y * y + z * z).toFloat()).toDouble()
                 if (double_12 != 0.0) {
                     x /= double_12
                     y /= double_12

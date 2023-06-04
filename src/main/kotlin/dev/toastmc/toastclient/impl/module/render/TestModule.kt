@@ -11,7 +11,7 @@ object TestModule : Module("TestModule", Category.RENDER) {
 
     @Subscribe
     fun on(event: WorldRenderEvent) {
-        val tileEntities = WorldUtil.getTileEntitiesInChunk(mc.player!!.world, mc.player!!.chunkX, mc.player!!.chunkZ)
+        val tileEntities = WorldUtil.getTileEntitiesInChunk(mc.player!!.world, mc.player!!.chunkPos.x, mc.player!!.chunkPos.z)
         for ((pos, tile) in tileEntities) {
             RenderUtil.drawOutline(
                 Box(pos),

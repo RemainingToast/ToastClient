@@ -3,9 +3,9 @@ package dev.toastmc.toastclient.impl.module.misc
 import dev.toastmc.toastclient.api.managers.FriendManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.ToastColor
+import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.client.network.PlayerListEntry
 import net.minecraft.scoreboard.Team
-import net.minecraft.text.LiteralText
 import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.text.TextColor
@@ -19,10 +19,10 @@ object ExtraTab : Module("ExtraTab", Category.MISC) {
         val name = if (entry.displayName != null)
             entry.displayName
         else
-            Team.modifyText(entry.scoreboardTeam, LiteralText(entry.profile.name))
+            Team.decorateName(entry.scoreboardTeam, lit(entry.profile.name))
 
         return if (highlightFriends.value && FriendManager.isFriend(entry.profile.id))
-            name!!.shallowCopy().setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ToastColor.rainbow(255).rgb)))
+            name!!.copy().setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ToastColor.rainbow(255).rgb)))
         else
             name!!
     }

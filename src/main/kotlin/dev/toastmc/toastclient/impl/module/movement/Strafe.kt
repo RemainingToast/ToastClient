@@ -13,7 +13,7 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
     var autoSprint = bool("AutoSprint", true)
 
     override fun onUpdate() {
-        if (mc.player == null || mc.player!!.isSneaking || mc.options.keyJump.isPressed) return
+        if (mc.player == null || mc.player!!.isSneaking || mc.options.jumpKey.isPressed) return
 
         if (mc.player!!.forwardSpeed != 0f || mc.player!!.sidewaysSpeed != 0f) {
             if (!mc.player!!.isSprinting && autoSprint.value && (!Sprint.isEnabled() && Sprint.mode.equals("Rage")))
@@ -39,10 +39,10 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
             }
         } else slowdown = false
 
-        if (!mc.options.keyForward.isPressed &&
-            !mc.options.keyBack.isPressed &&
-            !mc.options.keyLeft.isPressed &&
-            !mc.options.keyRight.isPressed
+        if (!mc.options.forwardKey.isPressed &&
+            !mc.options.backKey.isPressed &&
+            !mc.options.leftKey.isPressed &&
+            !mc.options.rightKey.isPressed
         ) mc.player!!.setVelocity(0.0, mc.player!!.velocity.y, 0.0)
     }
 }

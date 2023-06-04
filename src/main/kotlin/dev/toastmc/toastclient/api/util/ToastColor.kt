@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.api.util
 
-import com.mojang.blaze3d.platform.GlStateManager
+import com.mojang.blaze3d.systems.RenderSystem
 import java.awt.Color
 
 class ToastColor : Color {
@@ -43,6 +43,6 @@ class ToastColor : Color {
         }
 
     fun glColor() {
-        GlStateManager.color4f(red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 255.0f)
+        RenderSystem.setShaderColor(red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 255.0f)
     }
 }

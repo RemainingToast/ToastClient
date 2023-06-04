@@ -23,7 +23,7 @@ object AutoRespawn : Module("AutoRespawn", Category.COMBAT) {
                 timer.setLastMS()
                 if(mc.currentScreen is DeathScreen){
                     mc.player!!.requestRespawn()
-                    mc.openScreen(null)
+                    mc.setScreen(null)
                 }
             }
         }

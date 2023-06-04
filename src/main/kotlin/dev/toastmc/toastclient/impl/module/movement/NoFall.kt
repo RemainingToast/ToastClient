@@ -8,7 +8,7 @@ object NoFall : Module("NoFall", Category.MOVEMENT) {
     override fun onUpdate() {
         if (mc.player == null) return
         if (mc.player!!.isFallFlying && mc.player!!.fallDistance <= 3f) return
-        mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket(true))
+        mc.player!!.networkHandler.sendPacket(PlayerMoveC2SPacket.OnGroundOnly(true))
     }
 
 }

@@ -44,9 +44,9 @@ public abstract class MixinMinecraftClient {
 
     @ModifyVariable(
             at = @At("HEAD"),
-            method = {"openScreen"}
+            method = {"setScreen"}
     )
-    private Screen openScreen(Screen screen) {
+    private Screen setScreen(Screen screen) {
         ScreenEvent.Closed closedEvent = new ScreenEvent.Closed(MinecraftClient.getInstance().currentScreen);
         ToastClient.Companion.getEventBus().post(closedEvent);
         if (closedEvent.isCancelled()) {

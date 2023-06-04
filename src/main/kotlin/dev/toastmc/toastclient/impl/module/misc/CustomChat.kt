@@ -55,12 +55,12 @@ object CustomChat : Module("CustomChat", Category.MISC) {
                 isMadeByCustomChat = !isMadeByCustomChat
                 if(isMadeByCustomChat) return
                 event.cancel()
-                mc.player!!.sendChatMessage(fancyMsg + suffix)
+                mc.player!!.sendChatMessage(fancyMsg + suffix, null)
             } else {
                 isMadeByCustomChat = !isMadeByCustomChat
                 if(isMadeByCustomChat) return
                 event.cancel()
-                mc.player!!.sendChatMessage(chatMessage + suffix)
+                mc.player!!.sendChatMessage(chatMessage + suffix, null)
             }
         }
     }

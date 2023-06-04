@@ -357,7 +357,7 @@ public class GlyphCache
             /* Load imageBuffer with pixel data ready for transfer to OpenGL texture */
             updateImageBuffer(dirty.x, dirty.y, dirty.width, dirty.height);
 
-            GlStateManager.bindTexture(textureName);
+            GlStateManager._bindTexture(textureName);
             GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, dirty.x, dirty.y, dirty.width, dirty.height,
                                  GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageBuffer);
         }
@@ -421,7 +421,7 @@ public class GlyphCache
          * Initialize texture with the now cleared BufferedImage. Using a texture with GL_ALPHA8 internal format may result in
          * faster rendering since the GPU has to only fetch 1 byte per texel instead of 4 with a regular RGBA texture.
          */
-        GlStateManager.bindTexture(textureName);
+        GlStateManager._bindTexture(textureName);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_ALPHA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
                           GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageBuffer);
 

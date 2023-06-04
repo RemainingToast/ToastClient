@@ -1,8 +1,10 @@
 package dev.toastmc.toastclient.api.util.font;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import org.lwjgl.opengl.GL11;
 import org.w3c.dom.CharacterData;
@@ -99,7 +101,7 @@ public class StringRenderer
         }
 
         // Fix for what RenderLivingBase#setBrightness does
-        GlStateManager.texEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+        GlStateManager._texParameter(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
 
         /* Make sure the entire string is cached before rendering and return its glyph representation */
         StringCache.Entry entry = cache.cacheString(str);
@@ -115,7 +117,7 @@ public class StringRenderer
         * array), however GuiEditSign of all things depends on having the current color set to white when it renders its
         * "Edit sign message:" text. Otherwise, the sign which is rendered underneath would look too dark.
         */
-        GlStateManager.color4f((color >> 16 & 0xff) / 255F, (color >> 8 & 0xff) / 255F, (color & 0xff) / 255F, 255F);
+        RenderSystem.setShaderColor((color >> 16 & 0xff) / 255F, (color >> 8 & 0xff) / 255F, (color & 0xff) / 255F, 255F);
 
         /*
         * Enable GL_BLEND in case the font is drawn anti-aliased because Minecraft itself only enables blending for chat text
@@ -127,8 +129,8 @@ public class StringRenderer
 
         if (cache.antiAliasEnabled)
         {
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager._enableBlend();
+            GlStateManager._blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
 
         Tessellator tessellator = Tessellator.getInstance();
@@ -185,8 +187,8 @@ public class StringRenderer
 
 //            GL11.glEnable(GL11.GL_BLEND);
 
-            buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE);
-            GlStateManager.bindTexture(texture.textureName);
+            buffer.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR_TEXTURE);
+            GlStateManager._bindTexture(texture.textureName);
 
             buffer.vertex(x1, y1, 0).color(r, g, b, a).texture(texture.u1, texture.v1).next();
             buffer.vertex(x1, y2, 0).color(r, g, b, a).texture(texture.u1, texture.v2).next();
@@ -203,8 +205,8 @@ public class StringRenderer
 
             /* Use initial color passed to renderString(); disable texturing to draw solid color lines */
             color = initialColor;
-            GlStateManager.disableTexture();
-            buffer.begin(7, VertexFormats.POSITION_COLOR);
+            GlStateManager._disableTexture();
+            buffer.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
 
             for (int glyphIndex = 0, colorIndex = 0; glyphIndex < entry.glyphs.length; glyphIndex++)
             {
@@ -264,7 +266,7 @@ public class StringRenderer
 
             /* Finish drawing the last strikethrough/underline segments */
             tessellator.draw();
-            GlStateManager.enableTexture();
+            GlStateManager._enableTexture();
         }
 
 

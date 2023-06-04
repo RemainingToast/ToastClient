@@ -30,9 +30,8 @@ public class MixinAbstractSignBlock {
     private void on(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         if (player.isSneaking() && ExtraSign.INSTANCE.isEnabled()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof SignBlockEntity) {
-                SignBlockEntity signBlockEntity = (SignBlockEntity) blockEntity;
-                Text[] lines = ((ISignBlockEntity) signBlockEntity).getText();
+            if (blockEntity instanceof SignBlockEntity signBlockEntity) {
+                Text[] lines = ((ISignBlockEntity) signBlockEntity).getTexts();
                 StringBuilder textToCopy = new StringBuilder();
 
                 for (Text text : lines) {

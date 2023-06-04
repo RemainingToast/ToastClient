@@ -1,5 +1,6 @@
 package dev.toastmc.toastclient.impl.gui.hud.components
 
+import dev.toastmc.toastclient.api.util.asString
 import dev.toastmc.toastclient.api.util.getStringWidth
 import dev.toastmc.toastclient.api.util.lit
 import dev.toastmc.toastclient.api.util.render.DrawableUtil

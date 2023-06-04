@@ -21,26 +21,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinClientPlayerEntity {
 
     @Redirect(
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;tick(Z)V"),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;tick(ZF)V"),
             method = {"tickMovement"}
     )
-    private void on(Input input, boolean bl) {
+    private void on(Input input, boolean bl, float f) {
         Input prev = ((ExtendedInput) input).copy();
-        input.tick(bl);
+        input.tick(bl, f);
         InputUpdateEvent ev = new InputUpdateEvent(prev, input);
         ToastClient.Companion.getEventBus().post(ev);
         if (ev.isCancelled()) ((ExtendedInput) input).update(prev);
     }
 
     @Redirect(
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;openScreen(Lnet/minecraft/client/gui/screen/Screen;)V"),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"),
             method = {"updateNausea"}
     )
     private void on(MinecraftClient client, Screen screen) {
         CloseScreenInPortalEvent event = new CloseScreenInPortalEvent(screen);
         ToastClient.Companion.getEventBus().post(event);
         if (!event.isCancelled()) {
-            client.openScreen(screen);
+            client.setScreen(screen);
         }
     }
 

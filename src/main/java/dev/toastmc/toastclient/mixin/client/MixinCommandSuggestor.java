@@ -7,7 +7,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import dev.toastmc.toastclient.api.managers.command.Command;
 import dev.toastmc.toastclient.api.managers.command.CommandManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.CommandSuggestor;
+import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.command.CommandSource;
 import org.spongepowered.asm.mixin.Final;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mixin(CommandSuggestor.class)
+@Mixin(ChatInputSuggestor.class)
 public abstract class MixinCommandSuggestor {
 
     @Shadow private ParseResults<CommandSource> parse;
@@ -31,7 +31,7 @@ public abstract class MixinCommandSuggestor {
 
     @Shadow private CompletableFuture<Suggestions> pendingSuggestions;
 
-    @Shadow protected abstract void show();
+    @Shadow public abstract void show(boolean narrateFirstSuggestion);
 
     @Inject(
             at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;canRead()Z"),
@@ -50,7 +50,7 @@ public abstract class MixinCommandSuggestor {
                 pendingSuggestions = commandDispatcher.getCompletionSuggestions(parse, i);
                 pendingSuggestions.thenRun(() -> {
                     if (pendingSuggestions.isDone()) {
-                        show();
+                        show(false);
                     }
                 });
             }

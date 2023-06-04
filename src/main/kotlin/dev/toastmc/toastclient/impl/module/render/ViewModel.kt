@@ -2,7 +2,7 @@ package dev.toastmc.toastclient.impl.module.render
 
 import dev.toastmc.toastclient.api.events.HeldItemRenderEvent
 import dev.toastmc.toastclient.api.managers.module.Module
-import net.minecraft.client.util.math.Vector3f
+import net.minecraft.util.math.Vec3f
 import org.quantumclient.energy.Subscribe
 
 object ViewModel : Module("ViewModel", Category.RENDER) {
@@ -28,9 +28,9 @@ object ViewModel : Module("ViewModel", Category.RENDER) {
 
         matrices.scale(scaleX.floatValue, scaleY.floatValue, scaleZ.floatValue)
         matrices.translate(posX.value, posY.value, posZ.value)
-        matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotationX.floatValue))
-        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotationY.floatValue))
-        matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotationZ.floatValue))
+        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(rotationX.floatValue))
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotationY.floatValue))
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotationZ.floatValue))
     }
 
 }

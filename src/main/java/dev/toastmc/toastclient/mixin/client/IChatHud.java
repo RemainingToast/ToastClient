@@ -9,6 +9,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface IChatHud {
 
     @Invoker
-    void callAddMessage(Text message, int messageId);
+    void callAddMessage(Text message);
 
 }
