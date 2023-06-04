@@ -5,6 +5,7 @@ import dev.toastmc.toastclient.api.events.PacketEvent;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.listener.PacketListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,10 +31,10 @@ public class MixinClientConnection {
 
     @Inject(
             at = {@At("HEAD")},
-            method = {"send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V"},
+            method = {"send(Lnet/minecraft/network/Packet;)V"},
             cancellable = true
     )
-    private void on(Packet<?> packet, GenericFutureListener<? extends java.util.concurrent.Future<? super Void>> genericFutureListener_1, CallbackInfo ci) {
+    private void on(Packet<?> packet, CallbackInfo ci) {
         PacketEvent.Send send = new PacketEvent.Send(packet);
         ToastClient.Companion.getEventBus().post(send);
         if (send.isCancelled())
@@ -45,10 +46,10 @@ public class MixinClientConnection {
             method = {"sendImmediately"},
             cancellable = true
     )
-    private void on1(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, CallbackInfo info) {
+    private void on1(Packet<?> packet, PacketCallbacks callbacks, CallbackInfo ci) {
         PacketEvent.Send send = new PacketEvent.Send(packet);
         ToastClient.Companion.getEventBus().post(send);
         if (send.isCancelled())
-            info.cancel();
+            ci.cancel();
     }
 }

@@ -4,7 +4,6 @@ import dev.toastmc.toastclient.ToastClient
 import dev.toastmc.toastclient.api.events.ChunkEvent
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.block.*
-import net.minecraft.block.entity.BlockEntity
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket
@@ -29,7 +28,6 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.reflect.jvm.javaMethod
-import kotlin.streams.toList
 
 object WorldUtil {
 
@@ -75,7 +73,7 @@ object WorldUtil {
      * @return Tile entities inside the world which are loaded by the player collected as a map of BlockPos and Block
      * @see Chunk.getBlockEntityPositions
      */
-    fun World.getTileEntitiesInWorld(): LinkedHashMap<BlockPos, Block> {
+    /*fun World.getTileEntitiesInWorld(): LinkedHashMap<BlockPos, Block> {
         val map =
             LinkedHashMap<BlockPos, Block>()
         this.blockEntities.forEach(Consumer { tilePos: BlockEntity ->
@@ -83,7 +81,7 @@ object WorldUtil {
             map[pos] = this.getBlockState(pos).block
         })
         return map
-    }
+    }*/
 
     /**
      * Gets distance between two vectors
@@ -341,7 +339,6 @@ object WorldUtil {
             if (REPLACEABLE.contains(neighborBlock)) {
                 mc.interactionManager!!.interactBlock(
                     mc.player,
-                    mc.world,
                     Hand.MAIN_HAND,
                     BlockHitResult(vecPos, f.opposite, pos, false)
                 )
@@ -481,7 +478,7 @@ object WorldUtil {
                     val yaw = Math.toDegrees(atan2(dz, dx)).toFloat() - 90
                     val pitch = (-Math.toDegrees(atan2(dy, dh))).toFloat()
                     player.networkHandler.sendPacket(
-                        PlayerMoveC2SPacket.LookOnly(
+                        PlayerMoveC2SPacket.LookAndOnGround(
                             yaw,
                             pitch,
                             player.isOnGround
@@ -500,7 +497,7 @@ object WorldUtil {
                         .item !== Items.AIR
                 ) {
                     mc.interactionManager!!.interactBlock(
-                        player, mc.world, hand,
+                        player, hand,
                         BlockHitResult(
                             Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()),
                             direction.opposite,

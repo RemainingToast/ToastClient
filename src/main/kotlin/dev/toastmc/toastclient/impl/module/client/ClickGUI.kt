@@ -40,9 +40,9 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT) {
                     mc.currentScreen!! == HUDEditor.SCREEN)
         ) {
             if (mc.currentScreen != null && mc.currentScreen!! == SCREEN) {
-                mc.openScreen(null)
+                mc.setScreen(null)
             } else {
-                mc.openScreen(SCREEN)
+                mc.setScreen(SCREEN)
             }
             disable()
         }

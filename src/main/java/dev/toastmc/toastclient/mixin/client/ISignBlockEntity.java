@@ -9,6 +9,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface ISignBlockEntity {
 
     @Accessor
-    Text[] getText();
+    Text[] getTexts();
 
 }

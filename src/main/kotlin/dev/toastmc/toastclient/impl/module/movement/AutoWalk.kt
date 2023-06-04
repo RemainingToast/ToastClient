@@ -28,19 +28,19 @@ object AutoWalk : Module("AutoWalk", Category.MOVEMENT) {
     override fun onUpdate() {
         if (mode.value.equals("Simple", true)) {
             when (direction.value) {
-                "Forward" -> mc.options.keyForward.isPressed = true
-                "Backward" -> mc.options.keyBack.isPressed = true
-                "Leftward" -> mc.options.keyLeft.isPressed = true
-                "Rightward" -> mc.options.keyRight.isPressed = true
+                "Forward" -> mc.options.forwardKey.isPressed = true
+                "Backward" -> mc.options.backKey.isPressed = true
+                "Leftward" -> mc.options.leftKey.isPressed = true
+                "Rightward" -> mc.options.rightKey.isPressed = true
             }
         }
     }
 
     private fun stop() {
-        mc.options.keyForward.isPressed = false
-        mc.options.keyBack.isPressed = false
-        mc.options.keyLeft.isPressed = false
-        mc.options.keyRight.isPressed = false
+        mc.options.forwardKey.isPressed = false
+        mc.options.backKey.isPressed = false
+        mc.options.leftKey.isPressed = false
+        mc.options.rightKey.isPressed = false
     }
 
 }

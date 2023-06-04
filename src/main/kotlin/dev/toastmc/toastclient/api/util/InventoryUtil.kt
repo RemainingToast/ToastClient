@@ -76,7 +76,7 @@ object InventoryUtil : IToastClient {
     }
 
     fun ClientPlayerEntity.isCursorEmpty(): Boolean {
-        return inventory.cursorStack != ItemStack.EMPTY
+        return playerScreenHandler.cursorStack != ItemStack.EMPTY;
     }
 
     fun ClientPlayerEntity.cleanupTransfer(slot: Int): Boolean {

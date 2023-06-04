@@ -19,9 +19,9 @@ object HUDEditor : Module("HUDEditor", Category.CLIENT) {
                     mc.currentScreen!! == ClickGUI.SCREEN)
         ) {
             if (mc.currentScreen != null && mc.currentScreen!! == SCREEN) {
-                mc.openScreen(null)
+                mc.setScreen(null)
             } else {
-                mc.openScreen(SCREEN)
+                mc.setScreen(SCREEN)
             }
             disable()
         }

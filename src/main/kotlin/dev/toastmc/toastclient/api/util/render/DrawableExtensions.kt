@@ -2,12 +2,14 @@ package dev.toastmc.toastclient.api.util.render
 
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.ToastColor
+import dev.toastmc.toastclient.api.util.asString
 import dev.toastmc.toastclient.api.util.font.FontAccessor
 import dev.toastmc.toastclient.api.util.mc
 import dev.toastmc.toastclient.impl.module.client.Font
 import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.render.BufferRenderer
 import net.minecraft.client.render.Tessellator
+import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -19,16 +21,15 @@ import java.math.RoundingMode
 interface DrawableExtensions {
 
     fun line(matrices: MatrixStack, x0: Float, x1: Float, y0: Float, y1: Float, color: ToastColor) {
-        val matrix = matrices.peek().model
+        val matrix = matrices.peek().positionMatrix
         val bufferBuilder = Tessellator.getInstance().buffer
         RenderSystem.enableBlend()
         RenderSystem.disableTexture()
         RenderSystem.defaultBlendFunc()
-        bufferBuilder.begin(1, VertexFormats.POSITION_COLOR)
+        bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR)
         bufferBuilder.vertex(matrix, x0, y0, 0f).color(color.red, color.green, color.blue,color.alpha).next()
         bufferBuilder.vertex(matrix, x1, y1, 0f).color(color.red, color.green, color.blue,color.alpha).next()
-        bufferBuilder.end()
-        BufferRenderer.draw(bufferBuilder)
+        BufferRenderer.drawWithShader(bufferBuilder.end())
         RenderSystem.enableTexture()
         RenderSystem.disableBlend()
     }
@@ -104,7 +105,7 @@ interface DrawableExtensions {
         var y1 = y1
         var x2 = x2
         var y2 = y2
-        val matrix = matrices.peek().model
+        val matrix = matrices.peek().positionMatrix
         var j: Int
         if (x1 < x2) {
             j = x1
@@ -120,13 +121,12 @@ interface DrawableExtensions {
         RenderSystem.enableBlend()
         RenderSystem.disableTexture()
         RenderSystem.defaultBlendFunc()
-        bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR)
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
         bufferBuilder.vertex(matrix, x1.toFloat(), y2.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
         bufferBuilder.vertex(matrix, x2.toFloat(), y2.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
         bufferBuilder.vertex(matrix, x2.toFloat(), y1.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
         bufferBuilder.vertex(matrix, x1.toFloat(), y1.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
-        bufferBuilder.end()
-        BufferRenderer.draw(bufferBuilder)
+        BufferRenderer.drawWithShader(bufferBuilder.end())
         RenderSystem.enableTexture()
         RenderSystem.disableBlend()
     }
@@ -142,21 +142,21 @@ interface DrawableExtensions {
     ) {
         RenderSystem.disableTexture()
         RenderSystem.enableBlend()
-        RenderSystem.disableAlphaTest()
+//        RenderSystem.disableAlphaTest()
         RenderSystem.defaultBlendFunc()
-        RenderSystem.shadeModel(7425)
+        RenderSystem.getShaderTexture(7425)
         val tessellator = Tessellator.getInstance()
         val bufferBuilder = tessellator.buffer
-        val matrix = matrices.peek().model
-        bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR)
+        val matrix = matrices.peek().positionMatrix
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
         bufferBuilder.vertex(matrix, xEnd.toFloat(), yStart.toFloat(), 0f).color(colorStart.red, colorStart.green, colorStart.blue, colorStart.alpha).next()
         bufferBuilder.vertex(matrix, xStart.toFloat(), yStart.toFloat(), 0f).color(colorStart.red, colorStart.green, colorStart.blue, colorStart.alpha).next()
         bufferBuilder.vertex(matrix, xStart.toFloat(), yEnd.toFloat(), 0f).color(colorEnd.red, colorEnd.green, colorEnd.blue, colorEnd.alpha).next()
         bufferBuilder.vertex(matrix, xEnd.toFloat(), yEnd.toFloat(), 0f).color(colorEnd.red, colorEnd.green, colorEnd.blue, colorEnd.alpha).next()
         tessellator.draw()
-        RenderSystem.shadeModel(7424)
+        RenderSystem.getShaderTexture(7424)
         RenderSystem.disableBlend()
-        RenderSystem.enableAlphaTest()
+//        RenderSystem.enableAlphaTest()
         RenderSystem.enableTexture()
     }
 

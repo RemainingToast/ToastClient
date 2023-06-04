@@ -4,18 +4,22 @@ import dev.toastmc.toastclient.api.util.font.FontAccessor
 import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.mixin.client.IChatHud
 import net.minecraft.client.MinecraftClient
-import net.minecraft.text.LiteralText
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
+import net.minecraft.text.Text.literal
 
 val mc: MinecraftClient = MinecraftClient.getInstance()
 
 fun lit(string: String): MutableText {
-    return LiteralText(string)
+    return literal(string)
+}
+
+fun Text.asString(): String {
+    return string
 }
 
 fun message(text: Text) {
-    if (mc.player != null) (mc.inGameHud.chatHud as IChatHud).callAddMessage(text, 5932)
+    if (mc.player != null) (mc.inGameHud.chatHud as IChatHud).callAddMessage(text)
 }
 
 fun message(str: String) {

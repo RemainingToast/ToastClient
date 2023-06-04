@@ -4,9 +4,9 @@ import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.client.util.math.Vector3f
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.Vec3f
 
 
 interface RenderExtensions {
@@ -29,35 +29,35 @@ interface RenderExtensions {
         val z2 = box.maxZ.toFloat()
 
         if (filled) {
-            vertex.vertex(matrix.peek().model, x1, y1, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y1, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y1, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y1, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()
 
-            vertex.vertex(matrix.peek().model, x1, y1, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y2, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y2, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y1, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()
 
-            vertex.vertex(matrix.peek().model, x2, y1, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y2, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y2, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y1, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()
 
-            vertex.vertex(matrix.peek().model, x1, y1, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y2, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y2, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y1, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()
 
-            vertex.vertex(matrix.peek().model, x2, y1, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y2, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y2, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y1, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()
 
-            vertex.vertex(matrix.peek().model, x1, y2, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y2, z2).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x2, y2, z1).color(r, g, b, a).next()
-            vertex.vertex(matrix.peek().model, x1, y2, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()
         } else {
             line(matrix, vertex, x1, y1, z1, x2, y1, z1, r, g, b, a)
             line(matrix, vertex, x2, y1, z1, x2, y1, z2, r, g, b, a)
@@ -93,13 +93,13 @@ interface RenderExtensions {
         b: Float,
         a: Float,
     ) {
-        val model = matrix.peek().model
-        val normal = matrix.peek().normal
+        val model = matrix.peek().positionMatrix
+        val normal = matrix.peek().normalMatrix
         val xNormal = x2 - x1
         val yNormal = y2 - y1
         val zNormal = z2 - z1
         val normalSqrt = MathHelper.sqrt(xNormal * xNormal + yNormal * yNormal + zNormal * zNormal)
-        val normalVec = Vector3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt)
+        val normalVec = Vec3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt)
         vertexConsumer.vertex(model, x1, y1, z1).color(r, g, b, a).normal(normal, normalVec.x, normalVec.y, normalVec.z).next()
         vertexConsumer.vertex(model, x2, y2, z2).color(r, g, b, a).normal(normal, normalVec.x, normalVec.y, normalVec.z).next()
     }
@@ -117,16 +117,16 @@ interface RenderExtensions {
 
     fun Camera.matrixFrom(x: Double, y: Double, z: Double): MatrixStack {
         val matrix = MatrixStack()
-        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch))
-        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw + 180.0f))
+        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch))
+        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw + 180.0f))
         matrix.translate(x - pos.x, y - pos.y, z - pos.z)
         return matrix
     }
 
     fun Camera.originMatrix(): MatrixStack {
         val matrix = MatrixStack()
-        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch))
-        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw + 180.0f))
+        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch))
+        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw + 180.0f))
         matrix.translate(-pos.x, -pos.y, -pos.z)
         return matrix
     }

@@ -31,7 +31,7 @@ object Velocity : Module("Velocity", Category.PLAYER) {
             oldVelZ = Double.NaN
             if (event.packet is EntityVelocityUpdateS2CPacket) {
                 val velocity: EntityVelocityUpdateS2CPacket = event.packet
-                if (velocity.id == mc.player!!.entityId) {
+                if (velocity.id == mc.player!!.id) {
                     if (horizontal.value == 0.0 && vertical.value == 0.0) event.cancel()
                     val xyz = velocity as IEntityVelocityUpdateS2CPacket
                     if (delay.value > 0) {

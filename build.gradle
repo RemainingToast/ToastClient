@@ -1,14 +1,11 @@
 plugins {
+    id 'java'
     id 'fabric-loom'
     id 'maven-publish'
-    id "org.jetbrains.kotlin.jvm"
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
@@ -27,55 +24,56 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
-    compile "com.github.QuantumClient:Energy:${project.events_version}"
-    compile "com.google.guava:guava:${project.guava_version}"
+    implementation "com.github.QuantumClient:Energy:${project.events_version}"
+    implementation "com.google.guava:guava:${project.guava_version}"
+}
+
+base {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+    archivesBaseName = project.archives_base_name
 }
 
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
+}
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
+// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
+tasks.withType(JavaCompile).configureEach {
+    //noinspection all
+    it.options.release = 17
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
+    withSourcesJar()
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = "1.8"
+jar {
+    from("LICENSE") {
+        rename { "${it}_${base.archivesName.get()}"}
     }
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
-    from sourceSets.main.allSource
 }
 
 shadowJar {
-    dependencies {
+    /*dependencies {
         include(dependency('org.yaml:snakeyaml'))
         include(dependency('net.jodah:typetools'))
         include(dependency('com.github.QuantumClient:Energy'))
     }
-    classifier = 'shadow'
+    classifier = 'shadow'*/
 }
 
-remapJar {
-    dependsOn shadowJar
-    mustRunAfter shadowJar
-    input = file("build/libs/${archivesBaseName}-${version}-shadow.jar")
-}
-
-compileKotlin {
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
-        languageVersion = "1.4"
+        jvmTarget = "17"
     }
 }

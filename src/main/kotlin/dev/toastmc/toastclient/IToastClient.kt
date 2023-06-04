@@ -3,10 +3,8 @@ package dev.toastmc.toastclient
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import net.minecraft.client.MinecraftClient
-import net.minecraft.util.Formatting
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.quantumclient.energy.EventBus
 
 interface IToastClient {
 
@@ -17,7 +15,7 @@ interface IToastClient {
     get() = "ToastClient"
 
     val version: String
-    get() = "b2.1"
+    get() = "b2.1.1"
 
     val capeUrl: String
         get() = "https://raw.githubusercontent.com/RemainingToast/ToastClient/dev/capes.json"

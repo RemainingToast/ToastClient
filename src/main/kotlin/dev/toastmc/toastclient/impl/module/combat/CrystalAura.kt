@@ -146,7 +146,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
             val yaw: Float = getYaw(vec).toFloat()
             val pitch: Float = getPitch(vec).toFloat()
             mc.player!!.networkHandler.sendPacket(
-                PlayerMoveC2SPacket.LookOnly(
+                PlayerMoveC2SPacket.LookAndOnGround(
                     yaw,
                     pitch,
                     mc.player!!.isOnGround
@@ -154,7 +154,6 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
             )
             mc.interactionManager!!.interactBlock(
                 mc.player,
-                mc.world,
                 if (offhand) Hand.OFF_HAND else Hand.MAIN_HAND,
                 BlockHitResult(
                     Vec3d(
@@ -169,7 +168,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
             )
             mc.player!!.swingHand(if (offhand) Hand.OFF_HAND else Hand.MAIN_HAND)
             mc.player!!.networkHandler.sendPacket(
-                PlayerMoveC2SPacket.LookOnly(
+                PlayerMoveC2SPacket.LookAndOnGround(
                     mc.player!!.yaw,
                     mc.player!!.pitch,
                     mc.player!!.isOnGround

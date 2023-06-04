@@ -22,7 +22,7 @@ public abstract class MixinEntityRenderer<T extends Entity> {
     protected void on(T entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         // TODO: Make Event
         if (NameTags.INSTANCE.isEnabled()) {
-            NameTags.INSTANCE.renderNameTag(entity, text.asString(), matrices, vertexConsumers, light);
+            NameTags.INSTANCE.renderNameTag(entity, text.getString(), matrices, vertexConsumers, light);
             ci.cancel();
         }
     }

@@ -88,7 +88,7 @@ object Particles : Module("Particles", Category.RENDER) {
 
     fun getParticle(mode: Setting.Mode, default: ParticleEffect): ParticleEffect {
         val particle =
-            particleTypes.entries.filter { idToName(it.key.value) == mode.value }.getOrNull(0)
+            particleTypes.entrySet.filter { idToName(it.key.value) == mode.value }.getOrNull(0)
         return if (particle == null) default else particle.value as ParticleEffect
     }
 

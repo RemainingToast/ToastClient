@@ -32,7 +32,7 @@ object Offhand : Module("OffHand", Category.COMBAT) {
     override fun onUpdate() {
         if (mc.currentScreen is InventoryScreen) return
 
-        if (mc.options.keyUse.isPressed && rightClickGap.value) {
+        if (mc.options.useKey.isPressed && rightClickGap.value) {
             switchOffhand(Items.ENCHANTED_GOLDEN_APPLE, gapples)
             return
         }

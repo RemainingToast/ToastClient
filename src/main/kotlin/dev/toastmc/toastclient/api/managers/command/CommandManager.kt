@@ -15,7 +15,7 @@ object CommandManager : IToastClient {
     @JvmField
     var prefix = "."
 
-    var commands: MutableList<Command> = ArrayList()
+    private var commands: MutableList<Command> = ArrayList()
 
     fun init() {
         register(
@@ -54,7 +54,7 @@ object CommandManager : IToastClient {
         val key = GLFW.glfwGetKeyName(event.key, event.scancode)
         if (key != null && key == prefix) {
             if (MinecraftClient.getInstance().currentScreen == null) {
-                MinecraftClient.getInstance().openScreen(ChatScreen(""))
+                MinecraftClient.getInstance().setScreen(ChatScreen(""))
             }
         }
     }

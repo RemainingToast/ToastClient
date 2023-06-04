@@ -30,7 +30,7 @@ object KillAura : Module("KillAura", Category.COMBAT) {
 
     override fun onUpdate() {
         target = findTarget(reach.value) ?: return
-        if (target!!.removed || target!!.isDead) {
+        if (target!!.isRemoved || target!!.isDead) {
             oldSlot = mc.player!!.inventory.selectedSlot
         }
         val shield = mc.player!!.offHandStack.item === Items.SHIELD
@@ -47,7 +47,7 @@ object KillAura : Module("KillAura", Category.COMBAT) {
 
     private fun findTarget(range: Double): LivingEntity? {
         val target = mc.world!!.entities.toList().parallelStream().filter { entity ->
-            return@filter entity != null && !entity.removed && entity is LivingEntity && !entity.isDead && entity.isAttackable
+            return@filter entity != null && !entity.isRemoved && entity is LivingEntity && !entity.isDead && entity.isAttackable
                     && ((entity is PlayerEntity && players.value && entity != mc.player)
                     || (EntityUtil.isHostile(entity) && hostile.value)
                     || ((EntityUtil.isAnimal(entity) || EntityUtil.isNeutral(entity)) && passive.value)
