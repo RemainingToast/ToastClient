@@ -38,6 +38,7 @@ bin
 logs/
 .fabric/
 .mixin.out/
+.DS_Store
 
 # gh actions
 commit_messages.txt
