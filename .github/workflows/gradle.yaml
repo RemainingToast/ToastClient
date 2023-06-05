@@ -30,15 +30,19 @@ jobs:
         with:
           name: toastclient-${{ github.run_number }}
           path: toastclient-${{ github.run_number }}.jar
-      - uses: nelonoel/branch-name@v1.0.1
+      - name: Get branch name
+        uses: nelonoel/branch-name@v1.0.1
         id: branch
       - name: Get previous commit
         id: prev_commit
-        run: echo "${{ github.event.before }}" >> prev_commit.txt
+        run: |
+          PREVIOUS_COMMIT=$(git rev-parse HEAD^)
+          echo "${PREVIOUS_COMMIT}" >> prev_commit.txt
       - name: Get commit messages
         id: commit_messages
         run: |
-          COMMIT_MESSAGES=$(git log --pretty=format:'- `%h` %s' $(cat prev_commit.txt)..${{ github.sha }} --reverse)
+          PREVIOUS_COMMIT=$(cat prev_commit.txt)
+          COMMIT_MESSAGES=$(git log --pretty=format:'- `%h` %s' $PREVIOUS_COMMIT..${{ github.sha }} --reverse)
           echo "${COMMIT_MESSAGES}" >> commit_messages.txt
       - name: Send Discord build message
         run: |
