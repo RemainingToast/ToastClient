@@ -3,15 +3,12 @@
 ![GitHub lines of code](https://tokei.rs/b1/github/RemainingToast/toastclient)
 ![GitHub last commit](https://img.shields.io/github/last-commit/RemainingToast/toastclient)
 
-### Installing
-*I recommend using [multimc](https://multimc.org/) as it makes installing Fabric much easier.*
+### ! ATTENTION: Downloading !
+> ***1.19.2 Alpha Releases Are Found In The [Nightly Release Channel](https://discord.com/channels/668416925671489547/738156249035571210) In Our [Discord](https://discord.gg/PASHZanfyc).***
+<br>*(This Will Change When There Is A Stable Release.)*
 
-1. Download the latest release [here](https://github.com/RemainingToast/toastclient/releases/)
-2. After you are done [installing fabric](https://fabricmc.net/wiki/install)
-3. Put `toastclient.jar` inside `.minecraft/mods/`
-4. Launch Minecraft
-
-Note (By Default):
+### Using
+(By Default):
 * ClickGui Key is `RSHIFT`
 * Command Prefix is `.` (`.help` for all commands)
 
