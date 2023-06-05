@@ -42,3 +42,6 @@ logs/
 # gh actions
 commit_messages.txt
 prev_commit.txt
+
+# hehe secret todo
+TODO.md
