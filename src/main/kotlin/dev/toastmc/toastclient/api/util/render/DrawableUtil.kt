@@ -9,7 +9,6 @@ object DrawableUtil : DrawableExtensions {
 
     fun drawRect(matrices: MatrixStack, rect: Rectangle, color: ToastColor) {
         startSmooth()
-        color.glColor()
         fill(matrices, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, color)
         endSmooth()
     }

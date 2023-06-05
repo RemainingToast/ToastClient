@@ -64,12 +64,11 @@ jar {
 }
 
 shadowJar {
-    /*dependencies {
-        include(dependency('org.yaml:snakeyaml'))
-        include(dependency('net.jodah:typetools'))
-        include(dependency('com.github.QuantumClient:Energy'))
+    dependencies {
+        include('org.yaml:snakeyaml')
+        include('net.jodah:typetools')
+        include('com.github.QuantumClient:Energy')
     }
-    classifier = 'shadow'*/
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {

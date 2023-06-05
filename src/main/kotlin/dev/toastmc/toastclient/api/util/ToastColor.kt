@@ -38,6 +38,7 @@ class ToastColor : Color {
             try {
                 i = ("0x" + Integer.toHexString(rgb)).toInt()
             } catch (ignored: NumberFormatException) {
+
             }
             return i
         }

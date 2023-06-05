@@ -1,4 +1,8 @@
-- AntiFog
+### TODO
+- OldSigns
+- Elytra Pathfinding
+- Plugin Support
+
 - ElytraFly
 - AutoDuper
 - Waypoints
@@ -24,5 +28,8 @@
 - Scaffold
 - Jesus
 - Octopus
-- Snow Render Module - makes it look like there is always snow on my screen
+- Snow Render Module - makes it look like there is always snow on ur screen
 - Account Manager
+
+### Done
+- ~~AntiFog~~
