@@ -27,6 +27,8 @@ public class MixinTitleScreen {
     @Mutable
     @Shadow @Final private static Identifier EDITION_TITLE_TEXTURE;
 
+    private static final GLSLSandboxShader shader = new GLSLSandboxShader("/assets/toastclient/shaders/mandelbrot.vsh");
+
     @Inject(
             at = {@At("RETURN")},
             method = {"render"}
@@ -49,13 +51,13 @@ public class MixinTitleScreen {
         Identifier TOAST_CLIENT_TEXTURE = new Identifier("toastclient", "title/background.jpeg");
         MinecraftClient.getInstance().getTextureManager().bindTexture(TOAST_CLIENT_TEXTURE);
         assert MinecraftClient.getInstance().currentScreen != null; // Shouldn't ever be null, as we are literally rendering screen
-        int width = MinecraftClient.getInstance().currentScreen.width;
-        int height = MinecraftClient.getInstance().currentScreen.height;
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TOAST_CLIENT_TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        int width = MinecraftClient.getInstance().currentScreen.width;
+        int height = MinecraftClient.getInstance().currentScreen.height;
         drawTexture(
                 matrices,
                 0,
@@ -70,7 +72,6 @@ public class MixinTitleScreen {
                 height
         );
 //        TODO: Fix Shaders
-//        GLSLSandboxShader shader = GLSLSandboxShader.mandelbrotShader();
-//        if(shader != null) shader.useShader(width, height, mouseX, mouseY, delta);
+//        shader.useShader(width, height, mouseX, mouseY, delta);
     }
 }

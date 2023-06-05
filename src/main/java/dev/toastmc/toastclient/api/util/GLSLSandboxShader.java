@@ -1,7 +1,9 @@
 package dev.toastmc.toastclient.api.util;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -15,16 +17,16 @@ public class GLSLSandboxShader {
     public GLSLSandboxShader(String fragmentShaderLocation) {
         int program = glCreateProgram();
 
-        glAttachShader(program, createShader(GLSLSandboxShader.class.getResourceAsStream("/assets/toastclient/shaders/passthrough.vsh"), GL_VERTEX_SHADER));
-        glAttachShader(program, createShader(GLSLSandboxShader.class.getResourceAsStream(fragmentShaderLocation), GL_FRAGMENT_SHADER));
+        GlStateManager.glAttachShader(program, createShader(GLSLSandboxShader.class.getResourceAsStream("/assets/toastclient/shaders/passthrough.vsh"), GL_VERTEX_SHADER));
+        GlStateManager.glAttachShader(program, createShader(GLSLSandboxShader.class.getResourceAsStream(fragmentShaderLocation), GL_FRAGMENT_SHADER));
 
-        glLinkProgram(program);
+        GlStateManager.glLinkProgram(program);
 
-        int linked = glGetProgrami(program, GL_LINK_STATUS);
+        int linked = GlStateManager.glGetProgrami(program, GL_LINK_STATUS);
 
         // If linking failed
         if (linked == 0) {
-            System.err.println(glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH)));
+            System.err.println(GlStateManager.glGetProgramInfoLog(program, GlStateManager.glGetProgrami(program, GL_INFO_LOG_LENGTH)));
 
             throw new IllegalStateException("Shader failed to link");
         }
@@ -32,17 +34,17 @@ public class GLSLSandboxShader {
         this.programId = program;
 
         // Setup uniforms
-        glUseProgram(program);
+        GlStateManager._glUseProgram(program);
 
-        this.timeUniform = glGetUniformLocation(program, "time");
-        this.mouseUniform = glGetUniformLocation(program, "mouse");
-        this.resolutionUniform = glGetUniformLocation(program, "resolution");
+        this.timeUniform = GlStateManager._glGetUniformLocation(program, "time");
+        this.mouseUniform = GlStateManager._glGetUniformLocation(program, "mouse");
+        this.resolutionUniform = GlStateManager._glGetUniformLocation(program, "resolution");
 
-        glUseProgram(0);
+        GlStateManager._glUseProgram(0);
     }
 
     public void useShader(int width, int height, float mouseX, float mouseY, float time) {
-        glUseProgram(this.programId);
+        GlStateManager._glUseProgram(this.programId);
 
         glUniform2f(this.resolutionUniform, width, height);
         glUniform2f(this.mouseUniform, mouseX / width, 1.0f - mouseY / height);
@@ -50,17 +52,17 @@ public class GLSLSandboxShader {
     }
 
     private int createShader(InputStream inputStream, int shaderType) {
-        int shader = glCreateShader(shaderType);
+        int shader = GlStateManager.glCreateShader(shaderType);
 
-        glShaderSource(shader, readStreamToString(inputStream));
+        GlStateManager.glShaderSource(shader, readStreamToString(inputStream));
 
-        glCompileShader(shader);
+        GlStateManager.glCompileShader(shader);
 
-        int compiled = glGetShaderi(shader, GL_COMPILE_STATUS);
+        int compiled = GlStateManager.glGetShaderi(shader, GL_COMPILE_STATUS);
 
         // If compilation failed
         if (compiled == 0) {
-            System.err.println(glGetShaderInfoLog(shader, glGetShaderi(shader, GL_INFO_LOG_LENGTH)));
+            System.err.println(GlStateManager.glGetShaderInfoLog(shader, GlStateManager.glGetShaderi(shader, GL_INFO_LOG_LENGTH)));
 
             throw new IllegalStateException("Failed to compile shader");
         }
@@ -68,9 +70,9 @@ public class GLSLSandboxShader {
         return shader;
     }
 
-    private String readStreamToString(InputStream inputStream) {
+    private List<String> readStreamToString(InputStream inputStream) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-        return reader.lines().collect(Collectors.joining("\n"));
+        return reader.lines().collect(Collectors.toList());
     }
 }
