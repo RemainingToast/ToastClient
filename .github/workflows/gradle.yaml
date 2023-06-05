@@ -36,7 +36,7 @@ jobs:
       - name: Get previous commit
         id: prev_commit
         run: |
-          PREVIOUS_COMMIT=$(git rev-parse HEAD^)
+          PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
           echo "${PREVIOUS_COMMIT}" >> prev_commit.txt
       - name: Get commit messages
         id: commit_messages
