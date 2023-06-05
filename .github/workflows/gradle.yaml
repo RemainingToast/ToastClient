@@ -33,12 +33,14 @@ jobs:
       - uses: nelonoel/branch-name@v1.0.1
         id: branch
       - name: Get previous commit
-        run: echo "::set-env name=PREVIOUS_COMMIT::$(git rev-parse HEAD^)"
+        id: prev_commit
+        run: echo "${{ github.event.before }}" >> prev_commit.txt
       - name: Get commit messages
+        id: commit_messages
         run: |
-          COMMIT_MESSAGES=$(git log --pretty=format:'- `%h` %s' $PREVIOUS_COMMIT..${{ github.sha }} --reverse)
-          echo "::set-output name=commit_messages::$COMMIT_MESSAGES"
+          COMMIT_MESSAGES=$(git log --pretty=format:'- `%h` %s' $(cat prev_commit.txt)..${{ github.sha }} --reverse)
+          echo "${COMMIT_MESSAGES}" >> commit_messages.txt
       - name: Send Discord build message
         run: |
-          COMMIT_MESSAGES="${{ steps.branch.outputs.commit_messages }}"
+          COMMIT_MESSAGES=$(cat commit_messages.txt)
           (curl "$WEBHOOK" -sS -H "Content-Type:application/json" -X POST -d "{\"content\":null,\"embeds\":[{\"title\":\"Build $BUILD\",\"description\":\"**Branch:** $BRANCH_NAME\\n**Changes:**\\n$COMMIT_MESSAGES\",\"url\":\"https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"color\":1487872,\"fields\":[{\"name\":\"Artifacts:\",\"value\":\"- [toastclient-$BUILD.zip](https://nightly.link/$GITHUB_REPOSITORY/workflows/gradle.yaml/$BRANCH_NAME/toastclient-$BUILD.zip)\"}],\"footer\":{\"text\":\"$GITHUB_REPOSITORY\"},\"thumbnail\":{\"url\":\"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\"}}]}")

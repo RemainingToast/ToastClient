@@ -38,3 +38,7 @@ bin
 logs/
 .fabric/
 .mixin.out/
+
+# gh actions
+commit_messages.txt
+prev_commit.txt
