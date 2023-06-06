@@ -17,7 +17,7 @@ fun ClientPlayerEntity.clone(): OtherClientPlayerEntity {
 }
 
 fun ClientPlayerEntity.clone(gameProfile: GameProfile): OtherClientPlayerEntity {
-    val clone = OtherClientPlayerEntity(clientWorld, gameProfile, publicKey)
+    val clone = OtherClientPlayerEntity(clientWorld, gameProfile)
     clone.copyPositionAndRotation(this)
     clone.setHeadYaw(headYaw)
     return clone

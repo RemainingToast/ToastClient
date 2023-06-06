@@ -1,6 +1,6 @@
 package dev.toastmc.toastclient.api.events
 
-import net.minecraft.network.Packet
+import net.minecraft.network.packet.Packet
 import org.quantumclient.energy.Event
 
 open class PacketEvent(val packet: Packet<*>) : Event() {

@@ -12,10 +12,10 @@ interface IToastClient {
     get() = MinecraftClient.getInstance()
 
     val clientName: String
-    get() = "ToastClient"
+    get() = "Toast Client"
 
     val version: String
-    get() = "b2.1.1"
+    get() = "b2.1.2"
 
     val capeUrl: String
         get() = "https://raw.githubusercontent.com/RemainingToast/ToastClient/dev/capes.json"

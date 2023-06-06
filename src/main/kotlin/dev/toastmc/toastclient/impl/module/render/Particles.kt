@@ -10,13 +10,13 @@ import net.minecraft.entity.decoration.EndCrystalEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
-import net.minecraft.util.registry.Registry
 import org.quantumclient.energy.Subscribe
 
 object Particles : Module("Particles", Category.RENDER) {
-    val particleTypes = Registry.PARTICLE_TYPE
+    val particleTypes = Registries.PARTICLE_TYPE
     val particleNames = particleTypes.ids.map { idToName(it) }
 
     var crystalToggle = bool("Toggle", true)

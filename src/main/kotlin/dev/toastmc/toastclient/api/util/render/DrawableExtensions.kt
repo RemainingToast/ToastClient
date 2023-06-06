@@ -22,13 +22,13 @@ interface DrawableExtensions {
         val matrix = matrices.peek().positionMatrix
         val bufferBuilder = Tessellator.getInstance().buffer
         RenderSystem.enableBlend()
-        RenderSystem.disableTexture()
+        /*RenderSystem.disableTexture()*/
         RenderSystem.defaultBlendFunc()
         bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR)
         bufferBuilder.vertex(matrix, x0, y0, 0f).color(color.red, color.green, color.blue,color.alpha).next()
         bufferBuilder.vertex(matrix, x1, y1, 0f).color(color.red, color.green, color.blue,color.alpha).next()
-        BufferRenderer.drawWithShader(bufferBuilder.end())
-        RenderSystem.enableTexture()
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end())
+        /*RenderSystem.enableTexture()*/
         RenderSystem.disableBlend()
     }
 
@@ -64,7 +64,7 @@ interface DrawableExtensions {
             )*/
         } else {
             matrices.translate((centerX / scale).toDouble(), ((y + mc.textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
-            DrawableHelper.drawCenteredText(matrices, mc.textRenderer, text, 0, -mc.textRenderer.fontHeight / 2, color.aBGRPackedInt)
+            DrawableHelper.drawCenteredTextWithShadow(matrices, mc.textRenderer, text, 0, -mc.textRenderer.fontHeight / 2, color.aBGRPackedInt)
         }
         matrices.pop()
         endSmooth()
@@ -139,15 +139,15 @@ interface DrawableExtensions {
         }
         val bufferBuilder = Tessellator.getInstance().buffer
         RenderSystem.enableBlend()
-        RenderSystem.disableTexture()
+//        RenderSystem.disableTexture()
         RenderSystem.defaultBlendFunc()
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
         bufferBuilder.vertex(matrix, x1.toFloat(), y2.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
         bufferBuilder.vertex(matrix, x2.toFloat(), y2.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
         bufferBuilder.vertex(matrix, x2.toFloat(), y1.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
         bufferBuilder.vertex(matrix, x1.toFloat(), y1.toFloat(), 0.0f).color(color.red, color.green, color.blue, color.alpha).next()
-        BufferRenderer.drawWithShader(bufferBuilder.end())
-        RenderSystem.enableTexture()
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end())
+//        RenderSystem.enableTexture()
         RenderSystem.disableBlend()
     }
 
@@ -160,7 +160,7 @@ interface DrawableExtensions {
         colorStart: ToastColor,
         colorEnd: ToastColor,
     ) {
-        RenderSystem.disableTexture()
+//        RenderSystem.disableTexture()
         RenderSystem.enableBlend()
 //        RenderSystem.disableAlphaTest()
         RenderSystem.defaultBlendFunc()
@@ -177,7 +177,7 @@ interface DrawableExtensions {
         RenderSystem.getShaderTexture(7424)
         RenderSystem.disableBlend()
 //        RenderSystem.enableAlphaTest()
-        RenderSystem.enableTexture()
+//        RenderSystem.enableTexture()
     }
 
     fun darken(color: ToastColor, amount: Double): ToastColor {

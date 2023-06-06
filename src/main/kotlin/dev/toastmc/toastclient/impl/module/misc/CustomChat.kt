@@ -4,6 +4,7 @@ import dev.toastmc.toastclient.api.events.PacketEvent
 import dev.toastmc.toastclient.api.managers.command.CommandManager
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.FancyChatUtil
+import dev.toastmc.toastclient.api.util.lit
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import org.quantumclient.energy.Subscribe
 
@@ -54,12 +55,12 @@ object CustomChat : Module("CustomChat", Category.MISC) {
                 isMadeByCustomChat = !isMadeByCustomChat
                 if(isMadeByCustomChat) return
                 event.cancel()
-                mc.player!!.sendChatMessage(fancyMsg + suffix, null)
+                mc.player!!.sendMessage(lit(fancyMsg + suffix))
             } else {
                 isMadeByCustomChat = !isMadeByCustomChat
                 if(isMadeByCustomChat) return
                 event.cancel()
-                mc.player!!.sendChatMessage(chatMessage + suffix, null)
+                mc.player!!.sendMessage(lit(chatMessage + suffix))
             }
         }
     }

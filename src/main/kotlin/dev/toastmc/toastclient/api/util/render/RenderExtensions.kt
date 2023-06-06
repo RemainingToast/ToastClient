@@ -6,7 +6,8 @@ import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.MathHelper
-import net.minecraft.util.math.Vec3f
+import net.minecraft.util.math.RotationAxis
+import org.joml.Vector3f
 
 
 interface RenderExtensions {
@@ -213,7 +214,7 @@ interface RenderExtensions {
         val yNormal = y2 - y1
         val zNormal = z2 - z1
         val normalSqrt = MathHelper.sqrt(xNormal * xNormal + yNormal * yNormal + zNormal * zNormal)
-        val normalVec = Vec3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt)
+        val normalVec = Vector3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt)
         vertexConsumer.vertex(model, x1, y1, z1).color(r, g, b, a).normal(normal, normalVec.x, normalVec.y, normalVec.z).next()
         vertexConsumer.vertex(model, x2, y2, z2).color(r, g, b, a).normal(normal, normalVec.x, normalVec.y, normalVec.z).next()
     }
@@ -221,26 +222,26 @@ interface RenderExtensions {
     fun enable() {
         RenderSystem.enableBlend()
         RenderSystem.defaultBlendFunc()
-        RenderSystem.disableTexture()
+//        RenderSystem.disableTexture()
     }
 
     fun disable() {
         RenderSystem.disableBlend()
-        RenderSystem.enableTexture()
+//        RenderSystem.enableTexture()
     }
 
     fun Camera.matrixFrom(x: Double, y: Double, z: Double): MatrixStack {
         val matrix = MatrixStack()
-        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch))
-        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw + 180.0f))
+        matrix.multiply(RotationAxis.POSITIVE_X.rotationDegrees(pitch))
+        matrix.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(yaw + 180.0f))
         matrix.translate(x - pos.x, y - pos.y, z - pos.z)
         return matrix
     }
 
     fun Camera.originMatrix(): MatrixStack {
         val matrix = MatrixStack()
-        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch))
-        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw + 180.0f))
+        matrix.multiply(RotationAxis.POSITIVE_X.rotationDegrees(pitch))
+        matrix.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(yaw + 180.0f))
         matrix.translate(-pos.x, -pos.y, -pos.z)
         return matrix
     }

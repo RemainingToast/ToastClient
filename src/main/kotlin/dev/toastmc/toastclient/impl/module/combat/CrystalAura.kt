@@ -143,8 +143,8 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
                     || mc.player!!.offHandStack.item === Items.END_CRYSTAL) && pos != null
         ) {
             val offhand = mc.player!!.offHandStack.item === Items.END_CRYSTAL
-            val bop = pos.add(0.5, 0.5, 0.5)
-            val vec = Vec3d(bop.x.toDouble(), bop.y.toDouble(), bop.z.toDouble())
+            val bop = pos.toCenterPos()
+            val vec = Vec3d(bop.x, bop.y, bop.z)
             val yaw: Float = getYaw(vec).toFloat()
             val pitch: Float = getPitch(vec).toFloat()
             mc.player!!.networkHandler.sendPacket(

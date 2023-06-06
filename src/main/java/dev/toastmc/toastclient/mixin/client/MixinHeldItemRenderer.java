@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinHeldItemRenderer {
 
     @Inject(
-            at = {@At(value = "INVOKE")},
+            at = {@At(value = "HEAD")},
             method = {"renderFirstPersonItem"},
             cancellable = true
     )

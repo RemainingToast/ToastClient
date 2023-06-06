@@ -34,8 +34,8 @@ object NameTags : Module("NameTags", Category.RENDER){
             val backgroundcolor = (backgroundOpacity * 255.0f).toInt() shl 24
             val textRenderer: TextRenderer = MinecraftClient.getInstance().textRenderer
             val nameWidth = (-textRenderer.getWidth(name) / 2).toFloat()
-            textRenderer.draw(name, nameWidth, 0f, 553648127, false, matrix4f, vertexConsumerProvider, notSneaking, backgroundcolor, int_1)
-            textRenderer.draw(name, nameWidth, 0f, -1, false, matrix4f, vertexConsumerProvider, false, 0, int_1)
+            textRenderer.draw(name, nameWidth, 0f, 553648127, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, backgroundcolor, int_1)
+            textRenderer.draw(name, nameWidth, 0f, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, int_1)
             matrixStack.pop()
         }
     }

@@ -2,10 +2,14 @@ package dev.toastmc.toastclient.impl.module.render
 
 import dev.toastmc.toastclient.api.events.HeldItemRenderEvent
 import dev.toastmc.toastclient.api.managers.module.Module
-import net.minecraft.util.math.Vec3f
+import dev.toastmc.toastclient.api.util.ToastColor
+import net.minecraft.util.math.RotationAxis
 import org.quantumclient.energy.Subscribe
 
 object ViewModel : Module("ViewModel", Category.RENDER) {
+
+    var rainbowHand = bool("RainbowHand", true)
+    var handColor = ToastColor.rainbow(1)
 
     var scaleX = number("X", 1, 0.5, 1.5, 5)
     var scaleY = number("Y", 1, 0.5, 1.5, 5)
@@ -24,13 +28,22 @@ object ViewModel : Module("ViewModel", Category.RENDER) {
 
     @Subscribe
     fun on(event: HeldItemRenderEvent) {
-        val matrices = event.matrixStack
+        if (!isEnabled()) {
+            return
+        }
 
+        // TODO: fix offhand - @see HeldItemRenderer#renderArm instead
+        if (rainbowHand.value && (mc.player!!.handItems.all { it.isEmpty } /*|| event.hand == Hand.MAIN_HAND && event.item.isEmpty*/))
+        {
+            handColor = ToastColor.rainbow(1)
+            handColor.glColor()
+        }
+
+        val matrices = event.matrixStack
         matrices.scale(scaleX.floatValue, scaleY.floatValue, scaleZ.floatValue)
         matrices.translate(posX.value, posY.value, posZ.value)
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(rotationX.floatValue))
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotationY.floatValue))
-        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotationZ.floatValue))
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(rotationX.floatValue))
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotationY.floatValue))
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotationZ.floatValue))
     }
-
 }

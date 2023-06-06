@@ -8,14 +8,14 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
+import net.minecraft.registry.DefaultedRegistry
+import net.minecraft.registry.Registries
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import net.minecraft.util.registry.DefaultedRegistry
-import net.minecraft.util.registry.Registry
 import net.minecraft.world.Heightmap
 import net.minecraft.world.World
 import net.minecraft.world.chunk.Chunk
@@ -50,9 +50,9 @@ object WorldUtil {
         val map = LinkedHashMap<BlockPos, Block>()
         if (!world.isChunkLoaded(
                 BlockPos(
-                    (chunkX shr 4).toDouble(),
-                    80.0,
-                    (chunkX shr 4).toDouble()
+                    chunkX shr 4,
+                    80,
+                    chunkX shr 4
                 )
             )
         ) {
@@ -596,7 +596,7 @@ object WorldUtil {
 
     private val onUseMethod = AbstractBlock::onUse::javaMethod.get()!!
 
-    val ALL_BLOCKS: DefaultedRegistry<Block> = Registry.BLOCK
+    val ALL_BLOCKS: DefaultedRegistry<Block> = Registries.BLOCK
     val INTERACTIVE: List<Block> = ALL_BLOCKS.stream().filter {
         for (method in it::class.java.declaredMethods) {
             if (method.name == onUseMethod.name) {

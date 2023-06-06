@@ -4,17 +4,18 @@ import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.ToastColor
 import dev.toastmc.toastclient.api.util.mc
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.DiffuseLighting
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
-import net.minecraft.client.render.model.json.ModelTransformation
+import net.minecraft.client.render.model.json.ModelTransformationMode
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import net.minecraft.util.math.Matrix4f
-import net.minecraft.util.math.Vec3f
+import net.minecraft.util.math.RotationAxis
+import org.joml.Vector3f
 import org.lwjgl.opengl.GL11
 
 object RenderUtil : RenderExtensions {
@@ -164,8 +165,8 @@ object RenderUtil : RenderExtensions {
         val vertex = mc.bufferBuilders.entityVertexConsumers
 
         matrix.push()
-        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
-        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
+        matrix.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-camera.yaw))
+        matrix.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.pitch))
         matrix.translate(offX, offY, 0.0)
         matrix.scale(-0.025f * scale.toFloat(), -0.025f * scale.toFloat(), 1f)
 
@@ -180,7 +181,7 @@ object RenderUtil : RenderExtensions {
                 false,
                 matrix.peek().positionMatrix,
                 vertex,
-                true,
+                TextRenderer.TextLayerType.NORMAL,
                 (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f) * 255.0f).toInt() shl 24,
                 0xf000f0
             )
@@ -205,7 +206,7 @@ object RenderUtil : RenderExtensions {
             false,
             matrix.peek().positionMatrix,
             vertex,
-            true,
+            TextRenderer.TextLayerType.NORMAL,
             0,
             0xf000f0
         )
@@ -233,35 +234,36 @@ object RenderUtil : RenderExtensions {
         val vertex = mc.bufferBuilders.entityVertexConsumers
 
         matrix.push()
-        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-camera.yaw))
-        matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(camera.pitch))
+        matrix.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-camera.yaw))
+        matrix.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.pitch))
 
         matrix.translate(offX, offY, 0.0)
         matrix.scale(scale.toFloat(), scale.toFloat(), 0.001f)
-        matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180f))
+        matrix.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180f))
         vertex.draw()
 
         val light1 = FloatArray(4)
         val light2 = FloatArray(4)
         GL11.glGetLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, light1)
         GL11.glGetLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, light2)
-        val currentLight = arrayOf(Vec3f(light1[0], light1[1], light1[2]), Vec3f(light2[0], light2[1], light2[2]))
+        val currentLight = arrayOf(Vector3f(light1[0], light1[1], light1[2]), Vector3f(light2[0], light2[1], light2[2]))
 
         DiffuseLighting.disableGuiDepthLighting()
         GL11.glDepthFunc(GL11.GL_ALWAYS)
         mc.itemRenderer.renderItem(
             item,
-            ModelTransformation.Mode.GUI,
+            ModelTransformationMode.GUI,
             0xF000F0,
             OverlayTexture.DEFAULT_UV,
             matrix,
             vertex,
+            mc.world,
             42069
         )
         vertex.draw()
 
         GL11.glDepthFunc(GL11.GL_LEQUAL)
-        RenderSystem.setupLevelDiffuseLighting(currentLight[0], currentLight[1], Matrix4f.translate(0f, 0f, 0f))
+        RenderSystem.setupLevelDiffuseLighting(currentLight[0], currentLight[1], matrix.peek().positionMatrix.translate(0f, 0f, 0f))
         matrix.pop()
 
         disable()

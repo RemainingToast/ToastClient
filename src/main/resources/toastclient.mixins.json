@@ -30,6 +30,7 @@
     "MixinItem",
     "MixinKeyboard",
     "MixinLivingEntity",
+    "MixinLogoDrawer",
     "MixinMinecraftClient",
     "MixinPlayerEntity",
     "MixinPlayerListHud",

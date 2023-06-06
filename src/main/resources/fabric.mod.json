@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "toastclient",
   "version": "${version}",
-  "name": "ToastClient",
+  "name": "Toast Client",
   "description": "Like bread, but warmer...",
   "authors": [
     "RemainingToast"
@@ -24,7 +24,7 @@
   "depends": {
     "fabric-language-kotlin": "*",
     "fabricloader": ">=0.14.21",
-    "minecraft": "1.19.2",
+    "minecraft": "1.19.4",
     "fabric": "*"
   },
   "suggests": {

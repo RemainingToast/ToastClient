@@ -7,7 +7,6 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import org.lwjgl.opengl.GL11;
-import org.w3c.dom.CharacterData;
 
 import java.awt.*;
 import java.awt.font.GlyphVector;
@@ -205,7 +204,7 @@ public class StringRenderer
 
             /* Use initial color passed to renderString(); disable texturing to draw solid color lines */
             color = initialColor;
-            GlStateManager._disableTexture();
+//            GlStateManager._disableTexture();
             buffer.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
 
             for (int glyphIndex = 0, colorIndex = 0; glyphIndex < entry.glyphs.length; glyphIndex++)
@@ -266,7 +265,7 @@ public class StringRenderer
 
             /* Finish drawing the last strikethrough/underline segments */
             tessellator.draw();
-            GlStateManager._enableTexture();
+//            GlStateManager._enableTexture();
         }
 
 

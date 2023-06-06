@@ -44,7 +44,7 @@ object DupeCommand : Command("dupe") {
                         shouldPlace = true
                         delay = it.getArgument("delay", Int::class.java) as Int
                         timer.reset()
-                        mc.networkHandler!!.sendPacket(ChatMessageC2SPacket(" ", Instant.now(), 1L, null, false, null))
+                        mc.networkHandler!!.sendPacket(ChatMessageC2SPacket(" ", Instant.now(), 1L, null, null))
                         0
                     }
                 }

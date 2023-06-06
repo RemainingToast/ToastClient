@@ -2,17 +2,14 @@ package dev.toastmc.toastclient.mixin.client;
 
 import dev.toastmc.toastclient.ToastClient;
 import dev.toastmc.toastclient.api.events.PacketEvent;
-import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.Packet;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.listener.PacketListener;
+import net.minecraft.network.packet.Packet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.concurrent.Future;
 
 @Mixin(ClientConnection.class)
 public class MixinClientConnection {
@@ -22,16 +19,16 @@ public class MixinClientConnection {
             method = {"handlePacket"},
             cancellable = true
     )
-    private static void on(Packet<?> packet, PacketListener listener, CallbackInfo info) {
+    private static <T extends PacketListener> void on(Packet<T> packet, PacketListener listener, CallbackInfo ci) {
         PacketEvent.Receive receive = new PacketEvent.Receive(packet);
         ToastClient.Companion.getEventBus().post(receive);
         if (receive.isCancelled())
-            info.cancel();
+            ci.cancel();
     }
 
     @Inject(
             at = {@At("HEAD")},
-            method = {"send(Lnet/minecraft/network/Packet;)V"},
+            method = {"send(Lnet/minecraft/network/packet/Packet;)V"},
             cancellable = true
     )
     private void on(Packet<?> packet, CallbackInfo ci) {

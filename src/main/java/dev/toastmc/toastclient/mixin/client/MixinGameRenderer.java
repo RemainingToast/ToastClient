@@ -22,7 +22,7 @@ public class MixinGameRenderer {
 
     @Inject(
             at = {@At("HEAD")},
-            method = {"bobViewWhenHurt(Lnet/minecraft/client/util/math/MatrixStack;F)V"},
+            method = {"bobView"},
             cancellable = true
     )
     private void on(MatrixStack matrixStack, float f, CallbackInfo ci) {

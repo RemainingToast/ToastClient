@@ -35,7 +35,7 @@ public class MixinIngameHud {
             method = {"renderOverlay"},
             cancellable = true
     )
-    private void on(Identifier texture, float opacity, CallbackInfo ci) {
+    private void on(MatrixStack matrices, Identifier texture, float opacity, CallbackInfo ci) {
         if (texture == PUMPKIN_BLUR &&
                 NoRender.INSTANCE.isEnabled() &&
                 NoRender.INSTANCE.getPumpkin().getValue()) {

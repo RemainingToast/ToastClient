@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec3d
 object Strafe : Module("Strafe", Category.MOVEMENT) {
 
     var slowdown = false
-    var speed = number("Speed", 310.0, 1.0, 500.0, 1)
+    var speed = number("Speed", 500.0, 300.0, 1000.0, 10)
     var water = bool("InWater", false)
     var lava = bool("InLava", false)
     var autoSprint = bool("AutoSprint", true)
@@ -21,7 +21,7 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
 
             if (mc.player!!.isOnGround) {
                 mc.player!!.velocity = Vec3d(0.0, mc.player!!.velocity.y, 0.0)
-                mc.player!!.updateVelocity(speed.floatValue / 1000.0f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
+                mc.player!!.updateVelocity(speed.floatValue / 500.0f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
                 mc.player!!.jump()
                 slowdown = true
             } else if (mc.player!!.isInsideWaterOrBubbleColumn && water.value) {
@@ -34,7 +34,7 @@ object Strafe : Module("Strafe", Category.MOVEMENT) {
 
             if (slowdown) {
                 mc.player!!.velocity = Vec3d(0.0, mc.player!!.velocity.y, 0.0)
-                mc.player!!.updateVelocity((speed.floatValue / 1000.0f) - 0.4f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
+                mc.player!!.updateVelocity((speed.floatValue / 500.0f) - 0.4f, Vec3d(mc.player!!.sidewaysSpeed.toDouble(), 0.0, mc.player!!.forwardSpeed.toDouble()))
                 slowdown = false
             }
         } else slowdown = false

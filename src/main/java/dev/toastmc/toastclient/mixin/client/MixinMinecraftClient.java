@@ -3,14 +3,10 @@ package dev.toastmc.toastclient.mixin.client;
 import dev.toastmc.toastclient.ToastClient;
 import dev.toastmc.toastclient.api.events.ScreenEvent;
 import dev.toastmc.toastclient.api.events.TickEvent;
-import dev.toastmc.toastclient.api.util.font.FontAccessor;
-import dev.toastmc.toastclient.api.util.font.StringRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.util.Session;
 import net.minecraft.client.world.ClientWorld;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +23,7 @@ public abstract class MixinMinecraftClient {
     @Shadow public ClientPlayerEntity player;
 
     @Inject(
-            at = {@At(value = "INVOKE")},
+            at = {@At(value = "HEAD")},
             method = {"tick"},
             cancellable = true
     )
@@ -44,7 +40,8 @@ public abstract class MixinMinecraftClient {
 
     @ModifyVariable(
             at = @At("HEAD"),
-            method = {"setScreen"}
+            method = {"setScreen"},
+            argsOnly = true
     )
     private Screen setScreen(Screen screen) {
         ScreenEvent.Closed closedEvent = new ScreenEvent.Closed(MinecraftClient.getInstance().currentScreen);

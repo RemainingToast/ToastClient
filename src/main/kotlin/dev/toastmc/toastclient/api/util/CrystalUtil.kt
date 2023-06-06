@@ -5,7 +5,6 @@ import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.DamageUtil
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.attribute.EntityAttributes
-import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.MathHelper
@@ -30,7 +29,7 @@ object CrystalUtil {
         var damage = incomingDamage
         if (this is PlayerEntity) {
             val player: PlayerEntity = this
-            val source = DamageSource.explosion(explosion)
+            val source = explosion.damageSource
 
             damage = DamageUtil.getDamageLeft(
                 damage,

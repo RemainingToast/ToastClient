@@ -21,6 +21,7 @@ object Totems : HUDComponent("Totems") {
 
     override fun render(matrices: MatrixStack) {
         mc.itemRenderer.renderGuiItemIcon(
+            matrices,
             Items.TOTEM_OF_UNDYING.defaultStack,
             x.roundToInt(),
             y.roundToInt()
