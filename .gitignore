@@ -41,8 +41,8 @@ logs/
 .DS_Store
 
 # gh actions
-commit_messages.txt
-prev_commit.txt
+version.properties
+!src/main/resources/version.properties
 
 # hehe secret todo
 TODO.md

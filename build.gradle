@@ -74,10 +74,15 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 // @see https://stackoverflow.com/a/65923469
 tasks.register('createProperties') {
     doLast {
-        new File("src/main/resources/version.properties").withWriter { w ->
+        new File("$projectDir/src/main/resources/version.properties").withWriter { w ->
             Properties p = new Properties()
             p['version'] = project.version.toString()
             p.store w, null
+        }
+        // copy for github actions
+        copy {
+            from "$projectDir/src/main/resources/version.properties"
+            into "$projectDir"
         }
     }
 }
