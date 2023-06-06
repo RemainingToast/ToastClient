@@ -10,7 +10,7 @@ import kotlin.math.roundToInt
 object Watermark : HUDComponent("Watermark") {
 
     init {
-        width = mc.textRenderer.getWidth(lit(clientName))
+        width = mc.textRenderer.getWidth(lit(nameVersion))
         height = mc.textRenderer.fontHeight
         val point = getSnapPoint(SnapPoint.TOP_RIGHT, width, height)
         this.x = point.x.toDouble()
@@ -18,7 +18,7 @@ object Watermark : HUDComponent("Watermark") {
     }
 
     override fun render(matrices: MatrixStack) {
-        val text = lit(clientName)
+        val text = lit(nameVersion)
         DrawableUtil.drawText(
             matrices,
             text,

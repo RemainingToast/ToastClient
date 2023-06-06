@@ -2,7 +2,6 @@ package dev.toastmc.toastclient.api.managers
 
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.setting.Setting
-import java.util.*
 import java.util.stream.Collectors
 
 object SettingManager {
@@ -11,6 +10,7 @@ object SettingManager {
     val settings: MutableList<Setting<*>> = ArrayList()
 
     fun addSetting(setting: Setting<*>): Setting<*> {
+        setting.name.replace(" ", "")
         settings.add(setting)
         return setting
     }

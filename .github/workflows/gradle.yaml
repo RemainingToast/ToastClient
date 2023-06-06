@@ -23,8 +23,13 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Read version from version.properties
+        id: read-version
+        run: |
+          VERSION=$(grep -oP '(?<=version=).*$' version.properties)
+          echo "::set-output name=version::$VERSION"
       - name: Rename the built jar
-        run: mv build/libs/toastclient-2.1.2.jar toastclient-${{ github.run_number }}.jar
+        run: mv build/libs/toastclient-${{ steps.read-version.outputs.version }}.jar toastclient-${{ github.run_number }}.jar
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:

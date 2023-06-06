@@ -2,11 +2,12 @@ plugins {
     id 'java'
     id 'fabric-loom'
     id 'maven-publish'
+    id 'io.freefair.lombok' version '6.3.0'
+    id 'org.ajoberstar.grgit' version '5.0.0'
     id 'org.jetbrains.kotlin.jvm' version '1.8.21'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-version = project.mod_version
+version = "${project.mod_version}+${grgit.head().abbreviatedId}"
 group = project.maven_group
 
 repositories {
@@ -64,16 +65,23 @@ jar {
     }
 }
 
-shadowJar {
-    dependencies {
-        include('org.yaml:snakeyaml')
-        include('net.jodah:typetools')
-        include('com.github.QuantumClient:Energy')
-    }
-}
-
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
+
+// @see https://stackoverflow.com/a/65923469
+tasks.register('createProperties') {
+    doLast {
+        new File("src/main/resources/version.properties").withWriter { w ->
+            Properties p = new Properties()
+            p['version'] = project.version.toString()
+            p.store w, null
+        }
+    }
+}
+
+classes {
+    dependsOn createProperties
 }

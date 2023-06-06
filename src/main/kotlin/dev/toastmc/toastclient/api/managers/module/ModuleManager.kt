@@ -39,7 +39,8 @@ object ModuleManager : IToastClient {
             AutoAnvil,
             AutoArmour,
             AutoRespawn,
-            AutoTotem,
+            /*AutoTotem,*/
+            Offhand,
             CrystalAura,
             KillAura,
             /** Misc **/
