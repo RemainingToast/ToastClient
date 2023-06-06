@@ -15,6 +15,9 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    maven {
+        url 'https://lukflug.github.io/maven/'
+    }
 }
 
 dependencies {
@@ -25,9 +28,13 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
-    /*include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}")*/
     include modImplementation("com.github.QuantumClient:Energy:${project.events_version}")
     include modImplementation("com.google.guava:guava:${project.guava_version}")
+
+    include modImplementation("com.lukflug:panelstudio:${project.lukflug_version}")
+    include modImplementation("com.lukflug:panelstudio-mc194:${project.lukflug_versionmc}") {
+        changing = true
+    }
 }
 
 base {
