@@ -4,7 +4,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/RemainingToast/toastclient)
 
 ### ! ATTENTION: Downloading !
-> ***1.19.2 Alpha Releases Are Found In The [Nightly Release Channel](https://discord.com/channels/668416925671489547/738156249035571210) In Our [Discord](https://discord.gg/PASHZanfyc).***
+> ***1.19.4 Alpha Releases Are Found In The [Nightly Release Channel](https://discord.com/channels/668416925671489547/738156249035571210) In Our [Discord](https://discord.gg/PASHZanfyc).***
 <br>*(This Will Change When There Is A Stable Release.)*
 
 ### Using
