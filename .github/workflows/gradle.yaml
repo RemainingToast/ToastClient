@@ -3,7 +3,7 @@ name: Build and Upload Development Artifact to Discord
 on:
   push:
     branches:
-      - 1.19.2
+      - 1.19.4
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Rename the built jar
-        run: mv build/libs/toastclient-2.1.1.jar toastclient-${{ github.run_number }}.jar
+        run: mv build/libs/toastclient-2.1.2.jar toastclient-${{ github.run_number }}.jar
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
