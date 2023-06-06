@@ -64,6 +64,7 @@ object ModuleManager : IToastClient {
             Velocity,
             /** Render **/
             FullBright,
+            HoleESP,
             NameTags,
             NoFog,
             NoRender,

@@ -1,6 +1,5 @@
 package dev.toastmc.toastclient.api.util
 
-import dev.toastmc.toastclient.api.util.font.FontAccessor
 import dev.toastmc.toastclient.impl.module.client.Font
 import dev.toastmc.toastclient.mixin.client.IChatHud
 import net.minecraft.client.MinecraftClient
@@ -32,6 +31,11 @@ fun capitalize(str: String): String {
 }
 
 fun getStringWidth(string: String): Int {
-    return if (Font.isEnabled()) FontAccessor.fontRenderer.getWidth(string)
+    return if (Font.isEnabled()) {
+        /*FontAccessor.fontRenderer.getWidth(string)*/
+
+        /*FontAccessor._fontRenderer.getStringWidth(string).toInt()*/
+        return 0
+    }
     else mc.textRenderer.getWidth(string)
 }

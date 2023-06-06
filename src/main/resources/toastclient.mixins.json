@@ -3,6 +3,7 @@
   "compatibilityLevel": "JAVA_8",
   "package": "dev.toastmc.toastclient.mixin.client",
   "client": [
+    "AccessorMinecraftClient",
     "IChatHud",
     "IClientPlayerInteractionManager",
     "IEntitySelector",
@@ -28,13 +29,12 @@
     "MixinInput",
     "MixinItem",
     "MixinKeyboard",
+    "MixinLivingEntity",
     "MixinMinecraftClient",
     "MixinPlayerEntity",
     "MixinPlayerListHud",
     "MixinSharedConstants",
-    "MixinLivingEntity",
-    "MixinTitleScreen",
-    "AccessorMinecraftClient"
+    "MixinTitleScreen"
   ],
   "injectors": {
     "defaultRequire": 1

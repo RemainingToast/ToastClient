@@ -59,25 +59,139 @@ interface RenderExtensions {
             vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()
             vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()
         } else {
-            line(matrix, vertex, x1, y1, z1, x2, y1, z1, r, g, b, a)
-            line(matrix, vertex, x2, y1, z1, x2, y1, z2, r, g, b, a)
-            line(matrix, vertex, x2, y1, z2, x1, y1, z2, r, g, b, a)
-            line(matrix, vertex, x1, y1, z2, x1, y1, z1, r, g, b, a)
+            // Bottom face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Top left
 
-            line(matrix, vertex, x1, y1, z1, x1, y2, z1, r, g, b, a)
-            line(matrix, vertex, x2, y1, z1, x2, y2, z1, r, g, b, 0f)
-            line(matrix, vertex, x2, y1, z1, x2, y2, z1, r, g, b, a)
-            line(matrix, vertex, x2, y1, z2, x2, y2, z2, r, g, b, 0f)
-            line(matrix, vertex, x2, y1, z2, x2, y2, z2, r, g, b, a)
-            line(matrix, vertex, x1, y1, z2, x1, y2, z2, r, g, b, 0f)
-            line(matrix, vertex, x1, y1, z2, x1, y2, z2, r, g, b, a)
+            // Top face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Bottom left
 
-            line(matrix, vertex, x1, y2, z1, x2, y2, z1, r, g, b, a)
-            line(matrix, vertex, x2, y2, z1, x2, y2, z2, r, g, b, a)
-            line(matrix, vertex, x2, y2, z2, x1, y2, z2, r, g, b, a)
-            line(matrix, vertex, x1, y2, z2, x1, y2, z1, r, g, b, a)
+            // Front face
+//            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom left
+
+            // Back face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Bottom left
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Bottom right
+
+            // Right face
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom front
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Top front
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top back
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Bottom back
+
+            // Left face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Bottom back
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top back
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Top front
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom front
         }
     }
+
+    fun hollowBox(
+        matrix: MatrixStack,
+        vertex: VertexConsumer,
+        box: Box,
+        filled: Boolean,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+    ) {
+        val x1 = box.minX.toFloat()
+        val y1 = box.minY.toFloat()
+        val z1 = box.minZ.toFloat()
+        val x2 = box.maxX.toFloat()
+        val y2 = box.maxY.toFloat()
+        val z2 = box.maxZ.toFloat()
+
+        if (filled) {
+            // Bottom face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom left
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom right
+
+            // Top face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Bottom left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top left
+
+            // Front face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom left
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom right
+
+            // Back face
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Bottom left
+
+            // Right face
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom front
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Top front
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top back
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Bottom back
+
+            // Left face
+//            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Bottom back
+//            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top back
+//            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Top front
+//            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom front
+        } else {
+            // ...
+            // Same code for drawing the outlines of the box as before
+            // ... TODO: Abstract
+            // Bottom face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Top left
+
+            // Top face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Bottom left
+
+            // Front face
+//            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom left
+
+            // Back face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Bottom left
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top left
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top right
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Bottom right
+
+            // Right face
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z1).color(r, g, b, a).next()   // Bottom front
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z1).color(r, g, b, a).next()   // Top front
+            vertex.vertex(matrix.peek().positionMatrix, x2, y2, z2).color(r, g, b, a).next()   // Top back
+            vertex.vertex(matrix.peek().positionMatrix, x2, y1, z2).color(r, g, b, a).next()   // Bottom back
+
+            // Left face
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z2).color(r, g, b, a).next()   // Bottom back
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z2).color(r, g, b, a).next()   // Top back
+            vertex.vertex(matrix.peek().positionMatrix, x1, y2, z1).color(r, g, b, a).next()   // Top front
+            vertex.vertex(matrix.peek().positionMatrix, x1, y1, z1).color(r, g, b, a).next()   // Bottom front
+        }
+    }
+
 
     fun line(
         matrix: MatrixStack,

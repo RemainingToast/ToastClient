@@ -3,8 +3,6 @@ package dev.toastmc.toastclient
 import dev.toastmc.toastclient.api.config.ConfigUtil
 import dev.toastmc.toastclient.api.managers.command.CommandManager
 import dev.toastmc.toastclient.api.managers.module.ModuleManager
-import dev.toastmc.toastclient.api.util.font.FontAccessor
-import dev.toastmc.toastclient.api.util.font.StringRenderer
 import dev.toastmc.toastclient.api.util.entity.CapeUtil
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -22,7 +20,17 @@ open class ToastClient : ModInitializer, IToastClient {
 
             logger.info("Started loading $nameVersion")
 
-            FontAccessor.fontRenderer = StringRenderer(18f, "/assets/toastclient/font/${FontAccessor.fontName}")
+            /*FontAccessor.fontRenderer = StringRenderer(18f, "/assets/toastclient/font/${FontAccessor.fontName}")*/
+
+            /*val font = Font.createFont(
+                Font.PLAIN,
+                javaClass.getResourceAsStream("/assets/toastclient/font/${FontAccessor.fontName}"),
+            )
+
+            FontAccessor._fontRenderer = FontRenderer(
+                arrayOf(font),
+                9f
+            )*/
 
             ModuleManager.init()
 

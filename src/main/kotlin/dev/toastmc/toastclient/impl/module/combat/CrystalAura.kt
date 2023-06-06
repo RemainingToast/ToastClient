@@ -2,12 +2,13 @@ package dev.toastmc.toastclient.impl.module.combat
 
 import dev.toastmc.toastclient.api.managers.module.Module
 import dev.toastmc.toastclient.api.util.InventoryUtil.switchToHotbarItem
-import dev.toastmc.toastclient.api.util.WorldUtil.blockPos
+import dev.toastmc.toastclient.api.util.WorldUtil
 import dev.toastmc.toastclient.api.util.WorldUtil.isCrystalSpot
 import dev.toastmc.toastclient.api.util.entity.DamageUtil.getCrystalDamage
 import dev.toastmc.toastclient.api.util.entity.EntityUtil
 import dev.toastmc.toastclient.api.util.entity.EntityUtil.predictEyePos
 import dev.toastmc.toastclient.api.util.entity.canReach
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import net.minecraft.entity.LivingEntity
@@ -51,6 +52,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
 
     var counter: Byte = 0
 
+    @DelicateCoroutinesApi
     override fun onUpdate() {
         counter++
         if (counter < 2) return
@@ -225,18 +227,6 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         }
     }
 
-    fun getCube(center: Vec3d, range: Int): List<BlockPos> {
-        val cube = mutableListOf<BlockPos>()
-        (-range..range).forEach { x ->
-            (-range..range).forEach { y ->
-                (-range..range).forEach { z ->
-                    cube.add(center.blockPos.add(BlockPos(x, y, z)))
-                }
-            }
-        }
-        return cube
-    }
-
     fun filterSpots(spots: List<BlockPos>, range: Double): List<BlockPos> {
         return spots.filter {
             mc.player!!.canReach(
@@ -257,7 +247,7 @@ object CrystalAura : Module("CrystalAura", Category.COMBAT) {
         val eyePos = mc.player!!.predictEyePos().add(mc.player!!.velocity)
 
         val targets = findTargets()
-        val spots = filterSpots(getCube(eyePos, ceil(range).toInt()), range)
+        val spots = filterSpots(WorldUtil.getCube(eyePos, ceil(range).toInt()), range)
 
         target = getIdealTarget(targets, spots, eyePos) ?: return false
 

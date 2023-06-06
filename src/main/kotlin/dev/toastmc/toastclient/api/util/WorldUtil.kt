@@ -293,6 +293,18 @@ object WorldUtil {
         return blocks
     }
 
+    fun getCube(center: Vec3d, range: Int): List<BlockPos> {
+        val cube = mutableListOf<BlockPos>()
+        (-range..range).forEach { x ->
+            (-range..range).forEach { y ->
+                (-range..range).forEach { z ->
+                    cube.add(center.blockPos.add(BlockPos(x, y, z)))
+                }
+            }
+        }
+        return cube
+    }
+
     val BEDS = listOf(
         Blocks.BLACK_BED,
         Blocks.BLUE_BED,
@@ -545,6 +557,7 @@ object WorldUtil {
         return true
     }
 
+    // TODO: Double Holes
     fun BlockPos.isHole(
         airOnly: Boolean = false,
         vararg acceptableBlocks: Block = arrayOf(Blocks.OBSIDIAN, Blocks.BEDROCK)
@@ -560,6 +573,10 @@ object WorldUtil {
                 0
             ).block
         ) && this.isSurrounded(*acceptableBlocks)
+    }
+
+    fun World.getHoles(center: Vec3d, range: Int, airOnly: Boolean): List<BlockPos> {
+        return getCube(center, range).filter { it.isHole(airOnly) }.toList()
     }
 
     val BlockPos.isCrystalSpot: Boolean

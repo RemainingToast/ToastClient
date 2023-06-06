@@ -11,4 +11,6 @@ public class FontAccessor {
      * To use the fontrenderer, use FontAccessor.fontRenderer.drawString(args);
      */
     public static StringRenderer fontRenderer;
+
+    /*public static FontRenderer _fontRenderer;*/
 }

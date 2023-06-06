@@ -27,8 +27,6 @@ public class MixinTitleScreen {
     @Mutable
     @Shadow @Final private static Identifier EDITION_TITLE_TEXTURE;
 
-    private static final GLSLSandboxShader shader = new GLSLSandboxShader("/assets/toastclient/shaders/mandelbrot.vsh");
-
     @Inject(
             at = {@At("RETURN")},
             method = {"render"}

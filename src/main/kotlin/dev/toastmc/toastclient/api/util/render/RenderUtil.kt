@@ -44,7 +44,7 @@ object RenderUtil : RenderExtensions {
 
         RenderSystem.lineWidth(2.5f)
 
-        tessellator.buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
+        tessellator.buffer.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR)
         box(
             matrix,
             tessellator.buffer,
@@ -60,6 +60,10 @@ object RenderUtil : RenderExtensions {
         disable()
     }
 
+    fun drawOutline(box: Box, color: ToastColor, width: Float) {
+        drawOutline(box, color.red.toFloat(), color.green.toFloat(), color.blue.toFloat(), color.alpha.toFloat(), width)
+    }
+
     fun drawOutline(blockPos: BlockPos, color: ToastColor, width: Float) {
         drawOutline(Box(blockPos), color.red.toFloat(), color.green.toFloat(), color.blue.toFloat(), color.alpha.toFloat(), width)
     }
@@ -69,12 +73,11 @@ object RenderUtil : RenderExtensions {
 
         val matrix = mc.gameRenderer.camera.originMatrix()
         val tessellator = RenderSystem.renderThreadTesselator()
-        val buffer = tessellator.buffer
 
         // Outline
         RenderSystem.lineWidth(width)
 
-        buffer.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR)
+        tessellator.buffer.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR)
         box(
             matrix,
             tessellator.buffer,
@@ -90,6 +93,46 @@ object RenderUtil : RenderExtensions {
         disable()
     }
 
+    fun drawHollowBox(pos: BlockPos, color: ToastColor) {
+        drawHollowBox(Box(pos), color)
+    }
+
+    fun drawHollowBox(box: Box, color: ToastColor) {
+        enable()
+
+        val matrix = mc.gameRenderer.camera.originMatrix()
+        val tessellator = RenderSystem.renderThreadTesselator()
+
+        tessellator.buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
+        hollowBox(
+            matrix,
+            tessellator.buffer,
+            box,
+            true,
+            color.red.toFloat(),
+            color.green.toFloat(),
+            color.blue.toFloat(),
+            color.alpha.toFloat()
+        )
+        tessellator.draw()
+
+        RenderSystem.lineWidth(2.5f)
+
+        tessellator.buffer.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR)
+        hollowBox(
+            matrix,
+            tessellator.buffer,
+            box,
+            false,
+            color.red.toFloat(),
+            color.green.toFloat(),
+            color.blue.toFloat(),
+            color.alpha.toFloat()
+        )
+        tessellator.draw()
+
+        disable()
+    }
 
     /**
      * Draws text in the world.

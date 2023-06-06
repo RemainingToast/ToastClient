@@ -2,8 +2,6 @@ package dev.toastmc.toastclient.api.util.render
 
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.toastmc.toastclient.api.util.ToastColor
-import dev.toastmc.toastclient.api.util.asString
-import dev.toastmc.toastclient.api.util.font.FontAccessor
 import dev.toastmc.toastclient.api.util.mc
 import dev.toastmc.toastclient.impl.module.client.Font
 import net.minecraft.client.gui.DrawableHelper
@@ -46,13 +44,24 @@ interface DrawableExtensions {
         matrices.scale(scale, scale, 1f)
         startSmooth()
         if (Font.isEnabled()) {
-            FontAccessor.fontRenderer.drawString(
+            /*FontAccessor.fontRenderer.drawString(
                 text.asString(),
                 (centerX - FontAccessor.fontRenderer.getWidth(text.asString()) / 2f),
                 (y + -FontAccessor.fontRenderer.getHeight(text.asString()) / 2f),
                 color.aBGRPackedInt,
                 true
-            )
+            )*/
+
+            /*FontAccessor._fontRenderer.drawString(
+                matrices,
+                text.asString(),
+                (centerX - FontAccessor._fontRenderer.getStringWidth(text.asString()) / 2f),
+                (y + - FontAccessor._fontRenderer.getStringHeight(text.asString()) / 2f),
+                color.red.toFloat(),
+                color.green.toFloat(),
+                color.blue.toFloat(),
+                color.alpha.toFloat()
+            )*/
         } else {
             matrices.translate((centerX / scale).toDouble(), ((y + mc.textRenderer.fontHeight / 2f) / scale).toDouble(), 0.0)
             DrawableHelper.drawCenteredText(matrices, mc.textRenderer, text, 0, -mc.textRenderer.fontHeight / 2, color.aBGRPackedInt)
@@ -85,13 +94,24 @@ interface DrawableExtensions {
         matrices.scale(scale, scale, 1f)
         startSmooth()
         if (Font.isEnabled()) {
-            FontAccessor.fontRenderer.drawString(
+            /*FontAccessor.fontRenderer.drawString(
                 text.asString(),
                 x.toFloat(),
                 (y + -FontAccessor.fontRenderer.getHeight(text.asString()) / 2f),
                 color.aBGRPackedInt,
                 true
-            )
+            )*/
+
+            /*FontAccessor._fontRenderer.drawString(
+                matrices,
+                text.asString(),
+                x.toFloat(),
+                (y + - FontAccessor._fontRenderer.getStringHeight(text.asString()) / 2f),
+                color.red.toFloat(),
+                color.green.toFloat(),
+                color.blue.toFloat(),
+                color.alpha.toFloat()
+            )*/
         } else {
             matrices.translate((x / scale).toDouble(), ((y + mc.textRenderer.fontHeight / 2f) / scale).toDouble(), z)
             mc.textRenderer.drawWithShadow(matrices, text, 0f, -mc.textRenderer.fontHeight / 2f, color.aBGRPackedInt)
