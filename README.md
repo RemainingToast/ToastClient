@@ -2,13 +2,13 @@
 
 <p align="center">
   <a href="https://github.com/RemainingToast/ToastClient/releases/"><img src="https://img.shields.io/github/downloads/RemainingToast/ToastClient/total.svg" alt="GitHub All Releases"/></a>
-  <a href="https://github.com/RemainingToast/ToastClient/tree/1.19.4"><img src="https://img.shields.io/badge/fabric-1.19.4-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/RemainingToast/ToastClient/tree/1.19.4"><img src="https://img.shields.io/badge/fabric-1.19.4-blue.svg" alt="Minecraft"/></a>
 </p>
 
 <p align="center">
   <a href="https://discord.gg/PASHZanfyc" target="_blank"><img src="https://img.shields.io/discord/668416925671489547" alt="Minecraft"/></a>
-  <a href="https://github.com/RemainingToast/ToastClient/"><img src="https://img.shields.io/tokei/lines/github/RemainingToast/ToastClient" alt="Minecraft"/></a>
-  <a href="https://github.com/RemainingToast/ToastClient/"><img src="https://img.shields.io/github/last-commit/RemainingToast/ToastClient" alt="Minecraft"/></a>
+  <a href="https://github.com/RemainingToast/ToastClient/"><img src="https://img.shields.io/github/contributors/RemainingToast/ToastClient" alt="Minecraft"/></a>
+  <a href="https://github.com/RemainingToast/ToastClient/"><img src="https://img.shields.io/github/last-commit/RemainingToast/ToastClient/1.19.4?color=blue" alt="Minecraft"/></a>
 </p>
 
 <p align="center">
