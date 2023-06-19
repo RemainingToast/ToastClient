@@ -26,10 +26,14 @@
 
 [**Toast Client Discord Server**](https://discord.gg/PASHZanfyc)
 
-## GUI
-<p align="center">
-  <img src="https://media.discordapp.net/attachments/701759106217934939/1114906920319463504/image.png" alt="GUI">
-</p>
+## Preview
+<details open>
+ <summary>GUI</summary>
+  <p align="center">
+    <img src="https://media.discordapp.net/attachments/701759106217934939/1114906920319463504/image.png" alt="GUI">
+  </p>
+</details>
+
 
 ## Usage
 Click GUI: `RSHIFT`   
