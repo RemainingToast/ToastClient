@@ -19,6 +19,7 @@
 </p>
 
 <p align="center">
+  <a href="https://www.digitalocean.com/?refcode=c370c62609f3&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg" height="41" alt="DigitalOcean Referral Badge" /></a>
   <a href="https://www.buymeacoffee.com/toastmc" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 </p>
 
